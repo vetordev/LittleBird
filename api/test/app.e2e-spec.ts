@@ -19,6 +19,6 @@ describe('AppController (e2e)', () => {
     return request(app.getHttpServer())
       .get('/')
       .expect(200)
-      .expect('git push --set-upstream origin api');
+      .expect('API Restful do aplicativo móvel Little Bird - v1');
   });
 });
