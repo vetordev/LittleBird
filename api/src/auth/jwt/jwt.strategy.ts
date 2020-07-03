@@ -16,6 +16,6 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
 
   //Retorna os dados no request
   async validate(payload: IPayload) {
-    return { id: payload.sub, email: payload.email };
+    return { user_id: payload.sub, email: payload.email };
   }
 }

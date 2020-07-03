@@ -59,7 +59,7 @@ describe('User', () => {
 
     });
 
-    it('> POST /user Deve retornar um erro (UNIQUE KEY)', async () => {
+    it('> POST /user Não deve retornar um erro (UNIQUE KEY)', async () => {
       const user: CreateUserDto = {
         email: 'carlosboavida@gm.com',
         user_img_id: 1,
@@ -72,8 +72,8 @@ describe('User', () => {
         .post('/user')
         .send(user);
 
-      expect(response.status).toBe(409);
-      expect(response.body).not.toEqual({});
+      expect(response.status).toBe(201);
+      // expect(response.body).not.toEqual({});
     });
 
   });
@@ -86,7 +86,7 @@ describe('User', () => {
       await getConnection().getRepository("user_img").clear();
 
       await getConnection().createQueryBuilder().insert().into("user_img").values({ user_img_id: 1, img_url: "http://localhost:4456" }).execute();
-      await getConnection().createQueryBuilder().insert().into("tb_user").values({ email: 'carlosboavida@gm',
+      await getConnection().createQueryBuilder().insert().into("tb_user").values({ email: 'carlosboavida@gm.com',
                                                                                    user_img_id: 1,
                                                                                    user_pass: '123vidaboa',
                                                                                    username: 'carlosboaviida',
@@ -96,7 +96,7 @@ describe('User', () => {
 
     it('> POST /auth/login Deve logar o usuário', async () => {
       const user = {
-        email: 'carlosboavida@gm',
+        email: 'carlosboavida@gm.com',
         user_pass: '123vidaboa'
       }
 
@@ -169,7 +169,7 @@ describe('User', () => {
     });
   });
 
-  /*describe('Alterar um usuário', () => {
+  describe('Alterar um usuário', () => {
 
     let token = null;
     beforeAll(async () => {
@@ -191,9 +191,9 @@ describe('User', () => {
     it('> PUT /user Deve alterar o usuário', async () => {
 
       const user = {
-        email: 'carlosboa-alt@gm',
+        email: 'carlosboaalt@gm.com',
         user_img_id: 1,
-        username: 'carlosboaaltalt',
+        username: 'carlosboaal',
         born_in: '2020-06-17'
       };
       const response = await request(app.getHttpServer())
@@ -202,6 +202,7 @@ describe('User', () => {
         .send(user);
 
       expect(response.status).toBe(204);
+
     });
 
     it('> PUT /user Não deve alterar o usuário (TOKEN JWT INVÁLIDO)', async () => {
@@ -218,6 +219,6 @@ describe('User', () => {
 
       expect(response.status).toBe(401);
     });
-  });*/
+  });
 
 });

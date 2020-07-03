@@ -4,6 +4,7 @@ import { AppService } from './app.service';
 import { TypeOrmModule, TypeOrmModuleOptions } from "@nestjs/typeorm";
 import { UserModule } from './user/user.module';
 import { AuthModule } from './auth/auth.module';
+import { ThemeModule } from './theme/theme.module';
 
 // TODO Transferir essa lógica para outro arquivo
 import * as dotenv from 'dotenv';
@@ -18,12 +19,14 @@ const connection: TypeOrmModuleOptions = {
   autoLoadEntities: Boolean(process.env.AUTO_LOAD_ENTITIES),
   synchronize: Boolean(process.env.SYNCHRONIZE)
 }
-//String(process.env.DATABSE)
+//
+
 @Module({
   imports: [
     TypeOrmModule.forRoot(connection),
     UserModule,
     AuthModule,
+    ThemeModule,
   ],
   controllers: [AppController],
   providers: [AppService],

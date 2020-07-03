@@ -2,6 +2,7 @@ import { Controller, Post, Req } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { UseGuards } from "@nestjs/common";
 import { LocalAuthGuard } from './local/local-auth.guard';
+// import { RequestWithUser } from '../utils/Request';
 
 @Controller('auth')
 export class AuthController {
@@ -13,7 +14,6 @@ export class AuthController {
   // TODO Tipar o parâmetro request
   async login(@Req() request) {
 
-    // TODO Estudar o uso do 'as'
     return this.authService.login(request.user.user_id, request.user.email);
   }
 

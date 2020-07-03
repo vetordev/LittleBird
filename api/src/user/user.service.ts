@@ -1,5 +1,5 @@
 import { Injectable, Inject, forwardRef } from '@nestjs/common';
-import { CreateUserDto, GetUserDto } from './user.dto';
+import { CreateUserDto, GetUserDto, UpdateUserDto } from './user.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { User } from './entity/user.entity';
@@ -14,7 +14,7 @@ export class UserService {
     private readonly authService: AuthService
   ){}
 
-  async createUser(user: CreateUserDto): Promise<any> {
+  async createUser(user: CreateUserDto): Promise<object> {
     const created_user =  await this.userRepository.createQueryBuilder("user").insert().into("tb_user").values(user).execute();
 
     const payload_user = { sub: created_user.identifiers[0].user_id, email: user.email };
@@ -23,7 +23,7 @@ export class UserService {
     return token;
   }
 
-  async getUserByEmail(email: string): Promise<any> {
+  async getUserByEmail(email: string): Promise<any | null> {
     const user = await this.userRepository.createQueryBuilder("tb_user")
       .select("tb_user.user_pass")
       .addSelect("tb_user.email")
@@ -51,5 +51,13 @@ export class UserService {
       .getOne();
 
     return user;
+  }
+
+  async updateUser(user_id: number, user: UpdateUserDto): Promise<void> {
+    await this.userRepository.createQueryBuilder("tb_user")
+      .update()
+      .set(user)
+      .where("tb_user.user_id = :user_id", { user_id })
+      .execute()
   }
 }

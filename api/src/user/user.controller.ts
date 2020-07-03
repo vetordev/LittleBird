@@ -1,6 +1,6 @@
-import { Controller, Post, Body, UseFilters, Get, UseGuards, Req, HttpCode } from '@nestjs/common';
+import { Controller, Post, Body, UseFilters, Get, UseGuards, Req, HttpCode, Put } from '@nestjs/common';
 import { UserService } from './user.service';
-import { CreateUserDto } from './user.dto';
+import { CreateUserDto, UpdateUserDto } from './user.dto';
 import { QueryFailedExceptionFilter, InternalServerErrorFilter } from './http-exception.filter';
 import { JwtAuthGuard } from '../auth/jwt/jwt-auth.guard';
 
@@ -20,7 +20,15 @@ export class UserController {
   @UseGuards(JwtAuthGuard)
   // TODO Tipar o parâmetro request
   async getUser(@Req() request ) {
-    return this.userService.getUserById(request.user.id as number);
+
+    return await this.userService.getUserById(request.user.user_id);
+  }
+
+  @Put()
+  @HttpCode(204)
+  @UseGuards(JwtAuthGuard)
+  async updateUser(@Req() request, @Body() user: UpdateUserDto) {
+    return await this.userService.updateUser(request.user.user_id, user);
   }
 
 }
