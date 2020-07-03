@@ -46,6 +46,7 @@ describe('Theme', () => {
 
       expect(response.status).toBe(200);
       expect(response.body).not.toBeNull();
+      expect(response.body[0]).toHaveProperty('theme_img_id');
     });
 
   });

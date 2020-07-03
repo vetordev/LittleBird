@@ -8,7 +8,7 @@ export class ThemeController {
 
   @Get()
   async getTheme() {
-    return null
+    return this.themeService.getThemes()
   }
 
 }
