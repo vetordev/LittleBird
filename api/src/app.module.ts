@@ -5,6 +5,7 @@ import { TypeOrmModule, TypeOrmModuleOptions } from "@nestjs/typeorm";
 import { UserModule } from './user/user.module';
 import { AuthModule } from './auth/auth.module';
 import { ThemeModule } from './theme/theme.module';
+import { InterestModule } from './interest/interest.module';
 
 // TODO Transferir essa lógica para outro arquivo
 import * as dotenv from 'dotenv';
@@ -27,6 +28,7 @@ const connection: TypeOrmModuleOptions = {
     UserModule,
     AuthModule,
     ThemeModule,
+    InterestModule,
   ],
   controllers: [AppController],
   providers: [AppService],

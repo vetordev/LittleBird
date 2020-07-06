@@ -4,6 +4,7 @@ import { AppModule } from "../src/app.module";
 import { getConnection } from "typeorm";
 import * as request from 'supertest';
 
+
 describe('Theme', () => {
   let app: INestApplication;
 
@@ -15,13 +16,6 @@ describe('Theme', () => {
     app = moduleFixture.createNestApplication();
     app.useGlobalPipes(new ValidationPipe());
     await app.init();
-
-    // //Deletando todos os dados da tabela
-    // await getConnection().getRepository("tb_user").clear();
-    // await getConnection().getRepository("user_img").clear();
-
-    // //Inserindo um user_img
-    // await getConnection().createQueryBuilder().insert().into("user_img").values({ user_img_id: 1, img_url: "http://localhost:4456" }).execute();
   });
 
   afterAll(async () => {
@@ -45,8 +39,11 @@ describe('Theme', () => {
         .get('/theme');
 
       expect(response.status).toBe(200);
-      expect(response.body).not.toBeNull();
-      expect(response.body[0]).toHaveProperty('theme_img_id');
+      expect(response.body).not.toBeUndefined();
+      expect(response.body[0]).toHaveProperty('theme_img_id')
+
+      // TODO Resolver o toMatchObject
+      // expect(response.body[0]).toMatchObject(new GetThemeDto());
     });
 
   });

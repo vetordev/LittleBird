@@ -8,14 +8,11 @@ import { GetThemeDto } from "@theme/theme.dto";
 export class ThemeService {
   constructor ( @InjectRepository(Theme) private readonly themeRepository: Repository<Theme> ) {}
 
-  // TODO Tipar com GetThemeDto
-  async getThemes(): Promise<Theme[]> {
+  async getThemes(): Promise<GetThemeDto[]> {
     const themes = await this.themeRepository.createQueryBuilder("theme")
       //Traz os dados de theme_img e não só o id
       .innerJoinAndSelect("theme.theme_img_id", "theme_img")
       .getMany();
-
-    console.log(themes);
 
     return themes;
 

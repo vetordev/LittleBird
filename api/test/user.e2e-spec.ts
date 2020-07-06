@@ -5,6 +5,7 @@ import * as request from 'supertest';
 import { CreateUserDto } from "src/user/user.dto";
 import { getConnection } from "typeorm";
 
+// TODO Utilizar MatchObject
 describe('User', () => {
   let app: INestApplication;
 
@@ -132,14 +133,14 @@ describe('User', () => {
       await getConnection().getRepository("user_img").clear();
 
       await getConnection().createQueryBuilder().insert().into("user_img").values({ user_img_id: 1, img_url: "http://localhost:4456" }).execute();
-      await getConnection().createQueryBuilder().insert().into("tb_user").values({ email: 'carlosboavida@gm',
+      await getConnection().createQueryBuilder().insert().into("tb_user").values({ email: 'carlosboavida@gm.com',
                                                                                    user_img_id: 1,
                                                                                    user_pass: '123vidaboa',
                                                                                    username: 'carlosboaviida',
                                                                                    born_in: '2020-06-15'
                                                                                    }).execute();
 
-      const response = await request(app.getHttpServer()).post('/auth/login').send({ email: 'carlosboavida@gm', user_pass: '123vidaboa' });
+      const response = await request(app.getHttpServer()).post('/auth/login').send({ email: 'carlosboavida@gm.com', user_pass: '123vidaboa' });
       token = response.body.token;
     });
 
