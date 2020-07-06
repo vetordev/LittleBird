@@ -8,6 +8,7 @@ describe('Interest', () => {
   let app: INestApplication;
 
   beforeAll(async () => {
+
     const moduleFixture: TestingModule = await Test.createTestingModule({
       imports: [AppModule],
     }).compile();
@@ -31,6 +32,7 @@ describe('Interest', () => {
       await getConnection().getRepository("user_img").clear();
       await getConnection().getRepository("theme").clear();
       await getConnection().getRepository("theme_img").clear();
+      await getConnection().getRepository("interest").clear();
 
       const user = {
         email: 'carlosboavida@gm.com',

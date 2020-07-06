@@ -4,11 +4,11 @@ import { AppModule } from "../src/app.module";
 import { getConnection } from "typeorm";
 import * as request from 'supertest';
 
-
 describe('Theme', () => {
   let app: INestApplication;
 
   beforeAll(async () => {
+
     const moduleFixture: TestingModule = await Test.createTestingModule({
       imports: [AppModule],
     }).compile();

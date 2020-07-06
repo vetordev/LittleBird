@@ -10,6 +10,7 @@ describe('User', () => {
   let app: INestApplication;
 
   beforeAll(async () => {
+
     const moduleFixture: TestingModule = await Test.createTestingModule({
       imports: [AppModule],
     }).compile();
@@ -18,12 +19,6 @@ describe('User', () => {
     app.useGlobalPipes(new ValidationPipe());
     await app.init();
 
-    // //Deletando todos os dados da tabela
-    // await getConnection().getRepository("tb_user").clear();
-    // await getConnection().getRepository("user_img").clear();
-
-    // //Inserindo um user_img
-    // await getConnection().createQueryBuilder().insert().into("user_img").values({ user_img_id: 1, img_url: "http://localhost:4456" }).execute();
   });
 
   afterAll(async () => {
