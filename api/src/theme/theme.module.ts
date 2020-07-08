@@ -8,6 +8,7 @@ import { Theme } from './entity/theme.entity';
 @Module({
   imports: [TypeOrmModule.forFeature([Theme, ThemeImg])],
   controllers: [ThemeController],
-  providers: [ThemeService]
+  providers: [ThemeService],
+  exports: [TypeOrmModule]
 })
 export class ThemeModule {}

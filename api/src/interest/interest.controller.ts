@@ -1,23 +1,33 @@
- import { Controller, Post, Get, Delete, Req, Body, Param } from '@nestjs/common';
-import { request } from 'http';
+import { Controller, Post, Get, Delete, Req, Body, Param, UseGuards, HttpCode } from '@nestjs/common';
+import { CreateInterestDto, DeleteInterestDto } from './interest.dto';
+import { InterestService } from './interest.service';
+import { JwtAuthGuard } from '../auth/jwt/jwt-auth.guard';
 
-@Controller('interest')
 //TODO Validar as rotas
+@Controller('interest')
 export class InterestController {
 
+  constructor(private readonly interestService: InterestService) {}
+
   @Post()
-  createInterest(@Req() request, @Body('theme_id') theme_id: number) {
-    return null
+  @UseGuards(JwtAuthGuard)
+  @HttpCode(204)
+  createInterest(@Req() request, @Body() body: CreateInterestDto) {
+    return this.interestService.createInterest(request.user.user_id, body.theme_id);
   }
 
   @Get()
+  @UseGuards(JwtAuthGuard)
+  @HttpCode(200)
   getInterestByUser(@Req() request) {
-    return null;
+    return this.interestService.getInterestByUser(request.user.user_id);
   }
 
-  @Delete(':id')
-  deleteInterest(@Req() request, @Param('interest_id') interest_id) {
-    return null;
+  @Delete(':interest_id')
+  @UseGuards(JwtAuthGuard)
+  @HttpCode(204)
+  deleteInterest(@Param() params: DeleteInterestDto) {
+    return this.interestService.deleteInterest(params.interest_id)
   }
 
 }

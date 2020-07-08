@@ -15,7 +15,7 @@ export class UserService {
   ){}
 
   async createUser(user: CreateUserDto): Promise<object> {
-    const created_user =  await this.userRepository.createQueryBuilder("user").insert().into("tb_user").values(user).execute();
+    const created_user =  await this.userRepository.createQueryBuilder("tb_user").insert().into("tb_user").values(user).execute();
 
     const payload_user = { sub: created_user.identifiers[0].user_id, email: user.email };
 

@@ -3,7 +3,7 @@ import { TestingModule, Test } from "@nestjs/testing";
 import { AppModule } from "../src/app.module";
 import * as request from 'supertest';
 import { CreateUserDto } from "src/user/user.dto";
-import { getConnection } from "typeorm";
+import { getConnection, Repository } from "typeorm";
 
 // TODO Utilizar MatchObject
 describe('User', () => {
@@ -55,7 +55,7 @@ describe('User', () => {
 
     });
 
-    it('> POST /user Não deve retornar um erro (UNIQUE KEY)', async () => {
+    it('> POST /user Não deve retornar um erro (Unique Key)', async () => {
       const user: CreateUserDto = {
         email: 'carlosboavida@gm.com',
         user_img_id: 1,
@@ -201,7 +201,7 @@ describe('User', () => {
 
     });
 
-    it('> PUT /user Não deve alterar o usuário (TOKEN JWT INVÁLIDO)', async () => {
+    it('> PUT /user Não deve alterar o usuário (Token JWT inválido)', async () => {
       const user = {
         email: 'carlosboa-alt@gm',
         user_img_id: 1,

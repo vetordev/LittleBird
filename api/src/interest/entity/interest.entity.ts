@@ -1,6 +1,6 @@
 import { Entity, PrimaryGeneratedColumn, ManyToOne, JoinColumn, Column } from "typeorm";
-import { User } from "@user/entity/user.entity";
-import { Theme } from "@theme/entity/theme.entity";
+import { User } from "../../user/entity/user.entity";
+import { Theme } from "../../theme/entity/theme.entity";
 
 @Entity('interest')
 export class Interest {
