@@ -48,6 +48,7 @@ export class InterestService {
     const themes_interests = await this.interestRespository.createQueryBuilder('interest')
       .innerJoinAndSelect('interest.theme_id', 'theme')
       .innerJoinAndSelect('theme.theme_img_id', 'theme_img')
+      .where('interest.user_id = :user_id', { user_id })
       .getMany();
 
     return themes_interests;

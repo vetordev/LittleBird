@@ -3,9 +3,8 @@ import { TestingModule, Test } from "@nestjs/testing";
 import { AppModule } from "../src/app.module";
 import * as request from 'supertest';
 import { CreateUserDto } from "src/user/user.dto";
-import { getConnection, Repository } from "typeorm";
+import { getConnection } from "typeorm";
 
-// TODO Utilizar MatchObject
 describe('User', () => {
   let app: INestApplication;
 
@@ -26,7 +25,7 @@ describe('User', () => {
     await app.close();
   });
 
-  describe("Criação de usuário", () => {
+  describe("Criar um usuário", () => {
 
     beforeAll(async () => {
       //Deletando todos os dados da tabela
@@ -51,7 +50,9 @@ describe('User', () => {
         .send(user)
 
       expect(response.status).toBe(201);
-      expect(response.body).toHaveProperty('token');
+      expect(response.body).toEqual(expect.objectContaining({
+        token: expect.any(String)
+      }));
 
     });
 
@@ -69,7 +70,9 @@ describe('User', () => {
         .send(user);
 
       expect(response.status).toBe(201);
-      // expect(response.body).not.toEqual({});
+      expect(response.body).toEqual(expect.objectContaining({
+        token: expect.any(String)
+      }));
     });
 
   });
@@ -101,7 +104,10 @@ describe('User', () => {
         .send(user);
 
       expect(response.status).toBe(201);
-      expect(response.body).toHaveProperty('token');
+      expect(response.body).toEqual(expect.objectContaining({
+        token: expect.any(String),
+      }));
+
     });
 
     it('> POST /auth/login Não deve logar o usuário', async () => {
@@ -146,9 +152,14 @@ describe('User', () => {
         .set('Authorization', `Bearer ${token}`)
 
       expect(response.status).toBe(200);
-      expect(response.body).toHaveProperty('email')
-      expect(response.body).toHaveProperty('username')
-      expect(response.body).toHaveProperty('user_img_id')
+      expect(response.body).toEqual(expect.objectContaining({
+        username: expect.any(String),
+        email: expect.any(String),
+        user_img_id: {
+          user_img_id: expect.any(Number),
+          img_url: expect.any(String)
+        }
+      }));
 
     });
 
@@ -159,9 +170,6 @@ describe('User', () => {
       .set('Authorization', `Bearer ${token}errado`);
 
       expect(response.status).toBe(401);
-      expect(response.body).not.toHaveProperty('email')
-      expect(response.body).not.toHaveProperty('username')
-      expect(response.body).not.toHaveProperty('user_img_id')
     });
   });
 

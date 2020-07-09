@@ -47,6 +47,7 @@ export class UserService {
       .select('tb_user.email')
       .addSelect('tb_user.username')
       .addSelect('tb_user.user_img_id')
+      .innerJoinAndSelect('tb_user.user_img_id', 'user_img')
       .where('tb_user.user_id = :user_id', { user_id })
       .getOne();
 

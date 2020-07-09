@@ -20,7 +20,6 @@ describe('Interest', () => {
   });
 
   afterAll(async () => {
-    // await getConnection().getRepository("interest").clear();
     await app.close();
   });
 
@@ -118,7 +117,18 @@ describe('Interest', () => {
         .set('Authorization', `Bearer ${token}`);
 
       expect(response.status).toBe(200);
-      expect(response.body).not.toEqual({});
+      expect(response.body[0]).toEqual(expect.objectContaining({
+        user_id: expect.any(Number),
+        interest_id: expect.any(Number),
+        theme_id: {
+          theme_id: expect.any(Number),
+          theme_name: expect.any(String),
+          theme_img_id: {
+            theme_img_id: expect.any(Number),
+            img_url: expect.any(String)
+          }
+        }
+      }));
     });
 
     it('> GET /interest Não deve retornar os interesses do usuário (Token JWT inválido)', async () => {
@@ -176,7 +186,7 @@ describe('Interest', () => {
       expect(response.status).toBe(401);
     });
 
-    // TODO Pedir a opnião do grupo
+    // TODO Pedir a opinião do grupo
     // it('> DELETE /interest Não deve remover um interesse (Interesse não encontrado)', async () => {
     //   const interest_id = 2;
     //   const response = await request(app.getHttpServer())

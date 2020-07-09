@@ -39,13 +39,14 @@ describe('Theme', () => {
         .get('/theme');
 
       expect(response.status).toBe(200);
-      expect(response.body).not.toBeUndefined();
-      expect(response.body[0]).toHaveProperty('theme_img_id')
-
-      // TODO Resolver o toMatchObject
-      // expect(response.body[0]).toMatchObject(new GetThemeDto());
+      expect(response.body[0]).toEqual(expect.objectContaining({
+        theme_id: expect.any(Number),
+        theme_name: expect.any(String),
+        theme_img_id: {
+          theme_img_id: expect.any(Number),
+          img_url: expect.any(String)
+        }
+      }));
     });
-
   });
-
 });

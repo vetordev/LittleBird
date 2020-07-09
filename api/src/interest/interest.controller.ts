@@ -3,7 +3,6 @@ import { CreateInterestDto, DeleteInterestDto } from './interest.dto';
 import { InterestService } from './interest.service';
 import { JwtAuthGuard } from '../auth/jwt/jwt-auth.guard';
 
-//TODO Validar as rotas
 @Controller('interest')
 export class InterestController {
 
