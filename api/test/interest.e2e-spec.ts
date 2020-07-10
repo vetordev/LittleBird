@@ -20,6 +20,7 @@ describe('Interest', () => {
   });
 
   afterAll(async () => {
+    await getConnection().getRepository("interest").clear();
     await app.close();
   });
 
@@ -46,6 +47,7 @@ describe('Interest', () => {
       await getConnection().createQueryBuilder().insert().into("tb_user").values(user).execute();
       await getConnection().createQueryBuilder().insert().into("theme_img").values({ theme_img_id: 1, img_url: "http://localhost:4456" }).execute();
       await getConnection().createQueryBuilder().insert().into("theme").values({ theme_id: 1, theme_name: "Sexo", theme_img_id: 1 }).execute();
+      // await getConnection().createQueryBuilder().insert().into("interest").values({ interest_id: 1, theme_id: 1, user_id: 1 }).execute();
 
 
       const response = await request(app.getHttpServer()).post('/auth/login').send({ email: 'carlosboavida@gm.com', user_pass: '123vidaboa' });
@@ -110,7 +112,7 @@ describe('Interest', () => {
       const response = await request(app.getHttpServer()).post('/auth/login').send({ email: 'carlosboavida@gm.com', user_pass: '123vidaboa' });
       token = response.body.token;
     });
-    // TODO Verificar detalhadamente os retornos da API
+
     it('> GET /interest Deve retornar os interesses do usuário', async () => {
       const response = await request(app.getHttpServer())
         .get('/interest')
@@ -162,14 +164,14 @@ describe('Interest', () => {
       await getConnection().createQueryBuilder().insert().into("tb_user").values(user).execute();
       await getConnection().createQueryBuilder().insert().into("theme_img").values({ theme_img_id: 1, img_url: "http://localhost:4456" }).execute();
       await getConnection().createQueryBuilder().insert().into("theme").values({ theme_id: 1, theme_name: "Sexo", theme_img_id: 1 }).execute();
-      await getConnection().createQueryBuilder().insert().into("interest").values({ interest_id: 1, theme_id: 1, user_id: 1 });
+      await getConnection().createQueryBuilder().insert().into("interest").values({ interest_id: 1, theme_id: 1, user_id: 1 }).execute();
 
       const response = await request(app.getHttpServer()).post('/auth/login').send({ email: 'carlosboavida@gm.com', user_pass: '123vidaboa' });
       token = response.body.token;
     });
 
     it('> DELETE /interest/:interest_id Deve remover um interesse', async () => {
-      const interest_id = 10;
+      const interest_id = 1;
       const response = await request(app.getHttpServer())
         .delete(`/interest/${interest_id}`)
         .set('Authorization', `Bearer ${token}`);
@@ -186,14 +188,13 @@ describe('Interest', () => {
       expect(response.status).toBe(401);
     });
 
-    // TODO Pedir a opinião do grupo
-    // it('> DELETE /interest Não deve remover um interesse (Interesse não encontrado)', async () => {
-    //   const interest_id = 2;
-    //   const response = await request(app.getHttpServer())
-    //     .delete(`/interest/${interest_id}`)
-    //     .set('Authorization', `Bearer ${token}`);
+    it('> DELETE /interest Não deve remover um interesse (Interesse não encontrado)', async () => {
+      const interest_id = 2;
+      const response = await request(app.getHttpServer())
+        .delete(`/interest/${interest_id}`)
+        .set('Authorization', `Bearer ${token}`);
 
-    //   expect(response.status).toBe(404);
-    // });
+      expect(response.status).toBe(404);
+    });
   });
 });

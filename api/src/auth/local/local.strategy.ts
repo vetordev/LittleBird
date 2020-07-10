@@ -13,8 +13,6 @@ export class LocalStrategy extends PassportStrategy(Strategy) {
     })
   }
 
-  //Retorna os dados no request
-  // TODO Manipular o erro UnauthorizedException()
   async validate(email: string, user_pass: string): Promise<any>{
 
     const user = await this.authService.validateUser(email, user_pass);

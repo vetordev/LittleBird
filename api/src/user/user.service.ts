@@ -41,7 +41,6 @@ export class UserService {
     };
   }
 
-  // TODO retornar o objeto user_img ao invés do user_img_id
   async getUserById(user_id: number): Promise<GetUserDto> {
     const user = await this.userRepository.createQueryBuilder("tb_user")
       .select('tb_user.email')
