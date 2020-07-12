@@ -28,11 +28,8 @@ describe('User', () => {
   describe("Criar um usuário", () => {
 
     beforeAll(async () => {
-      //Deletando todos os dados da tabela
-      await getConnection().getRepository("tb_user").clear();
-      await getConnection().getRepository("user_img").clear();
-
-      //Inserindo um user_img
+      await getConnection().dropDatabase()
+      await getConnection().synchronize();
       await getConnection().createQueryBuilder().insert().into("user_img").values({ user_img_id: 1, img_url: "http://localhost:4456" }).execute();
     });
 
@@ -56,12 +53,12 @@ describe('User', () => {
 
     });
 
-    it('> POST /user Não deve retornar um erro (Unique Key)', async () => {
+    it('> POST /user Não deve criar um usuário (Unique Key Error)', async () => {
       const user: CreateUserDto = {
         email: 'carlosboavida@gm.com',
         user_img_id: 1,
         user_pass: '123vidaboa',
-        username: 'carlosboaviida',
+        username: 'carlosboavida',
         born_in: '2020-06-15'
       };
 
@@ -69,9 +66,28 @@ describe('User', () => {
         .post('/user')
         .send(user);
 
-      expect(response.status).toBe(201);
+      expect(response.status).toBe(409);
       expect(response.body).toEqual(expect.objectContaining({
-        token: expect.any(String)
+        error: expect.any(String)
+      }));
+    });
+
+    it('> POST /user Não deve criar um usuário (Foreign Key Error)', async () => {
+      const user: CreateUserDto = {
+        email: 'carlosboavidala@gm.com',
+        user_img_id: 2,
+        user_pass: '123vidaboa',
+        username: 'carlosboavida',
+        born_in: '2020-06-15'
+      };
+
+      const response = await request(app.getHttpServer())
+        .post('/user')
+        .send(user);
+
+      expect(response.status).toBe(400);
+      expect(response.body).toEqual(expect.objectContaining({
+        error: expect.any(String)
       }));
     });
 
@@ -80,9 +96,8 @@ describe('User', () => {
   describe('Login do usuário', () => {
 
     beforeAll(async () => {
-      //Deletando todos os dados da tabela
-      await getConnection().getRepository("tb_user").clear();
-      await getConnection().getRepository("user_img").clear();
+      await getConnection().dropDatabase()
+      await getConnection().synchronize();
 
       await getConnection().createQueryBuilder().insert().into("user_img").values({ user_img_id: 1, img_url: "http://localhost:4456" }).execute();
       await getConnection().createQueryBuilder().insert().into("tb_user").values({ email: 'carlosboavida@gm.com',
@@ -130,8 +145,8 @@ describe('User', () => {
 
     let token = null;
     beforeAll(async () => {
-      await getConnection().getRepository("tb_user").clear();
-      await getConnection().getRepository("user_img").clear();
+      await getConnection().dropDatabase()
+      await getConnection().synchronize();
 
       await getConnection().createQueryBuilder().insert().into("user_img").values({ user_img_id: 1, img_url: "http://localhost:4456" }).execute();
       await getConnection().createQueryBuilder().insert().into("tb_user").values({ email: 'carlosboavida@gm.com',
@@ -177,8 +192,8 @@ describe('User', () => {
 
     let token = null;
     beforeAll(async () => {
-      await getConnection().getRepository("tb_user").clear();
-      await getConnection().getRepository("user_img").clear();
+      await getConnection().dropDatabase()
+      await getConnection().synchronize();
 
       await getConnection().createQueryBuilder().insert().into("user_img").values({ user_img_id: 1, img_url: "http://localhost:4456" }).execute();
       await getConnection().createQueryBuilder().insert().into("tb_user").values({ email: 'carlosboavida@gm',

@@ -1,19 +1,28 @@
 import { QueryFailedError } from 'typeorm';
-import { ExceptionFilter, ArgumentsHost, Catch, HttpStatus, InternalServerErrorException } from '@nestjs/common';
+import { ExceptionFilter, ArgumentsHost, Catch, InternalServerErrorException } from '@nestjs/common';
 import { Response, Request } from 'express';
 
-// TODO PEGAR ERRO DE FK
 @Catch(QueryFailedError)
 export class QueryFailedExceptionFilter implements ExceptionFilter {
-  catch(exception: QueryFailedError, host: ArgumentsHost) {
+  catch(exception, host: ArgumentsHost) {
     const context = host.switchToHttp();
     const response = context.getResponse<Response>();
 
-    // console.log(exception)
-    const errorResponse = {
-      error: "O email ou username informados já estão presentes no banco de dados",
-    };
-    response.status(HttpStatus.CONFLICT).json(errorResponse);
+    let errorResponse;
+    console.log(exception.code)
+
+    if (exception.code == 23505) {
+      errorResponse = {
+        error: "O email ou username informados já estão presentes no banco de dados",
+      };
+      response.status(409).json(errorResponse);
+    } else if (exception.code == 23503) {
+      errorResponse = {
+        error: "O user_img_id não existe no servidor",
+      };
+      response.status(400).json(errorResponse);
+    } else
+      response.status(500).json({ error: "Erro interno no servidor" });
   }
 }
 

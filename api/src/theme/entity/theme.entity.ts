@@ -13,7 +13,10 @@ export class Theme {
   })
   theme_name: string;
 
-  @OneToOne(type => ThemeImg)
+  @OneToOne(type => ThemeImg, {
+    onDelete: 'CASCADE',
+    onUpdate: 'CASCADE',
+  })
   @JoinColumn({
     name: 'theme_img_id',
     referencedColumnName: 'theme_img_id'

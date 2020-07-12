@@ -25,9 +25,8 @@ describe('Theme', () => {
 
   describe("Buscar temas", () => {
     beforeAll(async () => {
-      //Deletando todos os dados da tabela
-      await getConnection().getRepository("theme").clear();
-      await getConnection().getRepository("theme_img").clear();
+      await getConnection().dropDatabase()
+      await getConnection().synchronize();
 
       await getConnection().createQueryBuilder().insert().into("theme_img").values({ theme_img_id: 1, img_url: "http://localhost:4456" }).execute();
       await getConnection().createQueryBuilder().insert().into("theme").values({ theme_id: 1, theme_name: "Sexo", theme_img_id: 1 }).execute();

@@ -8,9 +8,9 @@ export class User {
   user_id: number;
 
   @Column({
+    unique: true,
     type: 'varchar',
-    length: 45,
-    // unique: true
+    length: 45
   })
   username: string;
 
@@ -21,9 +21,9 @@ export class User {
   user_pass: string;
 
   @Column({
+    unique: true,
     type: 'varchar',
-    length: 100,
-    // unique: true
+    length: 100
   })
   email: string
 
@@ -32,8 +32,10 @@ export class User {
   })
   born_in: Date
 
-
-  @ManyToOne(type => UserImg)
+  @ManyToOne(type => UserImg, {
+    onDelete: 'CASCADE',
+    onUpdate: 'CASCADE',
+  })
   @JoinColumn({
     name: 'user_img_id',
     referencedColumnName: 'user_img_id'
@@ -41,6 +43,7 @@ export class User {
   @Column({
     type: 'integer',
     unique: false,
+
   })
   user_img_id: number;
 }

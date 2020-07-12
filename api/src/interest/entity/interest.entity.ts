@@ -7,7 +7,10 @@ export class Interest {
   @PrimaryGeneratedColumn()
   interest_id: number;
 
-  @ManyToOne(type => User)
+  @ManyToOne(type => User, {
+    onDelete: 'CASCADE',
+    onUpdate: 'CASCADE',
+  })
   @JoinColumn({
     name: 'user_id',
     referencedColumnName: 'user_id'
@@ -17,7 +20,10 @@ export class Interest {
   })
   user_id: number
 
-  @ManyToOne(type => Theme)
+  @ManyToOne(type => Theme, {
+    onDelete: 'CASCADE',
+    onUpdate: 'CASCADE',
+  })
   @JoinColumn({
     name: 'theme_id',
     referencedColumnName: 'theme_id'
