@@ -69,14 +69,14 @@ describe('Interest', () => {
       expect(response.status).toBe(401);
     });
 
-    // it('> POST /interest Não deve criar um interesse (Tema não encontrado)', async () => {
-    //   const response = await request(app.getHttpServer())
-    //     .post('/interest')
-    //     .send({ theme_id: 2 })
-    //     .set('Authorization', `Bearer ${token}`);
+    it('> POST /interest Não deve criar um interesse (Tema não encontrado)', async () => {
+      const response = await request(app.getHttpServer())
+        .post('/interest')
+        .send({ theme_id: 2 })
+        .set('Authorization', `Bearer ${token}`);
 
-    //   expect(response.status).toBe(500);
-    // });
+      expect(response.status).toBe(404);
+    });
   });
 
   describe('Buscar interesses', () => {

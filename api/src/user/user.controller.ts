@@ -27,6 +27,7 @@ export class UserController {
   @Put()
   @HttpCode(204)
   @UseGuards(JwtAuthGuard)
+  @UseFilters(QueryFailedExceptionFilter)
   async updateUser(@Req() request, @Body() user: UpdateUserDto) {
     return await this.userService.updateUser(request.user.user_id, user);
   }

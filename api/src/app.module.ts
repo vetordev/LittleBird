@@ -10,20 +10,7 @@ import { connection } from "../config/connection";
 
 @Module({
   imports: [
-    TypeOrmModule.forRoot(
-    {
-      type: "postgres",
-      host: "localhost",
-      port: 5432,
-      username: "postgres",
-      password: "postgre",
-      database: "little_bird_test",
-      autoLoadEntities: true,
-      synchronize: true
-
-    }
-    ),
-
+    TypeOrmModule.forRoot(connection),
     UserModule,
     AuthModule,
     ThemeModule,

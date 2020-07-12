@@ -85,7 +85,7 @@ describe('User', () => {
         .post('/user')
         .send(user);
 
-      expect(response.status).toBe(400);
+      expect(response.status).toBe(404);
       expect(response.body).toEqual(expect.objectContaining({
         error: expect.any(String)
       }));
@@ -188,6 +188,7 @@ describe('User', () => {
     });
   });
 
+  // TODO Construir mais 2 testes (unique key e fk)
   describe('Alterar um usuário', () => {
 
     let token = null;

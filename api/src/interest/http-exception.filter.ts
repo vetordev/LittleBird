@@ -24,22 +24,3 @@ export class QueryFailedExceptionFilter implements ExceptionFilter {
       response.status(500).json({ error: "Erro interno no servidor." });
   }
 }
-
-// TODO Fazer com que o servidor reconheça esse filter
-@Catch(InternalServerErrorException)
-export class InternalServerErrorFilter implements ExceptionFilter {
-  catch(exception: InternalServerErrorException, host: ArgumentsHost) {
-    const ctx = host.switchToHttp();
-    const response = ctx.getResponse<Response>();
-    const request = ctx.getRequest<Request>();
-    const status = exception.getStatus();
-
-    response
-      .status(status)
-      .json({
-        statusCode: status,
-        error: "Ocorreu um erro. Tente novamente mais tarde",
-        path: request.url,
-      });
-  }
-}
