@@ -11,7 +11,6 @@ export class AuthController {
   @UseGuards(LocalAuthGuard)
   @Post('login')
   //Recebe os dados do usuário do request
-  // TODO Tipar o parâmetro request
   async login(@Req() request) {
 
     return this.authService.login(request.user.user_id, request.user.email);

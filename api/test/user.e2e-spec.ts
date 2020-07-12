@@ -188,7 +188,6 @@ describe('User', () => {
     });
   });
 
-  // TODO Construir mais 2 testes (unique key e fk)
   describe('Alterar um usuário', () => {
 
     let token = null;
@@ -197,14 +196,20 @@ describe('User', () => {
       await getConnection().synchronize();
 
       await getConnection().createQueryBuilder().insert().into("user_img").values({ user_img_id: 1, img_url: "http://localhost:4456" }).execute();
-      await getConnection().createQueryBuilder().insert().into("tb_user").values({ email: 'carlosboavida@gm',
+      await getConnection().createQueryBuilder().insert().into("tb_user").values({ email: 'carlosboavida@gm.com',
                                                                                    user_img_id: 1,
                                                                                    user_pass: '123vidaboa',
                                                                                    username: 'carlosboaviida',
                                                                                    born_in: '2020-06-15'
                                                                                    }).execute();
+      await getConnection().createQueryBuilder().insert().into("tb_user").values({ email: 'carlosboalife@gm.com',
+                                                                                   user_img_id: 1,
+                                                                                   user_pass: '123vidaboa',
+                                                                                   username: 'carlosboavida',
+                                                                                   born_in: '2020-06-15'
+                                                                                   }).execute();
 
-      const response = await request(app.getHttpServer()).post('/auth/login').send({ email: 'carlosboavida@gm', user_pass: '123vidaboa' });
+      const response = await request(app.getHttpServer()).post('/auth/login').send({ email: 'carlosboavida@gm.com', user_pass: '123vidaboa' });
       token = response.body.token;
     });
 
@@ -227,7 +232,7 @@ describe('User', () => {
 
     it('> PUT /user Não deve alterar o usuário (Token JWT inválido)', async () => {
       const user = {
-        email: 'carlosboa-alt@gm',
+        email: 'carlosboa-alt@gm.com',
         user_img_id: 1,
         username: 'carlosboaaltalt',
         born_in: '2020-06-17'
@@ -238,6 +243,37 @@ describe('User', () => {
         .send(user);
 
       expect(response.status).toBe(401);
+    });
+
+    it('> PUT /user Não deve alterar o usuário (Unique Key)', async () => {
+      const user = {
+        email: 'carlosboalife@gm.com',
+        user_img_id: 1,
+        username: 'carlosboavida',
+        born_in: '2020-06-15'
+      };
+
+      const response = await request(app.getHttpServer())
+        .put('/user')
+        .set('Authorization', `Bearer ${token}`)
+        .send(user);
+
+      expect(response.status).toBe(409);
+    });
+    it('> PUT /user Não deve alterar o usuário (Foreign Key)', async () => {
+      const user = {
+        email: 'carlosboalifee@gm.com',
+        user_img_id: 2,
+        username: 'carlosboaviida',
+        born_in: '2020-06-15'
+      };
+
+      const response = await request(app.getHttpServer())
+        .put('/user')
+        .set('Authorization', `Bearer ${token}`)
+        .send(user);
+
+      expect(response.status).toBe(404);
     });
   });
 
