@@ -1,8 +1,9 @@
-import { Controller, Post, Get, Delete, Req, Body, Param, UseGuards, HttpCode, Res } from '@nestjs/common';
+import { Controller, Post, Get, Delete, Req, Body, Param, UseGuards, HttpCode, Res, UseFilters } from '@nestjs/common';
 import { CreateInterestDto, DeleteInterestDto } from './interest.dto';
 import { InterestService } from './interest.service';
 import { JwtAuthGuard } from '../auth/jwt/jwt-auth.guard';
 import { Response } from 'express';
+import { QueryFailedExceptionFilter } from './http-exception.filter';
 
 @Controller('interest')
 export class InterestController {
@@ -12,6 +13,7 @@ export class InterestController {
   @Post()
   @UseGuards(JwtAuthGuard)
   @HttpCode(204)
+  @UseFilters(QueryFailedExceptionFilter)
   createInterest(@Req() request, @Body() body: CreateInterestDto) {
     return this.interestService.createInterest(request.user.user_id, body.theme_id);
   }

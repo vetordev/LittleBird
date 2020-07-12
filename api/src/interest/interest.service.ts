@@ -11,7 +11,6 @@ export class InterestService {
     @InjectRepository(Interest) private readonly interestRespository: Repository<Interest>,
   ) {}
 
-  // TODO LIDAR COM O ERRO DE FK (THEME_ID NÃO EXISTIR)
   async createInterest(user_id: number, theme_id: number): Promise<void> {
     const interest = await this.interestRespository.createQueryBuilder('interest')
       .select('interest.interest_id')
