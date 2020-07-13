@@ -11,8 +11,8 @@ export class InterestController {
   constructor(private readonly interestService: InterestService) {}
 
   @Post()
-  @UseGuards(JwtAuthGuard)
   @HttpCode(204)
+  @UseGuards(JwtAuthGuard)
   @UseFilters(QueryFailedExceptionFilter)
   createInterest(@Req() request, @Body() body: CreateInterestDto) {
     return this.interestService.createInterest(request.user.user_id, body.theme_id);

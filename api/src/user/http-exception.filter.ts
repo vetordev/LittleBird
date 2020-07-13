@@ -1,6 +1,6 @@
 import { QueryFailedError } from 'typeorm';
-import { ExceptionFilter, ArgumentsHost, Catch, InternalServerErrorException } from '@nestjs/common';
-import { Response, Request } from 'express';
+import { ExceptionFilter, ArgumentsHost, Catch } from '@nestjs/common';
+import { Response } from 'express';
 
 @Catch(QueryFailedError)
 export class QueryFailedExceptionFilter implements ExceptionFilter {
@@ -12,7 +12,7 @@ export class QueryFailedExceptionFilter implements ExceptionFilter {
 
     if (exception.code == 23505) {
       errorResponse = {
-        error: "O email ou username informados já estão presentes no banco de dados.",
+        error: "O e-mail ou username informados já estão presentes no banco de dados.",
       };
       response.status(409).json(errorResponse);
     } else if (exception.code == 23503) {

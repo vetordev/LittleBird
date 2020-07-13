@@ -260,6 +260,7 @@ describe('User', () => {
 
       expect(response.status).toBe(409);
     });
+
     it('> PUT /user Não deve alterar o usuário (Foreign Key)', async () => {
       const user = {
         email: 'carlosboalifee@gm.com',
