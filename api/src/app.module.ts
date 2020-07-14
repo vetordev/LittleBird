@@ -7,6 +7,7 @@ import { AuthModule } from './auth/auth.module';
 import { ThemeModule } from './theme/theme.module';
 import { InterestModule } from './interest/interest.module';
 import { connection } from "../config/connection";
+import { ArticleModule } from './article/article.module';
 
 @Module({
   imports: [
@@ -15,6 +16,7 @@ import { connection } from "../config/connection";
     AuthModule,
     ThemeModule,
     InterestModule,
+    ArticleModule,
   ],
   controllers: [AppController],
   providers: [AppService],
