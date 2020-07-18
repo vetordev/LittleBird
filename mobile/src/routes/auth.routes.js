@@ -9,7 +9,7 @@ import SignUp2 from '../pages/auth/SignUp2';
 
 const AuthStack = createStackNavigator();
 
-const Routes = () => (
+const AuthRoutes = () => (
    <AuthStack.Navigator>
       <AuthStack.Screen name="HomeAuth" component={HomeAuth} />
       <AuthStack.Screen name="SignIn" component={SignIn} />
@@ -18,4 +18,4 @@ const Routes = () => (
    </AuthStack.Navigator>
 );
 
-export default Routes;
+export default AuthRoutes;

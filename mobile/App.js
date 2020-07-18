@@ -3,12 +3,12 @@ import React from 'react';
 import { View } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 
-import Routes from './src/routes/auth.routes';
+import AuthRoutes from './src/routes/auth.routes';
 
 export default function App() {
   return (
     <NavigationContainer>
-      <Routes />
+      <AuthRoutes />
       <StatusBar style="auto" />
     </NavigationContainer>
   );
