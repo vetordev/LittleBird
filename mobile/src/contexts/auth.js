@@ -5,6 +5,8 @@ const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
    const [user, setUser] = useState(null);
+   const [loading, setLoading] = useState(true);
+
    const token = '3afdsfdmalfhjfds943hjdf1z0';
 
    useEffect(() => {
@@ -14,6 +16,7 @@ export const AuthProvider = ({ children }) => {
 
          if (storagedUser && storagedToken) {
             setUser(JSON.parse(storagedUser));
+            setLoading(false);
          }
       }
 
@@ -44,7 +47,7 @@ export const AuthProvider = ({ children }) => {
    }
 
    return (
-      <AuthContext.Provider value={{ signed: !!user, user, signIn, signOut, signUp }}>
+      <AuthContext.Provider value={{ signed: !!user, user, loading, signIn, signOut, signUp }}>
          {children}
       </AuthContext.Provider>
    )
