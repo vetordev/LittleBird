@@ -29,9 +29,12 @@ export const AuthProvider = ({ children }) => {
       await AsyncStorage.setItem('@LittleBird:token', token);
    }
 
-   function signUp(user) {
+   async function signUp(user) {
       console.log(user);
       setUser(user);
+
+      await AsyncStorage.setItem('@LittleBird:user', JSON.stringify(user));
+      await AsyncStorage.setItem('@LittleBird:token', token);
    }
 
    function signOut() {
