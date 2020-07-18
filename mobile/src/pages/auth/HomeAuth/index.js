@@ -1,10 +1,23 @@
 import React from 'react';
-import { View } from 'react-native';
+import { View, TouchableOpacity, Text } from 'react-native';
+import { useNavigation } from '@react-navigation/native';
 
-// import { Container } from './styles';
+import { Container } from './styles';
 
 const HomeAuth = () => {
-  return <View />;
+  const navigation = useNavigation();
+
+  function navigateToSignIn() {
+    navigation.navigate('SignIn');
+  }
+
+  return (
+    <Container>
+      <TouchableOpacity onPress={navigateToSignIn}>
+        <Text>login</Text>
+      </TouchableOpacity>
+    </Container>
+  );
 }
 
 export default HomeAuth;
