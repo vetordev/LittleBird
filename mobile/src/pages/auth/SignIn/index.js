@@ -1,16 +1,19 @@
 import React from 'react';
 import { TouchableOpacity, Text } from 'react-native';
 
-import { signIn } from '../../../services/auth';
+import { useAuth } from '../../../contexts/auth';
 
 import { Container } from './styles';
 
 const SignIn = () => {
+  const { signed, user, signIn } = useAuth();
+
+  console.log(signed);
+  console.log(user);
 
   async function handleSignIn() {
-    const response = await signIn();
-
-    console.log(response);
+    signIn();
+    console.log(signed);
   }
 
   return (

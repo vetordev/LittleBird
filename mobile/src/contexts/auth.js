@@ -9,6 +9,7 @@ export const AuthProvider = ({ children }) => {
    const [user, setUser] = useState(null);
 
    async function signIn() {
+      // receber por parâmetro as informações do usuário e armazená-las no estado aqui.
       const response = await auth.signIn();
 
       console.log(response);
