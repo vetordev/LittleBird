@@ -1,5 +1,5 @@
 import React, { createContext, useState, useEffect, useContext } from 'react';
-// import AsyncStorage from '@reac'
+import AsyncStorage from '@react-native-community/async-storage';
 
 import * as auth from  '../services/auth';
 
@@ -15,6 +15,9 @@ export const AuthProvider = ({ children }) => {
       console.log(response);
 
       setUser(response.user);
+
+      // await AsyncStorage.setItem('@LittleBird:user', JSON.stringify(response.user));
+      // await AsyncStorage.setItem('@LittleBird:token', response.token);
    }
 
    return (

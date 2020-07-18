@@ -1,21 +1,34 @@
-import React from 'react';
-import { View, TouchableOpacity, Text } from 'react-native';
+import React, { useRef } from 'react';
+import { TouchableOpacity, Text, View } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
+import { Form } from '@unform/mobile';
 
+import Input from '../../../components/Input';
 import { Container } from './styles';
 
 const HomeAuth = () => {
   const navigation = useNavigation();
+  const formRef = useRef(null);
 
-  function navigateToSignIn() {
-    navigation.navigate('SignIn');
+  function handleSignIn(data, { reset }) {
+    console.log(data);
+
+    navigation.navigate('SignIn', { data });
   }
 
   return (
     <Container>
-      <TouchableOpacity onPress={navigateToSignIn}>
-        <Text>login</Text>
-      </TouchableOpacity>
+      <Form 
+        style={{ width: '100%', alignItems: 'center' }} 
+        ref={formRef} 
+        onSubmit={handleSignIn}
+      >
+        <Input name="email" />
+
+        <TouchableOpacity onPress={() => formRef.current.submitForm()}>
+          <Text>login</Text>
+        </TouchableOpacity>
+      </Form>
     </Container>
   );
 }
