@@ -5,13 +5,28 @@ const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
    const [user, setUser] = useState(null);
+   const token = '3afdsfdmalfhjfds943hjdf1z0';
 
-   function signIn(user) { // receber por parâmetro as informações do usuário e armazená-las no estado aqui.
+   useEffect(() => {
+      async function loadStoragedData() {
+         const storagedUser = await AsyncStorage.getItem('@LittleBird:user');
+         const storagedToken = await AsyncStorage.getItem('@LittleBird:token');
+
+         if (storagedUser && storagedToken) {
+            setUser(JSON.parse(storagedUser));
+         }
+      }
+
+      loadStoragedData();
+   }, []);
+
+
+   async function signIn(user) { // receber por parâmetro as informações do usuário e armazená-las no estado aqui.
       console.log(user);
       setUser(user);
 
-      // await AsyncStorage.setItem('@LittleBird:user', JSON.stringify(response.user));
-      // await AsyncStorage.setItem('@LittleBird:token', response.token);
+      await AsyncStorage.setItem('@LittleBird:user', JSON.stringify(user));
+      await AsyncStorage.setItem('@LittleBird:token', token);
    }
 
    function signUp(user) {
