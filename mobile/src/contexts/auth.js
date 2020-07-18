@@ -6,8 +6,7 @@ const AuthContext = createContext();
 export const AuthProvider = ({ children }) => {
    const [user, setUser] = useState(null);
 
-   async function signIn(user) {
-      // receber por parâmetro as informações do usuário e armazená-las no estado aqui.
+   async function signIn(user) { // receber por parâmetro as informações do usuário e armazená-las no estado aqui.
       console.log(user);
       setUser(user);
 
@@ -15,8 +14,12 @@ export const AuthProvider = ({ children }) => {
       // await AsyncStorage.setItem('@LittleBird:token', response.token);
    }
 
+   function signOut() {
+      setUser(null);
+   }
+
    return (
-      <AuthContext.Provider value={{ signed: !!user, user, signIn }}>
+      <AuthContext.Provider value={{ signed: !!user, user, signIn, signOut }}>
          {children}
       </AuthContext.Provider>
    )

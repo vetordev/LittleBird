@@ -1,15 +1,26 @@
 import React from 'react';
-import { View } from 'react-native';
+import { View, TouchableOpacity, Text } from 'react-native';
 
 import { useAuth } from '../../../contexts/auth';
 
-// import { Container } from './styles';
+import { Container } from './styles';
 
 const Home = () => {
-  const { signed } = useAuth();
+  const { signed, signOut } = useAuth();
 
   console.log(signed);
-  return <View />;
+
+  function handleSignOut() {
+    signOut();
+  }
+
+  return (
+    <Container>
+      <TouchableOpacity onPress={handleSignOut}>
+        <Text>sair</Text>
+      </TouchableOpacity>
+    </Container>
+  );
 }
 
 export default Home;
