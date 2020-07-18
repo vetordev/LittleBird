@@ -1,20 +1,15 @@
 import React, { createContext, useState, useEffect, useContext } from 'react';
 import AsyncStorage from '@react-native-community/async-storage';
 
-import * as auth from  '../services/auth';
-
 const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
    const [user, setUser] = useState(null);
 
-   async function signIn() {
+   async function signIn(user) {
       // receber por parâmetro as informações do usuário e armazená-las no estado aqui.
-      const response = await auth.signIn();
-
-      console.log(response);
-
-      setUser(response.user);
+      console.log(user);
+      setUser(user);
 
       // await AsyncStorage.setItem('@LittleBird:user', JSON.stringify(response.user));
       // await AsyncStorage.setItem('@LittleBird:token', response.token);
