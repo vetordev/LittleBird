@@ -1,10 +1,28 @@
 import React from 'react';
-import { View } from 'react-native';
+import { TouchableOpacity, Text } from 'react-native';
+import { useRoute } from '@react-navigation/native';
 
-// import { Container } from './styles';
+import { useAuth } from '../../../contexts/auth';
+
+import { Container } from './styles';
 
 const SignUp2 = () => {
-  return <View />;
+  const route = useRoute();
+  const user = route.params;
+  const { signUp } = useAuth();
+
+  async function handleSignUp() {
+    console.log(user);
+    await signUp(user);
+  }
+  
+  return (
+    <Container>
+      <TouchableOpacity onPress={handleSignUp}>
+        <Text>entrar</Text>
+      </TouchableOpacity>
+    </Container>
+  );
 }
 
 export default SignUp2;

@@ -13,6 +13,12 @@ const HomeAuth = () => {
   function handleSignIn(data, { reset }) {
     console.log(data);
 
+    if (data.email == "vitorinha@hotmail.com") {
+      navigation.navigate('SignUp1', { data });
+      
+      return;
+    }
+
     navigation.navigate('SignIn', { data });
   }
 
