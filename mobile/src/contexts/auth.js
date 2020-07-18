@@ -35,7 +35,9 @@ export const AuthProvider = ({ children }) => {
    }
 
    function signOut() {
-      setUser(null);
+      AsyncStorage.clear().then(() => {
+         setUser(null);
+      })
    }
 
    return (
