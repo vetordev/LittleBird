@@ -1,21 +1,21 @@
-import { IsInt, IsNotEmpty } from "class-validator";
+import { IsNotEmpty, IsString } from "class-validator";
 
 export class GetArticleDto {
-  @IsInt() @IsNotEmpty()
+  @IsString() @IsNotEmpty()
   article_id: number;
 }
 
 export class GetArticlesByThemeDto {
-  @IsInt() @IsNotEmpty()
+  @IsString() @IsNotEmpty()
   theme_id: number;
 }
 
 export class DeleteArticleLikeDto {
-  @IsInt() @IsNotEmpty()
+  @IsString() @IsNotEmpty()
   article_id: number;
 }
 
 export class CreateArticleLikeDto {
-  @IsInt() @IsNotEmpty()
+  @IsString() @IsNotEmpty()
   article_id: number;
 }
