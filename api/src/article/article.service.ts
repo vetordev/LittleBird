@@ -47,7 +47,6 @@ export class ArticleService {
       themes
     }
 
-    console.log(theme_article);
     return response.status(200).json(theme_article);
   }
 

@@ -21,7 +21,7 @@ describe('User', () => {
   });
 
   afterAll(async () => {
-
+    await getConnection().close();
     await app.close();
   });
 

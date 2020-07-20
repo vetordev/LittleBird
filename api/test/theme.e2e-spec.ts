@@ -19,7 +19,7 @@ describe('Theme', () => {
   });
 
   afterAll(async () => {
-
+    await getConnection().close();
     await app.close();
   });
 

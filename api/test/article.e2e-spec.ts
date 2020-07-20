@@ -19,7 +19,7 @@ describe('Article', () => {
   });
 
   afterAll(async () => {
-
+    await getConnection().close();
     await app.close();
   });
 

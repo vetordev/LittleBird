@@ -2,6 +2,7 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { INestApplication } from '@nestjs/common';
 import * as request from 'supertest';
 import { AppModule } from './../src/app.module';
+import { getConnection } from 'typeorm';
 
 describe('AppController (e2e)', () => {
   let app: INestApplication;
@@ -16,8 +17,9 @@ describe('AppController (e2e)', () => {
   });
 
   afterAll(async () => {
-    app.close()
-  })
+    await getConnection().close();
+    await app.close();
+  });
 
   it('/ (GET)', async () => {
     await request(app.getHttpServer())
