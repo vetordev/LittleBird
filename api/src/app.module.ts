@@ -8,6 +8,7 @@ import { ThemeModule } from './theme/theme.module';
 import { InterestModule } from './interest/interest.module';
 import { connection } from "../config/connection";
 import { ArticleModule } from './article/article.module';
+import { ForumModule } from './forum/forum.module';
 
 @Module({
   imports: [
@@ -17,6 +18,7 @@ import { ArticleModule } from './article/article.module';
     ThemeModule,
     InterestModule,
     ArticleModule,
+    ForumModule,
   ],
   controllers: [AppController],
   providers: [AppService],
