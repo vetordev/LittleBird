@@ -13,12 +13,12 @@ export const AuthProvider = ({ children }) => {
       async function loadStoragedData() {
          const storagedUser = await AsyncStorage.getItem('@LittleBird:user');
          const storagedToken = await AsyncStorage.getItem('@LittleBird:token');
+         
+         setLoading(false);
 
          if (storagedUser && storagedToken) {
             setUser(JSON.parse(storagedUser));
          }
-         
-         setLoading(false);
       }
 
       loadStoragedData();
