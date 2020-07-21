@@ -10,7 +10,7 @@ import AppRoutes from './app.routes';
 const Routes = () => {
    const { signed, loading } = useAuth();
 
-   // console.log(loading);
+   console.log(loading);
 
    if (loading) {
       return (

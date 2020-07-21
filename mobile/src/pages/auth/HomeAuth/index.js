@@ -14,12 +14,12 @@ const HomeAuth = () => {
     console.log(data);
 
     if (data.email == "vitorinha@hotmail.com") {
-      navigation.navigate('SignUp1', { data });
+      navigation.navigate('SignIn', { data });
       
       return;
     }
 
-    navigation.navigate('SignIn', { data });
+    navigation.navigate('SignUp1', { data });
   }
 
   return (
