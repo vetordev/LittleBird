@@ -15,7 +15,6 @@ export class ArticleService {
     @InjectRepository(LikeArticle) private readonly likeArticleRespository: Repository<LikeArticle>
   ) {}
 
-  // TODO Construir ?????
   async getArticle(response: Response, article_id: number): Promise<Response | void> {
 
     const article = await this.articleRespository.createQueryBuilder('article')

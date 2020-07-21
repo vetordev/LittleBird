@@ -1,7 +1,8 @@
-import { Controller, Res, Param, Get, Req, Post, Body, Delete, UseGuards, HttpCode } from '@nestjs/common';
+import { Controller, Res, Param, Get, Req, Post, Body, Delete, UseGuards, HttpCode, UseFilters } from '@nestjs/common';
 import { ForumService } from './forum.service';
 import { GetForumByThemeDto, GetForumAndCommentDto, CreateLikeDto, CreateCommentParamDto, CreateCommentBodyDto, RemoveCommentDto, RemoveLikeDto } from './forum.dto';
 import { JwtAuthGuard } from '../auth/jwt/jwt-auth.guard';
+import { QueryFailedExceptionFilter } from './http-exception.filter';
 
 @Controller('forum')
 export class ForumController {
@@ -32,15 +33,19 @@ export class ForumController {
   };
 
   @Post(':forum_id/comment')
+  @HttpCode(204)
   @UseGuards(JwtAuthGuard)
-  createComment(@Res() response, @Param() params: CreateLikeDto, @Body() body: CreateCommentBodyDto, @Req() request) {
-    return this.forumService.createComment(response, params.forum_id, body.comment_content, request.user.user_id)
+  @UseFilters(QueryFailedExceptionFilter)
+  createComment(@Param() params: CreateCommentParamDto, @Body() body: CreateCommentBodyDto, @Req() request) {
+    return this.forumService.createComment(params.forum_id, body.comment_content, request.user.user_id)
   };
 
   @Post(':forum_id/like')
+  @HttpCode(204)
   @UseGuards(JwtAuthGuard)
-  createLike(@Res() response, @Param() params: CreateCommentParamDto, @Body() body: CreateCommentBodyDto, @Req() request) {
-    return this.forumService.createLike(response, params.forum_id, request.user.user_id)
+  @UseFilters(QueryFailedExceptionFilter)
+  createLike(@Param() params: CreateLikeDto, @Req() request) {
+    return this.forumService.createLike(params.forum_id, request.user.user_id)
   };
 
   @Delete('comment/:comment_id')
