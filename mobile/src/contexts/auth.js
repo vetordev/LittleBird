@@ -11,6 +11,7 @@ export const AuthProvider = ({ children }) => {
 
    useEffect(() => {
       async function loadStoragedData() {
+
          const storagedUser = await AsyncStorage.getItem('@LittleBird:user');
          const storagedToken = await AsyncStorage.getItem('@LittleBird:token');
          
