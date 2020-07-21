@@ -9,6 +9,7 @@ import { InterestModule } from './interest/interest.module';
 import { connection } from "../config/connection";
 import { ArticleModule } from './article/article.module';
 import { ForumModule } from './forum/forum.module';
+import { CommentModule } from './comment/comment.module';
 
 @Module({
   imports: [
@@ -19,6 +20,7 @@ import { ForumModule } from './forum/forum.module';
     InterestModule,
     ArticleModule,
     ForumModule,
+    CommentModule,
   ],
   controllers: [AppController],
   providers: [AppService],

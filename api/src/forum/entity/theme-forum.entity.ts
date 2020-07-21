@@ -6,7 +6,7 @@ import { Forum } from "./forum.entity";
 export class ThemeForum {
 
   @PrimaryGeneratedColumn()
-  theme_article_id: number;
+  theme_forum_id: number;
 
   @ManyToOne(type => Theme, {
     onDelete: 'CASCADE',
