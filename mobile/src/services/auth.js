@@ -1,4 +1,4 @@
-import SignIn from "../pages/auth/SignIn";
+import SignIn from '../pages/auth/SignIn';
 
 export function signIn() {
    return new Promise(resolve => {
