@@ -132,6 +132,20 @@ export class ForumService {
         user_id
       })
       .execute();
+
+
+    const forum: any = await this.forumRepository.createQueryBuilder('forum')
+    .select(['forum.no_like'])
+    .where('forum.forum_id = :forum_id', { forum_id })
+    .getOne();
+
+    await this.forumRepository.createQueryBuilder('forum')
+    .update('forum')
+    .set({
+      no_like: forum.no_like + 1,
+    })
+    .where('forum.forum_id = :forum_id', { forum_id })
+    .execute();
   };
 
   async removeComment(response: Response, comment_id: number): Promise<Response | void> {
@@ -173,6 +187,20 @@ export class ForumService {
       .andWhere('like_forum.user_id = :user_id', { user_id })
       .execute();
 
+    const forum: any = await this.forumRepository.createQueryBuilder('forum')
+      .select(['forum.no_like'])
+      .where('forum.forum_id = :forum_id', { forum_id })
+      .getOne();
+
+    if (forum.no_like > 0) {
+      await this.forumRepository.createQueryBuilder('forum')
+        .update('forum')
+        .set({
+          no_like: forum.no_like - 1,
+        })
+        .where('forum.forum_id = :forum_id', { forum_id })
+        .execute();
+    }
     return response.status(204).end();
   };
 }

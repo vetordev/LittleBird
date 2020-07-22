@@ -10,14 +10,14 @@ import { Response } from 'express';
 export class ArticleService {
 
   constructor(
-    @InjectRepository(Article) private readonly articleRespository: Repository<Article>,
-    @InjectRepository(ThemeArticle) private readonly themeArticleRespository: Repository<ThemeArticle>,
-    @InjectRepository(LikeArticle) private readonly likeArticleRespository: Repository<LikeArticle>
+    @InjectRepository(Article) private readonly articleRepository: Repository<Article>,
+    @InjectRepository(ThemeArticle) private readonly themeArticleRepository: Repository<ThemeArticle>,
+    @InjectRepository(LikeArticle) private readonly likeArticleRepository: Repository<LikeArticle>
   ) {}
 
   async getArticle(response: Response, article_id: number): Promise<Response | void> {
 
-    const article = await this.articleRespository.createQueryBuilder('article')
+    const article = await this.articleRepository.createQueryBuilder('article')
       .select(['article', 'article_img'])
       .innerJoin('article.article_img_id', 'article_img')
       .where('article.article_id = :article_id', { article_id })
@@ -27,7 +27,7 @@ export class ArticleService {
       return response.status(404).json({ error: 'Artigo não foi encontrado.' });
     };
 
-    let themes: any = await this.themeArticleRespository.createQueryBuilder('theme_article')
+    let themes: any = await this.themeArticleRepository.createQueryBuilder('theme_article')
       .select(['theme_article', 'theme'])
       .innerJoin('theme_article.theme_id', 'theme')
       .where('theme_article.article_id = :article_id', { article_id })
@@ -50,7 +50,7 @@ export class ArticleService {
   }
 
   async getArticlesByLike(): Promise<Article[]> {
-    const articles = await this.articleRespository.createQueryBuilder('article')
+    const articles = await this.articleRepository.createQueryBuilder('article')
       .select(['article', 'article_img'])
       .innerJoin('article.article_img_id', 'article_img')
       .orderBy('article.no_like', 'DESC')
@@ -60,7 +60,7 @@ export class ArticleService {
   }
 
   async getArticlesByUserLike(user_id: number): Promise<LikeArticle[]> {
-    let articles = await this.likeArticleRespository.createQueryBuilder('like_article')
+    let articles = await this.likeArticleRepository.createQueryBuilder('like_article')
       .select(['like_article', 'article', 'article_img'])
       .innerJoin('like_article.article_id', 'article')
       .innerJoin('article.article_img_id', 'article_img')
@@ -80,7 +80,7 @@ export class ArticleService {
 
   async getArticlesByTheme(response: Response, theme_id: number): Promise<Response> {
 
-    const theme = await this.themeArticleRespository.createQueryBuilder('theme_article')
+    const theme = await this.themeArticleRepository.createQueryBuilder('theme_article')
       .select(['theme_article.theme_id'])
       .where('theme_article.theme_id = :theme_id', { theme_id })
       .getOne();
@@ -89,7 +89,7 @@ export class ArticleService {
       return response.status(404).json({ error: 'Tema não existe no servidor ou não possui nenhum artigo.' });
     }
 
-    let articles = await this.themeArticleRespository.createQueryBuilder('theme_article')
+    let articles = await this.themeArticleRepository.createQueryBuilder('theme_article')
       .select(['theme_article', 'article', 'article_img'])
       .innerJoin('theme_article.article_id', 'article')
       .innerJoin('article.article_img_id', 'article_img')
@@ -109,18 +109,32 @@ export class ArticleService {
 
   async createArticleLike(user_id: number, article_id: number): Promise<void> {
 
-    await this.likeArticleRespository.createQueryBuilder("like_article")
+    await this.likeArticleRepository.createQueryBuilder("like_article")
       .insert()
       .into('like_article').values({
         article_id,
         user_id
       }).execute();
 
+    const article: any = await this.articleRepository.createQueryBuilder('article')
+    .select(['article.no_like'])
+    .where('article.article_id = :article_id', { article_id })
+    .getOne();
+
+    await this.articleRepository.createQueryBuilder('article')
+      .update('article')
+      .set({
+        no_like: article.no_like + 1,
+      })
+      .where('article.article_id = :article_id', { article_id })
+      .execute();
+
+
   }
 
   async deleteArticleLike(response: Response, user_id: number, article_id: number): Promise<Response | void> {
-    const article = await this.articleRespository.createQueryBuilder('article')
-      .select('article.article_id')
+    const article = await this.articleRepository.createQueryBuilder('article')
+      .select('article.no_like')
       .where('article.article_id = :article_id', { article_id })
       .getOne();
 
@@ -128,11 +142,21 @@ export class ArticleService {
       return response.status(404).json({ error: 'O artigo não foi encontrado.' });
     }
 
-    await this.likeArticleRespository.createQueryBuilder('like_article')
+    await this.likeArticleRepository.createQueryBuilder('like_article')
       .delete()
       .where('like_article.user_id = :user_id', { user_id })
       .andWhere('like_article.article_id = :article_id', { article_id })
       .execute();
+
+    if (article.no_like > 0) {
+      await this.articleRepository.createQueryBuilder('article')
+        .update('article')
+        .set({
+          no_like: article.no_like - 1,
+        })
+        .where('article.article_id = :article_id', { article_id })
+        .execute();
+    }
 
     return response.status(204).end();
   }
