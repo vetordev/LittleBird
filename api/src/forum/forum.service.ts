@@ -134,7 +134,7 @@ export class ForumService {
       .execute();
   };
 
-  async removeComment(response: Response, comment_id: number, user_id: number): Promise<Response | void> {
+  async removeComment(response: Response, comment_id: number): Promise<Response | void> {
 
     const comment = await this.commentRepository.createQueryBuilder('tb_comment')
       .select(['tb_comment.comment_id'])

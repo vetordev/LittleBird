@@ -50,8 +50,8 @@ export class ForumController {
 
   @Delete('comment/:comment_id')
   @UseGuards(JwtAuthGuard)
-  removeComment(@Res() response, @Param() params: RemoveCommentDto, @Req() request) {
-    return this.forumService.removeComment(response, params.comment_id, request.user.user_id);
+  removeComment(@Res() response, @Param() params: RemoveCommentDto) {
+    return this.forumService.removeComment(response, params.comment_id);
   };
 
   @Delete(':forum_id/like')
