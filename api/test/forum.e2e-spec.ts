@@ -3,7 +3,6 @@ import { TestingModule, Test } from "@nestjs/testing";
 import { AppModule } from "../src/app.module";
 import { getConnection } from "typeorm";
 import * as request from 'supertest';
-import { report } from "process";
 
 describe('Forum', () => {
   let app: INestApplication;
@@ -482,7 +481,6 @@ describe('Forum', () => {
         .set('Authorization', `Bearer ${token}`);
 
       expect(response.status).toBe(404);
-      console.log(response.body);
       expect(response.body).toEqual(expect.objectContaining({
         error: expect.any(String)
       }));
