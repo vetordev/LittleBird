@@ -8,6 +8,8 @@ import Profile from '../pages/app/Profile';
 import Subjects from '../pages/app/Subjects';
 import Settings from '../pages/app/Settings';
 
+import BottomTabBar from '../components/BottomTabBar';
+
 const AppStack = createStackNavigator();
 const AppBottom = createBottomTabNavigator();
 
@@ -19,7 +21,7 @@ const StackRoutes = () => (
 );
 
 const AppRoutes = () => (
-   <AppBottom.Navigator>
+   <AppBottom.Navigator tabBar={props => <BottomTabBar {... props} />}>
       <AppBottom.Screen name="Subjects" component={Subjects}/>
       <AppBottom.Screen name="Home" component={StackRoutes} />
       <AppBottom.Screen name="Profile" component={Profile} />
