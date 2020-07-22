@@ -2,6 +2,7 @@
 import React from 'react';
 import { createStackNavigator } from '@react-navigation/stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import { Feather } from '@expo/vector-icons';
 
 import Home from '../pages/app/Home';
 import Profile from '../pages/app/Profile';
@@ -22,9 +23,9 @@ const StackRoutes = () => (
 
 const AppRoutes = () => (
    <AppBottom.Navigator tabBar={props => <BottomTabBar {... props} />}>
-      <AppBottom.Screen name="Subjects" component={Subjects}/>
-      <AppBottom.Screen name="Home" component={StackRoutes} />
-      <AppBottom.Screen name="Profile" component={Profile} />
+      <AppBottom.Screen name="Subjects" component={Subjects} options={{ iconName: 'trello', color: '#D85517' }} />
+      <AppBottom.Screen name="Home" component={StackRoutes} options={{ iconName: 'home', color: '#834397' }} />
+      <AppBottom.Screen name="Profile" component={Profile} options={{ iconName: 'user', color: '#01C24E' }} />
    </AppBottom.Navigator>
 )
 
