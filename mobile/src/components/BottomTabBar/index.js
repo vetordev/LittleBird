@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, TouchableOpacity, Text } from 'react-native';
+import { Text } from 'react-native';
 import { Feather } from '@expo/vector-icons';
 
 import { Container, OptionNotSelected, OptionSelected, BtnSelected } from './styles';
@@ -21,15 +21,10 @@ const BottomTabBar = ({ state, descriptors, navigation }) => {
                : options.title !== undefined
                ? options.title
                : route.name;
-            
-            const icons = 
-            options.tabBarIcon !== undefined 
-            ? options.tabBarIcon : '';
-
+               
             const isFocused = state.index === index;
             
-            const onPress = (e) => {
-               console.log(e.clientX);
+            const navigateTo = () => {
                const event = navigation.emit({
                   type: 'tabPress',
                   target: route.key,
@@ -49,7 +44,7 @@ const BottomTabBar = ({ state, descriptors, navigation }) => {
                         accessibilityStates={isFocused ? ['selected'] : []}
                         accessibilityLabel={options.tabBarAccessibilityLabel}
                         testID={options.tabBarTestID}
-                        onPress={onPress}
+                        onPress={navigateTo}
                         color={options.color}
                      >
                         <Text>
@@ -63,7 +58,7 @@ const BottomTabBar = ({ state, descriptors, navigation }) => {
                      accessibilityStates={isFocused ? ['selected'] : []}
                      accessibilityLabel={options.tabBarAccessibilityLabel}
                      testID={options.tabBarTestID}
-                     onPress={onPress}
+                     onPress={navigateTo}
                   >
                      <Text>
                         <Feather name={options.iconName} size={30} color="#eee" />

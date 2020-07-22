@@ -15,17 +15,38 @@ const AppStack = createStackNavigator();
 const AppBottom = createBottomTabNavigator();
 
 const StackRoutes = () => (
-   <AppStack.Navigator>
+   <AppStack.Navigator screenOptions={{ cardStyle: { backgroundColor: '#121212' } }}>
       <AppStack.Screen name="Home" component={Home} />
       <AppBottom.Screen name="Settings" component={Settings} />
    </AppStack.Navigator>
 );
 
 const AppRoutes = () => (
-   <AppBottom.Navigator tabBar={props => <BottomTabBar {... props} />}>
-      <AppBottom.Screen name="Subjects" component={Subjects} options={{ iconName: 'trello', color: '#D85517' }} />
-      <AppBottom.Screen name="Home" component={StackRoutes} options={{ iconName: 'home', color: '#834397' }} />
-      <AppBottom.Screen name="Profile" component={Profile} options={{ iconName: 'user', color: '#01C24E' }} />
+   <AppBottom.Navigator tabBar={props => <BottomTabBar {... props} />} screenOptions={{ cardStyle: { backgroundColor: '#121212' } }}>
+      <AppBottom.Screen 
+         name="Subjects" 
+         component={Subjects} 
+         options={{ 
+            iconName: 'trello', 
+            color: '#D85517' 
+         }} 
+      />
+      <AppBottom.Screen 
+         name="Home" 
+         component={StackRoutes} 
+         options={{ 
+            iconName: 'home', 
+            color: '#834397' 
+         }} 
+      />
+      <AppBottom.Screen 
+         name="Profile" 
+         component={Profile} 
+         options={{ 
+            iconName: 'user', 
+            color: '#01C24E' 
+         }} 
+      />
    </AppBottom.Navigator>
 )
 
