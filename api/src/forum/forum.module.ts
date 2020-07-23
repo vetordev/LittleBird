@@ -6,10 +6,10 @@ import { ForumImg } from './entity/forum-img.entity';
 import { Forum } from './entity/forum.entity';
 import { ThemeForum } from './entity/theme-forum.entity';
 import { LikeForum } from './entity/like-forum.entity';
-import { Comment } from '../comment/entity/comment.entity';
+import { CommentModule } from '../comment/comment.module';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([ ForumImg, Forum, ThemeForum, LikeForum, Comment ])],
+  imports: [TypeOrmModule.forFeature([ ForumImg, Forum, ThemeForum, LikeForum ]), CommentModule],
   controllers: [ForumController],
   providers: [ForumService]
 })
