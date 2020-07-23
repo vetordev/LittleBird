@@ -5,7 +5,8 @@ import { Form } from '@unform/mobile';
 import { Feather } from '@expo/vector-icons';
 
 import Input from '../../../components/Input';
-import { Container, Title, BtnLogin, TextBtnLogin, BtnIcon } from './styles';
+import { Container, Title,  } from './styles';
+import { BtnLogin, TextBtnLogin, BtnIcon } from '../../../components/BtnNext/styles';
 
 const HomeAuth = () => {
   const navigation = useNavigation();
@@ -37,11 +38,11 @@ const HomeAuth = () => {
           iconName="mail" 
           placeholder="exemplo@exemplo.com"
         />
-        <BtnLogin onPress={() => formRef.current.submitForm()}>
-          <BtnIcon>
+        <BtnLogin background="#121212" onPress={() => formRef.current.submitForm()}>
+          <BtnIcon background="#000">
             <Feather name="arrow-right" color="#D85517" size={24} />
           </BtnIcon>
-          <TextBtnLogin>login</TextBtnLogin>
+          <TextBtnLogin color="#D85517">login</TextBtnLogin>
         </BtnLogin>
       </Form>
     </Container>
