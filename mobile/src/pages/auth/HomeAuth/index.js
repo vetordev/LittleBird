@@ -2,9 +2,10 @@ import React, { useRef } from 'react';
 import { TouchableOpacity, Text } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { Form } from '@unform/mobile';
+import { Feather } from '@expo/vector-icons';
 
 import Input from '../../../components/Input';
-import { Container } from './styles';
+import { Container, Title, BtnLogin, TextBtnLogin, BtnIcon } from './styles';
 
 const HomeAuth = () => {
   const navigation = useNavigation();
@@ -24,16 +25,24 @@ const HomeAuth = () => {
 
   return (
     <Container>
+      <Title>Digite seu e-mail</Title>
       <Form 
         style={{ width: '100%', alignItems: 'center' }} 
         ref={formRef} 
         onSubmit={handleSignIn}
       >
-        <Input name="email" />
-
-        <TouchableOpacity onPress={() => formRef.current.submitForm()}>
-          <Text>login</Text>
-        </TouchableOpacity>
+        <Input 
+          name="email" 
+          color="dark" 
+          iconName="mail" 
+          placeholder="exemplo@exemplo.com"
+        />
+        <BtnLogin onPress={() => formRef.current.submitForm()}>
+          <BtnIcon>
+            <Feather name="arrow-right" color="#D85517" size={24} />
+          </BtnIcon>
+          <TextBtnLogin>login</TextBtnLogin>
+        </BtnLogin>
       </Form>
     </Container>
   );

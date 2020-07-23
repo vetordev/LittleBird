@@ -40,7 +40,7 @@ const BottomTabBar = ({ state, descriptors, navigation }) => {
                { isFocused ? 
                   <OptionSelected>
                      <BtnSelected
-                        key={options.tabBarTestID}
+                        key={label}
                         accessibilityStates={isFocused ? ['selected'] : []}
                         accessibilityLabel={options.tabBarAccessibilityLabel}
                         testID={options.tabBarTestID}
@@ -54,7 +54,7 @@ const BottomTabBar = ({ state, descriptors, navigation }) => {
                   </OptionSelected>
                : 
                   <OptionNotSelected
-                     key={options.tabBarTestID}
+                     key={label}
                      accessibilityStates={isFocused ? ['selected'] : []}
                      accessibilityLabel={options.tabBarAccessibilityLabel}
                      testID={options.tabBarTestID}

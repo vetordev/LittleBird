@@ -2,7 +2,6 @@
 import React from 'react';
 import { createStackNavigator } from '@react-navigation/stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import { Feather } from '@expo/vector-icons';
 
 import Home from '../pages/app/Home';
 import Profile from '../pages/app/Profile';
@@ -22,7 +21,11 @@ const StackRoutes = () => (
 );
 
 const AppRoutes = () => (
-   <AppBottom.Navigator tabBar={props => <BottomTabBar {... props} />} screenOptions={{ cardStyle: { backgroundColor: '#121212' } }}>
+   <AppBottom.Navigator 
+      tabBar={props => <BottomTabBar {... props} />} 
+      screenOptions={{ cardStyle: { backgroundColor: '#121212' } }}
+      initialRouteName={"Home"}
+   >
       <AppBottom.Screen 
          name="Subjects" 
          component={Subjects} 

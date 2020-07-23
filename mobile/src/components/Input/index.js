@@ -1,9 +1,10 @@
 import React, { useEffect, useRef } from 'react';
 import { useField } from '@unform/core';
+import { Feather } from '@expo/vector-icons';
 
-import { Container, TextInput } from './styles';
+import { Container, TextInput, InputContainer, InputIcon } from './styles';
 
-const Input = ({ name }) => {
+const Input = ({ name, color, iconName, placeholder }) => {
    const inputRef = useRef(null);
    const { fieldName, registerField, defaultValue, error } = useField(name);
 
@@ -17,7 +18,13 @@ const Input = ({ name }) => {
 
    return (
      <Container>
-        <TextInput 
+        <InputContainer color={color}>
+         <InputIcon>
+            <Feather name={iconName ? iconName : 'send'} color="#000" size={24} />
+         </InputIcon>
+         <TextInput 
+            placeholder={placeholder ? placeholder : ''}
+            placeholderTextColor={color == 'dark' ? 'rgba(0, 0, 0, 0.29)' : '#fff'}
             ref={inputRef}
             defaultValue={defaultValue}
             onChangeText={value => {
@@ -25,7 +32,8 @@ const Input = ({ name }) => {
                   inputRef.current.value = value
                }
             }}
-        />
+         />
+        </InputContainer>
      </Container>   
    );
 }
