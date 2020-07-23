@@ -1894,7 +1894,7 @@ paths:
                       format: int64
                     reply_content:
                       type: string
-                    user:
+                    user_id:
                       type: object
                       properties:
                         user_id:
@@ -1902,8 +1902,13 @@ paths:
                         username:
                           type: string
                         user_img_id:
-                          type: integer
+                          type: object
                           format: int64
+                          properties:
+                            user_img_id:
+                              type: integer
+                            img_url:
+                              type: string
                     publi_date:
                       type: string
                       format: date
@@ -2019,61 +2024,6 @@ paths:
                 value:
                   reply_content: Lorem ipsum dolor sit amet.
         description: Corpo da resposta do usuário.
-      tags:
-        - Comment
-    delete:
-      summary: O usuário apagar um comentário
-      operationId: delete-comment-comment_id-reply
-      responses:
-        '204':
-          description: A resposta do usuário foi apagada.
-        '401':
-          description: O token JWT é inválido.
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  error:
-                    type: string
-              examples:
-                Exemplo de erro:
-                  value:
-                    error: O token JWT é inválido.
-        '404':
-          description: O comentário não existe no servidor.
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  error:
-                    type: string
-              examples:
-                Exemplo de erro:
-                  value:
-                    error: O comentário não existe no servidor.
-        '500':
-          description: Erro interno na API.
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  error:
-                    type: string
-              examples:
-                Exemplo de erro:
-                  value:
-                    error: Ocorreu um erro. Tente novamente mais tarde.
-      description: Rota para apagar o comentário de um usuário.
-      parameters:
-        - schema:
-            type: string
-          in: header
-          name: Authorization
-          description: Token JWT do usuário
-          required: true
       tags:
         - Comment
   '/interest/{interest_id}':
@@ -2340,6 +2290,70 @@ paths:
           required: true
       tags:
         - Forum
+  '/comment/{reply_id}/reply':
+    parameters:
+      - schema:
+          type: string
+        name: reply_id
+        in: path
+        required: true
+    delete:
+      summary: O usuário apagar uma resposta
+      operationId: delete-comment-comment_id-reply
+      responses:
+        '204':
+          description: A resposta do usuário foi apagada.
+        '401':
+          description: O token JWT é inválido.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+              examples:
+                Exemplo de erro:
+                  value:
+                    error: O token JWT é inválido.
+        '404':
+          description: O comentário não existe no servidor.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+              examples:
+                Exemplo de erro:
+                  value:
+                    error: O comentário não existe no servidor.
+        '500':
+          description: Erro interno na API.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+              examples:
+                Exemplo de erro:
+                  value:
+                    error: Ocorreu um erro. Tente novamente mais tarde.
+        '':
+          description: A resposta foi apagada.
+      description: Rota para apagar a resposta de um usuário.
+      parameters:
+        - schema:
+            type: string
+          in: header
+          name: Authorization
+          description: Token JWT do usuário
+          required: true
+      tags:
+        - Comment
 components:
   schemas:
     User:
