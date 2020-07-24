@@ -9,12 +9,22 @@ import SignUp2 from '../pages/auth/SignUp2';
 
 const AuthStack = createStackNavigator();
 
+const headerStyle = {
+   headerTitle: '',
+   headerStyle: {
+      elevation: 0,
+      backgroundColor: '#690589',
+      height: 80
+   },
+   headerTintColor: '#F6F6F6'
+}
+
 const AuthRoutes = () => (
    <AuthStack.Navigator>
       <AuthStack.Screen name="HomeAuth" component={HomeAuth} options={{ headerShown: false }} />
-      <AuthStack.Screen name="SignIn" component={SignIn} />
-      <AuthStack.Screen name="SignUp1" component={SignUp1} />
-      <AuthStack.Screen name="SignUp2" component={SignUp2} />
+      <AuthStack.Screen name="SignIn" component={SignIn} options={headerStyle} />
+      <AuthStack.Screen name="SignUp1" component={SignUp1} options={headerStyle} />
+      <AuthStack.Screen name="SignUp2" component={SignUp2} options={headerStyle} />
    </AuthStack.Navigator>
 );
 

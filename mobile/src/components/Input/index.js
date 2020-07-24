@@ -2,9 +2,9 @@ import React, { useEffect, useRef } from 'react';
 import { useField } from '@unform/core';
 import { Feather } from '@expo/vector-icons';
 
-import { Container, TextInput, InputContainer, InputIcon } from './styles';
+import { Container, TextInput, InputContainer, InputIcon, Legend, Description } from './styles';
 
-const Input = ({ name, color, iconName, placeholder }) => {
+const Input = ({ name, color, iconName, placeholder, legend, description }) => {
    const inputRef = useRef(null);
    const { fieldName, registerField, defaultValue, error } = useField(name);
 
@@ -18,13 +18,14 @@ const Input = ({ name, color, iconName, placeholder }) => {
 
    return (
      <Container>
-        <InputContainer color={color}>
+         <Legend color={color == 'dark' ? '#000' : '#F6F6F6'}>{legend}</Legend>
+         <InputContainer color={color}>
          <InputIcon>
-            <Feather name={iconName ? iconName : 'send'} color="#000" size={24} />
+            <Feather name={iconName ? iconName : 'send'} color={color == 'dark' ? '#000' : '#F6F6F6'} size={24} />
          </InputIcon>
          <TextInput 
             placeholder={placeholder ? placeholder : ''}
-            placeholderTextColor={color == 'dark' ? 'rgba(0, 0, 0, 0.29)' : '#fff'}
+            placeholderTextColor={color == 'dark' ? 'rgba(0, 0, 0, 0.29)' : 'rgba(255, 255, 255, 0.29)'}
             ref={inputRef}
             defaultValue={defaultValue}
             onChangeText={value => {
@@ -33,7 +34,8 @@ const Input = ({ name, color, iconName, placeholder }) => {
                }
             }}
          />
-        </InputContainer>
+         </InputContainer>
+         <Description color={color == 'dark' ? '#000' : '#F6F6F6'}>{description}</Description>
      </Container>   
    );
 }

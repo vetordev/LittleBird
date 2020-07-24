@@ -1,11 +1,10 @@
 import React, { useRef } from 'react';
-import { TouchableOpacity, Text } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { Form } from '@unform/mobile';
 import { Feather } from '@expo/vector-icons';
 
 import Input from '../../../components/Input';
-import { Container, Title,  } from './styles';
+import { Container, Title } from './styles';
 import { BtnLogin, TextBtnLogin, BtnIcon } from '../../../components/BtnNext/styles';
 
 const HomeAuth = () => {
@@ -42,7 +41,7 @@ const HomeAuth = () => {
           <BtnIcon background="#000">
             <Feather name="arrow-right" color="#D85517" size={24} />
           </BtnIcon>
-          <TextBtnLogin color="#D85517">login</TextBtnLogin>
+          <TextBtnLogin color="#D85517">próximo</TextBtnLogin>
         </BtnLogin>
       </Form>
     </Container>
