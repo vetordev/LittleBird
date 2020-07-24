@@ -36,7 +36,7 @@ const SignIn = () => {
           name="password" 
           color="light"
           iconName="lock"
-          placeholder="amo1FredMeuc@chorro"
+          placeholder="s3n#@000"
           legend="Sua senha"
         />
         <BtnLogin background="#F6F6F6" onPress={() => formRef.current.submitForm()}>

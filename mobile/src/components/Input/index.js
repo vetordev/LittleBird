@@ -27,6 +27,7 @@ const Input = ({ name, color, iconName, placeholder, legend, description }) => {
             placeholder={placeholder ? placeholder : ''}
             placeholderTextColor={color == 'dark' ? 'rgba(0, 0, 0, 0.29)' : 'rgba(255, 255, 255, 0.29)'}
             ref={inputRef}
+            color={color}
             defaultValue={defaultValue}
             onChangeText={value => {
                if (inputRef.current) {

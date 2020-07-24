@@ -27,7 +27,7 @@ export const InputIcon = styled.View`
 `;
 
 export const TextInput = styled.TextInput`
-  color: #000;
+  color: ${props => props.color == 'dark' ? '#000' : '#F6F6F6'};
   padding: 15px;
   padding-left: 0;
   font-size: 16px;

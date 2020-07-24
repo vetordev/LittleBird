@@ -60,7 +60,7 @@ const SignUp1 = () => {
           name="password" 
           color="light"
           iconName="lock"
-          placeholder="amo1FredMeuc@chorro"
+          placeholder="s3n#@000"
           legend="Sua senha"
         />
 
