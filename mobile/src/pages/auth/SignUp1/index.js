@@ -1,15 +1,26 @@
-import React, { useRef } from 'react';
-import { TouchableOpacity, Text } from 'react-native';
+import React, { useState, useRef } from 'react';
+import { StatusBar } from 'expo-status-bar';
+import { CheckBox } from 'react-native-elements';
 import { useRoute, useNavigation } from '@react-navigation/native';
 import { Form } from '@unform/mobile';
 import { Feather } from '@expo/vector-icons';
 
 import Input from '../../../components/Input';
 
-import { Container, Title } from './styles';
+import { 
+  Container, 
+  Title, 
+  CheckedIconContainer, 
+  CheckBoxContainer, 
+  LegendCheckBox,
+  TextBold
+} from './styles';
+
 import { BtnLogin, TextBtnLogin, BtnIcon } from '../../../components/BtnNext/styles';
 
 const SignUp1 = () => {
+  const [toggleCheckBox, setToggleCheckBox] = useState(false);
+
   const navigation = useNavigation();
   const route = useRoute();
   const email = route.params.data.email;
@@ -30,6 +41,7 @@ const SignUp1 = () => {
 
   return (
     <Container>
+      <StatusBar style="light" />
       <Title>Seja bem-vinde!</Title>
       <Form 
         style={{ width: '100%', alignItems: 'center' }} 
@@ -51,6 +63,30 @@ const SignUp1 = () => {
           placeholder="amo1FredMeuc@chorro"
           legend="Sua senha"
         />
+
+        <CheckBoxContainer>
+          <CheckBox 
+            containerStyle={{ margin: 0, padding: 0 }}
+            checkedColor="#f6f6f6"
+            checkedIcon={
+              <CheckedIconContainer checked={true}>
+                <Feather name="check" size={27} color="#690589" />
+              </CheckedIconContainer>
+            }
+            uncheckedIcon={
+              <CheckedIconContainer checked={false}>
+                <Feather name="check" size={27} color="#690589" />
+              </CheckedIconContainer>
+            }
+            size={35}
+            checked={toggleCheckBox}
+            onPress={() => toggleCheckBox ? setToggleCheckBox(false) : setToggleCheckBox(true)}
+          />
+          <LegendCheckBox>
+            Li e concordo com os <TextBold>Termos de Uso</TextBold> e <TextBold>Políticas de Privacidade</TextBold>.
+          </LegendCheckBox>
+        </CheckBoxContainer>
+
         <BtnLogin background="#F6F6F6" onPress={() => formRef.current.submitForm()}>
           <BtnIcon background="#E0E0E0">
             <Feather name="arrow-right" color="#690589" size={24} />

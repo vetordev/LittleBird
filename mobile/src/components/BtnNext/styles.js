@@ -26,7 +26,8 @@ export const BtnIcon = styled.View`
    height: 100%;
    width: 20%;
    background: ${props => props.background};
-   border-radius: 10px;
+   border-top-left-radius: 10px;
+   border-bottom-left-radius: 10px;
    justify-content: center;
    align-items: center;
 `;
