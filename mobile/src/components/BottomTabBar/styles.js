@@ -22,6 +22,6 @@ export const OptionSelected = styled.View`
 
 export const BtnSelected = styled.TouchableOpacity`
    background-color: ${props => props.color};
-   padding: 17px;
+   padding: 15px;
    border-radius: 100px;
 `;

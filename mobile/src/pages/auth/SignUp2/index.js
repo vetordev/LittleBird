@@ -100,6 +100,7 @@ const SignUp2 = () => {
           data={interests}
           keyExtractor={interest => String(interest.theme_id)}
           numColumns={2}
+          columnWrapperStyle={{ marginHorizontal: 15 }}
           ListHeaderComponent={
             <Content>
               <Title>Por quais desses assuntos você se interessa?</Title>

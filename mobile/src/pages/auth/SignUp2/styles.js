@@ -9,7 +9,6 @@ export const Container = styled.View`
 
 export const Content = styled.View`
    align-items: center;
-   /* padding-bottom: 25px; */
 `;
 
 export const Title = styled.Text`
@@ -30,6 +29,7 @@ export const InterestsContainer = styled.SafeAreaView`
    background: #01C24E;
    align-items: center;
    justify-content: center;
+   /* margin: 0 10px; */
 `;
 
 export const Interest = styled.TouchableOpacity.attrs({
