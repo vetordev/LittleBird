@@ -20,7 +20,7 @@ const headerStyle = {
 }
 
 const AuthRoutes = () => (
-   <AuthStack.Navigator>
+   <AuthStack.Navigator initialRouteName={"HomeAuth"}>
       <AuthStack.Screen name="HomeAuth" component={HomeAuth} options={{ headerShown: false }} />
       <AuthStack.Screen name="SignIn" component={SignIn} options={headerStyle} />
       <AuthStack.Screen name="SignUp1" component={SignUp1} options={headerStyle} />

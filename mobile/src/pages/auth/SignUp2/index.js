@@ -13,6 +13,7 @@ import {
   InterestsContainer, 
   Interest, 
   InterestTitle,
+  InterestImageFilter,
   InterestImage,
   InterestTitleContainer,
   LoadInterests,
@@ -57,76 +58,83 @@ const SignUp2 = () => {
   const interests = [
     {
       theme_id: 1,
-      theme_name: 'Gravidez',
+      theme_name: 'Preservativos',
       theme_img: {
           theme_img_id: 1,
-          img_url: "https://images.unsplash.com/photo-1562592619-908ca07deace?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=750&q=80"
+          img_url: 'https://images.unsplash.com/photo-1576071804486-b8bc22106dbf?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1083&q=80'
       }
     },
     {
       theme_id: 2,
-      theme_name: 'Gravidez',
+      theme_name: 'Masturbação',
       theme_img: {
           theme_img_id: 1,
-          img_url: "https://images.unsplash.com/photo-1562592619-908ca07deace?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=750&q=80"
+          img_url: 'https://images.unsplash.com/photo-1568383245703-b6fccedeefba?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1050&q=80'
       }
     },
     {
       theme_id: 3,
-      theme_name: 'Gravidez',
+      theme_name: 'Puberdade',
       theme_img: {
           theme_img_id: 1,
-          img_url: "https://images.unsplash.com/photo-1562592619-908ca07deace?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=750&q=80"
+          img_url: 'https://images.unsplash.com/photo-1520095972714-909e91b038e5?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1050&q=80'
       }
     },
     {
       theme_id: 4,
-      theme_name: 'Gravidez',
+      theme_name: 'LGBTQ+',
       theme_img: {
           theme_img_id: 1,
-          img_url: "https://images.unsplash.com/photo-1562592619-908ca07deace?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=750&q=80"
+          img_url: 'https://images.unsplash.com/photo-1562592619-908ca07deace?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=750&q=80'
       }
     }
   ]
   
   return (
     <Container showsVerticalScrollIndicator={false}>
-      <Content>
-        <StatusBar style="dark" />
-        <Title>Por quais desses assuntos você se interessa?</Title>
-        <Description>Escolha no mínimo 3. Estamos preparando um ambiente que combine com você :)</Description>
+      <StatusBar style="dark" />
 
-        <InterestsContainer>
-          <FlatList 
-            data={interests}
-            keyExtractor={interest => String(interest.theme_id)}
-            numColumns={2}
-            renderItem={({ item }) => (
-              <Interest onPress={() => handleSelectedInterests(item.theme_id)}>
+      <InterestsContainer>
+        <FlatList 
+          showsVerticalScrollIndicator={false}
+          data={interests}
+          keyExtractor={interest => String(interest.theme_id)}
+          numColumns={2}
+          ListHeaderComponent={
+            <Content>
+              <Title>Por quais desses assuntos você se interessa?</Title>
+              <Description>Escolha no mínimo 3. Estamos preparando um ambiente que combine com você :)</Description>
+            </Content>
+          }
+          ListFooterComponent={
+            <Content>
+            <LoadInterests>
+              <Feather name="plus" size={30} color="#01C24E" />
+            </LoadInterests>
+
+            <BtnLogin background="#121212" onPress={handleSignUp} style={{ marginBottom: 25 }}>
+              <BtnIcon background="#000">
+                <Feather name="log-in" color="#01C24E" size={24} />
+              </BtnIcon>
+              <TextBtnLogin color="#01C24E">entrar</TextBtnLogin>
+            </BtnLogin>
+            </Content>
+          }
+          renderItem={({ item }) => (
+            <Interest onPress={() => handleSelectedInterests(item.theme_id)}>
+              {/* <InterestImageFilter/> */}
                 <InterestImage 
                   resizeMode={'cover'} 
                   source={{ uri: item.theme_img.img_url }} 
                   style={selectedInterests.includes(item.theme_id) ? styles.selected : {}} 
                 />
-                <InterestTitleContainer>
-                  <InterestTitle>{item.theme_name}</InterestTitle>
-                </InterestTitleContainer>
-              </Interest>
-            )}
-          />
-        </InterestsContainer>
-        
-        <LoadInterests>
-          <Feather name="plus" size={30} color="#01C24E" />
-        </LoadInterests>
-
-          <BtnLogin background="#121212" onPress={handleSignUp}>
-            <BtnIcon background="#000">
-              <Feather name="log-in" color="#01C24E" size={24} />
-            </BtnIcon>
-            <TextBtnLogin color="#01C24E">entrar</TextBtnLogin>
-          </BtnLogin>
-      </Content>
+              <InterestTitleContainer>
+                <InterestTitle>{item.theme_name}</InterestTitle>
+              </InterestTitleContainer>
+            </Interest>
+          )}
+        />
+      </InterestsContainer>
     </Container>
   );
 }

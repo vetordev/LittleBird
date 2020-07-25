@@ -1,15 +1,15 @@
 import styled from 'styled-components/native';
 import { StyleSheet } from 'react-native';
 
-export const Container = styled.ScrollView`
+export const Container = styled.View`
    flex: 1;
-   /* align-items: center; */
+   align-items: center;
    background: #01C24E;
 `;
 
 export const Content = styled.View`
    align-items: center;
-   padding-bottom: 25px;
+   /* padding-bottom: 25px; */
 `;
 
 export const Title = styled.Text`
@@ -26,12 +26,10 @@ export const Description = styled.Text`
    font-size: 16px;
 `;
 
-export const InterestsContainer = styled.View`
-   height: 250px;
-   width: 90%;
+export const InterestsContainer = styled.SafeAreaView`
    background: #01C24E;
-   margin-bottom: 7px;
-   /* align-items: center; */
+   align-items: center;
+   justify-content: center;
 `;
 
 export const Interest = styled.TouchableOpacity.attrs({
@@ -42,11 +40,22 @@ export const Interest = styled.TouchableOpacity.attrs({
    padding: 4px;
 `;
 
+export const InterestImageFilter = styled.View`
+   width: 100%;
+   height: 70%;
+   z-index: 6;
+   position: absolute;
+   background:#fff;
+   border-top-left-radius: 6px;
+   border-top-right-radius: 6px;
+`;
+
 export const InterestImage = styled.Image`
    width: 100%;
    height: 70%;
    border-top-left-radius: 6px;
    border-top-right-radius: 6px;
+   z-index: 1;
 `;
 
 export const InterestTitleContainer = styled.View`
@@ -71,7 +80,7 @@ export const LoadInterests = styled.TouchableOpacity`
    border-radius: 20px;
    justify-content: center;
    align-items: center;
-   margin-bottom: 5px;
+   margin: 7px 0 5px;
 `;
 
 export const styles = StyleSheet.create({
