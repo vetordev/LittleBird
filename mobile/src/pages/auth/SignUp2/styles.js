@@ -45,7 +45,8 @@ export const InterestImageFilter = styled.View`
    height: 70%;
    z-index: 6;
    position: absolute;
-   background:#fff;
+   margin: 4px 0 0 4px;
+   background: rgba(0, 0, 0, 0.2);
    border-top-left-radius: 6px;
    border-top-right-radius: 6px;
 `;

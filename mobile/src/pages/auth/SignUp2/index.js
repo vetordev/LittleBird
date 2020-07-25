@@ -122,11 +122,14 @@ const SignUp2 = () => {
           }
           renderItem={({ item }) => (
             <Interest onPress={() => handleSelectedInterests(item.theme_id)}>
-              {/* <InterestImageFilter/> */}
+              <InterestImageFilter
+                style={
+                  selectedInterests.includes(item.theme_id) ? styles.selected : {}
+                } 
+              />
                 <InterestImage 
                   resizeMode={'cover'} 
                   source={{ uri: item.theme_img.img_url }} 
-                  style={selectedInterests.includes(item.theme_id) ? styles.selected : {}} 
                 />
               <InterestTitleContainer>
                 <InterestTitle>{item.theme_name}</InterestTitle>
