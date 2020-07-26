@@ -10,6 +10,7 @@ import { connection } from "../config/connection";
 import { ArticleModule } from './article/article.module';
 import { ForumModule } from './forum/forum.module';
 import { CommentModule } from './comment/comment.module';
+import { ReportModule } from './report/report.module';
 
 @Module({
   imports: [
@@ -21,6 +22,7 @@ import { CommentModule } from './comment/comment.module';
     ArticleModule,
     ForumModule,
     CommentModule,
+    ReportModule,
   ],
   controllers: [AppController],
   providers: [AppService],
