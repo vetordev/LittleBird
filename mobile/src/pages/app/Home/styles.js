@@ -63,8 +63,8 @@ export const SessionTitle = styled.Text`
 export const CarouselItem = styled.TouchableOpacity`
    flex-direction: column-reverse;
    margin-bottom: 35px;
-   width: 280px;
-   height: 170px;
+   width: ${props => props.winWidth * 0.8}px;
+   height: 175px;
    border-radius: 10px;
    elevation: 7;
 `;

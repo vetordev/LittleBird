@@ -39,7 +39,7 @@ const Home = () => {
     signOut();
     // navigation.navigate('Profile');
   }
-  
+
   const interests = [
     {
       theme_id: 1,
@@ -98,10 +98,10 @@ const Home = () => {
               <Carousel 
                 layout="default"
                 data={interests}
-                itemWidth={280}
+                itemWidth={win.width * 0.8}
                 sliderWidth={win.width}
                 renderItem={({item, index}) => (
-                  <CarouselItem>
+                  <CarouselItem winWidth={win.width}>
                     <CarouselImageItem resizeMode={'cover'} source={{ uri: item.theme_img.img_url }} />
                     <CarouselImageFilter/>
                     <TitleCarouselItem>As mudanças durante a puberdade</TitleCarouselItem>
