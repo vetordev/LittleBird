@@ -36,7 +36,7 @@ export class ReportComment {
     name: 'reporter_user_id',
     referencedColumnName: 'user_id'
   })
-  @Column({
+  @Column({ 
     type: 'integer'
   })
   reporter_user_id: number;
