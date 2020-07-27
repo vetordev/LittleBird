@@ -71,7 +71,6 @@ const Profile = () => {
             </Part1>
             <Feather name="chevron-right" size={20} color="#834397" />
          </ProfileSession>
-
       </Container>
      </ScrollView>
   );

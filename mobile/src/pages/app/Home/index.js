@@ -39,11 +39,7 @@ const Home = () => {
     signOut();
     // navigation.navigate('Profile');
   }
-
-  const carouselItems = [
-
-  ]
-
+  
   const interests = [
     {
       theme_id: 1,
@@ -102,7 +98,7 @@ const Home = () => {
               <Carousel 
                 layout="default"
                 data={interests}
-                itemWidth={260}
+                itemWidth={280}
                 sliderWidth={win.width}
                 renderItem={({item, index}) => (
                   <CarouselItem>

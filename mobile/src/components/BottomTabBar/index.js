@@ -38,9 +38,8 @@ const BottomTabBar = ({ state, descriptors, navigation }) => {
             return (
                <>
                { isFocused ? 
-                  <OptionSelected>
+                  <OptionSelected key={label}>
                      <BtnSelected
-                        key={label}
                         accessibilityStates={isFocused ? ['selected'] : []}
                         accessibilityLabel={options.tabBarAccessibilityLabel}
                         testID={options.tabBarTestID}
@@ -48,7 +47,7 @@ const BottomTabBar = ({ state, descriptors, navigation }) => {
                         color={options.color}
                      >
                         <Text>
-                           <Feather name={options.iconName} size={30} color="#eee" />
+                           <Feather name={options.iconName} size={26} color="#eee" />
                         </Text>
                      </BtnSelected>
                   </OptionSelected>
@@ -61,7 +60,7 @@ const BottomTabBar = ({ state, descriptors, navigation }) => {
                      onPress={navigateTo}
                   >
                      <Text>
-                        <Feather name={options.iconName} size={30} color="#eee" />
+                        <Feather name={options.iconName} size={26} color="#eee" />
                      </Text>
                   </OptionNotSelected>
                   }

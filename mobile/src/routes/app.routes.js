@@ -13,14 +13,14 @@ import BottomTabBar from '../components/BottomTabBar';
 const AppStack = createStackNavigator();
 const AppBottom = createBottomTabNavigator();
 
-const StackRoutes = () => (
+const AppRoutes = () => (
    <AppStack.Navigator screenOptions={{ cardStyle: { backgroundColor: '#121212' } }}>
-      <AppStack.Screen name="Home" component={Home} options={{ headerShown: false }} />
+      <AppStack.Screen name="Home" component={BottomRoutes} options={{ headerShown: false }} />
       <AppBottom.Screen name="Settings" component={Settings} />
    </AppStack.Navigator>
 );
 
-const AppRoutes = () => (
+const BottomRoutes = () => (
    <AppBottom.Navigator 
       tabBar={props => <BottomTabBar {... props} />} 
       screenOptions={{ cardStyle: { backgroundColor: '#121212' } }}
@@ -30,13 +30,13 @@ const AppRoutes = () => (
          name="Subjects" 
          component={Subjects} 
          options={{
-            iconName: 'trello', 
+            iconName: 'grid', 
             color: '#D85517',
          }} 
       />
       <AppBottom.Screen 
          name="Home" 
-         component={StackRoutes} 
+         component={Home} 
          options={{ 
             iconName: 'home', 
             color: '#834397', 

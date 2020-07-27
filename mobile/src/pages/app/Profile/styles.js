@@ -5,8 +5,8 @@ export const Container = styled.View`
    flex: 1;
    background: #121212;
    padding-top: ${Constants.statusBarHeight + 40 + 'px'};
+   padding-bottom: 20px;
    align-items: center;
-   /* justify-content: center; */
 `;
 
 export const Header = styled.View`
@@ -38,7 +38,6 @@ export const Title = styled.Text`
 export const ProfilePicture = styled.Image`
    width: 130px;
    height: 130px;
-   /* background: #ff0; */
    border-radius: 34px;
    margin-bottom: 12px;
 `;
@@ -50,7 +49,7 @@ export const Username = styled.Text`
    margin-bottom: 30px;
 `;
 
-export const ProfileSession = styled.View`
+export const ProfileSession = styled.TouchableOpacity`
    flex-direction: row;
    justify-content: space-between;
    align-items: center;
@@ -59,6 +58,7 @@ export const ProfileSession = styled.View`
    padding: 25px;
    border-radius: 21px;
    margin-bottom: 15px;
+   elevation: 5;
 `;
 
 export const Part1 = styled.View`
@@ -81,5 +81,3 @@ export const SessionName = styled.Text`
    color: #E9E9E9;
    font-size: 16px;
 `;
-
-export const Part2 = styled.View``;

@@ -1,10 +1,6 @@
 import styled from 'styled-components/native';
 import Constants from 'expo-constants';
 
-export const Container = styled.View`
-   flex: 1;
-`;
-
 export const Header = styled.View`
    flex-direction: row;
    justify-content: space-between;
@@ -67,9 +63,10 @@ export const SessionTitle = styled.Text`
 export const CarouselItem = styled.TouchableOpacity`
    flex-direction: column-reverse;
    margin-bottom: 35px;
-   width: 260px;
+   width: 280px;
    height: 170px;
    border-radius: 10px;
+   elevation: 7;
 `;
 
 export const CarouselImageItem = styled.Image`
@@ -109,6 +106,7 @@ export const InterestsContainer = styled.SafeAreaView`
    align-items: center;
    justify-content: center;
    flex: 1;
+   background: #121212;
 `;
 
 export const Interest = styled.TouchableOpacity.attrs({
