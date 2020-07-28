@@ -1,22 +1,42 @@
 import { Injectable } from '@nestjs/common';
 import { Repository } from 'typeorm';
-import { Comment } from 'src/comment/entity/comment.entity';
-import { Reply } from 'src/comment/entity/reply.entity';
-import { CreateReportReplyBodyDto } from './report.dto';
-import { CreateCommentBodyDto } from 'src/forum/forum.dto';
+import { CreateReportReplyBodyDto, CreateReportCommentBodyDto } from './report.dto';
+import { InjectRepository } from '@nestjs/typeorm';
+import { ReportComment } from './entity/report-comment.entity';
+import { ReportReply } from './entity/report-reply.entity';
+
 
 @Injectable()
 export class ReportService {
 
   constructor(
-    private readonly reportCommentRepository: Repository<Comment>,
-    private readonly reportReplyRepository: Repository<Reply>
+    @InjectRepository(ReportComment) private readonly reportCommentRepository: Repository<ReportComment>,
+    @InjectRepository(ReportReply) private readonly reportReplyRepository: Repository<ReportReply>
   ) {}
 
-  createReportReply(reply_id: number, report: CreateReportReplyBodyDto, user_id: number) {
-
+  async createReportReply(reply_id: number, report: CreateReportReplyBodyDto, user_id: number): Promise<void> {
+    await this.reportReplyRepository.createQueryBuilder('report_reply')
+      .insert()
+      .into('report_reply')
+      .values({
+        reply_id,
+        report_content: report.report_content,
+        report_type: report.report_type,
+        reporter_user_id: user_id
+      })
+      .execute();
+    
   };
-  createReportComment(comment_id: number, report: CreateCommentBodyDto, user_id: number) {
-
+  async createReportComment(comment_id: number, report: CreateReportCommentBodyDto, user_id: number): Promise<void> {
+    await this.reportCommentRepository.createQueryBuilder('report_comment')
+      .insert()
+      .into('report_comment')
+      .values({
+        comment_id,
+        report_content: report.report_content,
+        report_type: report.report_type,
+        reporter_user_id: user_id
+      })
+      .execute();
   };
 };

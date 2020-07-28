@@ -15,7 +15,7 @@ export class QueryFailedExceptionFilter implements ExceptionFilter {
         error: "A chave estrangeira não existe no servidor.",
       };
       response.status(404).json(errorResponse);
-    } else
+    } else 
       response.status(500).json({ error: "Erro interno no servidor." });
   }
 }

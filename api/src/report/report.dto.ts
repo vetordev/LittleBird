@@ -1,11 +1,11 @@
-import { IsString, IsNotEmpty } from "class-validator";
+import { IsString, IsNotEmpty, IsInt } from "class-validator";
 
 export class CreateReportReplyBodyDto {
 
   @IsString() @IsNotEmpty()
   report_content: string;
 
-  @IsString() @IsNotEmpty()
+  @IsInt() @IsNotEmpty()
   report_type: number;
 };
 
@@ -14,7 +14,7 @@ export class CreateReportCommentBodyDto {
   @IsString() @IsNotEmpty()
   report_content: string;
 
-  @IsString() @IsNotEmpty()
+  @IsInt() @IsNotEmpty()
   report_type: number;
 }; 
 

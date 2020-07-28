@@ -4,6 +4,7 @@ import { AppModule } from "../src/app.module";
 import { getConnection } from "typeorm";
 import * as request from 'supertest';
 import { SSL_OP_ALLOW_UNSAFE_LEGACY_RENEGOTIATION } from "constants";
+import { report } from "process";
 
 describe('Report', () => {
   let app: INestApplication;
@@ -63,7 +64,7 @@ describe('Report', () => {
         
         await getConnection().createQueryBuilder().insert().into('tb_comment').values(comment).execute();
 
-        await getConnection().createQueryBuilder().insert().into('report_type').values({ report_type_id: 1, report_type_name: 'Abuso Verbal', report_type_especification: 'lorem ipsum dolor sit amet.' });
+        await getConnection().createQueryBuilder().insert().into('report_type').values({ report_type_id: 1, report_type_name: 'Abuso Verbal', report_type_especification: 'lorem ipsum dolor sit amet.' }).execute();
 
         const response = await request(app.getHttpServer()).post('/auth/login').send({ email: 'carlosboavida@gm.com', user_pass: '123vidaboa' });
         token = response.body.token;
@@ -159,7 +160,7 @@ describe('Report', () => {
 
         await getConnection().createQueryBuilder().insert().into('reply').values(reply).execute();
 
-        await getConnection().createQueryBuilder().insert().into('report_type').values({ report_type_id: 1, report_type_name: 'Abuso Verbal', report_type_especification: 'lorem ipsum dolor sit amet.' });
+        await getConnection().createQueryBuilder().insert().into('report_type').values({ report_type_id: 1, report_type_name: 'Abuso Verbal', report_type_especification: 'lorem ipsum dolor sit amet.' }).execute();
 
         const response = await request(app.getHttpServer()).post('/auth/login').send({ email: 'carlosboavida@gm.com', user_pass: '123vidaboa' });
         token = response.body.token;
@@ -174,7 +175,6 @@ describe('Report', () => {
           report_content: 'lorem ipsum dolor sit amet',
           report_type: 1
         });
-      
       expect(response.status).toBe(204);
     });
 
@@ -187,7 +187,6 @@ describe('Report', () => {
           report_content: 'lorem ipsum dolor sit amet',
           report_type: 1
         });
-      
       expect(response.status).toBe(401);
     });
 

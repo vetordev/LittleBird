@@ -1,7 +1,8 @@
-import { Controller, Post, Param, Body, Req, HttpCode } from '@nestjs/common';
+import { Controller, Post, Param, Body, Req, HttpCode, UseGuards, UseFilters } from '@nestjs/common';
 import { ReportService } from './report.service';
-import { CreateReportReplyParamDto, CreateReportReplyBodyDto, CreateReportCommentParamDto } from './report.dto';
-import { CreateCommentBodyDto } from 'src/forum/forum.dto';
+import { CreateReportReplyParamDto, CreateReportReplyBodyDto, CreateReportCommentParamDto, CreateReportCommentBodyDto } from './report.dto';
+import { JwtAuthGuard } from '../auth/jwt/jwt-auth.guard';
+import { QueryFailedExceptionFilter } from './http-exception.filter';
 
 @Controller('report')
 export class ReportController {
@@ -10,13 +11,18 @@ export class ReportController {
 
   @Post('reply/:reply_id')
   @HttpCode(204)
+  @UseGuards(JwtAuthGuard)
+  @UseFilters(QueryFailedExceptionFilter)
   createReportReply(@Param() params: CreateReportReplyParamDto, @Body() body: CreateReportReplyBodyDto, @Req() request) {
-    this.reportService.createReportReply(params.reply_id, body, request.user.user_id);
+    return this.reportService.createReportReply(params.reply_id, body, request.user.user_id);
+    // return 'ok'
   };
 
   @Post('comment/:comment_id') 
   @HttpCode(204)
-  createReportComment(@Param() params: CreateReportCommentParamDto, @Body() body: CreateCommentBodyDto, @Req() request) {
-    this.reportService.createReportComment(params.comment_id, body, request.user.user_id);
+  @UseGuards(JwtAuthGuard)
+  @UseFilters(QueryFailedExceptionFilter)
+  createReportComment(@Param() params: CreateReportCommentParamDto, @Body() body: CreateReportCommentBodyDto, @Req() request) {
+    return this.reportService.createReportComment(params.comment_id, body, request.user.user_id);
   };
 }
