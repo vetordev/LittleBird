@@ -88,6 +88,6 @@ export const styles = StyleSheet.create({
    selected: {
       borderWidth: 4,
       borderStyle: 'solid',
-      borderColor: '#000'
+      borderColor: '#000',
    }
 })

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { View, Text, ScrollView, Dimensions } from 'react-native';
 import Carousel from 'react-native-snap-carousel';
 import { Feather } from '@expo/vector-icons';
@@ -21,12 +21,14 @@ import {
   OptionTitle,
   OptionReacts,
   Type,
-  Qtd
+  Qtd,
+  styles
 } from './styles';
 
 const Subjects = () => {
+  const [selectedTheme, setSelectedTheme] = useState(0);
   const win = Dimensions.get('window');
-
+  
   return (
     <Container showsVerticalScrollIndicator={false}>
       <Title>Escolha um assunto</Title>
@@ -37,9 +39,9 @@ const Subjects = () => {
           contentContainerStyle={{ paddingHorizontal: 14 }}
         >
           {themes.map(item => (
-            <Theme key={String(item.theme_id)}>
+            <Theme key={String(item.theme_id)} onPress={() => setSelectedTheme(item.theme_id)}>
               <ThemeImage resizeMode="cover" source={{ uri: item.theme_img.img_url }} />
-              <ThemeImageFilter />
+              <ThemeImageFilter style={selectedTheme === item.theme_id ? styles.selected : {}} />
               <ThemeTitle>{item.theme_name}</ThemeTitle>
             </Theme>
           ))}

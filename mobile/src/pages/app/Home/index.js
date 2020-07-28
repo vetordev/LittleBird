@@ -100,7 +100,7 @@ const Home = () => {
                 data={interests}
                 itemWidth={win.width * 0.8}
                 sliderWidth={win.width}
-                renderItem={({item, index}) => (
+                renderItem={({ item }) => (
                   <CarouselItem winWidth={win.width}>
                     <CarouselImageItem resizeMode={'cover'} source={{ uri: item.theme_img.img_url }} />
                     <CarouselImageFilter/>

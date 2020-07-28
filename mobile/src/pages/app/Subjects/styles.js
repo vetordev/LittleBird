@@ -1,4 +1,5 @@
 import styled from 'styled-components/native';
+import { StyleSheet } from 'react-native';
 import Constants from 'expo-constants';
 
 export const Container = styled.ScrollView`
@@ -38,7 +39,7 @@ export const ThemeImageFilter = styled.View`
    width: 100%;
    height: 100%;
    background: rgba(0, 0, 0, 0.4);
-   border-radius: 7px;
+   border-radius: 6px;
 `;
 
 export const ThemeTitle = styled.Text`
@@ -122,3 +123,11 @@ export const Qtd = styled.Text`
    font-size: 14px;
    margin-left: 5px;
 `;
+
+export const styles = StyleSheet.create({
+   selected: {
+      borderWidth: 2,
+      borderStyle: 'solid',
+      borderColor: '#D85517'
+   }
+});
