@@ -17,6 +17,16 @@ export const Title = styled.Text`
    margin-bottom: 18px;
 `;
 
+export const AllThemes = styled.TouchableOpacity`
+   justify-content: center;
+   align-items: center;
+   margin: 0 7px;
+   background: #000;
+   border-radius: 7px;
+   height: 75px;
+   /* width: 70px; */
+`;
+
 export const Theme = styled.TouchableOpacity`
    width: 110px;
    height: 75px;
@@ -73,7 +83,9 @@ export const SessionTitle = styled.Text`
    margin: 0 13px;
 `;
 
-export const Option = styled.View`
+export const Option = styled.TouchableOpacity.attrs({
+   activeOpacity: 0.7
+})`
    width: ${props => props.winWidth * 0.8}px;
    height: 270px;
    border-radius: 28px;

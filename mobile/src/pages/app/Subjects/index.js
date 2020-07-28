@@ -22,12 +22,17 @@ import {
   OptionReacts,
   Type,
   Qtd,
-  styles
+  styles,
+  AllThemes
 } from './styles';
 
 const Subjects = () => {
   const [selectedTheme, setSelectedTheme] = useState(0);
   const win = Dimensions.get('window');
+
+  function handleSelectedInterests(id) {
+    setSelectedTheme(selectedTheme === id ? 0 : id);
+  }
   
   return (
     <Container showsVerticalScrollIndicator={false}>
@@ -36,10 +41,16 @@ const Subjects = () => {
         <ScrollView 
           horizontal
           showsHorizontalScrollIndicator={false}
-          contentContainerStyle={{ paddingHorizontal: 14 }}
+          contentContainerStyle={{ paddingHorizontal: 14, alignItems: 'center' }}
         >
+          <AllThemes key={String(0)} onPress={() => handleSelectedInterests(0)}>
+            <ThemeImage resizeMode="cover" source={{ uri: 'https://images.unsplash.com/photo-1564115484-a4aaa88d5449?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1050&q=80' }} />
+            <ThemeImageFilter style={selectedTheme === 0 ? styles.selected : {}} />
+            <ThemeTitle>Todos</ThemeTitle>
+          </AllThemes>
+
           {themes.map(item => (
-            <Theme key={String(item.theme_id)} onPress={() => setSelectedTheme(item.theme_id)}>
+            <Theme key={String(item.theme_id)} onPress={() => handleSelectedInterests(item.theme_id)}>
               <ThemeImage resizeMode="cover" source={{ uri: item.theme_img.img_url }} />
               <ThemeImageFilter style={selectedTheme === item.theme_id ? styles.selected : {}} />
               <ThemeTitle>{item.theme_name}</ThemeTitle>
