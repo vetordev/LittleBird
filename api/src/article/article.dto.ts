@@ -19,3 +19,13 @@ export class CreateArticleLikeDto {
   @IsString() @IsNotEmpty()
   article_id: number;
 }
+
+export class CreateArticleLaterDto {
+  @IsString() @IsNotEmpty()
+  article_id: number;
+}
+
+export class DeleteArticleLaterDto {
+  @IsString() @IsNotEmpty()
+  article_id: number;
+}

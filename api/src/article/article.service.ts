@@ -5,6 +5,7 @@ import { Repository } from 'typeorm';
 import { ThemeArticle } from './entity/theme-article.entity';
 import { LikeArticle } from './entity/like-article.entity';
 import { Response } from 'express';
+import { LaterArticle } from './entity/later-article.entity';
 
 @Injectable()
 export class ArticleService {
@@ -12,7 +13,8 @@ export class ArticleService {
   constructor(
     @InjectRepository(Article) private readonly articleRepository: Repository<Article>,
     @InjectRepository(ThemeArticle) private readonly themeArticleRepository: Repository<ThemeArticle>,
-    @InjectRepository(LikeArticle) private readonly likeArticleRepository: Repository<LikeArticle>
+    @InjectRepository(LikeArticle) private readonly likeArticleRepository: Repository<LikeArticle>,
+    @InjectRepository(LaterArticle) private readonly laterArticleRepository: Repository<LaterArticle>
   ) {}
 
   async getArticle(response: Response, article_id: number): Promise<Response | void> {
@@ -157,6 +159,34 @@ export class ArticleService {
         .where('article.article_id = :article_id', { article_id })
         .execute();
     }
+
+    return response.status(204).end();
+  }
+
+  async createArticleLater(user_id: number, article_id: number): Promise<void> {
+    await this.laterArticleRepository.createQueryBuilder("later_article")
+      .insert()
+      .into('like_article').values({
+        article_id,
+        user_id
+      }).execute();
+  }
+
+  async deleteArticleLater(response: Response, user_id: number, article_id: number): Promise<Response | void> {
+    const article = await this.articleRepository.createQueryBuilder('article')
+    .select('article.no_like')
+    .where('article.article_id = :article_id', { article_id })
+    .getOne();
+
+    if (!article) {
+      return response.status(404).json({ error: 'O artigo não foi encontrado.' });
+    };
+
+    await this.laterArticleRepository.createQueryBuilder('later_article')
+      .delete()
+      .where('later_article.user_id = :user_id', { user_id })
+      .where('later_article.article_id = :article_id', { article_id })
+      .execute();
 
     return response.status(204).end();
   }
