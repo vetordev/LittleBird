@@ -29,3 +29,8 @@ export class DeleteArticleLaterDto {
   @IsString() @IsNotEmpty()
   article_id: number;
 }
+
+export class GetArticlesAndForunsDto {
+  @IsString() @IsNotEmpty()
+  limit: number;
+}

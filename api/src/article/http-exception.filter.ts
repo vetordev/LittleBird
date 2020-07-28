@@ -15,7 +15,8 @@ export class QueryFailedExceptionFilter implements ExceptionFilter {
         error: "O artigo não foi encontrado.",
       };
       response.status(404).json(errorResponse);
-    } else
+    } else {
       response.status(500).json({ error: "Erro interno no servidor." });
+    }
   }
 }

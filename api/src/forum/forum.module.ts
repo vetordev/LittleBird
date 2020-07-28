@@ -11,6 +11,7 @@ import { CommentModule } from '../comment/comment.module';
 @Module({
   imports: [TypeOrmModule.forFeature([ ForumImg, Forum, ThemeForum, LikeForum ]), CommentModule],
   controllers: [ForumController],
-  providers: [ForumService]
+  providers: [ForumService],
+  exports: [TypeOrmModule]
 })
 export class ForumModule {}

@@ -6,6 +6,7 @@ import { ThemeArticle } from './entity/theme-article.entity';
 import { LikeArticle } from './entity/like-article.entity';
 import { Response } from 'express';
 import { LaterArticle } from './entity/later-article.entity';
+import { Forum } from '../forum/entity/forum.entity';
 
 @Injectable()
 export class ArticleService {
@@ -14,7 +15,8 @@ export class ArticleService {
     @InjectRepository(Article) private readonly articleRepository: Repository<Article>,
     @InjectRepository(ThemeArticle) private readonly themeArticleRepository: Repository<ThemeArticle>,
     @InjectRepository(LikeArticle) private readonly likeArticleRepository: Repository<LikeArticle>,
-    @InjectRepository(LaterArticle) private readonly laterArticleRepository: Repository<LaterArticle>
+    @InjectRepository(LaterArticle) private readonly laterArticleRepository: Repository<LaterArticle>,
+    @InjectRepository(Forum) private readonly forumRepository: Repository<Forum>
   ) {}
 
   async getArticle(response: Response, article_id: number): Promise<Response | void> {
@@ -189,5 +191,32 @@ export class ArticleService {
       .execute();
 
     return response.status(204).end();
+  }
+
+  async getArticlesAndForuns(limit: number): Promise<any> {
+
+    limit = Number(limit)
+    if (limit % 2 != 0) {
+      limit = limit + 1
+    }
+
+    const articles = await this.articleRepository.createQueryBuilder('article')
+      .select(['article', 'article_img'])
+      .innerJoin('article.article_img_id', 'article_img')
+      .limit(limit / 2)
+      .orderBy('article.publi_date', 'DESC')
+      .getMany();
+
+    const foruns = await this.forumRepository.createQueryBuilder('forum')
+      .select(['forum', 'forum_img'])
+      .innerJoin('forum.forum_img_id', 'forum_img')
+      .limit(limit / 2)
+      .getMany();
+
+    return {
+      articles,
+      foruns
+    };
+    
   }
 }

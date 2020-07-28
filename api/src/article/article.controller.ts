@@ -1,6 +1,6 @@
-import { Controller, Param, Get, Res, Req, Post, Delete, HttpCode, UseGuards, UseFilters } from '@nestjs/common';
+import { Controller, Param, Get, Res, Req, Post, Delete, HttpCode, UseGuards, UseFilters, Query } from '@nestjs/common';
 import { ArticleService } from './article.service';
-import { GetArticleDto, GetArticlesByThemeDto, CreateArticleLikeDto, DeleteArticleLikeDto, CreateArticleLaterDto, DeleteArticleLaterDto } from './article.dto';
+import { GetArticleDto, GetArticlesByThemeDto, CreateArticleLikeDto, DeleteArticleLikeDto, CreateArticleLaterDto, DeleteArticleLaterDto, GetArticlesAndForunsDto } from './article.dto';
 import { JwtAuthGuard } from '../auth/jwt/jwt-auth.guard';
 import { QueryFailedExceptionFilter } from './http-exception.filter';
 import { response, request } from 'express';
@@ -59,5 +59,11 @@ export class ArticleController {
   @UseGuards(JwtAuthGuard)
   deleteArticleLater(@Res() response, @Req() request, @Param() params: DeleteArticleLaterDto) {
     return this.articleService.deleteArticleLater(response, request.user.user_is, params.article_id);
+  }
+
+  @Get('forum/date')
+  @HttpCode(200)
+  getArticlesAndForuns(@Query() query: GetArticlesAndForunsDto) {
+    return this.articleService.getArticlesAndForuns(query.limit);
   }
 }

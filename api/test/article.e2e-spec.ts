@@ -3,6 +3,7 @@ import { TestingModule, Test } from "@nestjs/testing";
 import { AppModule } from "../src/app.module";
 import { getConnection } from "typeorm";
 import * as request from 'supertest';
+import { exec } from "child_process";
 
 describe('Article', () => {
   let app: INestApplication;
@@ -109,7 +110,7 @@ describe('Article', () => {
         title: 'Sexo adolescente',
         article_content: '.....',
         no_like: 1,
-        publi_date: '2020-12-30'
+        publi_date: '2020-12-15'
       };
       const article2 = {
         article_id: 2,
@@ -127,6 +128,12 @@ describe('Article', () => {
         username: 'carlosboaviida',
         born_in: '2020-06-15'
       };
+      const forum = {
+        forum_id: 1,
+        forum_img_id: 1,
+        title: 'Primeira vez',
+        no_like: 123123,
+      };
 
       await getConnection().createQueryBuilder().insert().into("user_img").values({ user_img_id: 1, img_url: "http://localhost:4456" }).execute();
       await getConnection().createQueryBuilder().insert().into("tb_user").values(user).execute();
@@ -139,6 +146,9 @@ describe('Article', () => {
 
       await getConnection().createQueryBuilder().insert().into("article_img").values({ article_img_id: 2, img_url: "http://localhost:4456" }).execute();
       await getConnection().createQueryBuilder().insert().into('article').values(article2).execute();
+
+      await getConnection().createQueryBuilder().insert().into("forum_img").values({ forum_img_id: 1, img_url: "http://localhost:4456" }).execute();
+      await getConnection().createQueryBuilder().insert().into('forum').values(forum).execute();
 
       await getConnection().createQueryBuilder().insert().into("theme_article").values({ theme_article_id: 1, theme_id: 1, article_id: 1 }).execute();
 
@@ -225,6 +235,50 @@ describe('Article', () => {
           article_content: expect.any(String),
           no_like: expect.any(Number),
           publi_date: expect.any(String)
+      }));
+    });
+
+    it('> GET /article/forum Deve retornar artigos e foruns', async () => {
+      const response = await request(app.getHttpServer())
+        .get(`/article/forum/date?limit=${5}`);
+      
+      expect(response.status).toBe(200)
+      expect(response.body).toEqual(expect.objectContaining({
+        articles: [
+          {
+            article_id: expect.any(Number),
+            article_img_id: {
+              article_img_id: expect.any(Number),
+              img_url: expect.any(String),
+            },
+            title: expect.any(String),
+            article_content: expect.any(String),
+            no_like: expect.any(Number),
+            publi_date: expect.any(String)
+          },
+          {
+            article_id: expect.any(Number),
+            article_img_id: {
+              article_img_id: expect.any(Number),
+              img_url: expect.any(String),
+            },
+            title: expect.any(String),
+            article_content: expect.any(String),
+            no_like: expect.any(Number),
+            publi_date: expect.any(String)
+          }
+        ],
+        foruns: [
+          {
+            forum_id: expect.any(Number),
+            title: expect.any(String),
+            no_like: expect.any(Number),
+            forum_img_id: {
+              forum_img_id: expect.any(Number),
+              img_url: expect.any(String)
+            }
+          }
+        ]
       }));
     });
   });

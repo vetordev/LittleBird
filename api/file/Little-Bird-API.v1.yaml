@@ -487,9 +487,14 @@ paths:
                       properties:
                         title:
                           type: string
-                        forum_img:
-                          type: string
+                        forum_img_id:
+                          type: object
                           format: uri
+                          properties:
+                            forum_img_id:
+                              type: integer
+                            forum_img:
+                              type: string
                         theme:
                           type: string
                         no_like:
@@ -506,9 +511,14 @@ paths:
                           type: string
                         theme:
                           type: string
-                        article_img:
-                          type: string
+                        article_img_id:
+                          type: object
                           format: uri
+                          properties:
+                            article_img_id:
+                              type: integer
+                            forum_img:
+                              type: string
                         no_like:
                           type: integer
                           format: int64
