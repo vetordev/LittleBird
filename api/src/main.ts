@@ -9,3 +9,8 @@ async function bootstrap() {
   await app.listen(3333);
 }
 bootstrap();
+
+// HOST=localhost
+// PORT=5432
+// USERDB=postgres
+// PASSWORD=postgre
