@@ -9,6 +9,7 @@ import Subjects from '../pages/app/Subjects';
 import Settings from '../pages/app/Settings';
 import Articles from '../pages/app/Articles';
 import Webview from '../pages/app/Webview';
+import Reform from '../pages/app/Reform';
 
 import BottomTabBar from '../components/BottomTabBar';
 import HeaderBtnBack from '../components/HeaderBtnBack';
@@ -26,6 +27,7 @@ const AppRoutes = () => (
       <AppStack.Screen name="Home" component={BottomRoutes} options={{ headerShown: false }} />
       <AppBottom.Screen name="Settings" component={Settings} />
       <AppBottom.Screen name="Articles" component={Articles} />
+      <AppBottom.Screen name="Reform" component={Reform} />
       <AppBottom.Screen name="Webview" component={Webview} options={{ headerShown: true, headerTitle: '' }} />
    </AppStack.Navigator>
 );

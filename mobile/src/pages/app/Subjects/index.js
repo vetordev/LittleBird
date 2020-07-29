@@ -114,7 +114,6 @@ const Subjects = () => {
       </SessionHeader>
 
       <Carousel 
-        
         layout="tinder"
         layoutCardOffset={9}
         firstItem={themes.length - 1}

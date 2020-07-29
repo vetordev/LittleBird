@@ -5,8 +5,7 @@ import Constants from 'expo-constants';
 export const Container = styled.ScrollView`
    flex: 1;
    background: #121212;
-   padding-top: ${Constants.statusBarHeight + 40 + 'px'};
-   /* margin-bottom: 55px; */
+   padding-top: ${Constants.statusBarHeight + 40}px;
 `;
 
 export const Title = styled.Text`
