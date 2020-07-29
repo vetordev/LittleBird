@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Feather, MaterialIcons } from '@expo/vector-icons';
+import { View } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import HTMLView from 'react-native-htmlview';
 
@@ -21,6 +22,7 @@ import {
    Tags,
    Tag,
    TagTitle,
+   TagSessionTitle,
    styles
 } from './styles';
 
@@ -56,22 +58,31 @@ const Articles = () => {
                   <MaterialIcons name='verified-user' size={18} color="#3B9E8C" />
                </Author>
 
-               <Tags>
-                  <Tag>
-                     <TagTitle>Adolescência</TagTitle>
-                  </Tag>
-                  <Tag>
-                     <TagTitle>Hormônios</TagTitle>
-                  </Tag>
-                  <Tag>
-                     <TagTitle>Sexo</TagTitle>
-                  </Tag>
-               </Tags>
-
                <HTMLView 
                   value={article}
                   stylesheet={styles}
                />
+
+               <View style={{ width: '100%' }}>
+                  <TitleRecommendations>Tags:</TitleRecommendations>
+                  <Tags 
+                     horizontal
+                     showsHorizontalScrollIndicator={false}
+                  >
+                     <Tag>
+                        <TagTitle>Adolescência</TagTitle>
+                     </Tag>
+                     <Tag>
+                        <TagTitle>Puberdade</TagTitle>
+                     </Tag>
+                     <Tag>
+                        <TagTitle>Hormônios</TagTitle>
+                     </Tag>
+                     <Tag>
+                        <TagTitle>Sexo</TagTitle>
+                     </Tag>
+                  </Tags>
+               </View>
 
                <Recommendations>
                   <TitleRecommendations>Saiba mais:</TitleRecommendations>

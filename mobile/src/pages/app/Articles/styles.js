@@ -24,13 +24,13 @@ export const Title = styled.Text`
    color: #E9E9E9;
    font-family: Ubuntu_700Bold;
    font-size: 24px;
-   margin: 0 0 8px;
+   margin-bottom: 8px;
 `;
 
 export const Author = styled.View`
    flex-direction: row;
    align-items: center;
-   margin-bottom: 20px;
+   margin-bottom: 25px;
 `;
 
 export const AuthorName = styled.Text`
@@ -56,18 +56,31 @@ export const Option = styled.TouchableOpacity`
    margin: 0 5px;
 `;
 
-export const Tags = styled.View`
+export const TagSessionTitle = styled.Text`
+   color: #E9E9E9;
+   font-family: Ubuntu_700Bold;
+   font-size: 20px;
+   margin-bottom: 17px;
+`;
+
+export const Tags = styled.ScrollView`
    margin-bottom: 23px;
    margin-right: -5px;
    flex-direction: row;
+   width: 100%;
 `;
 
-export const Tag = styled.View`
+export const Tag = styled.TouchableOpacity`
    border: 1px solid #AE2C6B;
    margin: 0 5px;
+   padding: 5px 14px;
+   border-radius: 10px;
 `;
 
-export const TagTitle = styled.Text``;
+export const TagTitle = styled.Text`
+   font-family: Ubuntu_500Medium;
+   color: #AE2C6B;
+`;
 
 export const Recommendations = styled.View`
    background: #202020;
