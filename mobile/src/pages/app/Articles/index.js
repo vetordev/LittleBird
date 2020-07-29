@@ -1,5 +1,4 @@
-import React, { useState, useCallback } from 'react';
-import { Alert, Linking } from 'react-native';
+import React, { useState } from 'react';
 import { Feather, MaterialIcons } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
 
@@ -22,37 +21,13 @@ import {
 
 import HeaderBtnBack from '../../../components/HeaderBtnBack';
 
-// const OpenURLButton = ({ url, children }) => {
-//    const handlePress = useCallback(async () => {
-//       const supported = await Linking.canOpenURL(url);
-
-//       if (supported) {
-//          await Linking.openURL(url);
-//       } else {
-//          Alert.alert('Há um problema com esse link...');
-//       }
-//    }, [url]);
-
-//    return (
-//       <LinkItemContainer onPress={handlePress} title={children}>
-//          <LinkItem>www.spotify.br</LinkItem>
-//       </LinkItemContainer>
-//    )
-// }
-
 const Articles = () => {
    const [liked, setLiked] = useState(false);
    const [saved, setSaved] = useState(false);
    const navigation = useNavigation();
 
-   async function handlePress(url) {
-      const supported = await Linking.canOpenURL(url);
-
-      if (supported) {
-         await Linking.openURL(url);
-      } else {
-         Alert.alert('Há um problema com esse link...');
-      }
+   function openWebView(url) {
+      navigation.navigate('Webview', { link: url });
    }
 
    return (
@@ -79,14 +54,14 @@ const Articles = () => {
                   <Item>
                      <Feather name="check" color="#834397" size={25} />
                      <TitleItem>Vídeo:</TitleItem>
-                     <LinkItemContainer onPress={() => navigation.navigate('Webview')}>
+                     <LinkItemContainer onPress={() => openWebView('https://open.spotify.com/track/4QVS8YCpK71R4FsxSMCjhP?si=QDb97iMUT_K-SH-emqqmDw')}>
                         <LinkItem>www.com.br</LinkItem>
                      </LinkItemContainer>
                   </Item>
                   <Item>
                      <Feather name="check" color="#834397" size={25} />
                      <TitleItem>Podcast:</TitleItem>
-                     <LinkItemContainer>
+                     <LinkItemContainer onPress={() => openWebView('https://www.youtube.com/')}>
                         <LinkItem>www.com.br</LinkItem>
                      </LinkItemContainer>
                   </Item>
