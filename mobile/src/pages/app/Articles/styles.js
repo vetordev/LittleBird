@@ -1,4 +1,5 @@
 import styled from 'styled-components/native';
+import { StyleSheet } from 'react-native';
 
 export const Container = styled.ScrollView`
    flex: 1; 
@@ -6,7 +7,6 @@ export const Container = styled.ScrollView`
 export const Cover = styled.ImageBackground`
    width: 100%;
    height: 230px;
-   /* position: absolute; */
 `;
 
 export const Content = styled.View`
@@ -27,23 +27,20 @@ export const Title = styled.Text`
    margin: 0 0 8px;
 `;
 
-export const Author = styled.Text`
+export const Author = styled.View`
+   flex-direction: row;
+   align-items: center;
+   margin-bottom: 20px;
+`;
+
+export const AuthorName = styled.Text`
    color: #787878;
    font-family: Nunito_400Regular;
    font-size: 15px;
-   margin-bottom: 23px;
-`;
-
-export const Text = styled.Text`
-   color: #B8B8B8;
-   font-family: Nunito_400Regular;
-   font-size: 19px;
-   line-height: 30px;
-   text-align: justify;
+   margin-right: 4px;
 `;
 
 export const Options = styled.View`
-   /* background: #f00; */
    flex-direction: row-reverse;
    padding: 0 10px;
 `;
@@ -56,8 +53,21 @@ export const Option = styled.TouchableOpacity`
    top: -26px;
    justify-content: center;
    align-items: center;
-   margin: 0 10px;
+   margin: 0 5px;
 `;
+
+export const Tags = styled.View`
+   margin-bottom: 23px;
+   margin-right: -5px;
+   flex-direction: row;
+`;
+
+export const Tag = styled.View`
+   border: 1px solid #AE2C6B;
+   margin: 0 5px;
+`;
+
+export const TagTitle = styled.Text``;
 
 export const Recommendations = styled.View`
    background: #202020;
@@ -74,7 +84,6 @@ export const TitleRecommendations = styled.Text`
 
 export const Item = styled.View`
    flex-direction: row;
-   align-items: center;
 `;
 
 export const TitleItem = styled.Text`
@@ -96,3 +105,25 @@ export const LinkItemContainer = styled.TouchableOpacity`
    border-bottom-width: 3px;
    border-bottom-color: #834397;
 `;
+
+export const styles = StyleSheet.create({
+   t: {
+      color: '#B8B8B8',
+      fontFamily: 'Nunito_400Regular',
+      fontSize: 19,
+      lineHeight: 30,
+      textAlign: 'justify',
+   },
+
+   marker1: {
+      backgroundColor: 'rgba(215, 76, 176, 0.24)',
+   },
+
+   marker2: {
+      backgroundColor: 'rgba(76, 190, 215, 0.24)',
+   },
+
+   marker3: {
+      backgroundColor: 'rgba(154, 76, 215, 0.24)',
+   }
+});

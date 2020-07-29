@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Feather, MaterialIcons } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
+import HTMLView from 'react-native-htmlview';
 
 import { 
    Container,
@@ -8,7 +9,7 @@ import {
    Title,
    Cover,
    Author,
-   Text,
+   AuthorName,
    Options,
    Option,
    Recommendations,
@@ -16,7 +17,11 @@ import {
    Item,
    TitleItem,
    LinkItem,
-   LinkItemContainer
+   LinkItemContainer,
+   Tags,
+   Tag,
+   TagTitle,
+   styles
 } from './styles';
 
 import HeaderBtnBack from '../../../components/HeaderBtnBack';
@@ -25,6 +30,8 @@ const Articles = () => {
    const [liked, setLiked] = useState(false);
    const [saved, setSaved] = useState(false);
    const navigation = useNavigation();
+
+   const article = '<t>Lorem ipsum dolor sit amet, <marker1>consectetur adipiscing elit</marker1>, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. \nUt enim ad minim veniam, quis nostrud <marker2>exercitation</marker2> ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in <marker3>reprehenderit in voluptate</marker3> velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.<t>'
 
    function openWebView(url) {
       navigation.navigate('Webview', { link: url });
@@ -44,11 +51,28 @@ const Articles = () => {
                   </Option>
                </Options>
                <Title>As mudanças durante a puberdade</Title>
-               <Author>Dra. Cláudia Alcubierre</Author>
-               <Text>
-                  Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. 
-                  Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
-               </Text>
+               <Author>
+                  <AuthorName>Dra. Cláudia Alcubierre</AuthorName>
+                  <MaterialIcons name='verified-user' size={18} color="#3B9E8C" />
+               </Author>
+
+               <Tags>
+                  <Tag>
+                     <TagTitle>Adolescência</TagTitle>
+                  </Tag>
+                  <Tag>
+                     <TagTitle>Hormônios</TagTitle>
+                  </Tag>
+                  <Tag>
+                     <TagTitle>Sexo</TagTitle>
+                  </Tag>
+               </Tags>
+
+               <HTMLView 
+                  value={article}
+                  stylesheet={styles}
+               />
+
                <Recommendations>
                   <TitleRecommendations>Saiba mais:</TitleRecommendations>
                   <Item>
@@ -62,7 +86,7 @@ const Articles = () => {
                      <Feather name="check" color="#834397" size={25} />
                      <TitleItem>Podcast:</TitleItem>
                      <LinkItemContainer onPress={() => openWebView('https://www.youtube.com/')}>
-                        <LinkItem>www.com.br</LinkItem>
+                        <LinkItem>Oww.com</LinkItem>
                      </LinkItemContainer>
                   </Item>
                </Recommendations>
