@@ -84,7 +84,7 @@ export const SessionTitle = styled.Text`
 `;
 
 export const Option = styled.TouchableOpacity.attrs({
-   activeOpacity: 0.7
+   activeOpacity: 1
 })`
    width: ${props => props.winWidth * 0.8}px;
    height: 270px;
@@ -123,7 +123,13 @@ export const OptionReacts = styled.View`
    justify-content: space-between;
 `;
 
-export const Type = styled.View`
+export const Comments = styled.View`
+   flex-direction: row;
+   align-items: center;
+   padding: 0 5px;
+`;
+
+export const Likes = styled.View`
    flex-direction: row;
    align-items: center;
    padding: 0 5px;

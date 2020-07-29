@@ -7,16 +7,26 @@ import Home from '../pages/app/Home';
 import Profile from '../pages/app/Profile';
 import Subjects from '../pages/app/Subjects';
 import Settings from '../pages/app/Settings';
+import Articles from '../pages/app/Articles';
+import Webview from '../pages/app/Webview';
 
 import BottomTabBar from '../components/BottomTabBar';
+import HeaderBtnBack from '../components/HeaderBtnBack';
 
 const AppStack = createStackNavigator();
 const AppBottom = createBottomTabNavigator();
 
 const AppRoutes = () => (
-   <AppStack.Navigator screenOptions={{ cardStyle: { backgroundColor: '#121212' } }}>
+   <AppStack.Navigator 
+      screenOptions={{ 
+         cardStyle: { backgroundColor: '#121212' },
+         headerShown: false
+         // header: props => <HeaderBtnBack {... props} />
+      }}>
       <AppStack.Screen name="Home" component={BottomRoutes} options={{ headerShown: false }} />
       <AppBottom.Screen name="Settings" component={Settings} />
+      <AppBottom.Screen name="Articles" component={Articles} />
+      <AppBottom.Screen name="Webview" component={Webview} options={{ headerShown: true, headerTitle: '' }} />
    </AppStack.Navigator>
 );
 

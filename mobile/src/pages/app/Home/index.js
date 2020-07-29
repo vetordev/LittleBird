@@ -98,6 +98,7 @@ const Home = () => {
               <Carousel 
                 layout="default"
                 data={interests}
+                firstItem={1}
                 itemWidth={win.width * 0.8}
                 sliderWidth={win.width}
                 renderItem={({ item }) => (

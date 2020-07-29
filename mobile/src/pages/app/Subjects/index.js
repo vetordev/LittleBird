@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
 import { View, Text, ScrollView, Dimensions } from 'react-native';
 import Carousel from 'react-native-snap-carousel';
-import { Feather } from '@expo/vector-icons';
+import { Feather, MaterialIcons } from '@expo/vector-icons';
+import { useNavigation } from '@react-navigation/native';
 
 import themes from '../../../services/themes';
 
@@ -20,7 +21,8 @@ import {
   OptionInfos,
   OptionTitle,
   OptionReacts,
-  Type,
+  Comments,
+  Likes,
   Qtd,
   styles,
   AllThemes
@@ -29,9 +31,14 @@ import {
 const Subjects = () => {
   const [selectedTheme, setSelectedTheme] = useState(0);
   const win = Dimensions.get('window');
+  const navigation = useNavigation();
 
-  function handleSelectedInterests(id) {
+  function handleThemeFilter(id) {
     setSelectedTheme(selectedTheme === id ? 0 : id);
+  }
+
+  function navigateToArticles(item) {
+    navigation.navigate('Articles');
   }
   
   return (
@@ -43,15 +50,27 @@ const Subjects = () => {
           showsHorizontalScrollIndicator={false}
           contentContainerStyle={{ paddingHorizontal: 14, alignItems: 'center' }}
         >
-          <AllThemes key={String(0)} onPress={() => handleSelectedInterests(0)}>
-            <ThemeImage resizeMode="cover" source={{ uri: 'https://images.unsplash.com/photo-1564115484-a4aaa88d5449?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1050&q=80' }} />
+          <AllThemes 
+            key={String(0)} 
+            onPress={() => handleThemeFilter(0)}
+          >
+            <ThemeImage 
+              resizeMode="cover" 
+              source={{ uri: 'https://images.unsplash.com/photo-1564115484-a4aaa88d5449?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1050&q=80' }} 
+            />
             <ThemeImageFilter style={selectedTheme === 0 ? styles.selected : {}} />
             <ThemeTitle>Todos</ThemeTitle>
           </AllThemes>
 
           {themes.map(item => (
-            <Theme key={String(item.theme_id)} onPress={() => handleSelectedInterests(item.theme_id)}>
-              <ThemeImage resizeMode="cover" source={{ uri: item.theme_img.img_url }} />
+            <Theme 
+              key={String(item.theme_id)} 
+              onPress={() => handleThemeFilter(item.theme_id)}
+            >
+              <ThemeImage 
+                resizeMode="cover" 
+                source={{ uri: item.theme_img.img_url }} 
+                />
               <ThemeImageFilter style={selectedTheme === item.theme_id ? styles.selected : {}} />
               <ThemeTitle>{item.theme_name}</ThemeTitle>
             </Theme>
@@ -73,15 +92,15 @@ const Subjects = () => {
           itemWidth={win.width * 0.8}
           sliderWidth={win.width}
           renderItem={({ item }) => (
-            <Option winWidth={win.width}>
+            <Option winWidth={win.width} onPress={() => navigateToArticles(item)}>
               <OptionImage resizeMode="cover" source={{ uri: item.theme_img.img_url }} />
               <OptionInfos>
                 <OptionTitle>As mudanças durante a puberdade</OptionTitle>
                 <OptionReacts>
-                  <Type>
-                    <Feather name="heart" color="#F6F6F6" size={17} />
+                  <Likes>
+                  <Feather name="heart" color="#F6F6F6" size={17} />
                     <Qtd>321</Qtd>
-                  </Type>
+                  </Likes>
                 </OptionReacts>
               </OptionInfos>
             </Option>
@@ -104,18 +123,21 @@ const Subjects = () => {
         sliderWidth={win.width}
         renderItem={({ item }) => (
           <Option winWidth={win.width} style={{ marginBottom: 65 }}>
-            <OptionImage resizeMode="cover" source={{ uri: item.theme_img.img_url }} />
+            <OptionImage 
+              resizeMode="cover" 
+              source={{ uri: item.theme_img.img_url }} 
+            />
             <OptionInfos>
               <OptionTitle>As mudanças durante a puberdade</OptionTitle>
               <OptionReacts>
-                <Type>
+                <Likes>
                   <Feather name="heart" color="#F6F6F6" size={17} />
                   <Qtd>321</Qtd>
-                </Type>
-                <Type>
+                </Likes>
+                <Comments>
                   <Feather name="message-square" color="#F6F6F6" size={17} />
                   <Qtd>54</Qtd>
-                </Type>
+                </Comments>
               </OptionReacts>
             </OptionInfos>
           </Option>

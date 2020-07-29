@@ -38,7 +38,7 @@ const BottomTabBar = ({ state, descriptors, navigation }) => {
             return (
                <>
                { isFocused ? 
-                  <OptionSelected key={options.tabBarTestID}>
+                  <OptionSelected key={label}>
                      <BtnSelected
                         accessibilityStates={isFocused ? ['selected'] : []}
                         accessibilityLabel={options.tabBarAccessibilityLabel}
@@ -46,21 +46,21 @@ const BottomTabBar = ({ state, descriptors, navigation }) => {
                         onPress={navigateTo}
                         color={options.color}
                      >
-                        <Text>
-                           <Feather name={options.iconName} size={26} color="#eee" />
+                        <Text key={label}>
+                           <Feather key={label} name={options.iconName} size={26} color="#eee" />
                         </Text>
                      </BtnSelected>
                   </OptionSelected>
                : 
                   <OptionNotSelected
-                     key={options.tabBarTestID}
+                     key={label}
                      accessibilityStates={isFocused ? ['selected'] : []}
                      accessibilityLabel={options.tabBarAccessibilityLabel}
                      testID={options.tabBarTestID}
                      onPress={navigateTo}
                   >
-                     <Text>
-                        <Feather name={options.iconName} size={26} color="#eee" />
+                     <Text key={label}>
+                        <Feather key={label} name={options.iconName} size={26} color="#eee" />
                      </Text>
                   </OptionNotSelected>
                   }
