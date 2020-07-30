@@ -34,6 +34,7 @@ export class ForumService {
       .where('theme_forum.theme_id = :theme_id', { theme_id })
       .orderBy('forum.no_like', 'ASC')
       .offset((page - 1) * 5)
+      .limit(6)
       .getMany();
 
     foruns = foruns.map( (forum) => {
@@ -50,6 +51,7 @@ export class ForumService {
       .innerJoin('forum.forum_img_id', 'forum_img')
       .orderBy('forum.no_like', 'ASC')
       .offset((page - 1) * 5)
+      .limit(6)
       .getMany();
 
     return foruns;
@@ -63,6 +65,7 @@ export class ForumService {
       .where('like_forum.user_id = :user_id', { user_id })
       .orderBy('forum.no_like', 'ASC')
       .offset((page - 1) * 5)
+      .limit(6)
       .getMany();
 
     foruns = foruns.map( (forum) => {
@@ -90,6 +93,7 @@ export class ForumService {
       .select(['tb_comment'])
       .where('tb_comment.forum_id = :forum_id', { forum_id })
       .offset((page - 1) * 5)
+      .limit(6)
       .getMany();
 
     comments = comments.map( (comment) => {

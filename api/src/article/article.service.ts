@@ -59,6 +59,7 @@ export class ArticleService {
       .innerJoin('article.article_img_id', 'article_img')
       .orderBy('article.no_like', 'ASC')
       .offset((page - 1) * 5)
+      .limit(6)
       .getMany();
 
     return articles;
@@ -72,6 +73,7 @@ export class ArticleService {
       .where('like_article.user_id = :user_id', { user_id })
       .orderBy('article.no_like', 'ASC')
       .offset((page - 1) * 5)
+      .limit(6)
       .getMany();
 
     articles = articles.map((article) => {
@@ -102,6 +104,7 @@ export class ArticleService {
       .where('theme_article.theme_id = :theme_id', { theme_id })
       .orderBy('article.no_like', 'ASC')
       .offset((page - 1) * 5)
+      .limit(6)
       .getMany();
 
     articles = articles.map((article) => {
