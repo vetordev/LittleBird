@@ -1,10 +1,8 @@
 import { Controller, Param, Get, Res, Req, Post, Delete, HttpCode, UseGuards, UseFilters, Query } from '@nestjs/common';
 import { ArticleService } from './article.service';
-import { GetArticleDto, GetArticlesByThemeDto, CreateArticleLikeDto, DeleteArticleLikeDto, CreateArticleLaterDto, DeleteArticleLaterDto, GetArticlesAndForunsDto } from './article.dto';
+import { GetArticleDto, GetArticlesByThemeDto, CreateArticleLikeDto, DeleteArticleLikeDto, CreateArticleLaterDto, DeleteArticleLaterDto, GetArticlesAndForunsDto, QueryPageDto } from './article.dto';
 import { JwtAuthGuard } from '../auth/jwt/jwt-auth.guard';
 import { QueryFailedExceptionFilter } from './http-exception.filter';
-import { response, request } from 'express';
-import { report } from 'process';
 
 @Controller('article')
 export class ArticleController {
@@ -18,19 +16,19 @@ export class ArticleController {
 
   @Get()
   @HttpCode(200)
-  getArticleByLike() {
-    return this.articleService.getArticlesByLike();
+  getArticleByLike(@Query() query: QueryPageDto) {
+    return this.articleService.getArticlesByLike(query.page);
   }
 
   @Get('user/like')
   @UseGuards(JwtAuthGuard)
-  getArticlesByUserLike(@Req() request) {
-    return this.articleService.getArticlesByUserLike(request.user.user_id);
+  getArticlesByUserLike(@Req() request, @Query() query: QueryPageDto) {
+    return this.articleService.getArticlesByUserLike(request.user.user_id, query.page);
   }
 
   @Get('theme/:theme_id/like')
-  getArticlesByTheme(@Res() response, @Param() params: GetArticlesByThemeDto) {
-    return this.articleService.getArticlesByTheme(response, params.theme_id);
+  getArticlesByTheme(@Res() response, @Param() params: GetArticlesByThemeDto, @Query() query: QueryPageDto) {
+    return this.articleService.getArticlesByTheme(response, params.theme_id, query.page);
   }
 
   @Post(':article_id/later')
@@ -40,7 +38,7 @@ export class ArticleController {
   createArticleLater(@Req() request, @Param() params: CreateArticleLaterDto) {
     return this.articleService.createArticleLater(request.user.user_id, params.article_id);
   }
-  
+
   @Post(':article_id/like')
   @HttpCode(204)
   @UseGuards(JwtAuthGuard)
@@ -64,6 +62,6 @@ export class ArticleController {
   @Get('forum/date')
   @HttpCode(200)
   getArticlesAndForuns(@Query() query: GetArticlesAndForunsDto) {
-    return this.articleService.getArticlesAndForuns(query.limit);
+    return this.articleService.getArticlesAndForuns(query.limit, query.page);
   }
 }

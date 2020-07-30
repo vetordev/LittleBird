@@ -53,23 +53,25 @@ export class ArticleService {
     return response.status(200).json(theme_article);
   }
 
-  async getArticlesByLike(): Promise<Article[]> {
+  async getArticlesByLike(page: number): Promise<Article[]> {
     const articles = await this.articleRepository.createQueryBuilder('article')
       .select(['article', 'article_img'])
       .innerJoin('article.article_img_id', 'article_img')
-      .orderBy('article.no_like', 'DESC')
+      .orderBy('article.no_like', 'ASC')
+      .offset((page - 1) * 5)
       .getMany();
 
     return articles;
   }
 
-  async getArticlesByUserLike(user_id: number): Promise<LikeArticle[]> {
+  async getArticlesByUserLike(user_id: number, page: number): Promise<LikeArticle[]> {
     let articles = await this.likeArticleRepository.createQueryBuilder('like_article')
       .select(['like_article', 'article', 'article_img'])
       .innerJoin('like_article.article_id', 'article')
       .innerJoin('article.article_img_id', 'article_img')
       .where('like_article.user_id = :user_id', { user_id })
-      .orderBy('article.no_like', 'DESC')
+      .orderBy('article.no_like', 'ASC')
+      .offset((page - 1) * 5)
       .getMany();
 
     articles = articles.map((article) => {
@@ -82,7 +84,7 @@ export class ArticleService {
     return articles;
   }
 
-  async getArticlesByTheme(response: Response, theme_id: number): Promise<Response> {
+  async getArticlesByTheme(response: Response, theme_id: number, page: number): Promise<Response> {
 
     const theme = await this.themeArticleRepository.createQueryBuilder('theme_article')
       .select(['theme_article.theme_id'])
@@ -98,7 +100,8 @@ export class ArticleService {
       .innerJoin('theme_article.article_id', 'article')
       .innerJoin('article.article_img_id', 'article_img')
       .where('theme_article.theme_id = :theme_id', { theme_id })
-      .orderBy('article.no_like', 'DESC')
+      .orderBy('article.no_like', 'ASC')
+      .offset((page - 1) * 5)
       .getMany();
 
     articles = articles.map((article) => {
@@ -193,7 +196,7 @@ export class ArticleService {
     return response.status(204).end();
   }
 
-  async getArticlesAndForuns(limit: number): Promise<any> {
+  async getArticlesAndForuns(limit: number, page: number): Promise<any> {
 
     limit = Number(limit)
     if (limit % 2 != 0) {
@@ -204,19 +207,21 @@ export class ArticleService {
       .select(['article', 'article_img'])
       .innerJoin('article.article_img_id', 'article_img')
       .limit(limit / 2)
-      .orderBy('article.publi_date', 'DESC')
+      .offset((page - 1) * 5)
+      .orderBy('article.publi_date', 'ASC')
       .getMany();
 
     const foruns = await this.forumRepository.createQueryBuilder('forum')
       .select(['forum', 'forum_img'])
       .innerJoin('forum.forum_img_id', 'forum_img')
       .limit(limit / 2)
+      .offset((page - 1) * 5)
       .getMany();
 
     return {
       articles,
       foruns
     };
-    
+
   }
 }

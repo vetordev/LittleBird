@@ -32,7 +32,7 @@ export class ForumService {
       .innerJoin('theme_forum.forum_id', 'forum')
       .innerJoin('forum.forum_img_id', 'forum_img')
       .where('theme_forum.theme_id = :theme_id', { theme_id })
-      .orderBy('forum.no_like', 'DESC')
+      .orderBy('forum.no_like', 'ASC')
       .getMany();
 
     foruns = foruns.map( (forum) => {
@@ -47,7 +47,7 @@ export class ForumService {
     const foruns = await this.forumRepository.createQueryBuilder('forum')
       .select(['forum', 'forum_img'])
       .innerJoin('forum.forum_img_id', 'forum_img')
-      .orderBy('forum.no_like', 'DESC')
+      .orderBy('forum.no_like', 'ASC')
       .getMany();
 
     return foruns;
@@ -59,7 +59,7 @@ export class ForumService {
       .innerJoin('like_forum.forum_id', 'forum')
       .innerJoin('forum.forum_img_id', 'forum_img')
       .where('like_forum.user_id = :user_id', { user_id })
-      .orderBy('forum.no_like', 'DESC')
+      .orderBy('forum.no_like', 'ASC')
       .getMany();
 
     return foruns;

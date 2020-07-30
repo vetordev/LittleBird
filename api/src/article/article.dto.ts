@@ -33,4 +33,12 @@ export class DeleteArticleLaterDto {
 export class GetArticlesAndForunsDto {
   @IsString() @IsNotEmpty()
   limit: number;
+
+  @IsString() @IsNotEmpty()
+  page: number;
+}
+
+export class QueryPageDto {
+  @IsString() @IsNotEmpty()
+  page: number;
 }

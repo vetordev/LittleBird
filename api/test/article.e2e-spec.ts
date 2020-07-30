@@ -161,7 +161,7 @@ describe('Article', () => {
     it('> GET /article/user/like Deve retornar os artigos com o like do usuário', async () => {
 
       const response = await request(app.getHttpServer())
-        .get('/article/user/like')
+        .get('/article/user/like?page=1')
         .set('Authorization', `Bearer ${token}`);
 
       expect(response.status).toBe(200);
@@ -182,7 +182,7 @@ describe('Article', () => {
     });
     it('> GET /article/user/like Não deve retornar os artigos com o like do usuário (Token JWT inválido)', async () => {
       const response = await request(app.getHttpServer())
-        .get('/article/user/like')
+        .get('/article/user/like?page=1')
         .set('Authorization', `Bearer ${token}errado`);
 
       expect(response.status).toBe(401);
@@ -191,7 +191,7 @@ describe('Article', () => {
     it('> GET /article/theme/:theme_id/like Deve retornar os artigos de um tema ordenados pelo like', async () => {
       const theme_id = 1;
       const response = await request(app.getHttpServer())
-        .get(`/article/theme/${theme_id}/like`);
+        .get(`/article/theme/${theme_id}/like?page=1`);
 
       expect(response.status).toBe(200);
       expect(response.body[0]).toEqual(expect.objectContaining({
@@ -212,7 +212,7 @@ describe('Article', () => {
     it('> GET /article/theme/:theme_id/like Não deve retornar os artigos de um tema ordenados pelo like (Tema não encontrado)', async () => {
       const theme_id = 2;
       const response = await request(app.getHttpServer())
-        .get(`/article/theme/${theme_id}/like`);
+        .get(`/article/theme/${theme_id}/like?page=1`);
 
       expect(response.status).toBe(404);
       expect(response.body).toEqual(expect.objectContaining({
@@ -222,7 +222,7 @@ describe('Article', () => {
 
     it('> GET /article Deve retornar os artigos ordenados pelo like', async () => {
       const response = await request(app.getHttpServer())
-        .get('/article');
+        .get('/article?page=1');
 
       expect(response.status).toBe(200);
       expect(response.body[0]).toEqual(expect.objectContaining({
@@ -240,8 +240,8 @@ describe('Article', () => {
 
     it('> GET /article/forum Deve retornar artigos e foruns', async () => {
       const response = await request(app.getHttpServer())
-        .get(`/article/forum/date?limit=${5}`);
-      
+        .get(`/article/forum/date?limit=${5}&page=1`);
+
       expect(response.status).toBe(200)
       expect(response.body).toEqual(expect.objectContaining({
         articles: [
@@ -531,7 +531,7 @@ describe('Article', () => {
 
       expect(response.status).toBe(401);
     });
-    
+
     it('> POST /article/:article_id/later Não deve remover um ler mais tarde (Artigo não encontrado)', async () => {
       const article_id = 2;
       const response = await request(app.getHttpServer())
