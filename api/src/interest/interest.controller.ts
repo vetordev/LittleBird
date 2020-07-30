@@ -1,5 +1,5 @@
-import { Controller, Post, Get, Delete, Req, Body, Param, UseGuards, HttpCode, Res, UseFilters } from '@nestjs/common';
-import { CreateInterestDto, DeleteInterestDto } from './interest.dto';
+import { Controller, Post, Get, Delete, Req, Body, Param, UseGuards, HttpCode, Res, UseFilters, Query } from '@nestjs/common';
+import { CreateInterestDto, DeleteInterestDto, QueryPageDto } from './interest.dto';
 import { InterestService } from './interest.service';
 import { JwtAuthGuard } from '../auth/jwt/jwt-auth.guard';
 import { Response } from 'express';
@@ -21,8 +21,8 @@ export class InterestController {
   @Get()
   @UseGuards(JwtAuthGuard)
   @HttpCode(200)
-  getInterestByUser(@Req() request) {
-    return this.interestService.getInterestByUser(request.user.user_id);
+  getInterestByUser(@Req() request, @Query() query: QueryPageDto) {
+    return this.interestService.getInterestByUser(request.user.user_id, query.page);
   }
 
   @Delete(':interest_id')

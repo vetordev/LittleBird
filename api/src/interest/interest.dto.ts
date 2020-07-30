@@ -13,3 +13,9 @@ export class DeleteInterestDto {
   interest_id: number;
 
 }
+
+export class QueryPageDto {
+  @IsString() @IsNotEmpty()
+  page: number;
+
+}

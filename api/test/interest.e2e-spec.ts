@@ -108,7 +108,7 @@ describe('Interest', () => {
 
     it('> GET /interest Deve retornar os interesses do usuário', async () => {
       const response = await request(app.getHttpServer())
-        .get('/interest')
+        .get('/interest?page=1')
         .set('Authorization', `Bearer ${token}`);
 
       expect(response.status).toBe(200);

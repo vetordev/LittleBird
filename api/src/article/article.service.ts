@@ -58,7 +58,7 @@ export class ArticleService {
       .select(['article', 'article_img'])
       .innerJoin('article.article_img_id', 'article_img')
       .orderBy('article.no_like', 'ASC')
-      .offset((page - 1) * 5)
+      .offset((page - 1) * 6)
       .limit(6)
       .getMany();
 
@@ -72,7 +72,7 @@ export class ArticleService {
       .innerJoin('article.article_img_id', 'article_img')
       .where('like_article.user_id = :user_id', { user_id })
       .orderBy('article.no_like', 'ASC')
-      .offset((page - 1) * 5)
+      .offset((page - 1) * 6)
       .limit(6)
       .getMany();
 
@@ -103,7 +103,7 @@ export class ArticleService {
       .innerJoin('article.article_img_id', 'article_img')
       .where('theme_article.theme_id = :theme_id', { theme_id })
       .orderBy('article.no_like', 'ASC')
-      .offset((page - 1) * 5)
+      .offset((page - 1) * 6)
       .limit(6)
       .getMany();
 
@@ -199,26 +199,21 @@ export class ArticleService {
     return response.status(204).end();
   }
 
-  async getArticlesAndForuns(limit: number, page: number): Promise<any> {
-
-    limit = Number(limit)
-    if (limit % 2 != 0) {
-      limit = limit + 1
-    }
+  async getArticlesAndForuns(page: number): Promise<any> {
 
     const articles = await this.articleRepository.createQueryBuilder('article')
       .select(['article', 'article_img'])
       .innerJoin('article.article_img_id', 'article_img')
-      .limit(limit / 2)
-      .offset((page - 1) * 5)
+      .limit(3)
+      .offset((page - 1) * 3)
       .orderBy('article.publi_date', 'ASC')
       .getMany();
 
     const foruns = await this.forumRepository.createQueryBuilder('forum')
       .select(['forum', 'forum_img'])
       .innerJoin('forum.forum_img_id', 'forum_img')
-      .limit(limit / 2)
-      .offset((page - 1) * 5)
+      .limit(3)
+      .offset((page - 1) * 3)
       .getMany();
 
     return {

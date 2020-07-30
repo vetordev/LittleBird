@@ -28,11 +28,13 @@ export class InterestService {
         .execute();
   }
 
-  async getInterestByUser(user_id: number): Promise<Interest[]> {
+  async getInterestByUser(user_id: number, page: number): Promise<Interest[]> {
     const themes_interests = await this.interestRespository.createQueryBuilder('interest')
       .innerJoinAndSelect('interest.theme_id', 'theme')
       .innerJoinAndSelect('theme.theme_img_id', 'theme_img')
       .where('interest.user_id = :user_id', { user_id })
+      .offset((page - 1) * 4)
+      .limit(4)
       .getMany();
 
     return themes_interests;

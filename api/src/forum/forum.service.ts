@@ -33,7 +33,7 @@ export class ForumService {
       .innerJoin('forum.forum_img_id', 'forum_img')
       .where('theme_forum.theme_id = :theme_id', { theme_id })
       .orderBy('forum.no_like', 'ASC')
-      .offset((page - 1) * 5)
+      .offset((page - 1) * 6)
       .limit(6)
       .getMany();
 
@@ -50,7 +50,7 @@ export class ForumService {
       .select(['forum', 'forum_img'])
       .innerJoin('forum.forum_img_id', 'forum_img')
       .orderBy('forum.no_like', 'ASC')
-      .offset((page - 1) * 5)
+      .offset((page - 1) * 6)
       .limit(6)
       .getMany();
 
@@ -64,7 +64,7 @@ export class ForumService {
       .innerJoin('forum.forum_img_id', 'forum_img')
       .where('like_forum.user_id = :user_id', { user_id })
       .orderBy('forum.no_like', 'ASC')
-      .offset((page - 1) * 5)
+      .offset((page - 1) * 6)
       .limit(6)
       .getMany();
 
@@ -92,7 +92,7 @@ export class ForumService {
     let comments = await this.commentRepository.createQueryBuilder('tb_comment')
       .select(['tb_comment'])
       .where('tb_comment.forum_id = :forum_id', { forum_id })
-      .offset((page - 1) * 5)
+      .offset((page - 1) * 6)
       .limit(6)
       .getMany();
 

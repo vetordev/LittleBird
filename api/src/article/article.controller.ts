@@ -61,7 +61,7 @@ export class ArticleController {
 
   @Get('forum/date')
   @HttpCode(200)
-  getArticlesAndForuns(@Query() query: GetArticlesAndForunsDto) {
-    return this.articleService.getArticlesAndForuns(query.limit, query.page);
+  getArticlesAndForuns(@Query() query: QueryPageDto) {
+    return this.articleService.getArticlesAndForuns(query.page);
   }
 }

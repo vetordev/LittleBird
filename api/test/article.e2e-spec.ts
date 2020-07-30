@@ -240,7 +240,7 @@ describe('Article', () => {
 
     it('> GET /article/forum Deve retornar artigos e foruns', async () => {
       const response = await request(app.getHttpServer())
-        .get(`/article/forum/date?limit=${5}&page=1`);
+        .get(`/article/forum/date?page=1`);
 
       expect(response.status).toBe(200)
       expect(response.body).toEqual(expect.objectContaining({
