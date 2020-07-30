@@ -23,9 +23,11 @@ import {
 
 const Settings = () => {
   const navigation = useNavigation();
-  const [isEnabled, setIsEnabled] = useState(true);
+  const [darkTheme, setDarkTheme] = useState(true);
+  const [keepLogin, setKeepLogin] = useState(true);
   
-  const toggleSwitch = () => setIsEnabled(previousState => !previousState);
+  const toggleTheme = () => setDarkTheme(previousState => !previousState);
+  const toggleKeepLogin = () => setKeepLogin(previousState => !previousState);
 
   function sendEmail() {
     MailComposer.composeAsync({
@@ -48,19 +50,19 @@ const Settings = () => {
         <SessionOption>
           <TitleOption>Modo noturno</TitleOption>
           <Switch 
-            value={isEnabled}
-            onValueChange={toggleSwitch}
+            value={darkTheme}
+            onValueChange={toggleTheme}
             trackColor={{ false: "#323232", true: "#01C24E" }}
-            thumbColor={isEnabled ? "#323232" : "#01C24E"}
+            thumbColor={darkTheme ? "#323232" : "#01C24E"}
           />
         </SessionOption>
         <SessionOption>
           <TitleOption>Manter-me logado</TitleOption>
           <Switch 
-            value={isEnabled}
-            onValueChange={toggleSwitch}
+            value={keepLogin}
+            onValueChange={toggleKeepLogin}
             trackColor={{ false: "#323232", true: "#01C24E" }}
-            thumbColor={isEnabled ? "#323232" : "#01C24E"}
+            thumbColor={keepLogin ? "#323232" : "#01C24E"}
           />
         </SessionOption>
       </Session>
