@@ -5,6 +5,7 @@ import { Feather } from '@expo/vector-icons';
 import * as MailComposer from 'expo-mail-composer';
 
 import HeaderBtnBack from '../../../components/HeaderBtnBack';
+import { useAuth } from '../../../contexts/auth';
 
 import { 
   Container,
@@ -25,6 +26,7 @@ const Settings = () => {
   const navigation = useNavigation();
   const [darkTheme, setDarkTheme] = useState(true);
   const [keepLogin, setKeepLogin] = useState(true);
+  const { signOut } = useAuth();
   
   const toggleTheme = () => setDarkTheme(previousState => !previousState);
   const toggleKeepLogin = () => setKeepLogin(previousState => !previousState);
@@ -35,6 +37,10 @@ const Settings = () => {
       recipients: ['heyvitoria.lopes@gmail.com'],
       body: ''
     })
+  }
+  
+  function handleSignOut() {
+    signOut();
   }
 
   return (
@@ -84,7 +90,7 @@ const Settings = () => {
         </PanicBtn>
       </Session>
 
-      <BtnLogout>
+      <BtnLogout onPress={handleSignOut}>
         <BtnLogoutText>Sair</BtnLogoutText>
         <Feather name="log-out" size={20} color="#B8B8B8" />
       </BtnLogout>

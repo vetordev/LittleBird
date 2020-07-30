@@ -1,5 +1,6 @@
 import React, { createContext, useState, useEffect, useContext } from 'react';
 import AsyncStorage from '@react-native-community/async-storage';
+import { BackHandler } from 'react-native';
 
 const AuthContext = createContext();
 
@@ -44,6 +45,7 @@ export const AuthProvider = ({ children }) => {
 
    function signOut() {
       AsyncStorage.clear().then(() => {
+         BackHandler.exitApp();
          setUser(null);
       })
    }

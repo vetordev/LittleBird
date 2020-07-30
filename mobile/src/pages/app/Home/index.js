@@ -33,12 +33,7 @@ const Home = () => {
   const win = Dimensions.get('window');
   const navigation = useNavigation();
 
-  console.log(signed);
-
-  function handleSignOut() {
-    signOut();
-    // navigation.navigate('Profile');
-  }
+  // console.log(signed);
 
   const interests = [
     {
