@@ -15,6 +15,7 @@ const BottomTabBar = ({ state, descriptors, navigation }) => {
       <Container>
          {state.routes.map((route, index) => {
             const { options } = descriptors[route.key];
+            
             const label =
                options.tabBarLabel !== undefined
                ? options.tabBarLabel
@@ -46,8 +47,8 @@ const BottomTabBar = ({ state, descriptors, navigation }) => {
                         onPress={navigateTo}
                         color={options.color}
                      >
-                        <Text key={label}>
-                           <Feather key={label} name={options.iconName} size={26} color="#eee" />
+                        <Text>
+                           <Feather name={options.iconName} size={26} color="#eee" />
                         </Text>
                      </BtnSelected>
                   </OptionSelected>
@@ -59,11 +60,11 @@ const BottomTabBar = ({ state, descriptors, navigation }) => {
                      testID={options.tabBarTestID}
                      onPress={navigateTo}
                   >
-                     <Text key={label}>
-                        <Feather key={label} name={options.iconName} size={26} color="#eee" />
+                     <Text>
+                        <Feather name={options.iconName} size={26} color="#eee" />
                      </Text>
                   </OptionNotSelected>
-                  }
+               }
                </>
             )
          })}

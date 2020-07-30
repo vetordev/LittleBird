@@ -5,7 +5,7 @@ export const Container = styled.TouchableOpacity`
    justify-content: center;
    align-items: center;
    position: absolute;
-   top: ${Constants.statusBarHeight + 40}px;
+   top: ${props => props.withoutTop ? 0 : Constants.statusBarHeight + 40}px;
    left: 28px;
    width: 30px;
    height: 30px;
