@@ -1,5 +1,5 @@
 import React from 'react';
-import { Dimensions, FlatList } from 'react-native';
+import { Dimensions, FlatList, View } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { StatusBar } from 'expo-status-bar';
 import Carousel from 'react-native-snap-carousel';
@@ -122,7 +122,7 @@ const Home = () => {
 
             </>
           }
-          // ListFooterComponent={}
+          ListFooterComponent={<View style={{ height: 30 }} />}
           renderItem={({ item }) => (
             <Interest>
               <InterestImageFilter/>

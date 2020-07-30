@@ -25,53 +25,56 @@ const Profile = () => {
    }
 
   return (
-     <ScrollView style={{ flex: 1, backgroundColor: '#121212' }}>
-      <Container>
-         <Header>
-            <IconContainer onPress={navigateToSettings}>
-               <Feather name="settings" size={15} color="#E9E9E9" />
-            </IconContainer>
+      <ScrollView 
+         showsVerticalScrollIndicator={false}
+         style={{ flex: 1, backgroundColor: '#121212' }}
+      >
+         <Container>
+            <Header>
+               <IconContainer onPress={navigateToSettings}>
+                  <Feather name="settings" size={15} color="#E9E9E9" />
+               </IconContainer>
 
-            <Title>seu perfil</Title>
+               <Title>seu perfil</Title>
 
-            <IconContainer>
-               <Feather name="edit" size={15} color="#E9E9E9" />
-            </IconContainer>
-         </Header>
-         
-         <ProfilePicture resizeMode="contain" source={require('../../../assets/profilePicture1.png')} />
-         <Username>@bolinhorosa</Username>
+               <IconContainer>
+                  <Feather name="edit" size={15} color="#E9E9E9" />
+               </IconContainer>
+            </Header>
+            
+            <ProfilePicture resizeMode="contain" source={require('../../../assets/profilePicture1.png')} />
+            <Username>@bolinhorosa</Username>
 
-         <ProfileSession>
-            <Part1>
-               <IconContainerSession color="#01C24E">
-                  <Feather name="smile" size={20} color="#000" />
-               </IconContainerSession>
-               <SessionName>Interesses</SessionName>
-            </Part1>
-            <Feather name="chevron-right" size={20} color="#01C24E" />
-         </ProfileSession>
+            <ProfileSession>
+               <Part1>
+                  <IconContainerSession color="#01C24E">
+                     <Feather name="smile" size={20} color="#000" />
+                  </IconContainerSession>
+                  <SessionName>Interesses</SessionName>
+               </Part1>
+               <Feather name="chevron-right" size={20} color="#01C24E" />
+            </ProfileSession>
 
-         <ProfileSession>
-            <Part1>
-               <IconContainerSession color="#D85517">
-                  <Feather name="heart" size={20} color="#000" />
-               </IconContainerSession>
-               <SessionName>Favoritos</SessionName>
-            </Part1>
-            <Feather name="chevron-right" size={20} color="#D85517" />
-         </ProfileSession>
+            <ProfileSession>
+               <Part1>
+                  <IconContainerSession color="#D85517">
+                     <Feather name="heart" size={20} color="#000" />
+                  </IconContainerSession>
+                  <SessionName>Favoritos</SessionName>
+               </Part1>
+               <Feather name="chevron-right" size={20} color="#D85517" />
+            </ProfileSession>
 
-         <ProfileSession>
-            <Part1>
-               <IconContainerSession color="#834397">
-                  <Feather name="bookmark" size={20} color="#000" />
-               </IconContainerSession>
-               <SessionName>Itens salvos</SessionName>
-            </Part1>
-            <Feather name="chevron-right" size={20} color="#834397" />
-         </ProfileSession>
-      </Container>
+            <ProfileSession>
+               <Part1>
+                  <IconContainerSession color="#834397">
+                     <Feather name="bookmark" size={20} color="#000" />
+                  </IconContainerSession>
+                  <SessionName>Itens salvos</SessionName>
+               </Part1>
+               <Feather name="chevron-right" size={20} color="#834397" />
+            </ProfileSession>
+         </Container>
      </ScrollView>
   );
 }

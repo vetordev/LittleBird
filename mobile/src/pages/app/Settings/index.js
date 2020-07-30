@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
-import { Switch, View } from 'react-native';
+import { Switch, Linking } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { Feather } from '@expo/vector-icons';
+import * as MailComposer from 'expo-mail-composer';
 
 import HeaderBtnBack from '../../../components/HeaderBtnBack';
 
@@ -25,6 +26,14 @@ const Settings = () => {
   const [isEnabled, setIsEnabled] = useState(true);
   
   const toggleSwitch = () => setIsEnabled(previousState => !previousState);
+
+  function sendEmail() {
+    MailComposer.composeAsync({
+      subject: '',
+      recipients: ['heyvitoria.lopes@gmail.com'],
+      body: ''
+    })
+  }
 
   return (
     <Container>
@@ -61,7 +70,7 @@ const Settings = () => {
           <Feather name="users" size={25} color="#01C24E" />
           <SessionTitle>Contatos úteis</SessionTitle>
         </SessionHeader>
-        <SessionOptionBtn>
+        <SessionOptionBtn onPress={sendEmail}>
           <TitleOption>Desenvolvedores (reportar erro)</TitleOption>
         </SessionOptionBtn>
         <SessionOptionBtn>

@@ -1,5 +1,6 @@
 import React from 'react';
-import { View, Linking } from 'react-native';
+import { ScrollView, Linking } from 'react-native';
+import { useNavigation } from '@react-navigation/native';
 import { Feather } from '@expo/vector-icons';
 
 import HeaderBtnBack from '../../../components/HeaderBtnBack';
@@ -16,93 +17,48 @@ import {
 } from './styles';
 
 const PanicBtn = () => {
+   const navigation = useNavigation();
 
-   function openPhone() {
-      Linking.openURL('tel:(11) 4138-3409');
+   function openPhone(num) {
+      Linking.openURL(`tel:${num}`);
+   }
+
+   function openSite(url) {
+      navigation.navigate('Webview', { link: url })
    }
 
    return (
-      <Container>
-         <HeaderBtnBack withoutTop={true} />
-         <Title>Se você estiver realmente precisando de ajuda, entre em contato:</Title>
+      <ScrollView 
+         showsVerticalScrollIndicator={false}
+         style={{ flex: 1, backgroundColor: '#121212' }}
+      >
+         <Container>
+            <HeaderBtnBack />
+            <Title>Se você estiver realmente precisando de ajuda, entre em contato:</Title>
 
-         <Card>
-            <EmergencyTitle>Violência doméstica</EmergencyTitle>
-            <CardContact>
-               <Instituition>Delegacia de Polícia de Defesa da Mulher</Instituition>
-               <ContactContainer onPress={openPhone}>
-                  <Contact>(11) 4138-3409</Contact>
-                  <Feather name="chevron-right" size={25} color="#121212" />
-               </ContactContainer>
-            </CardContact>
-         </Card>
+            <Card>
+               <EmergencyTitle>Violência doméstica</EmergencyTitle>
+               <CardContact>
+                  <Instituition>Delegacia de Polícia de Defesa da Mulher</Instituition>
+                  <ContactContainer onPress={() => openPhone('(11) 4138-3409')}> 
+                     <Contact>(11) 4138-3409</Contact>
+                     <Feather name="chevron-right" size={25} color="#121212" />
+                  </ContactContainer>
+               </CardContact>
+            </Card>
 
-         <Card>
-            <EmergencyTitle>Violência doméstica</EmergencyTitle>
-            <CardContact>
-               <Instituition>Delegacia de Polícia de Defesa da Mulher</Instituition>
-               <ContactContainer onPress={openPhone}>
-                  <Contact>(11) 4138-3409</Contact>
-                  <Feather name="chevron-right" size={25} color="#121212" />
-               </ContactContainer>
-            </CardContact>
-         </Card>
-
-         <Card>
-            <EmergencyTitle>Violência doméstica</EmergencyTitle>
-            <CardContact>
-               <Instituition>Delegacia de Polícia de Defesa da Mulher</Instituition>
-               <ContactContainer onPress={openPhone}>
-                  <Contact>(11) 4138-3409</Contact>
-                  <Feather name="chevron-right" size={25} color="#121212" />
-               </ContactContainer>
-            </CardContact>
-         </Card>
-
-         <Card>
-            <EmergencyTitle>Violência doméstica</EmergencyTitle>
-            <CardContact>
-               <Instituition>Delegacia de Polícia de Defesa da Mulher</Instituition>
-               <ContactContainer onPress={openPhone}>
-                  <Contact>(11) 4138-3409</Contact>
-                  <Feather name="chevron-right" size={25} color="#121212" />
-               </ContactContainer>
-            </CardContact>
-         </Card>
-
-         <Card>
-            <EmergencyTitle>Violência doméstica</EmergencyTitle>
-            <CardContact>
-               <Instituition>Delegacia de Polícia de Defesa da Mulher</Instituition>
-               <ContactContainer onPress={openPhone}>
-                  <Contact>(11) 4138-3409</Contact>
-                  <Feather name="chevron-right" size={25} color="#121212" />
-               </ContactContainer>
-            </CardContact>
-         </Card>
-
-         <Card>
-            <EmergencyTitle>Violência doméstica</EmergencyTitle>
-            <CardContact>
-               <Instituition>Delegacia de Polícia de Defesa da Mulher</Instituition>
-               <ContactContainer onPress={openPhone}>
-                  <Contact>(11) 4138-3409</Contact>
-                  <Feather name="chevron-right" size={25} color="#121212" />
-               </ContactContainer>
-            </CardContact>
-         </Card>
-
-         <Card>
-            <EmergencyTitle>Violência doméstica</EmergencyTitle>
-            <CardContact>
-               <Instituition>Delegacia de Polícia de Defesa da Mulher</Instituition>
-               <ContactContainer onPress={openPhone}>
-                  <Contact>(11) 4138-3409</Contact>
-                  <Feather name="chevron-right" size={25} color="#121212" />
-               </ContactContainer>
-            </CardContact>
-         </Card>
-      </Container>
+            <Card>
+               <EmergencyTitle>Violência doméstica</EmergencyTitle>
+               <CardContact>
+                  <Instituition>Delegacia de Polícia de Defesa da Mulher</Instituition>
+                  <ContactContainer onPress={() => openSite('https://www.delegaciaeletronica.policiacivil.sp.gov.br/ssp-de-cidadao/pages/comunicar-ocorrencia/violencia-domestica/triagem-de-vitima')}>
+                     <Contact>Site</Contact>
+                     <Feather name="chevron-right" size={25} color="#121212" />
+                  </ContactContainer>
+               </CardContact>
+            </Card>
+         </Container>
+      </ScrollView>
    );
 }
 
