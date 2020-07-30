@@ -41,3 +41,9 @@ export class RemoveLikeDto {
   @IsString() @IsNotEmpty()
   forum_id: number;
 };
+
+export class QueryPageDto {
+
+  @IsString() @IsNotEmpty()
+  page: number;
+}

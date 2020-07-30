@@ -72,7 +72,7 @@ describe('Forum', () => {
     it('> GET /forum/:forum_id/comment Deve retonar um fórum se seus comentários', async () => {
       const forum_id = 1;
       const response = await request(app.getHttpServer())
-        .get(`/forum/${forum_id}/comment`);
+        .get(`/forum/${forum_id}/comment?page=1`);
 
       expect(response.status).toBe(200);
       expect(response.body).toEqual(expect.objectContaining({
@@ -108,7 +108,7 @@ describe('Forum', () => {
     it('> GET /forum/:forum_id/comment Não deve retornar um fórum (Forum não encontrado)', async () => {
       const forum_id = 2;
       const response = await request(app.getHttpServer())
-        .get(`/forum/${forum_id}/comment`)
+        .get(`/forum/${forum_id}/comment?page=1`)
 
       expect(response.status).toBe(404);
       expect(response.body).toEqual(expect.objectContaining({
@@ -161,7 +161,7 @@ describe('Forum', () => {
     it('> GET /forum/theme/:theme_id/like Deve retornar os fóruns de um tema ordenados pelo like', async () => {
       const theme_id = 1;
       const response = await request(app.getHttpServer())
-        .get(`/forum/theme/${theme_id}/like`);
+        .get(`/forum/theme/${theme_id}/like?page=1`);
 
       expect(response.status).toBe(200);
       expect(response.body[0]).toEqual(expect.objectContaining({
@@ -177,7 +177,7 @@ describe('Forum', () => {
     it('> GET /forum/theme/:theme_id/like Não deve retornar os fóruns (Tema não encontrado)', async () => {
       const theme_id = 2;
       const response = await request(app.getHttpServer())
-        .get(`/forum/theme/${theme_id}/like`);
+        .get(`/forum/theme/${theme_id}/like?page=1`);
 
       expect(response.status).toBe(404);
       expect(response.body).toEqual(expect.objectContaining({
@@ -187,7 +187,7 @@ describe('Forum', () => {
 
     it('> GET /forum/user/like Deve retornar os fóruns ordenados pelo like', async () => {
       const response = await request(app.getHttpServer())
-        .get(`/forum/like`)
+        .get(`/forum/like?page=1`)
         .set('Authorization', `Bearer ${token}`);
 
       expect(response.status).toBe(200);
@@ -201,9 +201,27 @@ describe('Forum', () => {
         }
       }));
     });
-    it('> GET /forum/user/like Não deve retornar os fóruns ordenados pelo like (Token JWT inválido)', async () => {
+
+    it('> GET /forum/user/like Deve retornar os fóruns com like do usuário', async () => {
       const response = await request(app.getHttpServer())
-      .get(`/forum/user/like`)
+        .get(`/forum/user/like?page=1`)
+        .set('Authorization', `Bearer ${token}`);
+
+      expect(response.status).toBe(200);
+      expect(response.body[0]).toEqual(expect.objectContaining({
+        forum_id: expect.any(Number),
+        title: expect.any(String),
+        no_like: expect.any(Number),
+        forum_img_id: {
+          forum_img_id: expect.any(Number),
+          img_url: expect.any(String)
+        }
+      }));
+    });
+
+    it('> GET /forum/user/like Não deve retornar os fóruns com like do usuário (Token JWT inválido)', async () => {
+      const response = await request(app.getHttpServer())
+      .get(`/forum/user/like?page=1`)
       .set('Authorization', `Bearer ${token}errado`);
 
       expect(response.status).toBe(401);

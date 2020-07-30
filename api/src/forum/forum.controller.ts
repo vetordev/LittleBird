@@ -1,6 +1,6 @@
-import { Controller, Res, Param, Get, Req, Post, Body, Delete, UseGuards, HttpCode, UseFilters } from '@nestjs/common';
+import { Controller, Res, Param, Get, Req, Post, Body, Delete, UseGuards, HttpCode, UseFilters, Query } from '@nestjs/common';
 import { ForumService } from './forum.service';
-import { GetForumByThemeDto, GetForumAndCommentDto, CreateLikeDto, CreateCommentParamDto, CreateCommentBodyDto, RemoveCommentDto, RemoveLikeDto } from './forum.dto';
+import { GetForumByThemeDto, GetForumAndCommentDto, CreateLikeDto, CreateCommentParamDto, CreateCommentBodyDto, RemoveCommentDto, RemoveLikeDto, QueryPageDto } from './forum.dto';
 import { JwtAuthGuard } from '../auth/jwt/jwt-auth.guard';
 import { QueryFailedExceptionFilter } from './http-exception.filter';
 
@@ -10,26 +10,26 @@ export class ForumController {
 
   @Get('theme/:theme_id/like')
   @HttpCode(200)
-  getForumByTheme(@Res() response, @Param() params: GetForumByThemeDto) {
-    return this.forumService.getForumByTheme(response, params.theme_id);
+  getForumByTheme(@Res() response, @Param() params: GetForumByThemeDto, @Query() query: QueryPageDto) {
+    return this.forumService.getForumByTheme(response, params.theme_id, query.page);
   };
 
   @Get('like')
   @HttpCode(200)
-  getForumByLike() {
-    return this.forumService.getForumByLike();
+  getForumByLike(@Query() query: QueryPageDto) {
+    return this.forumService.getForumByLike(query.page);
   };
 
   @Get('user/like')
   @UseGuards(JwtAuthGuard)
   @HttpCode(200)
-  getForumByUserLike(@Req() request) {
-    return this.getForumByUserLike(request.user.user_id);
+  getForumByUserLike(@Req() request, @Query() query: QueryPageDto) {
+    return this.forumService.getForumByUserLike(request.user.user_id, query.page);
   };
 
   @Get(':forum_id/comment')
-  getForumAndComments(@Res() response, @Param() params: GetForumAndCommentDto) {
-    return this.forumService.getForumAndComments(response, params.forum_id);
+  getForumAndComments(@Res() response, @Param() params: GetForumAndCommentDto, @Query() query: QueryPageDto) {
+    return this.forumService.getForumAndComments(response, params.forum_id, query.page);
   };
 
   @Post(':forum_id/comment')

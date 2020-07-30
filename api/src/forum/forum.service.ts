@@ -17,7 +17,7 @@ export class ForumService {
     @InjectRepository(LikeForum) private readonly likeForumRepository: Repository<LikeForum>
   ) {}
 
-  async getForumByTheme(response: Response, theme_id: number): Promise<Response | void> {
+  async getForumByTheme(response: Response, theme_id: number, page: number): Promise<Response | void> {
     const theme = await this.themeForumRepository.createQueryBuilder('theme_forum')
       .select(['theme_forum.theme_forum_id'])
       .where('theme_forum.theme_id = :theme_id', { theme_id })
@@ -33,6 +33,7 @@ export class ForumService {
       .innerJoin('forum.forum_img_id', 'forum_img')
       .where('theme_forum.theme_id = :theme_id', { theme_id })
       .orderBy('forum.no_like', 'ASC')
+      .offset((page - 1) * 5)
       .getMany();
 
     foruns = foruns.map( (forum) => {
@@ -43,30 +44,37 @@ export class ForumService {
     return response.status(200).json(foruns);
   };
 
-  async getForumByLike(): Promise<Forum[]> {
+  async getForumByLike(page: number): Promise<Forum[]> {
     const foruns = await this.forumRepository.createQueryBuilder('forum')
       .select(['forum', 'forum_img'])
       .innerJoin('forum.forum_img_id', 'forum_img')
       .orderBy('forum.no_like', 'ASC')
+      .offset((page - 1) * 5)
       .getMany();
 
     return foruns;
   };
 
-  async getForumByUserLike(user_id: number): Promise<LikeForum[]> {
-    const foruns = await this.likeForumRepository.createQueryBuilder('like_forum')
+  async getForumByUserLike(user_id: number, page: number): Promise<LikeForum[]> {
+    let foruns: any = await this.likeForumRepository.createQueryBuilder('like_forum')
       .select(['like_forum', 'forum', 'forum_img'])
       .innerJoin('like_forum.forum_id', 'forum')
       .innerJoin('forum.forum_img_id', 'forum_img')
       .where('like_forum.user_id = :user_id', { user_id })
       .orderBy('forum.no_like', 'ASC')
+      .offset((page - 1) * 5)
       .getMany();
 
+    foruns = foruns.map( (forum) => {
+      delete forum.theme_forum_id;
+      delete forum.theme_id;
+      return forum.forum_id;
+    });
     return foruns;
 
   };
 
-  async getForumAndComments(response: Response, forum_id: number): Promise<Response | void> {
+  async getForumAndComments(response: Response, forum_id: number, page: number): Promise<Response | void> {
 
     const forum = await this.forumRepository.createQueryBuilder('forum')
       .select(['forum', 'forum_img'])
@@ -81,6 +89,7 @@ export class ForumService {
     let comments = await this.commentRepository.createQueryBuilder('tb_comment')
       .select(['tb_comment'])
       .where('tb_comment.forum_id = :forum_id', { forum_id })
+      .offset((page - 1) * 5)
       .getMany();
 
     comments = comments.map( (comment) => {
