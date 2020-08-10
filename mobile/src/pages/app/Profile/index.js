@@ -52,7 +52,7 @@ const Profile = () => {
             <ProfileSession>
                <Part1>
                   <IconContainerSession color="#01C24E">
-                     <Feather name="smile" size={20} color="#000" />
+                     <Feather name="smile" size={20} color="#eee" />
                   </IconContainerSession>
                   <SessionName>Interesses</SessionName>
                </Part1>
@@ -62,7 +62,7 @@ const Profile = () => {
             <ProfileSession onPress={navigateToFavorites}>
                <Part1>
                   <IconContainerSession color="#D85517">
-                     <Feather name="heart" size={20} color="#000" />
+                     <Feather name="heart" size={20} color="#eee" />
                   </IconContainerSession>
                   <SessionName>Favoritos</SessionName>
                </Part1>
@@ -72,7 +72,7 @@ const Profile = () => {
             <ProfileSession>
                <Part1>
                   <IconContainerSession color="#834397">
-                     <Feather name="bookmark" size={20} color="#000" />
+                     <Feather name="bookmark" size={20} color="#eee" />
                   </IconContainerSession>
                   <SessionName>Itens salvos</SessionName>
                </Part1>
