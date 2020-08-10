@@ -75,6 +75,7 @@ describe('Forum', () => {
         .get(`/forum/${forum_id}/comment?page=1`);
 
       expect(response.status).toBe(200);
+      console.log(response.body);
       expect(response.body).toEqual(expect.objectContaining({
         forum_id: expect.any(Number),
         title: expect.any(String),

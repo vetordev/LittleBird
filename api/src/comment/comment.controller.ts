@@ -28,7 +28,7 @@ export class CommentController {
     return this.commentService.createReply(params.comment_id, body.reply_content, request.user.user_id)
   };
 
-  @Delete(':reply_id/reply')
+  @Delete('reply/:reply_id')
   @UseGuards(JwtAuthGuard)
   removeReply(@Res() response, @Param() params: RemoveReplyDto) {
     return this.commentService.removeReply(response, params.reply_id);

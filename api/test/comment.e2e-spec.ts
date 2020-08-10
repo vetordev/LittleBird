@@ -320,28 +320,28 @@ describe('Comment', () => {
       token = response.body.token;
     });
 
-    it('> DELETE /comment/:reply_id/reply Deve remover um comentário', async () => {
+    it('> DELETE /comment/reply/:reply_id Deve remover um comentário', async () => {
       const reply_id = 1;
       const response = await request(app.getHttpServer())
-        .delete(`/comment/${reply_id}/reply`)
+        .delete(`/comment/reply/${reply_id}`)
         .set('Authorization', `Bearer ${token}`);
 
       expect(response.status).toBe(204);
     });
 
-    it('> DELETE /comment/:reply_id/reply Não deve remover um comentário (Token JWT inválido)', async () => {
+    it('> DELETE /comment/reply/:reply_id Não deve remover um comentário (Token JWT inválido)', async () => {
       const reply_id = 1;
       const response = await request(app.getHttpServer())
-        .delete(`/comment/${reply_id}/reply`)
+        .delete(`/comment/reply/${reply_id}`)
         .set('Authorization', `Bearer ${token}errado`);
 
       expect(response.status).toBe(401);
     });
 
-    it('> DELETE /comment/:reply_id/reply Não deve remover um comentário (Comentário não encontrado)', async () => {
+    it('> DELETE /comment/reply/:reply_id Não deve remover um comentário (Comentário não encontrado)', async () => {
       const reply_id = 2;
       const response = await request(app.getHttpServer())
-        .delete(`/comment/${reply_id}/reply`)
+        .delete(`/comment/reply/${reply_id}`)
         .set('Authorization', `Bearer ${token}`);
 
       expect(response.status).toBe(404);

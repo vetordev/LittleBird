@@ -387,7 +387,7 @@ paths:
               Exemplo de corpo da requisição:
                 value:
                   theme_id: 1
-        description: 'O aplicação do usuário deve enviar o "theme_id" do tema escolhido pelo usuário.'
+        description: O aplicação do usuário deve enviar o "theme_id" do tema escolhido pelo usuário.
       tags:
         - Interest
     get:
@@ -466,6 +466,12 @@ paths:
           in: header
           name: Authorization
           description: '  Token JWT deve ser passado por meio deste header'
+          required: true
+        - schema:
+            type: integer
+          in: query
+          name: page
+          description: Paginação dos interesses
           required: true
       tags:
         - Interest
@@ -570,9 +576,9 @@ paths:
         - schema:
             type: integer
           in: query
-          name: limit
+          name: page
           required: true
-          description: Limite de artigos + fóruns que devem ser retonado.
+          description: Paginação dos artigos
       tags:
         - Article and Forum
   /theme:
@@ -687,6 +693,13 @@ paths:
       description: Rota para buscar todos os artigos ordenados pelo número de likes (do maior para o menor).
       tags:
         - Article
+      parameters:
+        - schema:
+            type: integer
+          in: query
+          name: page
+          description: Paginação dos artigos
+          required: true
     parameters: []
   /forum/like:
     get:
@@ -747,6 +760,13 @@ paths:
       description: Rota para buscar todos os fóruns ordenados pelo número de likes (do maior para o menor).
       tags:
         - Forum
+      parameters:
+        - schema:
+            type: integer
+          in: query
+          name: page
+          required: true
+          description: Paginação dos fóruns
   '/article/theme/{theme_id}/like':
     parameters:
       - schema:
@@ -825,6 +845,13 @@ paths:
       description: Rota para buscar os artigos de um tema ordenados pelo número de like (do maior para o menor).
       tags:
         - Article
+      parameters:
+        - schema:
+            type: integer
+          in: query
+          name: page
+          description: Paginação dos artigos
+          required: true
   '/forum/theme/{theme_id}/like':
     parameters:
       - schema:
@@ -901,6 +928,13 @@ paths:
       description: Rota para buscar os fóruns de um tema ordenados pelo número de like (do maior para o menor).
       tags:
         - Forum
+      parameters:
+        - schema:
+            type: integer
+          in: query
+          name: page
+          required: true
+          description: Paginação dos fóruns
   '/article/{article_id}':
     parameters:
       - schema:
@@ -1095,6 +1129,13 @@ paths:
       description: Rota para buscar um fórum e seus comentários.
       tags:
         - Forum
+      parameters:
+        - schema:
+            type: integer
+          in: query
+          name: page
+          required: true
+          description: Paginação dos fóruns
     parameters:
       - schema:
           type: integer
@@ -1289,11 +1330,11 @@ paths:
         required: true
   '/article/{article_id}/later':
     post:
-      summary: 'O usuário marcar um artigo com "ler mais tarde"'
+      summary: O usuário marcar um artigo com "ler mais tarde"
       operationId: post-article-user-later
       responses:
         '204':
-          description: 'O artigo foi marcado com o "ler mais tarde".'
+          description: O artigo foi marcado com o "ler mais tarde".
         '401':
           description: O token JWT é inválido.
           content:
@@ -1333,7 +1374,7 @@ paths:
                 Exemplo de erro:
                   value:
                     error: Ocorreu um erro. Tente novamente mais tarde.
-      description: 'Rota para o usuário marcar um artigo com "ler mais tarde".'
+      description: Rota para o usuário marcar um artigo com "ler mais tarde".
       parameters:
         - schema:
             type: string
@@ -1344,11 +1385,11 @@ paths:
       tags:
         - Article
     delete:
-      summary: 'O usuário remover o "ler mais tarde" de um artigo'
+      summary: O usuário remover o "ler mais tarde" de um artigo
       operationId: delete-article-user-later
       responses:
         '204':
-          description: 'O artigo foi removido do "ler mais tarde".'
+          description: O artigo foi removido do "ler mais tarde".
         '401':
           description: O token JWT é inválido.
           content:
@@ -1388,7 +1429,7 @@ paths:
                 Exemplo de erro:
                   value:
                     error: Ocorreu um erro. Tente novamente mais tarde.
-      description: 'Rota para remover o "ler mais tarde" de um artigo.'
+      description: Rota para remover o "ler mais tarde" de um artigo.
       parameters:
         - schema:
             type: string
@@ -1480,14 +1521,20 @@ paths:
           name: Authorization
           required: true
           description: Token JWT do usuário
+        - schema:
+            type: integer
+          in: query
+          name: page
+          description: Paginação dos artigos
+          required: true
       tags:
         - Article
   /article/user/later:
     get:
-      summary: 'Buscar os artigos que o usuário marcou "ler mais tarde"'
+      summary: Buscar os artigos que o usuário marcou "ler mais tarde"
       responses:
         '200':
-          description: 'Os artigos que o usuário marcou com "ler mais tarde".'
+          description: Os artigos que o usuário marcou com "ler mais tarde".
           content:
             application/json:
               schema:
@@ -1566,7 +1613,7 @@ paths:
                   value:
                     error: Ocorreu um erro. Tente novamente mais tarde.
       operationId: get-article-user-later
-      description: 'Rota para buscar os artigos que o usuário marcou com "ler mais tarde".'
+      description: Rota para buscar os artigos que o usuário marcou com "ler mais tarde".
       parameters:
         - schema:
             type: string
@@ -1884,6 +1931,12 @@ paths:
           name: Authorization
           required: true
           description: Token JWT do usuário
+        - schema:
+            type: integer
+          in: query
+          name: page
+          description: Paginação dos fóruns
+          required: true
       tags:
         - Forum
   '/comment/{comment_id}/reply':
@@ -2300,7 +2353,7 @@ paths:
           required: true
       tags:
         - Forum
-  '/comment/{reply_id}/reply':
+  '/comment/reply/{reply_id}':
     parameters:
       - schema:
           type: string
@@ -2575,7 +2628,7 @@ components:
     Later_Article:
       title: Later_Article
       type: object
-      description: 'O usuário marcar um artigo com o "ler mais tarde".'
+      description: O usuário marcar um artigo com o "ler mais tarde".
       properties:
         later_article_id:
           type: integer
@@ -2745,6 +2798,8 @@ components:
           theme_article_id: 1
           theme_id: 1
           article_id: 1
+      x-tags:
+        - Models
     Theme_Forum:
       title: Theme_Forum
       type: object
@@ -2764,6 +2819,8 @@ components:
           theme_forum_id: 1
           theme_id: 1
           forum_id: 1
+      x-tags:
+        - Models
     Forum_Img:
       title: Forum_Img
       type: object

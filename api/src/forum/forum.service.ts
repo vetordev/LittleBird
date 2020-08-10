@@ -92,6 +92,7 @@ export class ForumService {
     let comments = await this.commentRepository.createQueryBuilder('tb_comment')
       .select(['tb_comment'])
       .where('tb_comment.forum_id = :forum_id', { forum_id })
+      .orderBy('tb_comment.comment_id', 'DESC')
       .offset((page - 1) * 6)
       .limit(6)
       .getMany();

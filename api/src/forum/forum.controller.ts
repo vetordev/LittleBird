@@ -13,7 +13,7 @@ export class ForumController {
   getForumByTheme(@Res() response, @Param() params: GetForumByThemeDto, @Query() query: QueryPageDto) {
     return this.forumService.getForumByTheme(response, params.theme_id, query.page);
   };
-
+  
   @Get('like')
   @HttpCode(200)
   getForumByLike(@Query() query: QueryPageDto) {
