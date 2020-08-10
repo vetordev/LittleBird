@@ -687,6 +687,13 @@ paths:
       description: Rota para buscar todos os artigos ordenados pelo número de likes (do maior para o menor).
       tags:
         - Article
+      parameters:
+        - schema:
+            type: integer
+          in: query
+          name: page
+          description: paginação dos artigos
+          required: true
     parameters: []
   /forum/like:
     get:
