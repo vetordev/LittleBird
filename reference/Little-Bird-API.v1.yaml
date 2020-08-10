@@ -467,6 +467,12 @@ paths:
           name: Authorization
           description: '  Token JWT deve ser passado por meio deste header'
           required: true
+        - schema:
+            type: integer
+          in: query
+          name: page
+          description: Paginação dos interesses
+          required: true
       tags:
         - Interest
   /article/forum:
@@ -1123,12 +1129,12 @@ paths:
       description: Rota para buscar um fórum e seus comentários.
       tags:
         - Forum
-      parameters: 
-        - schema: 
-            type: integer 
-          in: query 
-          name: page 
-          required: true 
+      parameters:
+        - schema:
+            type: integer
+          in: query
+          name: page
+          required: true
           description: Paginação dos fóruns
     parameters:
       - schema:
