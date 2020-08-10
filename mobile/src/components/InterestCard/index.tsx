@@ -1,4 +1,5 @@
 import React from 'react';
+import { Feather } from '@expo/vector-icons';
 
 import { 
    Container,
@@ -9,7 +10,6 @@ import {
    InterestDelete,
    DeleteIcon
 } from './styles';
-import { Feather } from '@expo/vector-icons';
 
 interface InterestCardProps {
    img_url: string;
@@ -22,8 +22,8 @@ const InterestCard: React.FC<InterestCardProps> = ({ img_url, name, notDelete })
      <Container>
         <InterestImageFilter/>
             <InterestImage 
-            resizeMode={'cover'} 
-            source={{ uri: img_url }}>
+               resizeMode={'cover'} 
+               source={{ uri: img_url }}>
                { !notDelete &&
                   <InterestDelete>
                      <Feather name="x" color="#232323" size={12} />

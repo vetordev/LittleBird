@@ -1,5 +1,5 @@
 Arguments: 
-  C:\Program Files\nodejs\node.exe C:\Program Files (x86)\Yarn\bin\yarn.js add expo-mail-composer@~8.2.1
+  C:\Program Files\nodejs\node.exe C:\Program Files (x86)\Yarn\bin\yarn.js add react-native-svg-transformer
 
 PATH: 
   C:\Python38\Scripts\;C:\Python38\;C:\Program Files\Microsoft MPI\Bin\;C:\Program Files (x86)\Common Files\Oracle\Java\javapath;C:\WINDOWS\system32;C:\WINDOWS;C:\WINDOWS\System32\Wbem;C:\WINDOWS\System32\WindowsPowerShell\v1.0\;C:\WINDOWS\System32\OpenSSH\;C:\Program Files\dotnet\;C:\Program Files\Microsoft SQL Server\130\Tools\Binn\;C:\ProgramData\Microsoft\Windows\Start Menu\Programs\Python 3.6;C:\Users\User\Documents\Python;C:\Users\User\AppData\Local\Programs\Python\Python37;C:\Program Files (x86)\Yarn\bin\;C:\ProgramData\chocolatey\bin;C:\Program Files\Java\jdk1.8.0_211\bin;C:\Program Files\Git\cmd;C:\Program Files\nodejs\;%USERPROFILE%\AppData\Local\Microsoft\WindowsApps;C:\Users\User\AppData\Local\Programs\Microsoft VS Code\bin;C:\Users\User\AppData\Local\Yarn\bin;%ANDROID_HOME%\platform-tools;%ANDROID_HOME%\tools;%ANDROID_SDK_ROOT%\platform-tools;%ANDROID_SDK_ROOT%\tools;C:\Users\User\AppData\Roaming\npm;C:\Users\User\AppData\Local\hyper\app-3.0.2\resources\bin
@@ -14,7 +14,7 @@ Platform:
   win32 x64
 
 Trace: 
-  Error: EPERM: operation not permitted, unlink 'C:\Users\User\Documents\Dev\React Native Indie\2020\LittleBird\mobile\node_modules\@babel\helper-compilation-targets\node_modules\.bin'
+  Error: EPERM: operation not permitted, unlink 'C:\Users\User\Documents\Dev\React Native Indie\2020\LittleBird\mobile\node_modules\@babel\compat-data\node_modules\.bin'
 
 npm manifest: 
   {
@@ -43,6 +43,7 @@ npm manifest:
       "expo-cli": "^3.22.3",
       "expo-constants": "^9.1.1",
       "expo-font": "~8.2.1",
+      "expo-mail-composer": "~8.2.1",
       "expo-status-bar": "^1.0.2",
       "polished": "^3.6.5",
       "react": "~16.11.0",
@@ -5927,6 +5928,13 @@ Lockfile:
     dependencies:
       invariant "^2.2.4"
   
+  expo-mail-composer@~8.2.1:
+    version "8.2.1"
+    resolved "https://registry.yarnpkg.com/expo-mail-composer/-/expo-mail-composer-8.2.1.tgz#26168b747606a9531801f1322b1690aa22bfe7db"
+    integrity sha512-srZ+yyevorpMONqXoUYAc5alLPix8xCZXhnatyXHPS1a11OOSsjtURjeK0CL4okmIkCSyw2Ug3W6GXfxVgv7Qw==
+    dependencies:
+      query-string "^6.2.0"
+  
   expo-permissions@~9.0.1:
     version "9.0.1"
     resolved "https://registry.yarnpkg.com/expo-permissions/-/expo-permissions-9.0.1.tgz#dc10b58654bbe39bbbed5827369942b01b08055e"
@@ -11012,7 +11020,7 @@ Lockfile:
     resolved "https://registry.yarnpkg.com/qs/-/qs-6.9.4.tgz#9090b290d1f91728d3c22e54843ca44aea5ab687"
     integrity sha512-A1kFqHekCTM7cz0udomYUoYNWjBebHm/5wzU/XqrBRBNWectVH0QIiN+NEcZ0Dte5hvzHwbr8+XQmguPhJ6WdQ==
   
-  query-string@^6.13.1:
+  query-string@^6.13.1, query-string@^6.2.0:
     version "6.13.1"
     resolved "https://registry.yarnpkg.com/query-string/-/query-string-6.13.1.tgz#d913ccfce3b4b3a713989fe6d39466d92e71ccad"
     integrity sha512-RfoButmcK+yCta1+FuU8REvisx1oEzhMKwhLUNcepQTPGcNMp1sIqjnfCtfnvGSQZQEhaBHvccujtWoUV3TTbA==

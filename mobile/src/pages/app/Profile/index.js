@@ -25,7 +25,11 @@ const Profile = () => {
    }
 
    function navigateToFavorites() {
-      navigate('Favorites')
+      navigate('Favorites');
+   }
+
+   function navigateToInterests() {
+      navigate('Interests');
    }
 
   return (
@@ -49,7 +53,7 @@ const Profile = () => {
             <ProfilePicture resizeMode="contain" source={require('../../../assets/profilePicture1.png')} />
             <Username>@bolinhorosa</Username>
 
-            <ProfileSession>
+            <ProfileSession onPress={navigateToInterests}>
                <Part1>
                   <IconContainerSession color="#01C24E">
                      <Feather name="smile" size={20} color="#eee" />
