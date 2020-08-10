@@ -7,6 +7,10 @@ export const Container = styled.View`
    padding: 0 10px;
 `;
 
+export const Content = styled.View`
+      flex: 1;
+`;
+
 export const OptionNotSelected = styled.TouchableOpacity`
       justify-content: center;
       align-items: center;
@@ -28,3 +32,4 @@ export const BtnSelected = styled.TouchableOpacity`
    border-radius: 100px;
    elevation: 7;
 `;
+

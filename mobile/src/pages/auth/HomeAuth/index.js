@@ -1,4 +1,5 @@
 import React, { useRef } from 'react';
+import { StatusBar } from 'expo-status-bar';
 import { useNavigation } from '@react-navigation/native';
 import { Form } from '@unform/mobile';
 import { Feather } from '@expo/vector-icons';
@@ -25,6 +26,7 @@ const HomeAuth = () => {
 
   return (
     <Container>
+      <StatusBar style="dark" backgroundColor="#D85517" />
       <Title>Digite seu e-mail</Title>
       <Form 
         style={{ width: '100%', alignItems: 'center' }} 

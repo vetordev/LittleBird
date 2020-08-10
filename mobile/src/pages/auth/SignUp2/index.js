@@ -39,7 +39,10 @@ const SignUp2 = () => {
  })
 
   async function handleSignUp() {
-    console.log(user);
+    // const user = {
+    //   userInfo,
+    //   interests: selectedInterests
+    // }
     await signUp(user);
   }
 

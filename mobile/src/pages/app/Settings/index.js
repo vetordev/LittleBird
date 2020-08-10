@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
-import { Switch, Linking } from 'react-native';
+import { Switch, Alert } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { Feather } from '@expo/vector-icons';
+import AsyncStorage from '@react-native-community/async-storage';
 import * as MailComposer from 'expo-mail-composer';
 
 import HeaderBtnBack from '../../../components/HeaderBtnBack';
@@ -29,7 +30,28 @@ const Settings = () => {
   const { signOut } = useAuth();
   
   const toggleTheme = () => setDarkTheme(previousState => !previousState);
-  const toggleKeepLogin = () => setKeepLogin(previousState => !previousState);
+  
+  async function toggleKeepLogin() { 
+    setKeepLogin(previousState => !previousState);
+    // if (keepLogin) {
+    //   Alert.alert(
+    //     '', 
+    //     'Para concluir esta ação, é preciso sair do aplicativo. Deseja continuar?',
+    //     [
+    //       {
+    //         text: 'Cancelar',
+    //         onPress: () => console.log('aaaa')
+    //       },
+    //       {
+    //         text: 'OK',
+    //         onPress: () => {
+    //           await AsyncStorage.setItem('@LittleBird:notKeepLogin', keepLogin);
+    //         }
+    //       }
+    //     ],
+    //   )
+    // }
+  }
 
   function sendEmail() {
     MailComposer.composeAsync({

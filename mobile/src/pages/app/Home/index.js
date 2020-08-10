@@ -29,11 +29,11 @@ import {
 } from './styles';
 
 const Home = () => {
-  const { signed, signOut } = useAuth();
+  const { user } = useAuth();
   const win = Dimensions.get('window');
   const navigation = useNavigation();
 
-  // console.log(signed);
+  console.log('username', user.username);
 
   const interests = [
     {
@@ -82,7 +82,7 @@ const Home = () => {
           columnWrapperStyle={{ marginHorizontal: 15 }}
           ListHeaderComponent={
             <>
-              <Title>Olá novamente, <UserName>bolinhorosa</UserName></Title>
+              <Title>Olá novamente, <UserName>{user.username}</UserName></Title>
               <IconContainer2 onPress={() => { navigation.navigate('Reform') }}>
                 <Feather name="bell" size={15} color="#E9E9E9" />
               </IconContainer2>

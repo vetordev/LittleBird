@@ -28,6 +28,8 @@ const Input = ({ name, color, iconName, placeholder, legend, description }) => {
             placeholderTextColor={color == 'dark' ? 'rgba(0, 0, 0, 0.29)' : 'rgba(255, 255, 255, 0.29)'}
             ref={inputRef}
             color={color}
+            keyboardType={name == 'email' ? 'email-address' : 'default'}
+            secureTextEntry={name == 'password' ? true: false}
             defaultValue={defaultValue}
             onChangeText={value => {
                if (inputRef.current) {

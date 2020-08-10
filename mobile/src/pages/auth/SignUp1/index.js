@@ -31,10 +31,8 @@ const SignUp1 = () => {
       email,
       username: data.username,
       password: data.password,
-      authorization: true
+      authorization: toggleCheckBox
     }
-    
-    console.log(user);
 
     navigation.navigate('SignUp2', { user });
   }

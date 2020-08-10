@@ -12,6 +12,7 @@ import Webview from '../pages/app/Webview';
 import Reform from '../pages/app/Reform';
 import Notifications from '../pages/app/Notifications';
 import PanicBtn from '../pages/app/PanicBtn';
+import Favorites from '../pages/app/Favorites';
 
 import BottomTabBar from '../components/BottomTabBar';
 import HeaderBtnBack from '../components/HeaderBtnBack';
@@ -26,13 +27,14 @@ const AppRoutes = () => (
          headerShown: false
          // header: props => <HeaderBtnBack {... props} />
       }}>
-      <AppStack.Screen name="Home" component={BottomRoutes} options={{ headerShown: false }} />
+      <AppStack.Screen name="Home" component={BottomRoutes} />
       <AppBottom.Screen name="Webview" component={Webview} options={{ headerShown: true, headerTitle: '' }} />
       <AppBottom.Screen name="Settings" component={Settings} />
       <AppBottom.Screen name="Articles" component={Articles} />
       <AppBottom.Screen name="Reform" component={Reform} />
       <AppBottom.Screen name="Notifications" component={Notifications} />
       <AppBottom.Screen name="PanicBtn" component={PanicBtn} />
+      <AppBottom.Screen name="Favorites" component={Favorites} />
    </AppStack.Navigator>
 );
 

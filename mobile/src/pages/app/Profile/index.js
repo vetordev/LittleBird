@@ -45,7 +45,7 @@ const Profile = () => {
             <ProfilePicture resizeMode="contain" source={require('../../../assets/profilePicture1.png')} />
             <Username>@bolinhorosa</Username>
 
-            <ProfileSession>
+            <ProfileSession >
                <Part1>
                   <IconContainerSession color="#01C24E">
                      <Feather name="smile" size={20} color="#000" />

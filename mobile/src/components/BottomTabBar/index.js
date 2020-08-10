@@ -1,8 +1,8 @@
 import React from 'react';
-import { Text } from 'react-native';
+import { Text, View } from 'react-native';
 import { Feather } from '@expo/vector-icons';
 
-import { Container, OptionNotSelected, OptionSelected, BtnSelected } from './styles';
+import { Container, OptionNotSelected, OptionSelected, BtnSelected, Content } from './styles';
 
 const BottomTabBar = ({ state, descriptors, navigation }) => {
    const focusedOptions = descriptors[state.routes[state.index].key].options;
@@ -37,35 +37,34 @@ const BottomTabBar = ({ state, descriptors, navigation }) => {
             }
 
             return (
-               <>
-               { isFocused ? 
-                  <OptionSelected key={label}>
-                     <BtnSelected
+               <Content key={label}>
+                  { isFocused ? 
+                     <OptionSelected>
+                        <BtnSelected
+                           accessibilityStates={isFocused ? ['selected'] : []}
+                           accessibilityLabel={options.tabBarAccessibilityLabel}
+                           testID={options.tabBarTestID}
+                           onPress={navigateTo}
+                           color={options.color}
+                        >
+                           <Text>
+                              <Feather name={options.iconName} size={26} color="#eee" />
+                           </Text>
+                        </BtnSelected>
+                     </OptionSelected>
+                  : 
+                     <OptionNotSelected
                         accessibilityStates={isFocused ? ['selected'] : []}
                         accessibilityLabel={options.tabBarAccessibilityLabel}
                         testID={options.tabBarTestID}
                         onPress={navigateTo}
-                        color={options.color}
                      >
                         <Text>
                            <Feather name={options.iconName} size={26} color="#eee" />
                         </Text>
-                     </BtnSelected>
-                  </OptionSelected>
-               : 
-                  <OptionNotSelected
-                     key={label}
-                     accessibilityStates={isFocused ? ['selected'] : []}
-                     accessibilityLabel={options.tabBarAccessibilityLabel}
-                     testID={options.tabBarTestID}
-                     onPress={navigateTo}
-                  >
-                     <Text>
-                        <Feather name={options.iconName} size={26} color="#eee" />
-                     </Text>
-                  </OptionNotSelected>
-               }
-               </>
+                     </OptionNotSelected>
+                  }
+               </Content>
             )
          })}
       </Container>
