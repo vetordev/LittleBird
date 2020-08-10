@@ -7,6 +7,8 @@ import { Feather } from '@expo/vector-icons';
 
 import { useAuth } from '../../../contexts/auth';
 
+import InterestCard from '../../../components/InterestCard';
+
 import { 
   Title,
   UserName,
@@ -119,16 +121,7 @@ const Home = () => {
           }
           ListFooterComponent={<View style={{ height: 30 }} />}
           renderItem={({ item }) => (
-            <Interest>
-              <InterestImageFilter/>
-                <InterestImage 
-                  resizeMode={'cover'} 
-                  source={{ uri: item.theme_img.img_url }} 
-                />
-              <InterestTitleContainer>
-                <InterestTitle>{item.theme_name}</InterestTitle>
-              </InterestTitleContainer>
-            </Interest>
+            <InterestCard img_url={item.theme_img.img_url} name={item.theme_name} notDelete />
           )}
         />
       </InterestsContainer>
