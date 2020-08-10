@@ -32,6 +32,10 @@ const Profile = () => {
       navigate('Interests');
    }
 
+   function navigateToSavedItems() {
+      navigate('SavedItems');
+   }
+
   return (
       <ScrollView 
          showsVerticalScrollIndicator={false}
@@ -73,7 +77,7 @@ const Profile = () => {
                <Feather name="chevron-right" size={20} color="#D85517" />
             </ProfileSession>
 
-            <ProfileSession>
+            <ProfileSession onPress={navigateToSavedItems}>
                <Part1>
                   <IconContainerSession color="#834397">
                      <Feather name="bookmark" size={20} color="#eee" />
