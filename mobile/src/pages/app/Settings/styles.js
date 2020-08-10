@@ -1,12 +1,17 @@
 import styled from 'styled-components/native';
-import Constants from 'expo-constants';
 import { StyleSheet } from 'react-native';
 
-export const Container = styled.View`
+export const Container = styled.ScrollView`
    flex: 1;
    background: #121212;
-   padding: ${Constants.statusBarHeight + 40 + 'px'} 28px 20px;
+`;
+
+export const Content = styled.View`
+   padding: 0 28px 50px;
+   flex: 1;
    align-items: center;
+   width: 100%;
+   height: 100% !important;
 `;
 
 export const Title = styled.Text`
@@ -79,7 +84,7 @@ export const BtnLogout = styled.TouchableOpacity`
    padding: 10px 25px;
    border-radius: 4px;
    position: absolute;
-   bottom: 30px;
+   bottom: 0px;
 `;
 
 export const BtnLogoutText = styled.Text`

@@ -10,7 +10,7 @@ import { useAuth } from '../../../contexts/auth';
 
 import { 
   Container,
-  Title,
+  Content,
   Session,
   SessionHeader,
   SessionTitle,
@@ -22,6 +22,7 @@ import {
   BtnLogout,
   BtnLogoutText
 } from './styles';
+import Header from '../../../components/Header';
 
 const Settings = () => {
   const navigation = useNavigation();
@@ -67,55 +68,56 @@ const Settings = () => {
 
   return (
     <Container>
-      <HeaderBtnBack />
-      <Title>Configurações</Title>
+      <Header title="Configurações" />
 
-      <Session>
-        <SessionHeader>
-          <Feather name="smartphone" size={25} color="#01C24E" />
-          <SessionTitle>Aplicativo</SessionTitle>
-        </SessionHeader>
-        <SessionOption>
-          <TitleOption>Modo noturno</TitleOption>
-          <Switch 
-            value={darkTheme}
-            onValueChange={toggleTheme}
-            trackColor={{ false: "#323232", true: "#01C24E" }}
-            thumbColor={darkTheme ? "#323232" : "#01C24E"}
-          />
-        </SessionOption>
-        <SessionOption>
-          <TitleOption>Manter-me logado</TitleOption>
-          <Switch 
-            value={keepLogin}
-            onValueChange={toggleKeepLogin}
-            trackColor={{ false: "#323232", true: "#01C24E" }}
-            thumbColor={keepLogin ? "#323232" : "#01C24E"}
-          />
-        </SessionOption>
-      </Session>
+      <Content>
+        <Session>
+          <SessionHeader>
+            <Feather name="smartphone" size={25} color="#01C24E" />
+            <SessionTitle>Aplicativo</SessionTitle>
+          </SessionHeader>
+          <SessionOption>
+            <TitleOption>Modo noturno</TitleOption>
+            <Switch 
+              value={darkTheme}
+              onValueChange={toggleTheme}
+              trackColor={{ false: "#323232", true: "#01C24E" }}
+              thumbColor={darkTheme ? "#323232" : "#01C24E"}
+            />
+          </SessionOption>
+          <SessionOption>
+            <TitleOption>Manter-me logado</TitleOption>
+            <Switch 
+              value={keepLogin}
+              onValueChange={toggleKeepLogin}
+              trackColor={{ false: "#323232", true: "#01C24E" }}
+              thumbColor={keepLogin ? "#323232" : "#01C24E"}
+            />
+          </SessionOption>
+        </Session>
 
-      <Session>
-        <SessionHeader>
-          <Feather name="users" size={25} color="#01C24E" />
-          <SessionTitle>Contatos úteis</SessionTitle>
-        </SessionHeader>
-        <SessionOptionBtn onPress={sendEmail}>
-          <TitleOption>Desenvolvedores (reportar erro)</TitleOption>
-        </SessionOptionBtn>
-        <SessionOptionBtn>
-          <TitleOption>Créditos de mídia</TitleOption>
-        </SessionOptionBtn>
-        <PanicBtn onPress={() => navigation.navigate('PanicBtn')}>
-          <Feather name="alert-triangle" size={22} color="#E9E9E9" />
-          <PanicBtnTitle>Ajuda ou emergência</PanicBtnTitle>
-        </PanicBtn>
-      </Session>
+        <Session>
+          <SessionHeader>
+            <Feather name="users" size={25} color="#01C24E" />
+            <SessionTitle>Contatos úteis</SessionTitle>
+          </SessionHeader>
+          <SessionOptionBtn onPress={sendEmail}>
+            <TitleOption>Desenvolvedores (reportar erro)</TitleOption>
+          </SessionOptionBtn>
+          <SessionOptionBtn>
+            <TitleOption>Créditos de mídia</TitleOption>
+          </SessionOptionBtn>
+          <PanicBtn onPress={() => navigation.navigate('PanicBtn')}>
+            <Feather name="alert-triangle" size={22} color="#E9E9E9" />
+            <PanicBtnTitle>Ajuda ou emergência</PanicBtnTitle>
+          </PanicBtn>
+        </Session>
 
-      <BtnLogout onPress={handleSignOut}>
-        <BtnLogoutText>Sair</BtnLogoutText>
-        <Feather name="log-out" size={20} color="#B8B8B8" />
-      </BtnLogout>
+        <BtnLogout onPress={handleSignOut}>
+          <BtnLogoutText>Sair</BtnLogoutText>
+          <Feather name="log-out" size={20} color="#B8B8B8" />
+        </BtnLogout>
+      </Content>
     </Container>
   );
 }

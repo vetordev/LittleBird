@@ -4,11 +4,15 @@ import { Feather } from '@expo/vector-icons';
 
 import { Container } from './styles';
 
-const HeaderBtnBack = ({ withoutTop }) => {
-   const navigation = useNavigation();
+const HeaderBtnBack = () => {
+   const { goBack } = useNavigation();
+
+   function navigateToBack() {
+      goBack();
+   }
 
    return (
-      <Container onPress={() => navigation.goBack()} withoutTop={withoutTop} >
+      <Container onPress={navigateToBack}>
          <Feather name="chevron-left" size={15} color="#E9E9E9" />
       </Container>
    );

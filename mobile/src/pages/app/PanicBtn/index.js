@@ -15,6 +15,7 @@ import {
    Contact,
    ContactContainer
 } from './styles';
+import Header from '../../../components/Header';
 
 const PanicBtn = () => {
    const navigation = useNavigation();
@@ -33,7 +34,7 @@ const PanicBtn = () => {
          style={{ flex: 1, backgroundColor: '#121212' }}
       >
          <Container>
-            <HeaderBtnBack />
+            <Header />
             <Title>Se você estiver realmente precisando de ajuda, entre em contato:</Title>
 
             <Card>

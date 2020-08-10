@@ -1,17 +1,14 @@
 import styled from 'styled-components/native';
-import Constants from 'expo-constants';
 
 export const Container = styled.View`
    flex: 1;
-   padding-top: ${Constants.statusBarHeight + 40}px;
-   /* padding-bottom: 100px; */
 `;
 
 export const Title = styled.Text`
    font-family: Ubuntu_700Bold;
    color: #E9E9E9;
    font-size: 20px;
-   margin: 55px 36px 40px;
+   margin: -20px 36px 40px;
 `;
 
 export const Card = styled.View`

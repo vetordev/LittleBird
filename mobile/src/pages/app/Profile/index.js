@@ -18,10 +18,14 @@ import {
 } from './styles';
 
 const Profile = () => {
-   const navigation = useNavigation();
+   const { navigate } = useNavigation();
 
    function navigateToSettings() {
-      navigation.navigate('Settings');
+      navigate('Settings');
+   }
+
+   function navigateToFavorites() {
+      navigate('Favorites')
    }
 
   return (
@@ -45,7 +49,7 @@ const Profile = () => {
             <ProfilePicture resizeMode="contain" source={require('../../../assets/profilePicture1.png')} />
             <Username>@bolinhorosa</Username>
 
-            <ProfileSession >
+            <ProfileSession>
                <Part1>
                   <IconContainerSession color="#01C24E">
                      <Feather name="smile" size={20} color="#000" />
@@ -55,7 +59,7 @@ const Profile = () => {
                <Feather name="chevron-right" size={20} color="#01C24E" />
             </ProfileSession>
 
-            <ProfileSession>
+            <ProfileSession onPress={navigateToFavorites}>
                <Part1>
                   <IconContainerSession color="#D85517">
                      <Feather name="heart" size={20} color="#000" />
