@@ -2745,6 +2745,8 @@ components:
           theme_article_id: 1
           theme_id: 1
           article_id: 1
+      x-tags:
+        - Models
     Theme_Forum:
       title: Theme_Forum
       type: object
@@ -2764,6 +2766,8 @@ components:
           theme_forum_id: 1
           theme_id: 1
           forum_id: 1
+      x-tags:
+        - Models
     Forum_Img:
       title: Forum_Img
       type: object
