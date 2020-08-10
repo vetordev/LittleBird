@@ -570,9 +570,9 @@ paths:
         - schema:
             type: integer
           in: query
-          name: limit
+          name: page
           required: true
-          description: Limite de artigos + fóruns que devem ser retonado.
+          description: Paginação dos artigos
       tags:
         - Article and Forum
   /theme:
@@ -692,7 +692,7 @@ paths:
             type: integer
           in: query
           name: page
-          description: paginação dos artigos
+          description: Paginação dos artigos
           required: true
     parameters: []
   /forum/like:
@@ -754,6 +754,13 @@ paths:
       description: Rota para buscar todos os fóruns ordenados pelo número de likes (do maior para o menor).
       tags:
         - Forum
+      parameters:
+        - schema:
+            type: integer
+          in: query
+          name: page
+          required: true
+          description: Paginação dos fóruns
   '/article/theme/{theme_id}/like':
     parameters:
       - schema:
@@ -832,6 +839,13 @@ paths:
       description: Rota para buscar os artigos de um tema ordenados pelo número de like (do maior para o menor).
       tags:
         - Article
+      parameters:
+        - schema:
+            type: integer
+          in: query
+          name: page
+          description: Paginação dos artigos
+          required: true
   '/forum/theme/{theme_id}/like':
     parameters:
       - schema:
@@ -908,6 +922,13 @@ paths:
       description: Rota para buscar os fóruns de um tema ordenados pelo número de like (do maior para o menor).
       tags:
         - Forum
+      parameters:
+        - schema:
+            type: integer
+          in: query
+          name: page
+          required: true
+          description: Paginação dos fóruns
   '/article/{article_id}':
     parameters:
       - schema:
@@ -1102,6 +1123,13 @@ paths:
       description: Rota para buscar um fórum e seus comentários.
       tags:
         - Forum
+      parameters: 
+        - schema: 
+            type: integer 
+          in: query 
+          name: page 
+          required: true 
+          description: Paginação dos fóruns
     parameters:
       - schema:
           type: integer
@@ -1487,6 +1515,12 @@ paths:
           name: Authorization
           required: true
           description: Token JWT do usuário
+        - schema:
+            type: integer
+          in: query
+          name: page
+          description: Paginação dos artigos
+          required: true
       tags:
         - Article
   /article/user/later:
@@ -1891,6 +1925,12 @@ paths:
           name: Authorization
           required: true
           description: Token JWT do usuário
+        - schema:
+            type: integer
+          in: query
+          name: page
+          description: Paginação dos fóruns
+          required: true
       tags:
         - Forum
   '/comment/{comment_id}/reply':
