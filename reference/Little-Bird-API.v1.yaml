@@ -504,6 +504,8 @@ paths:
                         no_like:
                           type: integer
                           format: int64
+                        forum_id:
+                          type: integer
                   articles:
                     type: array
                     items:
@@ -526,6 +528,8 @@ paths:
                           format: int64
                         publi_date:
                           type: string
+                        article_id:
+                          type: integer
                 required:
                   - foruns
                   - articles
