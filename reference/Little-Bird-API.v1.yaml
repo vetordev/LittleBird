@@ -2431,7 +2431,7 @@ paths:
         - Comment
       responses:
         '200':
-          description: Os comentários do fórum foram retornados
+          description: Os comentários do fórum foram retornados.
           content:
             application/json:
               schema:
