@@ -2417,6 +2417,84 @@ paths:
           required: true
       tags:
         - Comment
+  '/comment/forum/{forum_id}':
+    parameters:
+      - schema:
+          type: integer
+        name: forum_id
+        in: path
+        required: true
+        description: Identificador do forum
+    get:
+      summary: Rota para buscar os comentários de um fórum
+      tags: []
+      responses:
+        '200':
+          description: Os comentários do fórum foram retornados
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  comments:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        comment_id:
+                          type: integer
+                        user_id:
+                          type: integer
+                        comment_content:
+                          type: string
+                        publi_date:
+                          type: string
+                        no_like:
+                          type: integer
+              examples:
+                Exemplo de comentários:
+                  value:
+                    comments:
+                      - comment_id: 1
+                        user_id: 1
+                        comment_content: Lorem ipsum dolor sit amet.
+                        publi_date: '2020-06-13'
+                        no_like: 3600
+        '404':
+          description: Forum não encontrado.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+              examples:
+                Exemplo de erro:
+                  value:
+                    error: O forum não foi encontrado no servidor.
+        '500':
+          description: Erro interno na API.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+              examples:
+                Exemplo de erro:
+                  value:
+                    error: Ocorreu um erro. Tente novamente mais tarde.
+      operationId: get-comment-forum-forum_id
+      description: Rota para buscar os comentários de um fórum com paginação
+      parameters:
+        - schema:
+            type: integer
+          in: query
+          name: page
+          description: Paginação dos comentários
+          required: true
 components:
   schemas:
     User:
