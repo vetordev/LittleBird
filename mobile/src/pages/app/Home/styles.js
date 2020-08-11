@@ -40,6 +40,14 @@ export const SessionTitleContainer = styled.View`
    border-bottom-color: #834397;
 `;
 
+export const InterestsTitleContainer = styled.TouchableOpacity`
+   align-self: flex-start;
+   margin-left: 28px;
+   margin-bottom: 16px;
+   border-bottom-width: 3px;
+   border-bottom-color: #834397;
+`;
+
 export const InterestOptionsContainer = styled.View`
    flex-direction: row;
    justify-content: space-between; 

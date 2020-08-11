@@ -1,6 +1,7 @@
 import styled from 'styled-components/native';
+import { RectButton } from 'react-native-gesture-handler';
 
-export const AddInterest = styled.TouchableOpacity`
+export const AddInterest = styled(RectButton)`
    width: 50%;
    height: 125px;
    padding: 4px;

@@ -91,7 +91,7 @@ const Forums = () => {
             </Content>
          </Container>   
          
-         <Footer>
+         {/* <Footer> */}
             <InputBlock>
                <Input 
                   placeholder="Participe da conversa" 
@@ -101,7 +101,7 @@ const Forums = () => {
                   <MaterialIcons name="send" size={20} color="#E9E9E9" />
                </BtnInput>
             </InputBlock>
-         </Footer>
+         {/* </Footer> */}
       </View>
    );
 }

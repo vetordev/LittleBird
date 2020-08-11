@@ -103,7 +103,7 @@ export const InputBlock = styled.View`
    align-items: center;
    padding: 7px;
    border-radius: 19px;
-   /* margin: 0 15px 19px; */
+   margin: 0 10px 10px;
    /* overflow: visible; */
 `;
 

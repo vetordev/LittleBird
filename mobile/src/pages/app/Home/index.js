@@ -28,6 +28,7 @@ import {
   TypeCarouselItem,
   CarouselImageItem,
   IconContainer2,
+  InterestsTitleContainer
 } from './styles';
 
 const Home = () => {
@@ -72,6 +73,10 @@ const Home = () => {
     }
   ]
 
+  function navigateToInterests() {
+    navigation.navigate('Interests');
+  }
+
   return (
     <>
       <StatusBar style="light" backgroundColor="#121212" />
@@ -109,10 +114,10 @@ const Home = () => {
               />
 
               <InterestOptionsContainer>
-                <SessionTitleContainer>
+                <InterestsTitleContainer onPress={navigateToInterests}>
                   <SessionTitle>Seus interesses</SessionTitle>
-                </SessionTitleContainer>
-                <IconContainer>
+                </InterestsTitleContainer>
+                <IconContainer onPress={navigateToInterests}>
                   <Feather name="plus" size={15} color="#E9E9E9" />
                 </IconContainer>
               </InterestOptionsContainer>
