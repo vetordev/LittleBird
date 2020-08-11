@@ -3,7 +3,6 @@ import { TestingModule, Test } from "@nestjs/testing";
 import { AppModule } from "../src/app.module";
 import { getConnection } from "typeorm";
 import * as request from 'supertest';
-import { exec } from "child_process";
 
 describe('Article', () => {
   let app: INestApplication;
