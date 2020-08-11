@@ -2427,7 +2427,8 @@ paths:
         description: Identificador do forum
     get:
       summary: Rota para buscar os comentários de um fórum
-      tags: []
+      tags:
+        - Comment
       responses:
         '200':
           description: Os comentários do fórum foram retornados
@@ -2950,3 +2951,5 @@ components:
       x-tags:
         - Models
   securitySchemes: {}
+tags:
+  - name: Comment
