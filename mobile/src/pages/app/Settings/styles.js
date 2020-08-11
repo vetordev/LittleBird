@@ -1,5 +1,6 @@
 import styled from 'styled-components/native';
 import { StyleSheet } from 'react-native';
+import { RectButton } from 'react-native-gesture-handler';
 
 export const Container = styled.ScrollView`
    flex: 1;
@@ -62,7 +63,7 @@ export const TitleOption = styled.Text`
    font-size: 18px;
 `;
 
-export const PanicBtn = styled.TouchableOpacity`
+export const PanicBtn = styled(RectButton)`
    flex-direction: row;
    background: rgba(154, 36, 36, 0.15);
    padding: 14px 20px;
@@ -77,7 +78,7 @@ export const PanicBtnTitle = styled.Text`
    margin-left: 12px;
 `;
 
-export const BtnLogout = styled.TouchableOpacity`
+export const BtnLogout = styled(RectButton)`
    flex-direction: row;
    align-items: center;
    background: #202020;

@@ -40,6 +40,10 @@ const Subjects = () => {
   function navigateToArticles(item) {
     navigation.navigate('Articles');
   }
+
+  function navigateToForums() {
+    navigation.navigate('Forums')
+  }
   
   return (
     <ScrollView 
@@ -125,7 +129,7 @@ const Subjects = () => {
           itemWidth={win.width * 0.8}
           sliderWidth={win.width}
           renderItem={({ item }) => (
-            <Option winWidth={win.width}>
+            <Option winWidth={win.width} onPress={navigateToForums}>
               <OptionImage 
                 resizeMode="cover" 
                 source={{ uri: item.theme_img.img_url }} 

@@ -20,6 +20,10 @@ import {
 const Profile = () => {
    const { navigate } = useNavigation();
 
+   function navigateToEditProfile() {
+      navigate('EditProfile');
+   }
+
    function navigateToSettings() {
       navigate('Settings');
    }
@@ -49,12 +53,12 @@ const Profile = () => {
 
                <Title>seu perfil</Title>
 
-               <IconContainer>
+               <IconContainer onPress={navigateToEditProfile}>
                   <Feather name="edit" size={15} color="#E9E9E9" />
                </IconContainer>
             </Header>
             
-            <ProfilePicture resizeMode="contain" source={require('../../../assets/profilePicture1.png')} />
+            <ProfilePicture resizeMode="cover" source={require('../../../assets/profilePicture1.png')} />
             <Username>@bolinhorosa</Username>
 
             <ProfileSession onPress={navigateToInterests}>

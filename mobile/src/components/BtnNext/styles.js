@@ -1,8 +1,7 @@
 import styled from 'styled-components/native';
+import { RectButton } from 'react-native-gesture-handler';
 
-export const BtnLogin = styled.TouchableOpacity.attrs({
-   activeOpacity: 0.95
-})`
+export const BtnLogin = styled(RectButton)`
    width: 80%;
    height: 55px;
    margin-top: 15px;

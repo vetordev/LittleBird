@@ -27,7 +27,7 @@ const SignUp2 = () => {
   const [selectedInterests, setSelectedInterests] = useState([]);
   const navigation = useNavigation();
   const route = useRoute();
-  const user = route.params;
+  const { user } = route.params;
   const { signUp } = useAuth();
 
   navigation.setOptions({
@@ -39,10 +39,17 @@ const SignUp2 = () => {
  })
 
   async function handleSignUp() {
-    // const user = {
-    //   userInfo,
+    // const userWithInterests = {
+    //   email: user.email,
+    //   username: user.username,
+    //   password: user.password,
+    //   authorization: user.authorization,
     //   interests: selectedInterests
     // }
+
+    const interests = { interests: selectedInterests }
+
+    Object.assign(user, interests);
     await signUp(user);
   }
 

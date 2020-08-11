@@ -25,6 +25,7 @@ export const Title = styled.Text`
    color: #E9E9E9;
    font-family: Ubuntu_700Bold;
    font-size: 30px;
+   max-width: 250px;
 `;
 
 export const UserName = styled.Text`

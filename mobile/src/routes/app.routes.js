@@ -15,6 +15,8 @@ import PanicBtn from '../pages/app/PanicBtn';
 import Favorites from '../pages/app/Favorites';
 import Interests from '../pages/app/Interests';
 import SavedItems from '../pages/app/SavedItems';
+import EditProfile from '../pages/app/EditProfile';
+import Forums from '../pages/app/Forums';
 
 import BottomTabBar from '../components/BottomTabBar';
 import HeaderBtnBack from '../components/HeaderBtnBack';
@@ -39,6 +41,8 @@ const AppRoutes = () => (
       <AppBottom.Screen name="Favorites" component={Favorites} />
       <AppBottom.Screen name="Interests" component={Interests} />
       <AppBottom.Screen name="SavedItems" component={SavedItems} />
+      <AppBottom.Screen name="EditProfile" component={EditProfile} />
+      <AppBottom.Screen name="Forums" component={Forums} />
    </AppStack.Navigator>
 );
 

@@ -21,7 +21,6 @@ const SavedItems = () => {
                <InterestCard img_url={item.theme_img.img_url} name={item.theme_name} />
             )}
          />
-         
       </View>
    );
 }

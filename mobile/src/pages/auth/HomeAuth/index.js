@@ -13,7 +13,6 @@ const HomeAuth = () => {
   const formRef = useRef(null);
 
   function handleSignIn(data, { reset }) {
-    console.log(data);
 
     if (data.email == "vitorinha@hotmail.com") {
       navigation.navigate('SignIn', { data });

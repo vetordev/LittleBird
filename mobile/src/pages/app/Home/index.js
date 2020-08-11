@@ -35,7 +35,7 @@ const Home = () => {
   const win = Dimensions.get('window');
   const navigation = useNavigation();
 
-  console.log('username', user.username);
+  console.log('username', user);
 
   const interests = [
     {

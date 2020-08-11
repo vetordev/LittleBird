@@ -1,4 +1,5 @@
 import React, { useRef } from 'react';
+import { StatusBar } from 'expo-status-bar';
 import { useRoute } from '@react-navigation/native';
 import { Form } from '@unform/mobile';
 import { Feather } from '@expo/vector-icons';
@@ -18,7 +19,8 @@ const SignIn = () => {
   async function handleSignIn(data, { reset }) {
     const user = {
       email,
-      password: data.password
+      password: data.password,
+      username: 'bolinhoroxo'
     }
 
     await signIn(user);
@@ -26,6 +28,7 @@ const SignIn = () => {
 
   return (
     <Container>
+      <StatusBar style="light" backgroundColor="#690589" />
       <Title>Bem-vinde de volta, bolinhorosa!</Title>
       <Form 
         style={{ width: '100%', alignItems: 'center' }} 

@@ -1,5 +1,6 @@
 import styled from 'styled-components/native';
 import Constants from 'expo-constants';
+import { RectButton } from 'react-native-gesture-handler';
 
 export const Container = styled.View`
    flex: 1;
@@ -38,7 +39,7 @@ export const Title = styled.Text`
 export const ProfilePicture = styled.Image`
    width: 130px;
    height: 130px;
-   border-radius: 34px;
+   border-radius: 29px;
    margin-bottom: 12px;
 `;
 
@@ -49,7 +50,7 @@ export const Username = styled.Text`
    margin-bottom: 30px;
 `;
 
-export const ProfileSession = styled.TouchableOpacity`
+export const ProfileSession = styled(RectButton)`
    flex-direction: row;
    justify-content: space-between;
    align-items: center;

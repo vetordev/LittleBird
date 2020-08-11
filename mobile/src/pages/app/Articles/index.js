@@ -42,7 +42,7 @@ const Articles = () => {
    return (
       <Container>
          <HeaderBtnBack />
-         <Cover resizeMode="cover" source={{ uri: 'https://images.unsplash.com/photo-1545128485-c400e7702796?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1050&q=80' }} ></Cover>
+         <Cover resizeMode="cover" source={{ uri: 'https://images.unsplash.com/photo-1545128485-c400e7702796?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1050&q=80' }} />
             <Content>
                <Options>
                   <Option onPress={() => setLiked(liked ? false : true)}>

@@ -28,7 +28,7 @@ export const AuthProvider = ({ children }) => {
 
 
    async function signIn(user) { // receber por parâmetro as informações do usuário e armazená-las no estado aqui.
-      console.log('auth', user);
+      // console.log('auth', user);
       setUser(user);
 
       await AsyncStorage.setItem('@LittleBird:user', JSON.stringify(user));
@@ -36,7 +36,7 @@ export const AuthProvider = ({ children }) => {
    }
 
    async function signUp(user) {
-      console.log('auth', user);
+      // console.log('auth', user);
       setUser(user);
 
       await AsyncStorage.setItem('@LittleBird:user', JSON.stringify(user));
