@@ -2426,7 +2426,7 @@ paths:
         required: true
         description: Identificador do forum
     get:
-      summary: Rota para buscar os comentários de um fórum
+      summary: Buscar os comentários de um fórum
       tags:
         - Comment
       responses:
