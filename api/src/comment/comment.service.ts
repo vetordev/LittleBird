@@ -4,13 +4,15 @@ import { Reply } from './entity/reply.entity';
 import { Response } from 'express';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Comment } from './entity/comment.entity';
+import { Forum } from '../forum/entity/forum.entity';
 
 @Injectable()
 export class CommentService {
 
   constructor(
     @InjectRepository(Comment) private readonly commentRepository: Repository<Comment>,
-    @InjectRepository(Reply) private readonly replyRepository: Repository<Reply>
+    @InjectRepository(Reply) private readonly replyRepository: Repository<Reply>,
+    @InjectRepository(Forum) private readonly forumRepository: Repository<Forum>
   ) {};
 
   async getReplies(response: Response, comment_id: number): Promise<Response> {
@@ -34,6 +36,33 @@ export class CommentService {
     return response.status(200).json(replies);
   };
 
+  async getCommentsByForum(response: Response, forum_id: number, page: number) {
+    
+    const forum = await this.forumRepository.createQueryBuilder('forum')
+      .select(['forum'])
+      .where('forum.forum_id = :forum_id', { forum_id })
+      .getOne();
+    
+    if (!forum) {
+      return response.status(404).json({ error: 'Fórum não encontrado.' });
+    };
+
+    let comments = await this.commentRepository.createQueryBuilder('tb_comment')
+      .select(['tb_comment'])
+      .where('tb_comment.forum_id = :forum_id', { forum_id })
+      .orderBy('tb_comment.comment_id', 'DESC')
+      .offset((page - 1) * 6)
+      .limit(6)
+      .getMany();
+
+    comments = comments.map( (comment) => {
+      delete comment.forum_id;
+      return comment;
+    });
+
+    return response.status(200).json(comments);
+  };
+  
   async createLike(response: Response, comment_id: number): Promise<Response | void> {
     const comment = await this.commentRepository.createQueryBuilder('tb_comment')
       .select(['tb_comment.no_like'])

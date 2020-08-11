@@ -1,8 +1,9 @@
-import { Controller, Get, Res, Param, Post, Req, UseGuards, HttpCode, Body, Delete, UseFilters } from '@nestjs/common';
+import { Controller, Get, Res, Param, Post, Req, UseGuards, HttpCode, Body, Delete, UseFilters, Query } from '@nestjs/common';
 import { CommentService } from './comment.service';
-import { GetRepliesDto, CreateLikeDto, CreateReplyParamDto, CreateReplyBodyDto, RemoveReplyDto, RemoveLikeDto } from './comment.dto';
+import { GetRepliesDto, CreateLikeDto, CreateReplyParamDto, CreateReplyBodyDto, RemoveReplyDto, RemoveLikeDto, GetCommentsByForumDto } from './comment.dto';
 import { JwtAuthGuard } from '../auth/jwt/jwt-auth.guard';
 import { QueryFailedExceptionFilter } from './http-exception.filter';
+import { QueryPageDto } from './comment.dto';
 
 @Controller('comment')
 export class CommentController {
@@ -12,6 +13,11 @@ export class CommentController {
   @Get(':comment_id/reply')
   getReplies(@Res() response, @Param() params: GetRepliesDto) {
     return this.commentService.getReplies(response, params.comment_id);
+  };
+  
+  @Get('forum/:forum_id')
+  getCommentsByForum(@Res() response, @Param() params: GetCommentsByForumDto, @Query() query: QueryPageDto) {
+    return this.commentService.getCommentsByForum(response, params.forum_id, query.page);
   };
 
   @Post(':comment_id/like')

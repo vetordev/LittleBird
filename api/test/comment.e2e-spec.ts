@@ -22,7 +22,72 @@ describe('Comment', () => {
     await getConnection().close();
     await app.close();
   });
+  describe('Buscar Comentários', () => {
 
+    beforeAll(async () => {
+      await getConnection().dropDatabase();
+      await getConnection().synchronize();
+
+      const forum = {
+        forum_id: 1,
+        forum_img_id: 1,
+        title: 'Primeira vez',
+        no_like: 123123,
+      };
+      const comment = {
+        comment_id: 1,
+        forum_id: 1,
+        user_id: 1,
+        comment_content: '...',
+        publi_date: '2020-03-08',
+        no_like: 10
+      };
+      const user = {
+        user_id: 1,
+        email: 'carlosboavida@gm.com',
+        user_img_id: 1,
+        user_pass: '123vidaboa',
+        username: 'carlosboaviida',
+        born_in: '2020-06-15'
+      };
+
+      await getConnection().createQueryBuilder().insert().into("user_img").values({ user_img_id: 1, img_url: "http://localhost:4456" }).execute();
+      await getConnection().createQueryBuilder().insert().into("tb_user").values(user).execute();
+
+      await getConnection().createQueryBuilder().insert().into("forum_img").values({ forum_img_id: 1, img_url: "http://localhost:4456" }).execute();
+      await getConnection().createQueryBuilder().insert().into('forum').values(forum).execute();
+
+      await getConnection().createQueryBuilder().insert().into('tb_comment').values(comment).execute();
+
+    });
+
+    it('> GET /comment/forum/:forum_id Deve retornar os comentários do forum', async () => {
+      const forum_id = 1;
+      const response = await request(app.getHttpServer())
+        .get(`/comment/forum/${forum_id}?page=1`)
+
+      expect(response.status).toBe(200);
+      console.log(response.body)
+      expect(response.body[0]).toEqual(expect.objectContaining({
+        comment_id: expect.any(Number),
+        user_id: expect.any(Number),
+        comment_content: expect.any(String),
+        publi_date: expect.any(String),
+        no_like: expect.any(Number)
+      }));
+    });
+    it('> GET /comment/forum/:forum_id Não deve retornar os comentários do forum (Forum não encontrado)', async () => {
+      const forum_id = 2;
+      const response = await request(app.getHttpServer())
+        .get(`/comment/forum/${forum_id}?page=1`)
+
+      expect(response.status).toBe(404);
+      console.log(response.body);
+      expect(response.body).toEqual(expect.objectContaining({
+        error: expect.any(String)
+      }));
+    });
+  });
   describe('Buscar Respostas', () => {
 
     beforeAll(async () => {
