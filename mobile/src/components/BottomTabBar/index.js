@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Text, Animated } from 'react-native';
 import { Feather } from '@expo/vector-icons';
 
@@ -13,31 +13,37 @@ const BottomTabBar = ({ state, descriptors, navigation }) => {
      return null;
    }
 
+   useEffect(animate, [])
+
+   function animate() {
+      selectedAnim.setValue(0);
+               
+      Animated.timing(
+         selectedAnim,
+         {
+            toValue: -25,
+            duration: 120,
+            useNativeDriver: true
+         },
+      ).start();
+   }
+
    return (
       <Container>
          {state.routes.map((route, index) => {
             const { options } = descriptors[route.key];
             
-               const label =
-                  options.tabBarLabel !== undefined
-                  ? options.tabBarLabel
-                  : options.title !== undefined
-                  ? options.title
-                  : route.name;
+            const label =
+               options.tabBarLabel !== undefined
+               ? options.tabBarLabel
+               : options.title !== undefined
+               ? options.title
+               : route.name;
                
             const isFocused = state.index === index;
             
             const navigateTo = () => {
-               selectedAnim.setValue(0);
-               
-               Animated.timing(
-                  selectedAnim,
-                  {
-                     toValue: -25,
-                     duration: 120,
-                     useNativeDriver: true
-                  },
-               ).start();
+               animate();
 
                const event = navigation.emit({
                   type: 'tabPress',
