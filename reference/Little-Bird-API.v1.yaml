@@ -475,7 +475,7 @@ paths:
           required: true
       tags:
         - Interest
-  /article/forum:
+  /article/forum/date:
     get:
       summary: Buscar os artigos e fóruns mais recentes
       responses:
@@ -501,8 +501,6 @@ paths:
                               type: integer
                             forum_img:
                               type: string
-                        theme:
-                          type: string
                         no_like:
                           type: integer
                           format: int64
@@ -515,8 +513,6 @@ paths:
                           type: string
                         article_content:
                           type: string
-                        theme:
-                          type: string
                         article_img_id:
                           type: object
                           format: uri
@@ -528,6 +524,8 @@ paths:
                         no_like:
                           type: integer
                           format: int64
+                        publi_date:
+                          type: string
                 required:
                   - foruns
                   - articles
@@ -581,6 +579,7 @@ paths:
           description: Paginação dos artigos
       tags:
         - Article and Forum
+    parameters: []
   /theme:
     get:
       summary: Buscas temas
