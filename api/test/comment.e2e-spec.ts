@@ -67,7 +67,6 @@ describe('Comment', () => {
         .get(`/comment/forum/${forum_id}?page=1`)
 
       expect(response.status).toBe(200);
-      console.log(response.body)
       expect(response.body[0]).toEqual(expect.objectContaining({
         comment_id: expect.any(Number),
         user_id: expect.any(Number),
@@ -82,7 +81,6 @@ describe('Comment', () => {
         .get(`/comment/forum/${forum_id}?page=1`)
 
       expect(response.status).toBe(404);
-      console.log(response.body);
       expect(response.body).toEqual(expect.objectContaining({
         error: expect.any(String)
       }));
