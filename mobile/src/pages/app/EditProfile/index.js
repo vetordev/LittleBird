@@ -39,10 +39,10 @@ const EditProfile = () => {
    }
 
    const avatares = [
-      { id: 0, img: 'https://images.unsplash.com/photo-1594123865210-a0639bb17f6c?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=634&q=80' },
-      { id: 1, img: 'https://images.unsplash.com/photo-1596878673925-c8dbf655e8ee?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1050&q=80' },
-      { id: 2, img: 'https://images.unsplash.com/photo-1596860618905-10d5b5a6b22d?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=700&q=80' },
-      { id: 3, img: 'https://images.unsplash.com/photo-1489731110502-23f1239ea56c?ixlib=rb-1.2.1&auto=format&fit=crop&w=634&q=80' },
+      { id: 0, img: 'https://i.pinimg.com/564x/8b/71/cc/8b71cceff897fc4e9d19205fff28406f.jpg' },
+      { id: 1, img: 'https://i.pinimg.com/564x/2f/e1/0c/2fe10cf1a5e63336cb1ae52c1824c2c8.jpg' },
+      { id: 2, img: 'https://i.pinimg.com/564x/5e/06/89/5e0689b603bb90ecac3bc47b5b39abdf.jpg' },
+      { id: 3, img: 'https://i.pinimg.com/564x/24/ae/47/24ae4734b6f1cc9e76b2184c4cffad5f.jpg' },
    ]
 
    return (

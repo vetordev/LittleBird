@@ -3,6 +3,7 @@ import { View } from 'react-native';
 import { MaterialIcons } from '@expo/vector-icons';
 
 import HeaderBtnBack from '../../../components/HeaderBtnBack';
+import ChatMessage from '../../../components/ChatMessage';
 
 import { 
    Container,
@@ -11,17 +12,10 @@ import {
    Title,
    Option,
    Options,
-   MessageContainer,
-   MessageContent,
-   MessageUsername,
-   MessageText,
-   MessageHeader,
-   MessageUserAvatar,
-   Message,
    Footer,
    InputBlock,
    Input,
-   BtnInput
+   BtnInput,
 } from './styles';
 
 const Forums = () => {
@@ -41,7 +35,28 @@ const Forums = () => {
             comment_content: "Lorem ipsum dolor sit amet.",
             publi_date: "2020-06-13",
             no_like: 3600
-         }
+         },
+         {
+            comment_id: 2,
+            user_id: 3,
+            comment_content: "Lorem ipsum dolxxxxor sit amet.",
+            publi_date: "2020-06-13",
+            no_like: 3600
+         },
+         {
+            comment_id: 4,
+            user_id: 1,
+            comment_content: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. ",
+            publi_date: "2020-06-13",
+            no_like: 3600
+         },
+         {
+            comment_id: 5,
+            user_id: 3,
+            comment_content: "Lorem...",
+            publi_date: "2020-06-13",
+            no_like: 3600
+         },
       ],
       forum_img: {
         forum_img_id: 1,
@@ -52,7 +67,7 @@ const Forums = () => {
 
    return (
       <View style={{ flex: 1 }}>
-         <Container>
+         <Container showsVerticalScrollIndicator={false}>
             <HeaderBtnBack />
 
             <Cover resizeMode="cover" source={{ uri: forum.forum_img.img_url }} />
@@ -65,43 +80,22 @@ const Forums = () => {
 
                <Title>{forum.title}</Title>
 
-               <MessageContainer>
-                  {/* <Message> */}
-                  <MessageHeader>
-                     <MessageUserAvatar resizeMode="cover" source={{ uri: 'https://i.pinimg.com/564x/34/43/71/344371e32e903084adccaace156dcb4e.jpg' }} />
-                     <MessageUsername>bolinhorosa</MessageUsername>
-                  </MessageHeader>
-                  <MessageContent>
-                     <MessageText>Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.</MessageText>
-                  </MessageContent>
-                  {/* </Message> */}
-               </MessageContainer>
+               {forum.comments.map(item => (
+                  <ChatMessage key={item.comment_id} data={item} />   
+               ))}
 
-               <MessageContainer>
-                  {/* <Message> */}
-                  <MessageHeader>
-                     <MessageUserAvatar resizeMode="cover" source={{ uri: 'https://i.pinimg.com/564x/34/43/71/344371e32e903084adccaace156dcb4e.jpg' }} />
-                     <MessageUsername>bolinhorosa</MessageUsername>
-                  </MessageHeader>
-                  <MessageContent>
-                     <MessageText>Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.</MessageText>
-                  </MessageContent>
-                  {/* </Message> */}
-               </MessageContainer>
             </Content>
          </Container>   
          
-         {/* <Footer> */}
-            <InputBlock>
-               <Input 
-                  placeholder="Participe da conversa" 
-                  placeholderTextColor="#4B4B4B"
-               />
-               <BtnInput>  
-                  <MaterialIcons name="send" size={20} color="#E9E9E9" />
-               </BtnInput>
-            </InputBlock>
-         {/* </Footer> */}
+         <InputBlock>
+            <Input 
+               placeholder="Participe da conversa" 
+               placeholderTextColor="#4B4B4B"
+            />
+            <BtnInput>  
+               <MaterialIcons name="send" size={20} color="#E9E9E9" />
+            </BtnInput>
+         </InputBlock>
       </View>
    );
 }
