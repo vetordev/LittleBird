@@ -4,6 +4,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { User } from './entity/user.entity';
 import { AuthService } from '../auth/auth.service';
+import hashPassword from "./utils/hash.password";
 
 @Injectable()
 export class UserService {
@@ -15,7 +16,17 @@ export class UserService {
   ){}
 
   async createUser(user: CreateUserDto): Promise<object> {
-    const created_user =  await this.userRepository.createQueryBuilder("tb_user").insert().into("tb_user").values(user).execute();
+    const created_user =  await this.userRepository.createQueryBuilder("tb_user")
+      .insert()
+      .into("tb_user")
+      .values({
+        email: user.email,
+        user_pass: hashPassword(user.user_pass),
+        username: user.username,
+        born_in: user.born_in,
+        user_img_id: user.user_img_id
+      })
+      .execute();
 
     const payload_user = { sub: created_user.identifiers[0].user_id, email: user.email };
 

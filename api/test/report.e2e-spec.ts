@@ -2,9 +2,7 @@ import { INestApplication, ValidationPipe } from "@nestjs/common";
 import { TestingModule, Test } from "@nestjs/testing";
 import { AppModule } from "../src/app.module";
 import { getConnection } from "typeorm";
-import * as request from 'supertest';
-import { SSL_OP_ALLOW_UNSAFE_LEGACY_RENEGOTIATION } from "constants";
-import { report } from "process";
+import request from 'supertest';
 
 describe('Report', () => {
   let app: INestApplication;

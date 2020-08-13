@@ -8,7 +8,7 @@ export class QueryFailedExceptionFilter implements ExceptionFilter {
     const context = host.switchToHttp();
     const response = context.getResponse<Response>();
 
-    let errorResponse;
+    let errorResponse;  
 
     if (exception.code == 23505) {
       errorResponse = {

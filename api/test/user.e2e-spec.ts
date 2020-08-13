@@ -1,7 +1,7 @@
 import { INestApplication, ValidationPipe } from "@nestjs/common";
 import { TestingModule, Test } from "@nestjs/testing";
 import { AppModule } from "../src/app.module";
-import * as request from 'supertest';
+import request from 'supertest';
 import { CreateUserDto } from "src/user/user.dto";
 import { getConnection } from "typeorm";
 
