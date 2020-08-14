@@ -2030,6 +2030,13 @@ paths:
       description: Rota para buscar as respostas do comentário.
       tags:
         - Comment
+      parameters:
+        - schema:
+            type: string
+          in: query
+          name: page
+          description: Paginação das respostas
+          required: true
     parameters:
       - schema:
           type: string
