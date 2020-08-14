@@ -91,7 +91,9 @@ export class ForumService {
     };
 
     let comments = await this.commentRepository.createQueryBuilder('tb_comment')
-      .select(['tb_comment'])
+      .select(['tb_comment', 'user.user_id', 'user.username', 'user_img'])
+      .innerJoin('tb_comment.user_id', 'user')
+      .innerJoin('user.user_img_id', 'user_img')
       .where('tb_comment.forum_id = :forum_id', { forum_id })
       .orderBy('tb_comment.comment_id', 'DESC')
       .offset((page - 1) * 6)

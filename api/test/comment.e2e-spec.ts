@@ -69,7 +69,14 @@ describe('Comment', () => {
       expect(response.status).toBe(200);
       expect(response.body[0]).toEqual(expect.objectContaining({
         comment_id: expect.any(Number),
-        user_id: expect.any(Number),
+        user_id: {
+          user_id: expect.any(Number),
+          username: expect.any(String),
+          user_img_id: {
+            user_img_id: expect.any(Number),
+            img_url: expect.any(String)
+          },
+        },
         comment_content: expect.any(String),
         publi_date: expect.any(String),
         no_like: expect.any(Number)
