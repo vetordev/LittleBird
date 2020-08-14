@@ -11,8 +11,8 @@ export class CommentController {
   constructor (private readonly commentService: CommentService) {};
 
   @Get(':comment_id/reply')
-  getReplies(@Res() response, @Param() params: GetRepliesDto) {
-    return this.commentService.getReplies(response, params.comment_id);
+  getReplies(@Res() response, @Param() params: GetRepliesDto, @Query() query: QueryPageDto) {
+    return this.commentService.getReplies(response, params.comment_id, query.page);
   };
   
   @Get('forum/:forum_id')

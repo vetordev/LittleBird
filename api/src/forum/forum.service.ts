@@ -77,6 +77,7 @@ export class ForumService {
 
   };
 
+  // TODO Paginar e adicionar username e avatar
   async getForumAndComments(response: Response, forum_id: number, page: number): Promise<Response | void> {
 
     const forum = await this.forumRepository.createQueryBuilder('forum')

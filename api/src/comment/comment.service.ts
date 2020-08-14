@@ -15,7 +15,7 @@ export class CommentService {
     @InjectRepository(Forum) private readonly forumRepository: Repository<Forum>
   ) {};
 
-  async getReplies(response: Response, comment_id: number): Promise<Response> {
+  async getReplies(response: Response, comment_id: number, page: number): Promise<Response> {
 
     const comment = await this.commentRepository.createQueryBuilder('tb_comment')
       .select(['tb_comment.comment_id'])
@@ -31,11 +31,15 @@ export class CommentService {
       .innerJoin('reply.user_id', 'user')
       .innerJoin('user.user_img_id', 'user_img')
       .where('reply.comment_id = :comment_id', { comment_id })
+      .offset((page - 1) * 6)
+      .limit(6)
+      .orderBy('reply.reply_id', 'DESC')
       .getMany();
 
     return response.status(200).json(replies);
   };
 
+  // TODO Adicionar username e avatar
   async getCommentsByForum(response: Response, forum_id: number, page: number) {
     
     const forum = await this.forumRepository.createQueryBuilder('forum')
