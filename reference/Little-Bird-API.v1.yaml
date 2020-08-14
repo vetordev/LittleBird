@@ -2032,7 +2032,7 @@ paths:
         - Comment
       parameters:
         - schema:
-            type: string
+            type: integer
           in: query
           name: page
           description: Paginação das respostas
