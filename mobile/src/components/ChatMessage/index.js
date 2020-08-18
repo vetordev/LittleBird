@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { View } from 'react-native';
 import { MaterialIcons } from '@expo/vector-icons';
+import { useNavigation } from '@react-navigation/native';
 
 import { 
    MessageContainer,
@@ -20,11 +21,17 @@ const ChatMessage = ({ data }) => {
    const [liked, setLiked] = useState(false);
    const [likeQnt, setLikesQnt] = useState(0);
 
+   const { navigate } = useNavigation();
+
    const userIsMe = data.user_id == 3 ? true : false;
 
    function handleLike(comment_id) {
       setLiked(liked ? false : true);
       setLikesQnt(liked ? likeQnt - 1 : likeQnt + 1);
+   }
+
+   function navigateToComplaint() {
+      navigate('Complaint');
    }
 
    return (
@@ -33,7 +40,7 @@ const ChatMessage = ({ data }) => {
             <MessageHeader userIsMe={userIsMe}>
                <MessageUserAvatar resizeMode="cover" source={{ uri: 'https://i.pinimg.com/564x/34/43/71/344371e32e903084adccaace156dcb4e.jpg' }} />
                <MessageUsername>bolinhorosa</MessageUsername>
-               <BtnMessageDetails>
+               <BtnMessageDetails onPress={navigateToComplaint}>
                   <TextBtnMessageDetails>...</TextBtnMessageDetails>
                </BtnMessageDetails>
             </MessageHeader>
