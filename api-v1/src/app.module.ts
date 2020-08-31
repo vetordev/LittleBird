@@ -11,6 +11,7 @@ import { ArticleModule } from './article/article.module';
 import { ForumModule } from './forum/forum.module';
 import { CommentModule } from './comment/comment.module';
 import { ReportModule } from './report/report.module';
+import { ForumGateway } from './forum/forum.gateway';
 
 @Module({
   imports: [
