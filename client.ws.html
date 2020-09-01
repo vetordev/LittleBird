@@ -9,15 +9,25 @@
   <script>
     const socket = io('http://localhost:3001/forum')
 
-    socket.emit('first message', 'dados');
-    socket.on('response to message', data => {
+    socket.emit('connect on forum', { name: 'casamento' });
+    socket.on('new user', data => {
       console.log(data)
-    })
+    });
+    socket.on('leave user', data => {
+        console.log(data)
+    });
+
+      console.log('asa')
+      function leaveRoom() {
+        socket.emit('leave forum', {name: 'casamento'})
+      };
 
 
   </script>
 </head>
 <body>
-
+  <button class="button" onclick="leaveRoom()">
+    leave
+  </button>
 </body>
 </html>

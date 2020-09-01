@@ -22,9 +22,16 @@ export class ForumGateway implements OnGatewayInit, OnGatewayConnection, OnGatew
     console.log('Desconexão: ' + client.id)
   };
 
-  @SubscribeMessage('first message')
-  handleMessage(@ConnectedSocket() client: Socket, @MessageBody() data: string): void {
+  @SubscribeMessage('connect on forum')
+  handleConnect(@ConnectedSocket() client: Socket, @MessageBody() data: { name: string }): void {
     // return { event: 'response to message', data }
-    this.wss.emit('response to message', data)
+    client.join(data.name)
+    client.broadcast.emit('new user', 'user#'+client.id)
+  };
+
+  @SubscribeMessage('leave forum')
+  handleLeave(@ConnectedSocket() client: Socket, @MessageBody() data: { name: string }): void {
+    client.leave(data.name)
+    client.broadcast.emit('leave user', 'user#'+client.id);
   };
 }
