@@ -1,7 +1,16 @@
 import { SubscribeMessage, WebSocketGateway, OnGatewayInit, ConnectedSocket, MessageBody, WsResponse, WebSocketServer, OnGatewayConnection, OnGatewayDisconnect } from '@nestjs/websockets';
 import { Socket, Server } from 'socket.io';
-import { Logger } from '@nestjs/common';
+import { Logger, Injectable } from '@nestjs/common';
+import { HandleJoinForumDto, HandleLeaveForumDto } from './forum.dto';
 
+class Message {
+  forum_id: number;
+  user_id: number;
+  comment_id: number;
+  comment_content: string;
+};
+
+@Injectable()
 @WebSocketGateway(3001, { namespace: '/forum' })
 export class ForumGateway implements OnGatewayInit, OnGatewayConnection, OnGatewayDisconnect {
 
@@ -11,7 +20,7 @@ export class ForumGateway implements OnGatewayInit, OnGatewayConnection, OnGatew
   private logger: Logger = new Logger('ForumGateway');
 
   afterInit(server: Socket) {
-    this.logger.log('Inicializado!')
+    this.logger.log('Namespace "/forum" pronto')
   };
 
   handleConnection(client: Socket) {
@@ -22,16 +31,19 @@ export class ForumGateway implements OnGatewayInit, OnGatewayConnection, OnGatew
     console.log('Desconexão: ' + client.id)
   };
 
-  @SubscribeMessage('connect on forum')
-  handleConnect(@ConnectedSocket() client: Socket, @MessageBody() data: { name: string }): void {
-    // return { event: 'response to message', data }
-    client.join(data.name)
-    client.broadcast.emit('new user', 'user#'+client.id)
+  @SubscribeMessage('join forum')
+  handleJoinForum(@ConnectedSocket() client: Socket, @MessageBody() data: HandleJoinForumDto): void {
+
   };
 
   @SubscribeMessage('leave forum')
-  handleLeave(@ConnectedSocket() client: Socket, @MessageBody() data: { name: string }): void {
-    client.leave(data.name)
-    client.broadcast.emit('leave user', 'user#'+client.id);
+  handleLeaveForum(@ConnectedSocket() client: Socket, @MessageBody() data: HandleLeaveForumDto): void {
+
   };
+
+  @SubscribeMessage('new message')
+  handleNewMessage(message: Message): void {
+
+  };
+
 }

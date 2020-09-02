@@ -46,4 +46,13 @@ export class QueryPageDto {
 
   @IsString() @IsNotEmpty()
   page: number;
-}
+};
+
+export class HandleJoinForumDto {
+  nameRoom: string;
+};
+
+export class HandleLeaveForumDto {
+  nameRoom: string;
+};
+

@@ -13,6 +13,6 @@ import { ForumGateway } from './forum.gateway';
   imports: [TypeOrmModule.forFeature([ ForumImg, Forum, ThemeForum, LikeForum ]), forwardRef(() => CommentModule)],
   controllers: [ForumController],
   providers: [ForumService, ForumGateway],
-  exports: [TypeOrmModule]
+  exports: [TypeOrmModule, ForumGateway]
 })
 export class ForumModule {}

@@ -40,16 +40,16 @@ export class CommentService {
   };
 
   async getCommentsByForum(response: Response, forum_id: number, page: number) {
-    
+
     const forum = await this.forumRepository.createQueryBuilder('forum')
       .select(['forum'])
       .where('forum.forum_id = :forum_id', { forum_id })
       .getOne();
-    
+
     if (!forum) {
       return response.status(404).json({ error: 'Fórum não encontrado.' });
     };
-      
+
     let comments = await this.commentRepository.createQueryBuilder('tb_comment')
       .select(['tb_comment', 'user.user_id', 'user.username', 'user_img'])
       .innerJoin('tb_comment.user_id', 'user')
@@ -67,7 +67,7 @@ export class CommentService {
 
     return response.status(200).json(comments);
   };
-  
+
   async createLike(response: Response, comment_id: number): Promise<Response | void> {
     const comment = await this.commentRepository.createQueryBuilder('tb_comment')
       .select(['tb_comment.no_like'])
@@ -92,7 +92,7 @@ export class CommentService {
   async createReply(comment_id: number, reply_content: string, user_id: number): Promise<Response | void> {
     const publi_date = new Date().toLocaleDateString();
 
-    await this.replyRepository.createQueryBuilder('reply')
+    const reply = await this.replyRepository.createQueryBuilder('reply')
       .insert()
       .into('reply')
       .values({
@@ -101,6 +101,8 @@ export class CommentService {
         user_id,
         reply_content
       }).execute();
+
+    console.log(reply)
   };
 
   async removeReply(response: Response, reply_id: number): Promise<Response | void> {
