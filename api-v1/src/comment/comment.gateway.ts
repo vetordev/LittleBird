@@ -2,7 +2,7 @@ import { SubscribeMessage, WebSocketGateway, OnGatewayInit, OnGatewayConnection,
 import { Logger } from '@nestjs/common';
 import { Socket, Server } from 'socket.io';
 import { HandleJoinCommentDto, HandleLeaveCommentDto } from './comment.dto';
-import { ForumGateway } from 'src/forum/forum.gateway';
+import { ForumGateway } from '../forum/forum.gateway';
 
 class Message {
   comment_id: number;

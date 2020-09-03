@@ -101,8 +101,6 @@ export class CommentService {
         user_id,
         reply_content
       }).execute();
-
-    console.log(reply)
   };
 
   async removeReply(response: Response, reply_id: number): Promise<Response | void> {

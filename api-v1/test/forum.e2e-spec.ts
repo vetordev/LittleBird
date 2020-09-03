@@ -114,6 +114,7 @@ describe('Forum', () => {
 
     it('> GET /forum/:forum_id/comment Não deve retornar um fórum (Forum não encontrado)', async () => {
       const forum_id = 2;
+
       const response = await request(app.getHttpServer())
         .get(`/forum/${forum_id}/comment?page=1`)
 

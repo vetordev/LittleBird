@@ -1831,13 +1831,30 @@
 											"height": 13,
 											"text": "+comment_id: number",
 											"horizontalAlignment": 0
+										},
+										{
+											"_type": "UMLAttributeView",
+											"_id": "AAAAAAF0UMxq9TErkas=",
+											"_parent": {
+												"$ref": "AAAAAAF0Shl5ZJ60CbQ="
+											},
+											"model": {
+												"$ref": "AAAAAAF0UMxqsTEohI4="
+											},
+											"font": "Arial;13;0",
+											"left": 181,
+											"top": 347,
+											"width": 159,
+											"height": 13,
+											"text": "+user_id: number",
+											"horizontalAlignment": 0
 										}
 									],
 									"font": "Arial;13;0",
 									"left": 176,
 									"top": 297,
 									"width": 169,
-									"height": 53
+									"height": 68
 								},
 								{
 									"_type": "UMLOperationCompartmentView",
@@ -1850,7 +1867,7 @@
 									},
 									"font": "Arial;13;0",
 									"left": 176,
-									"top": 350,
+									"top": 365,
 									"width": 169,
 									"height": 10
 								},
@@ -4179,13 +4196,30 @@
 											"height": 13,
 											"text": "+img_url: string",
 											"horizontalAlignment": 0
+										},
+										{
+											"_type": "UMLAttributeView",
+											"_id": "AAAAAAF0UMyLQTIrvNQ=",
+											"_parent": {
+												"$ref": "AAAAAAF0UIscaBH1UWY="
+											},
+											"model": {
+												"$ref": "AAAAAAF0UMyK/jIZFZY="
+											},
+											"font": "Arial;13;0",
+											"left": 173,
+											"top": 723,
+											"width": 161.70166015625,
+											"height": 13,
+											"text": "+user_id: number",
+											"horizontalAlignment": 0
 										}
 									],
 									"font": "Arial;13;0",
 									"left": 168,
 									"top": 673,
 									"width": 171.70166015625,
-									"height": 53
+									"height": 68
 								},
 								{
 									"_type": "UMLOperationCompartmentView",
@@ -4198,7 +4232,7 @@
 									},
 									"font": "Arial;13;0",
 									"left": 168,
-									"top": 726,
+									"top": 741,
 									"width": 171.70166015625,
 									"height": 10
 								},
@@ -6352,6 +6386,15 @@
 							},
 							"name": "comment_id",
 							"type": "number"
+						},
+						{
+							"_type": "UMLAttribute",
+							"_id": "AAAAAAF0UMxqsTEohI4=",
+							"_parent": {
+								"$ref": "AAAAAAF0Shl5Y56sON4="
+							},
+							"name": "user_id",
+							"type": "number"
 						}
 					]
 				},
@@ -6619,7 +6662,8 @@
 							"_parent": {
 								"$ref": "AAAAAAF0UHnhUwZebFE="
 							},
-							"name": "nameRoom"
+							"name": "nameRoom",
+							"type": ""
 						}
 					]
 				},
@@ -6667,7 +6711,8 @@
 							"_parent": {
 								"$ref": "AAAAAAF0UHwCGA4dpsk="
 							},
-							"name": "nameRoom"
+							"name": "nameRoom",
+							"type": ""
 						}
 					]
 				},
@@ -6762,6 +6807,15 @@
 							},
 							"name": "img_url",
 							"type": "string"
+						},
+						{
+							"_type": "UMLAttribute",
+							"_id": "AAAAAAF0UMyK/jIZFZY=",
+							"_parent": {
+								"$ref": "AAAAAAF0UIscaBHt94o="
+							},
+							"name": "user_id",
+							"type": "number"
 						}
 					]
 				}

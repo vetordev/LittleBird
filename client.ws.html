@@ -6,22 +6,24 @@
   <title>Document</title>
 
   <script src="https://cdn.jsdelivr.net/npm/socket.io-client@2/dist/socket.io.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
   <script>
     const socket = io('http://localhost:3001/forum')
 
-    socket.emit('connect on forum', { name: 'casamento' });
-    socket.on('new user', data => {
-      console.log(data)
-    });
-    socket.on('leave user', data => {
-        console.log(data)
-    });
+    function joinRoom() {
+      socket.emit('join forum', { name: 'casamento' });
+    };
 
+    function leaveRoom() {
+      socket.emit('leave forum', {name: 'casamento'})
+    };
 
-      function leaveRoom() {
-        socket.emit('leave forum', {name: 'casamento'})
-      };
-
+    async function sendMessage() {
+      const forum_id = 1;
+      await axios.post('http://localhost:3333/forum/1/comment', {
+        comment_content: 'aaaaa'
+      })
+    };
 
   </script>
 </head>
