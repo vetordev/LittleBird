@@ -8,6 +8,7 @@ import request from 'supertest';
 describe('Forum Gateway', () => {
 
   let app: INestApplication;
+  let token;
 
   beforeAll(async () => {
 
@@ -18,19 +19,8 @@ describe('Forum Gateway', () => {
     app = moduleFixture.createNestApplication();
     app.useGlobalPipes(new ValidationPipe());
     await app.init();
-  });
 
-  afterAll(async () => {
-    await getConnection().close();
-
-  });
-
-  describe('Entrar num fórum', () => {
-
-    let token;
-
-    beforeAll(async () => {
-      await getConnection().dropDatabase();
+    await getConnection().dropDatabase();
       await getConnection().synchronize();
 
       const forum = {
@@ -56,6 +46,18 @@ describe('Forum Gateway', () => {
 
       const response = await request(app.getHttpServer()).post('/auth/login').send({ email: 'carlosboavida@gm.com', user_pass: '123vidaboa' });
       token = response.body.token;
-    })
+
+      console.log(token)
+  });
+
+  afterAll(async () => {
+    await getConnection().close();
+
+  });
+
+  describe('Entrar num fórum', () => {
+    it('ForumGateway Test', () => {
+
+    });
   });
 });

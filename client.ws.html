@@ -11,25 +11,39 @@
     const socket = io('http://localhost:3001/forum')
 
     function joinRoom() {
-      socket.emit('join forum', { name: 'casamento' });
+      socket.emit('join forum', { nameRoom: 'Primeira vez' });
     };
 
     function leaveRoom() {
-      socket.emit('leave forum', {name: 'casamento'})
+      socket.emit('leave forum', {nameRoom: 'Primeira vez'})
     };
 
     async function sendMessage() {
       const forum_id = 1;
       await axios.post('http://localhost:3333/forum/1/comment', {
-        comment_content: 'aaaaa'
-      })
+        comment_content: 'Mensagem: ' + new Date()
+      }, {
+        headers: {
+          Authorization: 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjEsImVtYWlsIjoiY2FybG9zYm9hdmlkYUBnbS5jb20iLCJpYXQiOjE1OTkxNjI4MDB9.9lb7vS2-th7fh9-RkatxzqEU4mrgYufHMhTJKfdkoBk'
+        }
+      });
     };
+
+    socket.on('new message', message => {
+      console.log(message.comment_content)
+    });
 
   </script>
 </head>
 <body>
+  <button class="button" onclick="joinRoom()">
+    Join
+  </button>
   <button class="button" onclick="leaveRoom()">
-    leave
+    Leave
+  </button>
+  <button class="button" onclick="sendMessage()">
+    Send Message
   </button>
 </body>
 </html>

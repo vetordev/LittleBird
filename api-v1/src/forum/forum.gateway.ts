@@ -25,7 +25,7 @@ export class ForumGateway implements OnGatewayInit, OnGatewayConnection, OnGatew
 
   constructor(
     @InjectRepository(Forum) private readonly forumRepository: Repository<Forum>,
-    @InjectRepository(User) private readonly userRepository: Repository<User>
+    @InjectRepository(User) private readonly userRepository: Repository<User>,
   ) {};
 
   afterInit(server: Socket) {
@@ -43,6 +43,7 @@ export class ForumGateway implements OnGatewayInit, OnGatewayConnection, OnGatew
   @SubscribeMessage('join forum')
   handleJoinForum(@ConnectedSocket() client: Socket, @MessageBody() data: HandleJoinForumDto): void {
     client.join(data.nameRoom);
+
   };
 
   @SubscribeMessage('leave forum')
@@ -61,6 +62,7 @@ export class ForumGateway implements OnGatewayInit, OnGatewayConnection, OnGatew
       .innerJoin('user.user_img_id', 'user_img')
       .getOne();
 
+      console.log(forum.title)
     this.wss.to(forum.title).emit('new message', {
       comment_id: message.comment_id,
       comment_content: message.comment_content,

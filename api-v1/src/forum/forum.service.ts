@@ -6,6 +6,7 @@ import { Comment } from '../comment/entity/comment.entity';
 import { Response } from 'express';
 import { ThemeForum } from './entity/theme-forum.entity';
 import { LikeForum } from './entity/like-forum.entity';
+import { ForumGateway } from "./forum.gateway";
 
 @Injectable()
 export class ForumService {
@@ -14,7 +15,8 @@ export class ForumService {
     @InjectRepository(Forum) private readonly forumRepository: Repository<Forum>,
     @InjectRepository(Comment) private readonly commentRepository: Repository<Comment>,
     @InjectRepository(ThemeForum) private readonly themeForumRepository: Repository<ThemeForum>,
-    @InjectRepository(LikeForum) private readonly likeForumRepository: Repository<LikeForum>
+    @InjectRepository(LikeForum) private readonly likeForumRepository: Repository<LikeForum>,
+    private readonly forumGateway: ForumGateway
   ) {}
 
   async getForumByTheme(response: Response, theme_id: number, page: number): Promise<Response | void> {
@@ -127,7 +129,7 @@ export class ForumService {
 
   async createComment(forum_id: number, comment_content : string, user_id: number): Promise<Response | void> {
     const publi_date = new Date().toLocaleDateString();
-    await this.commentRepository.createQueryBuilder('tb_comment')
+    const comment = await this.commentRepository.createQueryBuilder('tb_comment')
       .insert()
       .into('tb_comment')
       .values({
@@ -138,6 +140,14 @@ export class ForumService {
         no_like: 0
       })
       .execute();
+
+      console.log(comment)
+    await this.forumGateway.handleNewMessage({
+      forum_id,
+      comment_id: comment.identifiers[0].comment_id,
+      comment_content,
+      user_id
+    });
   };
 
   async createLike(forum_id: number, user_id: number): Promise<void> {
