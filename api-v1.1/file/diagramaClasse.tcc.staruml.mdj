@@ -4213,13 +4213,30 @@
 											"height": 13,
 											"text": "+user_id: number",
 											"horizontalAlignment": 0
+										},
+										{
+											"_type": "UMLAttributeView",
+											"_id": "AAAAAAF0WSMavYL68Os=",
+											"_parent": {
+												"$ref": "AAAAAAF0UIscaBH1UWY="
+											},
+											"model": {
+												"$ref": "AAAAAAF0WSMapoLolAM="
+											},
+											"font": "Arial;13;0",
+											"left": 173,
+											"top": 738,
+											"width": 161.70166015625,
+											"height": 13,
+											"text": "+forum: string",
+											"horizontalAlignment": 0
 										}
 									],
 									"font": "Arial;13;0",
 									"left": 168,
 									"top": 673,
 									"width": 171.70166015625,
-									"height": 68
+									"height": 83
 								},
 								{
 									"_type": "UMLOperationCompartmentView",
@@ -4232,7 +4249,7 @@
 									},
 									"font": "Arial;13;0",
 									"left": 168,
-									"top": 741,
+									"top": 756,
 									"width": 171.70166015625,
 									"height": 10
 								},
@@ -4274,7 +4291,7 @@
 							"left": 168,
 							"top": 648,
 							"width": 171.70166015625,
-							"height": 105,
+							"height": 118,
 							"nameCompartment": {
 								"$ref": "AAAAAAF0UIscaBHwGZQ="
 							},
@@ -6816,6 +6833,15 @@
 							},
 							"name": "user_id",
 							"type": "number"
+						},
+						{
+							"_type": "UMLAttribute",
+							"_id": "AAAAAAF0WSMapoLolAM=",
+							"_parent": {
+								"$ref": "AAAAAAF0UIscaBHt94o="
+							},
+							"name": "forum",
+							"type": "string"
 						}
 					]
 				}
