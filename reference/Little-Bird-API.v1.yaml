@@ -2102,6 +2102,12 @@ paths:
           name: Authorization
           required: true
           description: Token JWT do usuário
+        - schema:
+            type: string
+          in: query
+          name: forum
+          description: Nome do fórum em que o comentário está
+          required: true
       requestBody:
         content:
           application/json:
