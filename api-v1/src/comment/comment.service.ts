@@ -5,6 +5,7 @@ import { Response } from 'express';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Comment } from './entity/comment.entity';
 import { Forum } from '../forum/entity/forum.entity';
+import { CommentGateway } from './comment.gateway';
 
 @Injectable()
 export class CommentService {
@@ -12,7 +13,8 @@ export class CommentService {
   constructor(
     @InjectRepository(Comment) private readonly commentRepository: Repository<Comment>,
     @InjectRepository(Reply) private readonly replyRepository: Repository<Reply>,
-    @InjectRepository(Forum) private readonly forumRepository: Repository<Forum>
+    @InjectRepository(Forum) private readonly forumRepository: Repository<Forum>,
+    private readonly commentGateway: CommentGateway
   ) {};
 
   async getReplies(response: Response, comment_id: number, page: number): Promise<Response> {
@@ -89,7 +91,7 @@ export class CommentService {
     return response.status(204).end();
   };
 
-  async createReply(comment_id: number, reply_content: string, user_id: number): Promise<Response | void> {
+  async createReply(comment_id: number, reply_content: string, forum: string,user_id: number): Promise<Response | void> {
     const publi_date = new Date().toLocaleDateString();
 
     const reply = await this.replyRepository.createQueryBuilder('reply')
@@ -101,6 +103,14 @@ export class CommentService {
         user_id,
         reply_content
       }).execute();
+
+    this.commentGateway.handleNewMessage({
+      comment_id,
+      reply_id: reply.identifiers[0].reply_id,
+      reply_content,
+      user_id,
+      forum
+    });
   };
 
   async removeReply(response: Response, reply_id: number): Promise<Response | void> {

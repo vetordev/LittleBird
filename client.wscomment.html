@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+
+  <script src="https://cdn.jsdelivr.net/npm/socket.io-client@2/dist/socket.io.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+  <script>
+    const socket = io('http://localhost:3001/comment')
+
+    function joinRoom() {
+      socket.emit('join comment', { nameRoom: 'Primeira vez-1' });
+    };
+
+    function leaveRoom() {
+      socket.emit('leave comment', {nameRoom: 'Primeira vez-1'})
+    };
+
+    async function sendMessage() {
+      const forum_id = 1;
+      const response = await axios.post('http://localhost:3333/comment/1/reply?forum=Primeira+vez', {
+        reply_content: 'Mensagem: ' + new Date()
+      }, {
+        headers: {
+          Authorization: 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjEsImVtYWlsIjoiY2FybG9zYm9hdmlkYUBnbS5jb20iLCJpYXQiOjE1OTkyMjkwOTZ9.3ngX5g6HilIuexp45uRwy--3XFAA3ZgwHOIeF0rbEZg'
+        }
+      });
+      // console.log(response)
+    };
+
+    socket.on('new message', message => {
+      console.log(message.reply_content)
+    });
+
+  </script>
+</head>
+<body>
+  <button class="button" onclick="joinRoom()">
+    Join
+  </button>
+  <button class="button" onclick="leaveRoom()">
+    Leave
+  </button>
+  <button class="button" onclick="sendMessage()">
+    Send Message
+  </button>
+</body>
+</html>

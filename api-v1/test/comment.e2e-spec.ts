@@ -301,7 +301,7 @@ describe('Comment', () => {
     it('> POST /comment/:comment_id/reply Deve registrar uma resposta', async () => {
       const comment_id = 1;
       const response = await request(app.getHttpServer())
-        .post(`/comment/${comment_id}/reply`)
+        .post(`/comment/${comment_id}/reply?forum=Primeira+vez`)
         .set('Authorization', `Bearer ${token}`)
         .send({
           reply_content: '...'
@@ -313,7 +313,7 @@ describe('Comment', () => {
     it('> POST /comment/:comment_id/reply Não deve registrar uma resposta (Token JWT inválido)', async () => {
       const comment_id = 1;
       const response = await request(app.getHttpServer())
-        .post(`/comment/${comment_id}/reply`)
+        .post(`/comment/${comment_id}/reply?forum=Primeira+vez`)
         .set('Authorization', `Bearer ${token}errado`)
         .send({
           reply_content: '...'
@@ -326,7 +326,7 @@ describe('Comment', () => {
     it('> POST /comment/:comment_id/reply Não deve registrar uma resposta (Commentário não encontrado)', async () => {
       const comment_id = 2;
       const response = await request(app.getHttpServer())
-        .post(`/comment/${comment_id}/reply`)
+        .post(`/comment/${comment_id}/reply?forum=Primeira+vez`)
         .set('Authorization', `Bearer ${token}`)
         .send({
           reply_content: '...'

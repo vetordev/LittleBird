@@ -141,7 +141,6 @@ export class ForumService {
       })
       .execute();
 
-      console.log(comment)
     await this.forumGateway.handleNewMessage({
       forum_id,
       comment_id: comment.identifiers[0].comment_id,

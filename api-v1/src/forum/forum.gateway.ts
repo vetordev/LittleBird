@@ -60,9 +60,9 @@ export class ForumGateway implements OnGatewayInit, OnGatewayConnection, OnGatew
     const user = await this.userRepository.createQueryBuilder('user')
       .select(['user.user_id', 'user.username', 'user_img'])
       .innerJoin('user.user_img_id', 'user_img')
+      .where('user.user_id = :user_id', { user_id: message.user_id })
       .getOne();
 
-      console.log(forum.title)
     this.wss.to(forum.title).emit('new message', {
       comment_id: message.comment_id,
       comment_content: message.comment_content,

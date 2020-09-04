@@ -40,6 +40,11 @@ export class QueryPageDto {
   page: number;
 };
 
+export class CreateReplyQueryDto {
+  @IsString() @IsNotEmpty()
+  forum: string;
+}
+
 export class HandleJoinCommentDto {
   nameRoom: string;
 };
