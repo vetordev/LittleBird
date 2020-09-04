@@ -2037,6 +2037,12 @@ paths:
           name: page
           description: Paginação das respostas
           required: true
+        - schema:
+            type: string
+          in: query
+          name: forum
+          required: true
+          description: Nome do fórum do comentário
     parameters:
       - schema:
           type: string
