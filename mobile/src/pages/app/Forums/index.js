@@ -16,6 +16,8 @@ import {
    InputBlock,
    Input,
    BtnInput,
+   Header,
+   HeaderBtnInfo,
 } from './styles';
 
 const Forums = () => {
@@ -68,7 +70,12 @@ const Forums = () => {
    return (
       <View style={{ flex: 1 }}>
          <Container showsVerticalScrollIndicator={false}>
-            <HeaderBtnBack />
+            <Header>
+               <HeaderBtnBack />
+               <HeaderBtnInfo>
+
+               </HeaderBtnInfo>
+            </Header>
 
             <Cover resizeMode="cover" source={{ uri: forum.forum_img.img_url }} />
             <Content>

@@ -4,6 +4,14 @@ export const Container = styled.ScrollView`
    flex: 1;
 `;
 
+export const Header = styled.View`
+
+`;
+
+export const HeaderBtnInfo = styled.View`
+   
+`;
+
 export const Cover = styled.ImageBackground`
    width: 100%;
    height: 230px;
