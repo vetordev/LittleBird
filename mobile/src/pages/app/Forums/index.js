@@ -4,6 +4,7 @@ import { MaterialIcons } from '@expo/vector-icons';
 
 import HeaderBtnBack from '../../../components/HeaderBtnBack';
 import ChatMessage from '../../../components/ChatMessage';
+import ModalContainer from '../../../components/ModalContainer';
 
 import { 
    Container,
@@ -18,10 +19,18 @@ import {
    BtnInput,
    Header,
    HeaderBtnInfo,
+   InfoIcon,
+   ModalTitle,
+   ModalDescription
 } from './styles';
 
 const Forums = () => {
-   const [liked, setLiked] = useState(false);
+   const [liked, setLiked] = useState(false);   
+   const [displayModal, setModalDisplay] = useState(false);
+
+   function openModal() {
+      setModalDisplay(true);
+   }
 
    const forum = {
       forum_id: 1,
@@ -65,15 +74,31 @@ const Forums = () => {
         img_url: "https://images.unsplash.com/photo-1575134987638-6c3bc3e2c39a?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1050&q=80"
       },
       no_like: 3600
-    }
+   }
 
    return (
       <View style={{ flex: 1 }}>
+         { displayModal &&
+            <ModalContainer 
+               onPress={() => setModalDisplay(false)}
+               color_theme="#834397"
+               font_color="#202020"
+            >
+               <ModalTitle>Informações importantes</ModalTitle>
+               <ModalDescription>
+                  Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. 
+               </ModalDescription>
+               <ModalDescription>
+                  Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. 
+               </ModalDescription>
+            </ModalContainer>
+         }  
+
          <Container showsVerticalScrollIndicator={false}>
             <Header>
                <HeaderBtnBack />
-               <HeaderBtnInfo>
-
+               <HeaderBtnInfo onPress={openModal}>
+                  <InfoIcon>i</InfoIcon>
                </HeaderBtnInfo>
             </Header>
 

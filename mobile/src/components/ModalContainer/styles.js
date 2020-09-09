@@ -12,7 +12,8 @@ export const Container = styled.TouchableOpacity`
 `;
 
 export const Content = styled.TouchableOpacity`
-   width: 80%;
+   width: 90%;
+   min-height: 150px;
    background: #202020;
    border-top-width: 12px;
    border-color: ${props => props.color_theme};
@@ -20,7 +21,7 @@ export const Content = styled.TouchableOpacity`
 `;
 
 export const ChildrenContainer = styled.View`
-   flex: 1;
+   /* flex: 1; */
    margin: 34px 18px;
    align-items: center;
 `;
@@ -41,5 +42,5 @@ export const BtnConfirmText = styled.Text`
    padding: 17px 0;
    font-family: Ubuntu_700Bold;
    font-size: 20px;
-   color: ${props => props.font_color}
+   color: ${props => props.font_color};
 `;

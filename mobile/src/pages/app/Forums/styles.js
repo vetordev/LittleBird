@@ -1,15 +1,31 @@
 import styled from 'styled-components/native';
+import Constants from 'expo-constants';
 
 export const Container = styled.ScrollView`
    flex: 1;
 `;
 
 export const Header = styled.View`
-
+   justify-content: space-between;
 `;
 
-export const HeaderBtnInfo = styled.View`
-   
+export const HeaderBtnInfo = styled.TouchableOpacity`
+   justify-content: center;
+   align-items: center;
+   position: absolute;
+   top: ${props => props.withoutTop ? 0 : Constants.statusBarHeight + 40}px;
+   right: 28px;
+   width: 30px;
+   height: 30px;
+   background: #232323;
+   border-radius: 4px;
+   z-index: 1;
+`;
+
+export const InfoIcon = styled.Text`
+   color: #E9E9E9;
+   font-family: Nunito_800ExtraBold;
+   font-size: 16px;
 `;
 
 export const Cover = styled.ImageBackground`
@@ -27,7 +43,6 @@ export const Content = styled.View`
    border-top-right-radius: 50px;
    background: #121212;
    padding: 0 25px;
-
 `;
 
 export const Title = styled.Text`
@@ -84,3 +99,11 @@ export const BtnInput = styled.TouchableOpacity`
    justify-content: center;
    align-items: center;
 `;
+
+export const ModalTitle = styled.Text`
+   font-family: Ubuntu_700Bold;
+   color: #E9E9E9;
+   font-size: 20px;
+`;
+
+export const ModalDescription = styled.Text``;
