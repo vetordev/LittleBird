@@ -1,7 +1,7 @@
 import styled from 'styled-components/native';
 import { RectButton } from 'react-native-gesture-handler';
 
-export const Container = styled.TouchableOpacity`
+export const Container = styled.View`
    position: absolute;
    width: 100%;
    height: 100%;
@@ -11,19 +11,20 @@ export const Container = styled.TouchableOpacity`
    align-items: center;
 `;
 
-export const Content = styled.TouchableOpacity`
+export const Content = styled.View`
    width: 90%;
    min-height: 150px;
    background: #202020;
    border-top-width: 12px;
    border-color: ${props => props.color_theme};
    border-radius: 16px;
+   /* max-height: 90%; */
 `;
 
 export const ChildrenContainer = styled.View`
-   /* flex: 1; */
-   margin: 34px 18px;
+   padding: 34px 18px;
    align-items: center;
+   /* max-height: 70%; */
 `;
 
 export const BtnConfirm = styled(RectButton)`

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { View } from 'react-native';
+import { ScrollView } from 'react-native';
 
 import { 
    Container,
@@ -16,26 +16,28 @@ interface ModalContainerProps {
 }
 
 const ModalContainer: React.FC<ModalContainerProps> = ({ onPress, color_theme, font_color, children }) => {
-   return (         
-      <Container activeOpacity={1}>
-         <Content 
-            activeOpacity={1}
-            onPress={() => { return false }}
-            color_theme={color_theme}
-         >
-            <ChildrenContainer>
-               { children }
-            </ChildrenContainer>
-            <BtnConfirm 
-               onPress={onPress} 
+   return (
+      // <ScrollView style={{ position: width: '100%', height: '100%'}}>
+         <Container activeOpacity={1}>
+            <Content 
+               activeOpacity={1}
+               onPress={() => { return false }}
                color_theme={color_theme}
             >
-               <BtnConfirmText font_color={font_color}>
-                  OK!
-               </BtnConfirmText>
-            </BtnConfirm>
-         </Content>
-      </Container>
+               <ChildrenContainer>
+                  { children }
+               </ChildrenContainer>
+               <BtnConfirm 
+                  onPress={onPress} 
+                  color_theme={color_theme}
+               >
+                  <BtnConfirmText font_color={font_color}>
+                     OK!
+                  </BtnConfirmText>
+               </BtnConfirm>
+            </Content>
+         </Container>
+      // </ScrollView>
    );
 }
 

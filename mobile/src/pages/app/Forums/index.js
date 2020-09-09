@@ -21,7 +21,14 @@ import {
    HeaderBtnInfo,
    InfoIcon,
    ModalTitle,
-   ModalDescription
+   ModalDescription,
+   ModalContent,
+   ModalSubtitle,
+   ModalSubtitleText,
+   ModalRuleTitle,
+   ModalRule,
+   ModalRuleImg,
+   ModalRuleDescription,
 } from './styles';
 
 const Forums = () => {
@@ -82,15 +89,43 @@ const Forums = () => {
             <ModalContainer 
                onPress={() => setModalDisplay(false)}
                color_theme="#834397"
-               font_color="#202020"
+               font_color="#E9E9E9"
             >
                <ModalTitle>Informações importantes</ModalTitle>
                <ModalDescription>
                   Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. 
                </ModalDescription>
-               <ModalDescription>
-                  Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. 
-               </ModalDescription>
+
+               <ModalContent>
+                  <ModalSubtitle>
+                     <ModalSubtitleText>Regras do chat</ModalSubtitleText>
+                  </ModalSubtitle>
+
+                  <ModalRuleTitle>1. Lorem Ipsum</ModalRuleTitle>
+                  <ModalRule>
+                     <ModalRuleImg />
+                     <ModalRuleDescription>
+                        Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt. 
+                     </ModalRuleDescription>
+                  </ModalRule>
+
+                  <ModalRuleTitle>2. Lorem Ipsum</ModalRuleTitle>
+                  <ModalRule>
+                     <ModalRuleImg />
+                     <ModalRuleDescription>
+                        Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt. 
+                     </ModalRuleDescription>
+                  </ModalRule>
+
+                  {/* <ModalRuleTitle>3. Lorem Ipsum</ModalRuleTitle>
+                  <ModalRule>
+                     <ModalRuleImg />
+                     <ModalRuleDescription>
+                        Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt. 
+                     </ModalRuleDescription>
+                  </ModalRule> */}
+                  
+               </ModalContent>
             </ModalContainer>
          }  
 
