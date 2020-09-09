@@ -90,6 +90,7 @@ const Forums = () => {
                onPress={() => setModalDisplay(false)}
                color_theme="#834397"
                font_color="#E9E9E9"
+               btn_title="Entendi!"
             >
                <ModalTitle>Informações importantes</ModalTitle>
                <ModalDescription>

@@ -25,6 +25,7 @@ const Interests = () => {
                onPress={() => setModalDisplay(false)}
                color_theme="#01C24E"
                font_color="#202020"
+               btn_title="OK!"
             >
                {/* <InterestItem>
 

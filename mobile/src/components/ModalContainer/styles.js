@@ -42,6 +42,7 @@ export const BtnConfirm = styled(RectButton)`
 export const BtnConfirmText = styled.Text`
    padding: 17px 0;
    font-family: Ubuntu_700Bold;
-   font-size: 20px;
+   font-size: 18px;
    color: ${props => props.font_color};
+   text-transform: uppercase;
 `;
