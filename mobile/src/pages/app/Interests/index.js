@@ -1,17 +1,29 @@
-import React from 'react';
-import { FlatList, View } from 'react-native';
+import React, { useState } from 'react';
+import { FlatList } from 'react-native';
+import { Feather } from '@expo/vector-icons';
 
 import Header from '../../../components/Header';
 import InterestCard from '../../../components/InterestCard';
+import ModalContainer from '../../../components/ModalContainer';
 
 import themes from '../../../services/themes';
 
-import { AddInterest, AddInterestText, AddInterestContent } from './styles';
-import { Feather } from '@expo/vector-icons';
+import { Container, AddInterest, AddInterestText, AddInterestContent } from './styles';
 
 const Interests = () => {
+   const [displayModal, setModalDisplay] = useState(true);
+
+   function openModal() {
+      setModalDisplay(true);
+   }
+
    return (
-      <View>
+      <Container>
+
+         { displayModal &&
+            <ModalContainer onPress={() => setModalDisplay(false)} />
+         }  
+
          <FlatList 
             data={themes}
             keyExtractor={theme => String(theme.theme_id)}
@@ -24,7 +36,7 @@ const Interests = () => {
                <InterestCard img_url={item.theme_img.img_url} name={item.theme_name} />
             )}
             ListFooterComponent={
-               <AddInterest>
+               <AddInterest onPress={openModal}>
                   <AddInterestContent>
                      <Feather name="plus" size={40} color="#01C24E" />
                      <AddInterestText>Adicionar novo interesse</AddInterestText>
@@ -34,7 +46,7 @@ const Interests = () => {
             ListFooterComponentStyle={{ marginHorizontal: 15 }}
          />
          
-      </View>
+      </Container>
    );
 }
 

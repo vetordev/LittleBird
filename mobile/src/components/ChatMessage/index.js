@@ -47,12 +47,15 @@ const ChatMessage = ({ data }) => {
             <MessageContent userIsMe={userIsMe}>
                <MessageText userIsMe={userIsMe}>{data.comment_content}</MessageText>
             </MessageContent>
-            <LikeContainer>
-               <Like onPress={() => handleLike(data.comment_id)}>
-                  <MaterialIcons name={liked ? 'favorite' : 'favorite-border'} size={14} color="#DA2243"/>
-                  <NumLikes>{likeQnt}</NumLikes>
-               </Like>
-            </LikeContainer>
+
+            { !userIsMe &&
+               <LikeContainer>
+                  <Like onPress={() => handleLike(data.comment_id)}>
+                     <MaterialIcons name={liked ? 'favorite' : 'favorite-border'} size={14} color="#DA2243"/>
+                     <NumLikes>{likeQnt}</NumLikes>
+                  </Like>
+               </LikeContainer>
+            }
          </View>
       </MessageContainer>
    );
