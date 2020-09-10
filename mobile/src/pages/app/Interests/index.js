@@ -8,7 +8,17 @@ import ModalContainer from '../../../components/ModalContainer';
 
 import themes from '../../../services/themes';
 
-import { Container, AddInterest, AddInterestText, AddInterestContent } from './styles';
+import { 
+   Container, 
+   AddInterest, 
+   AddInterestText, 
+   AddInterestContent,
+   InterestItem,
+   InterestImg,
+   InterestTitle,
+   InterestInfos,
+   Intetest,
+} from './styles';
 
 const Interests = () => {
    const [displayModal, setModalDisplay] = useState(false);
@@ -27,9 +37,23 @@ const Interests = () => {
                font_color="#202020"
                btn_title="OK!"
             >
-               {/* <InterestItem>
+               <Intetest>
+                  <InterestItem>
+                     <InterestInfos>
+                        <InterestImg />
+                        <InterestTitle>Lorem Ipsum</InterestTitle>
+                     </InterestInfos>
+                     <Feather name="plus" color="#01C24E" size={20} />
+                  </InterestItem>
 
-               </InterestItem> */}
+                  <InterestItem>
+                     <InterestInfos>
+                        <InterestImg />
+                        <InterestTitle>Lorem Ipsum</InterestTitle>
+                     </InterestInfos>
+                     <Feather name="plus" color="#01C24E" size={20} />
+                  </InterestItem>
+               </Intetest>
             </ModalContainer>
          }  
 

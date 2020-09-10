@@ -1,4 +1,5 @@
 import React, { useState, useRef } from 'react';
+import { ScrollView } from 'react-native';
 import { StatusBar } from 'expo-status-bar';
 import { CheckBox } from 'react-native-elements';
 import { useRoute, useNavigation } from '@react-navigation/native';
@@ -38,6 +39,10 @@ const SignUp1 = () => {
   }
 
   return (
+    <ScrollView 
+      style={{ flex: 1 }}
+      showsVerticalScrollIndicator={false}
+    >
     <Container>
       <StatusBar style="light" />
       <Title>Seja bem-vinde!</Title>
@@ -93,6 +98,7 @@ const SignUp1 = () => {
         </BtnLogin>
       </Form>
     </Container>
+    </ScrollView>
   );
 }
 
