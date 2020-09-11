@@ -1,7 +1,7 @@
 openapi: 3.0.0
 info:
   title: Little Bird API
-  version: '1.0'
+  version: '1.0.0-alpha'
   description: API Restful do aplicativo Little Bird
   contact:
     name: Vitor da SIlva Pires Bezerra
