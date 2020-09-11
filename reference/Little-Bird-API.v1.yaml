@@ -2094,7 +2094,7 @@ paths:
                 Exemplo de erro:
                   value:
                     error: Ocorreu um erro. Tente novamente mais tarde.
-      description: Rota para registrar o a resposta de usuário no comentário.
+      description: Rota para registrar a resposta de usuário no comentário.
       parameters:
         - schema:
             type: string
