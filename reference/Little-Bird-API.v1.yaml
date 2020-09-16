@@ -2037,6 +2037,12 @@ paths:
           name: page
           description: Paginação das respostas
           required: true
+        - schema:
+            type: string
+          in: query
+          name: forum
+          required: true
+          description: Nome do fórum do comentário
     parameters:
       - schema:
           type: string
@@ -2088,7 +2094,7 @@ paths:
                 Exemplo de erro:
                   value:
                     error: Ocorreu um erro. Tente novamente mais tarde.
-      description: Rota para registrar o a resposta de usuário no comentário.
+      description: Rota para registrar a resposta de usuário no comentário.
       parameters:
         - schema:
             type: string
@@ -2096,6 +2102,12 @@ paths:
           name: Authorization
           required: true
           description: Token JWT do usuário
+        - schema:
+            type: string
+          in: query
+          name: forum
+          description: Nome do fórum em que o comentário está
+          required: true
       requestBody:
         content:
           application/json:
