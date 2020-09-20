@@ -2543,6 +2543,13 @@ paths:
           name: page
           description: Paginação dos comentários
           required: true
+  /user/email:
+    get:
+      summary: Buscar e-mail
+      tags: []
+      responses: {}
+      operationId: get-user-email
+      description: ''
 components:
   schemas:
     User:
