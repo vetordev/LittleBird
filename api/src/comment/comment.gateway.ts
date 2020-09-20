@@ -14,7 +14,7 @@ class Message {
   forum: string;
 }
 
-@WebSocketGateway(3001, { namespace: '/comment' })
+@WebSocketGateway(Number(process.env.PORTWS || 3001), { namespace: '/comment' })
 export class CommentGateway implements OnGatewayInit, OnGatewayConnection, OnGatewayDisconnect {
 
   @WebSocketServer()

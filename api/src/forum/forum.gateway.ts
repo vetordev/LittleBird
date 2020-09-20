@@ -15,7 +15,7 @@ class Message {
 };
 
 @Injectable()
-@WebSocketGateway(3001, { namespace: '/forum' })
+@WebSocketGateway(Number(process.env.PORTWS || 3001), { namespace: '/forum' })
 export class ForumGateway implements OnGatewayInit, OnGatewayConnection, OnGatewayDisconnect {
 
   @WebSocketServer()
