@@ -15,7 +15,7 @@ export class InterestController {
   @UseGuards(JwtAuthGuard)
   @UseFilters(QueryFailedExceptionFilter)
   createInterest(@Req() request, @Body() body: CreateInterestDto) {
-    return this.interestService.createInterest(request.user.user_id, body.theme_id);
+    return this.interestService.createInterest(request.user.user_id, body.themes);
   }
 
   @Get()

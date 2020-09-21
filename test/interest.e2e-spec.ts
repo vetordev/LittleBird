@@ -41,20 +41,25 @@ describe('Interest', () => {
 
       await getConnection().createQueryBuilder().insert().into("user_img").values({ user_img_id: 1, img_url: "http://localhost:4456" }).execute();
       await getConnection().createQueryBuilder().insert().into("tb_user").values(user).execute();
+
       await getConnection().createQueryBuilder().insert().into("theme_img").values({ theme_img_id: 1, img_url: "http://localhost:4456" }).execute();
       await getConnection().createQueryBuilder().insert().into("theme").values({ theme_id: 1, theme_name: "Sexo", theme_img_id: 1 }).execute();
-      await getConnection().createQueryBuilder().insert().into("interest").values({ interest_id: 1, theme_id: 1, user_id: 1 }).execute();
+      await getConnection().createQueryBuilder().insert().into("theme_img").values({ theme_img_id: 2, img_url: "http://localhost:4956" }).execute();
+      await getConnection().createQueryBuilder().insert().into("theme").values({ theme_id: 2, theme_name: "Casamento", theme_img_id: 2 }).execute();
+
+      // await getConnection().createQueryBuilder().insert().into("interest").values({ interest_id: 1, theme_id: 1, user_id: 1 }).execute();
 
 
       const response = await request(app.getHttpServer()).post('/auth/login').send({ email: 'carlosboavida@gm.com', user_pass: '123vidaboa' });
       token = response.body.token;
     });
 
+    // TODO Enviar uma string que SIMULE um array de theme_id
     it('> POST /interest Deve criar um interesse', async () => {
 
       const response = await request(app.getHttpServer())
         .post('/interest')
-        .send({ theme_id: 1 })
+        .send({ themes: '1, 2' })
         .set('Authorization', `Bearer ${token}`);
 
       expect(response.status).toBe(204);
@@ -63,7 +68,7 @@ describe('Interest', () => {
     it('> POST /interest Não deve criar um interesse (Token JWT inválido)', async () => {
       const response = await request(app.getHttpServer())
         .post('/interest')
-        .send({ theme_id: 1 })
+        .send({ themes: '1, 2' })
         .set('Authorization', `Bearer ${token}errado`);
 
       expect(response.status).toBe(401);
@@ -72,9 +77,10 @@ describe('Interest', () => {
     it('> POST /interest Não deve criar um interesse (Tema não encontrado)', async () => {
       const response = await request(app.getHttpServer())
         .post('/interest')
-        .send({ theme_id: 2 })
+        .send({ themes: '5' })
         .set('Authorization', `Bearer ${token}`);
 
+      console.log(response.body)
       expect(response.status).toBe(404);
     });
   });

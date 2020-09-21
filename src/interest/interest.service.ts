@@ -3,7 +3,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Interest } from './entity/interest.entity';
 import { Response } from 'express';
-
+import { convertToArray } from "./utils/convert.array";
 
 @Injectable()
 export class InterestService {
@@ -11,23 +11,28 @@ export class InterestService {
     @InjectRepository(Interest) private readonly interestRespository: Repository<Interest>,
   ) {}
 
-  async createInterest(user_id: number, theme_id: number): Promise<void> {
-    const interest = await this.interestRespository.createQueryBuilder('interest')
+  async createInterest(user_id: number, themes: string): Promise<void | Response> {
+
+    const themesArray = convertToArray(themes);
+
+    for (const theme_id of themesArray) {
+      const interest = await this.interestRespository.createQueryBuilder('interest')
       .select('interest.interest_id')
       .where('interest.user_id = :user_id', { user_id })
       .andWhere('interest.theme_id = :theme_id', { theme_id })
       .getOne();
 
-    if(!interest)
-      await this.interestRespository.createQueryBuilder('interest')
+      if(!interest)
+
+        await this.interestRespository.createQueryBuilder('interest')
         .insert()
         .into('interest').values({
           user_id,
           theme_id
         })
         .execute();
+    };
   }
-
   async getInterestByUser(user_id: number, page: number): Promise<Interest[]> {
     const themes_interests = await this.interestRespository.createQueryBuilder('interest')
       .innerJoinAndSelect('interest.theme_id', 'theme')

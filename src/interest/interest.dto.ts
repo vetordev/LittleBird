@@ -1,9 +1,9 @@
 import { IsInt, IsNotEmpty, IsString } from "class-validator"
 
 export class CreateInterestDto {
-  @IsInt()
+  @IsString()
   @IsNotEmpty()
-  theme_id: number;
+  themes: string;
 
 }
 
