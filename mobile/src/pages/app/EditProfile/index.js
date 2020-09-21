@@ -19,19 +19,20 @@ import {
 } from './styles';
 
 const EditProfile = () => {
-   const [imgs, setImgs] = useState([
-      'https://i.pinimg.com/564x/8b/71/cc/8b71cceff897fc4e9d19205fff28406f.jpg', 
-      'https://i.pinimg.com/564x/2f/e1/0c/2fe10cf1a5e63336cb1ae52c1824c2c8.jpg', 
-      'https://i.pinimg.com/564x/5e/06/89/5e0689b603bb90ecac3bc47b5b39abdf.jpg', 
-      'https://i.pinimg.com/564x/24/ae/47/24ae4734b6f1cc9e76b2184c4cffad5f.jpg'
-   ]);
+   const [selectedAvatar, setSelectedAvatar] = useState(0);
+   const [lastSelectedAvatar, setLastSelectedAvatar] = useState(0); 
 
    const formRef = useRef(null);
 
    function handleSaveProfile() {}
 
+   const [imgs, setImgs] = useState(['https://i.pinimg.com/564x/8b/71/cc/8b71cceff897fc4e9d19205fff28406f.jpg', 'https://i.pinimg.com/564x/2f/e1/0c/2fe10cf1a5e63336cb1ae52c1824c2c8.jpg', 'https://i.pinimg.com/564x/5e/06/89/5e0689b603bb90ecac3bc47b5b39abdf.jpg', 'https://i.pinimg.com/564x/24/ae/47/24ae4734b6f1cc9e76b2184c4cffad5f.jpg']);
 
    function handleEditAvatar(newId) {
+      setLastSelectedAvatar(selectedAvatar);
+      setSelectedAvatar(newId);
+
+
       let array_aux = imgs;
 
       const aux = array_aux[0];
@@ -39,6 +40,7 @@ const EditProfile = () => {
       array_aux[newId] = aux;
 
       setImgs(array_aux);
+
    }
 
    return (
