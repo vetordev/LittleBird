@@ -278,4 +278,58 @@ describe('User', () => {
     });
   });
 
+  describe('Buscar e-mail do usuário', () => {
+
+    beforeAll( async () => {
+      await getConnection().dropDatabase()
+      await getConnection().synchronize();
+
+      await getConnection().createQueryBuilder().insert().into("user_img").values({ user_img_id: 1, img_url: "http://localhost:4456" }).execute();
+      await getConnection().createQueryBuilder().insert().into("tb_user").values({ email: 'carlosboavida@gm.com',
+                                                                                 user_img_id: 1,
+                                                                                 user_pass: '123vidaboa',
+                                                                                 username: 'carlosboaviida',
+                                                                                 born_in: '2020-06-15'
+                                                                                 }).execute();
+    });
+
+    it('> GET /user/email Deve encontrar o e-mail do usuário', async () => {
+      const email = 'carlosboavida@gm.com';
+
+      const response = await request(app.getHttpServer())
+        .post('/user/email')
+        .send({ email });
+
+      expect(response.status).toBe(200);
+      expect(response.body).toEqual(expect.objectContaining({
+        email: expect.any(Boolean)
+      }));
+      expect(response.body.email).toBe(true);
+    });
+
+    it('> GET /user/email Não deve encontrar o e-mail do usuário', async () => {
+      const email = 'carlosboaida@gm.com';
+
+      const response = await request(app.getHttpServer())
+        .post('/user/email')
+        .send({ email });
+
+      expect(response.status).toBe(200);
+      expect(response.body).toEqual(expect.objectContaining({
+        email: expect.any(Boolean)
+      }));
+      expect(response.body.email).toBe(false);
+    });
+
+    it('> GET /user/email Não deve encontrar o e-mail do usuário (e-mail não enviado ou inválido)', async () => {
+      const email = 'carlosboaida';
+      const response = await request(app.getHttpServer())
+        .post('/user/email')
+        .send({ email });
+
+      expect(response.status).toBe(404);
+
+    });
+  });
+
 });
