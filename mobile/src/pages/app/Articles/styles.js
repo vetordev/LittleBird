@@ -86,6 +86,8 @@ export const Recommendations = styled.View`
    background: #202020;
    padding: 25px 25px;
    border-radius: 17px;
+   width: 100%;
+   /* overflow: hidden; */
 `;
 
 export const TitleRecommendations = styled.Text`
@@ -97,6 +99,7 @@ export const TitleRecommendations = styled.Text`
 
 export const Item = styled.View`
    flex-direction: row;
+   
 `;
 
 export const TitleItem = styled.Text`
@@ -117,6 +120,8 @@ export const LinkItemContainer = styled.TouchableOpacity`
    margin-left: 7px;
    border-bottom-width: 3px;
    border-bottom-color: #834397;
+   max-width: 100%;
+   margin-bottom: 15px;
 `;
 
 export const styles = StyleSheet.create({

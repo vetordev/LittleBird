@@ -86,20 +86,24 @@ const Articles = () => {
 
                <Recommendations>
                   <TitleRecommendations>Saiba mais:</TitleRecommendations>
-                  <Item>
-                     <Feather name="check" color="#834397" size={25} />
-                     <TitleItem>Vídeo:</TitleItem>
+                  <View>
+                     <Item>
+                        <Feather name="check" color="#834397" size={25} />
+                        <TitleItem>Vídeo:</TitleItem>
+                     </Item>
                      <LinkItemContainer onPress={() => openWebView('https://open.spotify.com/track/4QVS8YCpK71R4FsxSMCjhP?si=QDb97iMUT_K-SH-emqqmDw')}>
-                        <LinkItem>www.com.br</LinkItem>
+                        <LinkItem numberOfLines={1}>www.gaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaahjghjghjjhgghghghghcom.br</LinkItem>
                      </LinkItemContainer>
-                  </Item>
-                  <Item>
-                     <Feather name="check" color="#834397" size={25} />
-                     <TitleItem>Podcast:</TitleItem>
+                  </View>
+                  <View>
+                     <Item>
+                        <Feather name="check" color="#834397" size={25} />
+                        <TitleItem>Podcast:</TitleItem>
+                     </Item>
                      <LinkItemContainer onPress={() => openWebView('https://www.youtube.com/')}>
                         <LinkItem>Oww.com</LinkItem>
                      </LinkItemContainer>
-                  </Item>
+                  </View>
                </Recommendations>
             </Content>
       </Container>

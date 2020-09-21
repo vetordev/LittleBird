@@ -19,31 +19,27 @@ import {
 } from './styles';
 
 const EditProfile = () => {
-   const [selectedAvatar, setSelectedAvatar] = useState(0);
-   const [lastSelectedAvatar, setLastSelectedAvatar] = useState(0);
-   const [happened, setHappened] = useState(false);
+   const [imgs, setImgs] = useState([
+      'https://i.pinimg.com/564x/8b/71/cc/8b71cceff897fc4e9d19205fff28406f.jpg', 
+      'https://i.pinimg.com/564x/2f/e1/0c/2fe10cf1a5e63336cb1ae52c1824c2c8.jpg', 
+      'https://i.pinimg.com/564x/5e/06/89/5e0689b603bb90ecac3bc47b5b39abdf.jpg', 
+      'https://i.pinimg.com/564x/24/ae/47/24ae4734b6f1cc9e76b2184c4cffad5f.jpg'
+   ]);
 
    const formRef = useRef(null);
 
    function handleSaveProfile() {}
 
-   async function handleEditAvatar(newId) {
-      
-      await setLastSelectedAvatar(selectedAvatar);
-      setHappened(true);
 
-      setSelectedAvatar(newId);
-      console.log(lastSelectedAvatar)
-      console.log(selectedAvatar)
+   function handleEditAvatar(newId) {
+      let array_aux = imgs;
 
+      const aux = array_aux[0];
+      array_aux[0] = array_aux[newId];
+      array_aux[newId] = aux;
+
+      setImgs(array_aux);
    }
-
-   const avatares = [
-      { id: 0, img: 'https://i.pinimg.com/564x/8b/71/cc/8b71cceff897fc4e9d19205fff28406f.jpg' },
-      { id: 1, img: 'https://i.pinimg.com/564x/2f/e1/0c/2fe10cf1a5e63336cb1ae52c1824c2c8.jpg' },
-      { id: 2, img: 'https://i.pinimg.com/564x/5e/06/89/5e0689b603bb90ecac3bc47b5b39abdf.jpg' },
-      { id: 3, img: 'https://i.pinimg.com/564x/24/ae/47/24ae4734b6f1cc9e76b2184c4cffad5f.jpg' },
-   ]
 
    return (
       <Container>
@@ -55,19 +51,19 @@ const EditProfile = () => {
                onSubmit={handleSaveProfile}
             >
                <AvataresContainer>
-                  {/* <MainAvatar resizeMode="cover" source={{ uri: avatares[0].img }} /> */}
-
                   <FlatList 
-                     data={avatares}
-                     keyExtractor={avatar => String(avatar.id)}
+                     data={imgs}
+                     keyExtractor={avatar => String(avatar)}
                      horizontal
                      contentContainerStyle={{ justifyContent: 'center', alignItems: 'center' }}
                      renderItem={({ item, index }) => 
                         index === 0 ? 
-                           <MainAvatar resizeMode="cover" source={{ uri: avatares[selectedAvatar].img }} />
+                           <MainAvatar resizeMode="cover" source={{ uri: imgs[0] }} />
                         : (
-                           <AvatarOption onPress={() => handleEditAvatar(item.id)}>
-                              <Image resizeMode="cover" source={{ uri: (item.id === selectedAvatar ? avatares[lastSelectedAvatar].img : item.img) }} />
+                           <AvatarOption onPress={() => handleEditAvatar(index)}>
+                              <Image resizeMode="cover" 
+                                 source={{ uri: item }} 
+                              />
                            </AvatarOption>
                         )
                      }
