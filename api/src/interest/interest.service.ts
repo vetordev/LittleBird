@@ -3,6 +3,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Interest } from './entity/interest.entity';
 import { Response } from 'express';
+import { convertToArray } from "./utils/convert.array";
 
 
 @Injectable()
@@ -11,8 +12,11 @@ export class InterestService {
     @InjectRepository(Interest) private readonly interestRespository: Repository<Interest>,
   ) {}
 
-  async createInterest(user_id: number, theme_id: number): Promise<void> {
-    const interest = await this.interestRespository.createQueryBuilder('interest')
+  // TODO Receber uma string de theme_id e converter para array
+  async createInterest(user_id: number, themes: string): Promise<void> {
+
+    convertToArray(themes).map(async theme_id => {
+      const interest = await this.interestRespository.createQueryBuilder('interest')
       .select('interest.interest_id')
       .where('interest.user_id = :user_id', { user_id })
       .andWhere('interest.theme_id = :theme_id', { theme_id })
@@ -26,6 +30,8 @@ export class InterestService {
           theme_id
         })
         .execute();
+    })
+
   }
 
   async getInterestByUser(user_id: number, page: number): Promise<Interest[]> {

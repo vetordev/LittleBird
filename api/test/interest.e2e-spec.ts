@@ -50,6 +50,7 @@ describe('Interest', () => {
       token = response.body.token;
     });
 
+    // TODO Enviar uma string que SIMULE um array de theme_id
     it('> POST /interest Deve criar um interesse', async () => {
 
       const response = await request(app.getHttpServer())
