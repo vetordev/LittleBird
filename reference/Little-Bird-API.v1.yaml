@@ -2546,10 +2546,50 @@ paths:
   /user/email:
     get:
       summary: Buscar e-mail
-      tags: []
-      responses: {}
+      tags:
+        - User
+      responses:
+        '200':
+          description: 'O servidor retornar TRUE caso o e-mail exista, e FALSE caso não exista.'
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  email:
+                    type: boolean
+              examples:
+                Exemplo de resposta:
+                  value:
+                    email: true
+        '500':
+          description: Erro interno no servidor.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+              examples:
+                Exemplo de erro:
+                  value:
+                    error: Ocorreu um erro. Tente novamente mais tarde.
       operationId: get-user-email
-      description: ''
+      description: Rota para verificar se um e-mail já está presente no servidor.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                email:
+                  type: string
+            examples:
+              Exemplo de e-mail:
+                value:
+                  email: carlosboavida@gmail.com
+        description: E-mail para busca no servidor.
 components:
   schemas:
     User:
@@ -3007,3 +3047,4 @@ components:
   securitySchemes: {}
 tags:
   - name: Comment
+  - name: User
