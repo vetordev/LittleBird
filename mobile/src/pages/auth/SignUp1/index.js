@@ -39,11 +39,7 @@ const SignUp1 = () => {
   }
 
   return (
-    <ScrollView 
-      style={{ flex: 1 }}
-      showsVerticalScrollIndicator={false}
-    >
-    <Container>
+    <Container showsVerticalScrollIndicator={false}>
       <StatusBar style="light" />
       <Title>Seja bem-vinde!</Title>
       <Form 
@@ -98,7 +94,6 @@ const SignUp1 = () => {
         </BtnLogin>
       </Form>
     </Container>
-    </ScrollView>
   );
 }
 

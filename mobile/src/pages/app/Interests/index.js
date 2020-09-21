@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { FlatList, Text } from 'react-native';
+import { FlatList, TouchableOpacity } from 'react-native';
 import { Feather } from '@expo/vector-icons';
 
 import Header from '../../../components/Header';
@@ -18,14 +18,20 @@ import {
    InterestTitle,
    InterestInfos,
    Intetest,
+   InterestIcon,
 } from './styles';
 
 const Interests = () => {
    const [displayModal, setModalDisplay] = useState(false);
+   const [addedInterest, setAddedInterest] = useState(false);
 
    function openModal() {
       setModalDisplay(true);
    }
+
+   
+
+   // function handle
 
    return (
       <Container>
@@ -37,7 +43,6 @@ const Interests = () => {
                font_color="#202020"
                btn_title="OK!"
             >
-               <Intetest>
                   <InterestItem>
                      <InterestInfos>
                         <InterestImg />
@@ -51,9 +56,11 @@ const Interests = () => {
                         <InterestImg />
                         <InterestTitle>Lorem Ipsum</InterestTitle>
                      </InterestInfos>
-                     <Feather name="plus" color="#01C24E" size={20} />
+                     <TouchableOpacity>
+                        <Feather name="plus" color="#01C24E" size={20} />
+                     </TouchableOpacity>
                   </InterestItem>
-               </Intetest>
+               {/* </Intetest> */}
             </ModalContainer>
          }  
 

@@ -1,5 +1,6 @@
 import styled from 'styled-components/native';
 import { RectButton } from 'react-native-gesture-handler';
+import { StyleSheet } from 'react-native';
 
 export const Container = styled.View`
    flex: 1;
@@ -29,10 +30,13 @@ export const AddInterestText = styled.Text`
 `;
 
 export const InterestItem = styled.View`
-   /* width: 100%; */
+   width: 100%;
    flex-direction: row;
    align-items: center;
    justify-content: space-between;
+   padding: 10px 0;
+   border-bottom-width: ${ StyleSheet.hairlineWidth }px;
+   border-color: #B8B8B880;
 `;
 
 export const InterestInfos = styled.View`
@@ -46,6 +50,10 @@ export const InterestImg = styled.Image`
    background: #f00;
    border-radius: 7px;
    margin-right: 10px;
+`;
+
+export const InterestIcon = styled.TouchableOpacity`
+   
 `;
 
 export const InterestTitle = styled.Text`
