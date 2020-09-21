@@ -34,7 +34,7 @@ describe('User', () => {
     });
 
     it('> POST /user - Deve criar um usuário', async () => {
-      const user: CreateUserDto = {
+      const user = {
         email: 'carlosboavida@gm.com',
         user_img_id: 1,
         user_pass: '123vidaboa',
@@ -297,7 +297,7 @@ describe('User', () => {
       const email = 'carlosboavida@gm.com';
 
       const response = await request(app.getHttpServer())
-        .post('/user/email')
+        .get('/user/email')
         .send({ email });
 
       expect(response.status).toBe(200);
@@ -311,7 +311,7 @@ describe('User', () => {
       const email = 'carlosboaida@gm.com';
 
       const response = await request(app.getHttpServer())
-        .post('/user/email')
+        .get('/user/email')
         .send({ email });
 
       expect(response.status).toBe(200);
@@ -324,10 +324,10 @@ describe('User', () => {
     it('> GET /user/email Não deve encontrar o e-mail do usuário (e-mail não enviado ou inválido)', async () => {
       const email = 'carlosboaida';
       const response = await request(app.getHttpServer())
-        .post('/user/email')
+        .get('/user/email')
         .send({ email });
 
-      expect(response.status).toBe(404);
+      expect(response.status).toBe(400);
 
     });
   });

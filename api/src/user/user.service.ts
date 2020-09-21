@@ -1,5 +1,5 @@
 import { Injectable, Inject, forwardRef } from '@nestjs/common';
-import { CreateUserDto, GetUserDto, UpdateUserDto } from './user.dto';
+import { CreateUserDto, EmailExistsDto, GetUserDto, UpdateUserDto } from './user.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { User } from './entity/user.entity';
@@ -71,4 +71,16 @@ export class UserService {
       .where("tb_user.user_id = :user_id", { user_id })
       .execute()
   }
+
+  async emailExists(email: string): Promise<object> {
+    const user = await this.userRepository.createQueryBuilder('tb_user')
+      .select(['tb_user.email'])
+      .where('tb_user.email = :email', { email })
+      .getOne()
+
+    if(!user) {
+      return { email: false }
+    }
+    return { email: true }
+  };
 }

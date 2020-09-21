@@ -45,6 +45,14 @@ export class UpdateUserDto {
   born_in ?: string;
 }
 
+export class EmailExistsDto {
+
+  @IsString()
+  @IsNotEmpty()
+  @IsEmail()
+  email: string;
+}
+
 export class GetUserDto {
 
   email: string;
