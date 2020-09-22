@@ -633,7 +633,7 @@ paths:
                   value:
                     error: Ocorreu um erro. Tente novamente mais tarde.
       operationId: get-theme
-      description: Rota para buscar todos os temas da aplicação.
+      description: Rota para buscar todos os temas da aplicação ordenados alfabeticamente.
       tags:
         - Theme
   /article:
@@ -704,7 +704,7 @@ paths:
           description: Paginação dos artigos
           required: true
     parameters: []
-  /forum/like:
+  /forum:
     get:
       summary: Buscar fóruns ordenados pelo like
       responses:
@@ -770,6 +770,7 @@ paths:
           name: page
           required: true
           description: Paginação dos fóruns
+    parameters: []
   '/article/theme/{theme_id}/like':
     parameters:
       - schema:
