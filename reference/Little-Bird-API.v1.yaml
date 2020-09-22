@@ -8,7 +8,7 @@ info:
     email: vitor13m2003@gmail.com
     url: 'https://www.linkedin.com/in/vitor-da-silva-pires-bezerra-84a5371a0/'
 servers:
-  - url: 'http://localhost:3333'
+  - url: 'https://little-bird-api.herokuapp.com/'
 paths:
   /auth/login:
     post:
@@ -734,6 +734,10 @@ paths:
                     no_like:
                       type: integer
                       format: int64
+                    like:
+                      type: boolean
+                    no_comment:
+                      type: integer
               examples:
                 Exemplo de fóruns:
                   value:
@@ -769,7 +773,7 @@ paths:
           in: query
           name: page
           required: true
-          description: Paginação dos fóruns
+          description: Paginação dos fóruns (6 por envio)
     parameters: []
   '/article/theme/{theme_id}/like':
     parameters:
