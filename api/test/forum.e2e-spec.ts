@@ -206,7 +206,9 @@ describe('Forum', () => {
         forum_img_id: {
           forum_img_id: expect.any(Number),
           img_url: expect.any(String)
-        }
+        },
+        like: expect.any(Boolean),
+        no_comment: expect.any(Number)
       }));
     });
 
