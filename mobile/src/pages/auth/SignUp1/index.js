@@ -31,8 +31,10 @@ const SignUp1 = () => {
     const user = {
       email,
       username: data.username,
-      password: data.password,
-      authorization: toggleCheckBox
+      user_pass: data.password,
+      // authorization: toggleCheckBox,
+      user_img_id: 1,
+      born_in: '2019-08-24'
     }
 
     navigation.navigate('SignUp2', { user });

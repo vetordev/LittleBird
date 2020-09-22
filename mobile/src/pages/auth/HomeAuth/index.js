@@ -5,14 +5,25 @@ import { Form } from '@unform/mobile';
 import { Feather } from '@expo/vector-icons';
 
 import Input from '../../../components/Input';
+
 import { Container, Title } from './styles';
 import { BtnLogin, TextBtnLogin, BtnIcon } from '../../../components/BtnNext/styles';
+
+import api from '../../../services/api';
 
 const HomeAuth = () => {
   const navigation = useNavigation();
   const formRef = useRef(null);
 
-  function handleSignIn(data, { reset }) {
+  async function handleSignIn(data, { reset }) {
+
+    // const email = data.email;
+
+    // const response = await api.get('user/email', email);
+
+    // console.log(data.email);
+
+
 
     if (data.email == "vitorinha@hotmail.com") {
       navigation.navigate('SignIn', { data });

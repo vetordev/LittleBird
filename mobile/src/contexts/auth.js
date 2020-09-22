@@ -2,13 +2,16 @@ import React, { createContext, useState, useEffect, useContext } from 'react';
 import AsyncStorage from '@react-native-community/async-storage';
 import { BackHandler } from 'react-native';
 
+import api from '../services/api';
+
 const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
    const [user, setUser] = useState(null);
    const [loading, setLoading] = useState(true);
+   const [token, setToken] = useState(null);
 
-   const token = '3afdsfdmalfhjfds943hjdf1z0';
+   // const token = '3afdsfdmalfhjfds943hjdf1z0';
 
    useEffect(() => {
       async function loadStoragedData() {
@@ -35,12 +38,20 @@ export const AuthProvider = ({ children }) => {
       await AsyncStorage.setItem('@LittleBird:token', token);
    }
 
-   async function signUp(user) {
-      // console.log('auth', user);
-      setUser(user);
+   async function signUp(user, userInterests) {
 
-      await AsyncStorage.setItem('@LittleBird:user', JSON.stringify(user));
-      await AsyncStorage.setItem('@LittleBird:token', token);
+      try {
+         const responseUser = await api.post('user', user);
+         setUser(user);   
+         setToken(responseUser.data.token);
+
+         await AsyncStorage.setItem('@LittleBird:user', JSON.stringify(user));
+         await AsyncStorage.setItem('@LittleBird:token', token);
+
+      } catch (error) {
+         console.log('Erro no cadastro de usuário.');
+      }
+      
    }
 
    function signOut() {
@@ -51,7 +62,7 @@ export const AuthProvider = ({ children }) => {
    }
 
    return (
-      <AuthContext.Provider value={{ signed: !!user, user, loading, signIn, signOut, signUp }}>
+      <AuthContext.Provider value={{ signed: !!user, user, loading, signIn, signOut, signUp, token }}>
          {children}
       </AuthContext.Provider>
    )

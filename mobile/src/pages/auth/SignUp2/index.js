@@ -39,18 +39,12 @@ const SignUp2 = () => {
  })
 
   async function handleSignUp() {
-    // const userWithInterests = {
-    //   email: user.email,
-    //   username: user.username,
-    //   password: user.password,
-    //   authorization: user.authorization,
-    //   interests: selectedInterests
-    // }
 
-    const interests = { interests: selectedInterests }
+    // const interests = { interests: selectedInterests }
 
-    Object.assign(user, interests);
-    await signUp(user);
+    // Object.assign(user, interests);
+
+    await signUp(user, selectedInterests);
   }
 
   function handleSelectedInterests(id) {
