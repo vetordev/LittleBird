@@ -322,7 +322,7 @@ paths:
         - User
   /interest:
     post:
-      summary: Adicionar vários interesse
+      summary: Adicionar vários interesses
       operationId: post-interest
       responses:
         '204':
@@ -341,7 +341,7 @@ paths:
                   value:
                     error: O token é inválido ou já expirou
         '404':
-          description: O tema não foi encontrado no servidor.
+          description: Algum tema não foi encontrado no servidor.
           content:
             application/json:
               schema:
@@ -387,7 +387,7 @@ paths:
               Exemplo de corpo da requisição:
                 value:
                   theme_id: '1, 2, 3'
-        description: O aplicação do usuário deve enviar o "theme_id" do tema escolhido pelo usuário.
+        description: O aplicação do usuário deve enviar o "theme_id" dos temas escolhidos pelo usuário.
       tags:
         - Interest
     get:
