@@ -322,11 +322,11 @@ paths:
         - User
   /interest:
     post:
-      summary: Adicionar um interesse
+      summary: Adicionar vários interesse
       operationId: post-interest
       responses:
         '204':
-          description: O interesse foi adicionado com sucesso.
+          description: Os interesses foram adicionados com sucesso.
         '401':
           description: O token JWT não é válido.
           content:
@@ -373,7 +373,7 @@ paths:
           name: Authorization
           required: true
           description: Token JWT deve ser passado por meio deste header
-      description: Rota para adicionar o interesse de um usuário.
+      description: Rota para adicionar interesses de um usuário.
       requestBody:
         content:
           application/json:
@@ -381,12 +381,12 @@ paths:
               type: object
               properties:
                 theme_id:
-                  type: integer
                   format: int64
+                  type: string
             examples:
               Exemplo de corpo da requisição:
                 value:
-                  theme_id: 1
+                  theme_id: '1, 2, 3'
         description: O aplicação do usuário deve enviar o "theme_id" do tema escolhido pelo usuário.
       tags:
         - Interest
