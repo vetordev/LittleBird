@@ -10,8 +10,8 @@ export class ThemeService {
 
   async getThemes(): Promise<GetThemeDto[]> {
     const themes = await this.themeRepository.createQueryBuilder("theme")
-      //Traz os dados de theme_img e não só o id
       .innerJoinAndSelect("theme.theme_img_id", "theme_img")
+      .orderBy('theme.theme_name', 'ASC')
       .getMany();
 
     return themes;
