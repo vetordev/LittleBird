@@ -193,9 +193,9 @@ describe('Forum', () => {
       }));
     });
 
-    it('> GET /forum/user/like Deve retornar os fóruns ordenados pelo like', async () => {
+    it('> GET /forum Deve retornar os fóruns ordenados pelo like', async () => {
       const response = await request(app.getHttpServer())
-        .get(`/forum/like?page=1`)
+        .get(`/forum?page=1`)
         .set('Authorization', `Bearer ${token}`);
 
       expect(response.status).toBe(200);
