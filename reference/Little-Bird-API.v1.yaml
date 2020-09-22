@@ -8,7 +8,7 @@ info:
     email: vitor13m2003@gmail.com
     url: 'https://www.linkedin.com/in/vitor-da-silva-pires-bezerra-84a5371a0/'
 servers:
-  - url: 'https://little-bird-api.herokuapp.com/'
+  - url: 'https://little-bird-api.herokuapp.com'
 paths:
   /auth/login:
     post:
