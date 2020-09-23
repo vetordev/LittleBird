@@ -153,6 +153,8 @@ describe('Article', () => {
 
       await getConnection().createQueryBuilder().insert().into("like_article").values({ like_article_id: 1, user_id: 1, article_id: 1 }).execute();
 
+      await getConnection().createQueryBuilder().insert().into("later_article").values({ later_article_id: 1, user_id: 1, article_id: 1 }).execute();
+
       const response = await request(app.getHttpServer()).post('/auth/login').send({ email: 'carlosboavida@gm.com', user_pass: '123vidaboa' });
       token = response.body.token;
     });

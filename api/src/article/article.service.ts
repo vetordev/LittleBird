@@ -86,8 +86,25 @@ export class ArticleService {
     return articles;
   }
 
-  async getArticleByUserLike(user_id: number, page: number): Promise<LaterArticle[]> {
+  async getArticlesByUserLater(user_id: number, page: number): Promise<LaterArticle[]> {
+    let articles = await this.laterArticleRepository.createQueryBuilder('later_article')
+      .select(['later_article', 'article.article_id', 'article.title', 'article.no_like', 'article.publi_date', 'article_img'])
+      .innerJoin('later_article.article_id', 'article')
+      .innerJoin('article.article_img_id', 'article_img')
+      .where('later_article.user_id = :user_id', { user_id })
+      .orderBy('article.no_like', 'ASC')
+      .offset((page - 1) * 6)
+      .limit(6)
+      .getMany();
 
+    articles = articles.map((article) => {
+      delete article.later_article_id;
+      delete article.user_id;
+
+      return article;
+    });
+
+    return articles;
   };
 
   async getArticlesByTheme(response: Response, theme_id: number, page: number): Promise<Response> {
