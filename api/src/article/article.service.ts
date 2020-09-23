@@ -55,7 +55,7 @@ export class ArticleService {
 
   async getArticlesByLike(page: number): Promise<Article[]> {
     const articles = await this.articleRepository.createQueryBuilder('article')
-      .select(['article', 'article_img'])
+      .select(['article.article_id', 'article.title', 'article.no_like', 'article.publi_date', 'article_img'])
       .innerJoin('article.article_img_id', 'article_img')
       .orderBy('article.no_like', 'ASC')
       .offset((page - 1) * 6)
@@ -67,7 +67,7 @@ export class ArticleService {
 
   async getArticlesByUserLike(user_id: number, page: number): Promise<LikeArticle[]> {
     let articles = await this.likeArticleRepository.createQueryBuilder('like_article')
-      .select(['like_article', 'article', 'article_img'])
+      .select(['like_article', 'article.article_id', 'article.title', 'article.no_like', 'article.publi_date', 'article_img'])
       .innerJoin('like_article.article_id', 'article')
       .innerJoin('article.article_img_id', 'article_img')
       .where('like_article.user_id = :user_id', { user_id })
@@ -98,7 +98,7 @@ export class ArticleService {
     }
 
     let articles = await this.themeArticleRepository.createQueryBuilder('theme_article')
-      .select(['theme_article', 'article', 'article_img'])
+      .select(['theme_article', 'article.article_id', 'article.title', 'article.no_like', 'article.publi_date', 'article_img'])
       .innerJoin('theme_article.article_id', 'article')
       .innerJoin('article.article_img_id', 'article_img')
       .where('theme_article.theme_id = :theme_id', { theme_id })
@@ -202,7 +202,7 @@ export class ArticleService {
   async getArticlesAndForuns(page: number): Promise<any> {
 
     const articles = await this.articleRepository.createQueryBuilder('article')
-      .select(['article', 'article_img'])
+      .select(['article.article_id', 'article.title', 'article.no_like', 'article.publi_date', 'article_img'])
       .innerJoin('article.article_img_id', 'article_img')
       .limit(3)
       .offset((page - 1) * 3)
