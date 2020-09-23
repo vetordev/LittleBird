@@ -660,8 +660,6 @@ paths:
                           type: string
                     title:
                       type: string
-                    article_content:
-                      type: string
                     no_like:
                       type: integer
                     publi_date:
