@@ -722,13 +722,22 @@ paths:
                       format: int64
                     title:
                       type: string
+                    forum_img:
+                      type: object
+                      properties:
+                        forum_img_id:
+                          type: integer
+                          format: int64
+                        img_url:
+                          type: string
+                          format: uri
                     no_like:
                       type: integer
                       format: int64
+                    like:
+                      type: boolean
                     no_comment:
                       type: integer
-                    img_url:
-                      type: string
               examples:
                 Exemplo de fóruns:
                   value:
@@ -1566,8 +1575,6 @@ paths:
                             img_url:
                               type: string
                         title:
-                          type: string
-                        article_content:
                           type: string
                         no_like:
                           type: integer
