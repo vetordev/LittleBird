@@ -9,8 +9,3 @@ async function bootstrap() {
   await app.listen(process.env.PORT || 3333);
 }
 bootstrap();
-
-// HOST=localhost
-// PORT=5432
-// USERDB=postgres
-// PASSWORD=postgre
