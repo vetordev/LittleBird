@@ -86,6 +86,10 @@ export class ArticleService {
     return articles;
   }
 
+  async getArticleByUserLike(user_id: number, page: number): Promise<LaterArticle[]> {
+
+  };
+
   async getArticlesByTheme(response: Response, theme_id: number, page: number): Promise<Response> {
 
     const theme = await this.themeArticleRepository.createQueryBuilder('theme_article')

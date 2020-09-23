@@ -3,6 +3,7 @@ import { ArticleService } from './article.service';
 import { GetArticleDto, GetArticlesByThemeDto, CreateArticleLikeDto, DeleteArticleLikeDto, CreateArticleLaterDto, DeleteArticleLaterDto, GetArticlesAndForunsDto, QueryPageDto } from './article.dto';
 import { JwtAuthGuard } from '../auth/jwt/jwt-auth.guard';
 import { QueryFailedExceptionFilter } from './http-exception.filter';
+import { request } from 'http';
 
 @Controller('article')
 export class ArticleController {
@@ -24,6 +25,12 @@ export class ArticleController {
   @UseGuards(JwtAuthGuard)
   getArticlesByUserLike(@Req() request, @Query() query: QueryPageDto) {
     return this.articleService.getArticlesByUserLike(request.user.user_id, query.page);
+  }
+
+  @Get('user/later')
+  @UseGuards(JwtAuthGuard)
+  getArticleByUserLater(@Req() request, @Query() query: QueryPageDto) {
+
   }
 
   @Get('theme/:theme_id/like')

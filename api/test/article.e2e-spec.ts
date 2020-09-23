@@ -186,6 +186,34 @@ describe('Article', () => {
       expect(response.status).toBe(401);
     });
 
+    it('> GET /article/user/later Deve retornar os artigos que o usuário marcou com ler mais tarde', async () => {
+      const response = await request(app.getHttpServer())
+        .get('/article/user/later?page=1')
+        .set('Authorization', `Bearer ${token}`);
+
+      expect(response.status).toBe(200);
+      expect(response.body[0]).toEqual(expect.objectContaining({
+        article_id: {
+          article_id: expect.any(Number),
+          article_img_id: {
+            article_img_id: expect.any(Number),
+            img_url: expect.any(String)
+          },
+          title: expect.any(String),
+          no_like: expect.any(Number),
+          publi_date: expect.any(String)
+        },
+      }));
+    });
+
+    it('> GET /article/user/later Não deve retornar os artigos que o usuário marcou com ler mais tarde (token JWT inválido)', async () => {
+      const response = await request(app.getHttpServer())
+        .get('/article/user/later?page=1')
+        .set('Authorization', `Bearer ${token}errado`);
+
+      expect(response.status).toBe(401);
+    });
+
     it('> GET /article/theme/:theme_id/like Deve retornar os artigos de um tema ordenados pelo like', async () => {
       const theme_id = 1;
       const response = await request(app.getHttpServer())
