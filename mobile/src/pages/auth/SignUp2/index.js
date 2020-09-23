@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { FlatList } from 'react-native';
+import { FlatList, ActivityIndicator } from 'react-native';
 import { StatusBar } from 'expo-status-bar';
 import { useRoute, useNavigation } from '@react-navigation/native';
 import { Feather } from '@expo/vector-icons';
@@ -18,6 +18,7 @@ import {
   InterestTitleContainer,
   LoadInterests,
   Content,
+  ActivityIndicatorContainer,
   styles
 } from './styles';
 
@@ -28,7 +29,7 @@ const SignUp2 = () => {
   const navigation = useNavigation();
   const route = useRoute();
   const { user } = route.params;
-  const { signUp } = useAuth();
+  const { signUp, loadingSignUp } = useAuth();
 
   navigation.setOptions({
     headerStyle: {
@@ -121,7 +122,15 @@ const SignUp2 = () => {
               <BtnIcon background="#000">
                 <Feather name="log-in" color="#01C24E" size={24} />
               </BtnIcon>
-              <TextBtnLogin color="#01C24E">entrar</TextBtnLogin>
+
+              { loadingSignUp ?
+                  <ActivityIndicatorContainer background="#121212">
+                    <ActivityIndicator size="large" color="#01C24E" />
+                  </ActivityIndicatorContainer>
+                : 
+                  <TextBtnLogin color="#01C24E">entrar</TextBtnLogin>
+              }
+
             </BtnLogin>
             </Content>
           }

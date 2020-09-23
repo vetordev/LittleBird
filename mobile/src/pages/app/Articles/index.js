@@ -76,9 +76,6 @@ const Articles = () => {
                         <TagTitle>Puberdade</TagTitle>
                      </Tag>
                      <Tag>
-                        <TagTitle>Hormônios</TagTitle>
-                     </Tag>
-                     <Tag>
                         <TagTitle>Sexo</TagTitle>
                      </Tag>
                   </Tags>
@@ -91,8 +88,8 @@ const Articles = () => {
                         <Feather name="check" color="#834397" size={25} />
                         <TitleItem>Vídeo:</TitleItem>
                      </Item>
-                     <LinkItemContainer onPress={() => openWebView('https://open.spotify.com/track/4QVS8YCpK71R4FsxSMCjhP?si=QDb97iMUT_K-SH-emqqmDw')}>
-                        <LinkItem numberOfLines={1}>www.gaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaahjghjghjjhgghghghghcom.br</LinkItem>
+                     <LinkItemContainer onPress={() => openWebView('https://youtu.be/xw0MkTRmTu4')}>
+                        <LinkItem numberOfLines={1}>O Que Realmente Acontece Quando Você Atinge a Puberdade?</LinkItem>
                      </LinkItemContainer>
                   </View>
                   <View>
@@ -100,8 +97,8 @@ const Articles = () => {
                         <Feather name="check" color="#834397" size={25} />
                         <TitleItem>Podcast:</TitleItem>
                      </Item>
-                     <LinkItemContainer onPress={() => openWebView('https://www.youtube.com/')}>
-                        <LinkItem>Oww.com</LinkItem>
+                     <LinkItemContainer onPress={() => openWebView('https://open.spotify.com/track/4QVS8YCpK71R4FsxSMCjhP?si=QDb97iMUT_K-SH-emqqmDw')}>
+                        <LinkItem>Puberdade: Meninos X Meninas</LinkItem>
                      </LinkItemContainer>
                   </View>
                </Recommendations>

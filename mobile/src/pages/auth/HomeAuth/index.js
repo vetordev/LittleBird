@@ -18,16 +18,14 @@ const HomeAuth = () => {
   async function handleSignIn(data, { reset }) {
 
     // const email = data.email;
+    // console.log(email);
 
-    // const response = await api.get('user/email', email);
-
-    // console.log(data.email);
-
-
+    // const response = await api.get('user/email', { email: email });
+    
+    // console.log(response.data);
 
     if (data.email == "vitorinha@hotmail.com") {
-      navigation.navigate('SignIn', { data });
-      
+      navigation.navigate('SignIn', { data });      
       return;
     }
 

@@ -6,6 +6,8 @@ import { Feather } from '@expo/vector-icons';
 import Header from '../../../components/Header';
 import Input from '../../../components/Input';
 
+import { useAuth } from '../../../contexts/auth';
+
 import { 
    Container, 
    BtnSaveProfile, 
@@ -21,6 +23,7 @@ import {
 const EditProfile = () => {
    const [selectedAvatar, setSelectedAvatar] = useState(0);
    const [lastSelectedAvatar, setLastSelectedAvatar] = useState(0); 
+   const { user } = useAuth();
 
    const formRef = useRef(null);
 

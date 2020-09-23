@@ -101,7 +101,7 @@ const Complaint = () => {
                <Textarea name="report" />
 
                <BtnSaveProfile>
-                  <BtnSaveProfileText>Enviar</BtnSaveProfileText>
+                  <BtnSaveProfileText>ENVIAR</BtnSaveProfileText>
                </BtnSaveProfile>
             </Form>
          </Container>

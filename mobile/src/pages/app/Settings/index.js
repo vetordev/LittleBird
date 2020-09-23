@@ -104,9 +104,9 @@ const Settings = () => {
           <SessionOptionBtn onPress={sendEmail}>
             <TitleOption>Desenvolvedores (reportar erro)</TitleOption>
           </SessionOptionBtn>
-          <SessionOptionBtn>
+          {/* <SessionOptionBtn>
             <TitleOption>Créditos de mídia</TitleOption>
-          </SessionOptionBtn>
+          </SessionOptionBtn> */}
           <PanicBtn onPress={() => navigation.navigate('PanicBtn')}>
             <Feather name="alert-triangle" size={22} color="#E9E9E9" />
             <PanicBtnTitle>Ajuda ou emergência</PanicBtnTitle>

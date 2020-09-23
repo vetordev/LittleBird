@@ -9,6 +9,7 @@ const AuthContext = createContext();
 export const AuthProvider = ({ children }) => {
    const [user, setUser] = useState(null);
    const [loading, setLoading] = useState(true);
+   const [loadingSignUp, setLoadingSignUp] = useState(false);
    const [token, setToken] = useState(null);
 
    // const token = '3afdsfdmalfhjfds943hjdf1z0';
@@ -21,7 +22,10 @@ export const AuthProvider = ({ children }) => {
          
          setLoading(false);
 
-         if (storagedUser && storagedToken) {
+         console.log('TOKEN:', storagedToken);
+
+         // INCLUIR VERFIFICAÇÃO DE TOKEN
+         if (storagedUser) {
             setUser(JSON.parse(storagedUser));
          }
       }
@@ -31,25 +35,35 @@ export const AuthProvider = ({ children }) => {
 
 
    async function signIn(user) { // receber por parâmetro as informações do usuário e armazená-las no estado aqui.
-      // console.log('auth', user);
       setUser(user);
 
       await AsyncStorage.setItem('@LittleBird:user', JSON.stringify(user));
-      await AsyncStorage.setItem('@LittleBird:token', token);
+      await AsyncStorage.setItem('@LittleBird:token', '194328943s204');
    }
 
-   async function signUp(user, userInterests) {
+   function signUp(user, userInterests) {
 
       try {
-         const responseUser = await api.post('user', user);
-         setUser(user);   
-         setToken(responseUser.data.token);
+         api.post('user', user, {
+            onUploadProgress: () => {
+               setLoadingSignUp(true);
+            }
+         }).then(async (responseUser) => {
+            console.log('Tudo pronto!');
 
-         await AsyncStorage.setItem('@LittleBird:user', JSON.stringify(user));
-         await AsyncStorage.setItem('@LittleBird:token', token);
+            setLoadingSignUp(false);
+
+            setUser(user);   
+            setToken(responseUser.data.token);
+
+            console.log('TOKEN:', responseUser.data.token);
+
+            await AsyncStorage.setItem('@LittleBird:user', JSON.stringify(user));
+            await AsyncStorage.setItem('@LittleBird:token', token);
+         })
 
       } catch (error) {
-         console.log('Erro no cadastro de usuário.');
+         console.log('Erro no cadastro de usuário.', error);
       }
       
    }
@@ -62,7 +76,7 @@ export const AuthProvider = ({ children }) => {
    }
 
    return (
-      <AuthContext.Provider value={{ signed: !!user, user, loading, signIn, signOut, signUp, token }}>
+      <AuthContext.Provider value={{ signed: !!user, user, loading, signIn, signOut, signUp, token, loadingSignUp }}>
          {children}
       </AuthContext.Provider>
    )

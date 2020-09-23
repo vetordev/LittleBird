@@ -84,6 +84,12 @@ export const LoadInterests = styled.TouchableOpacity`
    margin: 7px 0 5px;
 `;
 
+export const ActivityIndicatorContainer = styled.View`
+   flex: 1;
+   justify-content: center;
+   align-items: center;
+`;
+
 export const styles = StyleSheet.create({
    selected: {
       borderWidth: 4,
