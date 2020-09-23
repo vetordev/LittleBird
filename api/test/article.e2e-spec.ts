@@ -172,7 +172,6 @@ describe('Article', () => {
             img_url: expect.any(String)
           },
           title: expect.any(String),
-          article_content: expect.any(String),
           no_like: expect.any(Number),
           publi_date: expect.any(String)
         },
@@ -201,7 +200,6 @@ describe('Article', () => {
             img_url: expect.any(String)
           },
           title: expect.any(String),
-          article_content: expect.any(String),
           no_like: expect.any(Number),
           publi_date: expect.any(String),
         }
@@ -231,7 +229,6 @@ describe('Article', () => {
             img_url: expect.any(String),
           },
           title: expect.any(String),
-          article_content: expect.any(String),
           no_like: expect.any(Number),
           publi_date: expect.any(String)
       }));
@@ -251,7 +248,6 @@ describe('Article', () => {
               img_url: expect.any(String),
             },
             title: expect.any(String),
-            article_content: expect.any(String),
             no_like: expect.any(Number),
             publi_date: expect.any(String)
           },
@@ -262,7 +258,6 @@ describe('Article', () => {
               img_url: expect.any(String),
             },
             title: expect.any(String),
-            article_content: expect.any(String),
             no_like: expect.any(Number),
             publi_date: expect.any(String)
           }
