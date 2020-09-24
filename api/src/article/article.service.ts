@@ -7,6 +7,7 @@ import { LikeArticle } from './entity/like-article.entity';
 import { Response } from 'express';
 import { LaterArticle } from './entity/later-article.entity';
 import { Forum } from '../forum/entity/forum.entity';
+import { contains } from 'class-validator';
 
 @Injectable()
 export class ArticleService {
@@ -136,6 +137,37 @@ export class ArticleService {
     });
 
     return response.status(200).json(articles);
+  };
+
+  async getArticlesAndForuns(page: number): Promise<any> {
+
+    let articles: any[] = await this.articleRepository.createQueryBuilder('article')
+      .select(['article.article_id', 'article.title', 'article.no_like', 'article.publi_date', 'article_img'])
+      .innerJoin('article.article_img_id', 'article_img')
+      .limit(3)
+      .offset((page - 1) * 3)
+      .orderBy('article.publi_date', 'ASC')
+      .getMany();
+
+    let foruns: any[] = await this.forumRepository.createQueryBuilder('forum')
+      .select(['forum', 'forum_img'])
+      .innerJoin('forum.forum_img_id', 'forum_img')
+      .limit(3)
+      .offset((page - 1) * 3)
+      .getMany();
+
+    // articles = articles.map((article) => {
+
+    // });
+    // const articles_foruns = articles.concat(foruns)
+    // console.log(articles_foruns);
+
+
+    return {
+      articles,
+      foruns
+    };
+
   }
 
   async createArticleLike(user_id: number, article_id: number): Promise<void> {
@@ -220,27 +252,5 @@ export class ArticleService {
     return response.status(204).end();
   }
 
-  async getArticlesAndForuns(page: number): Promise<any> {
 
-    const articles = await this.articleRepository.createQueryBuilder('article')
-      .select(['article.article_id', 'article.title', 'article.no_like', 'article.publi_date', 'article_img'])
-      .innerJoin('article.article_img_id', 'article_img')
-      .limit(3)
-      .offset((page - 1) * 3)
-      .orderBy('article.publi_date', 'ASC')
-      .getMany();
-
-    const foruns = await this.forumRepository.createQueryBuilder('forum')
-      .select(['forum', 'forum_img'])
-      .innerJoin('forum.forum_img_id', 'forum_img')
-      .limit(3)
-      .offset((page - 1) * 3)
-      .getMany();
-
-    return {
-      articles,
-      foruns
-    };
-
-  }
 }

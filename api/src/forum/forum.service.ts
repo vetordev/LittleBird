@@ -47,6 +47,7 @@ export class ForumService {
     return response.status(200).json(foruns);
   };
 
+  // TODO Adicionar paginação
   async getForumByLike(page: number): Promise<Forum[]> {
     // let foruns = await this.forumRepository.createQueryBuilder('forum')
     //   .select(['forum', 'forum_img'])
@@ -59,9 +60,10 @@ export class ForumService {
 
     let query = "SELECT f.forum_id, f.title, i.img_url, f.no_like, (SELECT COUNT(comment_id) FROM tb_comment WHERE forum_id = f.forum_id) AS no_comment";
     query += " FROM forum AS f JOIN forum_img AS i ON (i.forum_img_id = f.forum_img_id)"
-    query += " GROUP BY f.forum_id, i.img_url;"
-    let foruns = await this.forumRepository.query(query)
+    query += " GROUP BY f.forum_id, i.img_url";
+    query += ` LIMIT 6 OFFSET(${(page - 1) * 6});`
 
+    let foruns: Forum[] = await this.forumRepository.query(query);
     // foruns.map(async forum => {
 
     //   const countComment = await this.commentRepository.createQueryBuilder('comment')
