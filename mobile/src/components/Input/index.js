@@ -2,11 +2,18 @@ import React, { useEffect, useRef } from 'react';
 import { useField } from '@unform/core';
 import { Feather } from '@expo/vector-icons';
 
-import { Container, TextInput, InputContainer, InputIcon, Legend, Description } from './styles';
+import { 
+   Container, 
+   TextInput, 
+   InputContainer, 
+   InputIcon, 
+   Legend, 
+   Description 
+} from './styles';
 
-const Input = ({ name, color, iconName, placeholder, legend, description }) => {
+const Input = ({ name, color, iconName, placeholder, legend, description, defaultValue }) => {
    const inputRef = useRef(null);
-   const { fieldName, registerField, defaultValue, error } = useField(name);
+   const { fieldName, registerField, error } = useField(name);
 
    useEffect(() => {
       registerField({
@@ -31,6 +38,7 @@ const Input = ({ name, color, iconName, placeholder, legend, description }) => {
             keyboardType={name == 'email' ? 'email-address' : 'default'}
             secureTextEntry={name == 'password' ? true: false}
             defaultValue={defaultValue}
+            // value={value}
             onChangeText={value => {
                if (inputRef.current) {
                   inputRef.current.value = value

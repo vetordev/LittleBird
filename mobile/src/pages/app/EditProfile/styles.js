@@ -3,6 +3,7 @@ import { RectButton } from 'react-native-gesture-handler';
 
 export const Container = styled.ScrollView`
    flex: 1;
+   padding-bottom: 30px;
 `;
 
 export const AvataresContainer = styled.View`

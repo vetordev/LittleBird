@@ -88,7 +88,7 @@ const Articles = () => {
                         <Feather name="check" color="#834397" size={25} />
                         <TitleItem>Vídeo:</TitleItem>
                      </Item>
-                     <LinkItemContainer onPress={() => openWebView('https://youtu.be/xw0MkTRmTu4')}>
+                     <LinkItemContainer onPress={() => openWebView('https://www.youtube.com/watch?v=xw0MkTRmTu4')}>
                         <LinkItem numberOfLines={1}>O Que Realmente Acontece Quando Você Atinge a Puberdade?</LinkItem>
                      </LinkItemContainer>
                   </View>

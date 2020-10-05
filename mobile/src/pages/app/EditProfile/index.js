@@ -81,6 +81,7 @@ const EditProfile = () => {
                   iconName="user"
                   placeholder=""
                   legend="Seu nome de usuário"
+                  defaultValue={user.username}
                />
 
                <Input 
@@ -89,6 +90,7 @@ const EditProfile = () => {
                   iconName="mail"
                   placeholder=""
                   legend="Seu e-mail"
+                  defaultValue={user.email}
                />
 
                <View style={{ width: '80%' }}>

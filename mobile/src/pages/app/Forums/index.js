@@ -33,7 +33,7 @@ import {
 
 const Forums = () => {
    const [liked, setLiked] = useState(false);   
-   const [displayModal, setModalDisplay] = useState(false);
+   const [displayModal, setModalDisplay] = useState(true);
 
    function openModal() {
       setModalDisplay(true);

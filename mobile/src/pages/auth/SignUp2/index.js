@@ -125,7 +125,7 @@ const SignUp2 = () => {
 
               { loadingSignUp ?
                   <ActivityIndicatorContainer background="#121212">
-                    <ActivityIndicator size="large" color="#01C24E" />
+                    <ActivityIndicator size="small" color="#01C24E" />
                   </ActivityIndicatorContainer>
                 : 
                   <TextBtnLogin color="#01C24E">entrar</TextBtnLogin>

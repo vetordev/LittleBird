@@ -12,8 +12,6 @@ export const AuthProvider = ({ children }) => {
    const [loadingSignUp, setLoadingSignUp] = useState(false);
    const [token, setToken] = useState(null);
 
-   // const token = '3afdsfdmalfhjfds943hjdf1z0';
-
    useEffect(() => {
       async function loadStoragedData() {
 
@@ -43,28 +41,27 @@ export const AuthProvider = ({ children }) => {
 
    function signUp(user, userInterests) {
 
-      try {
          api.post('user', user, {
             onUploadProgress: () => {
                setLoadingSignUp(true);
             }
-         }).then(async (responseUser) => {
+         })
+         .then(async (responseUser) => {
             console.log('Tudo pronto!');
 
             setLoadingSignUp(false);
 
             setUser(user);   
-            setToken(responseUser.data.token);
+            await setToken('Barer ' + responseUser.data.token);
 
             console.log('TOKEN:', responseUser.data.token);
 
             await AsyncStorage.setItem('@LittleBird:user', JSON.stringify(user));
             await AsyncStorage.setItem('@LittleBird:token', token);
          })
-
-      } catch (error) {
-         console.log('Erro no cadastro de usuário.', error);
-      }
+         .catch ((error) => { 
+            console.log('Ocorreu um erro no cadastro de usuário: ', error);
+         }) 
       
    }
 

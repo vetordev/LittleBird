@@ -3,6 +3,8 @@ import { ScrollView, TouchableOpacity, Text } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { Feather } from '@expo/vector-icons';
 
+import { useAuth } from '../../../contexts/auth';
+
 import { 
    Container, 
    Header,
@@ -19,6 +21,7 @@ import {
 
 const Profile = () => {
    const { navigate } = useNavigation();
+   const { user } = useAuth();
 
    function navigateToEditProfile() {
       navigate('EditProfile');
@@ -59,7 +62,7 @@ const Profile = () => {
             </Header>
             
             <ProfilePicture resizeMode="cover" source={require('../../../assets/profilePicture1.png')} />
-            <Username>@bolinhorosa</Username>
+            <Username>@{user.username}</Username>
 
             <ProfileSession onPress={navigateToInterests}>
                <Part1>
