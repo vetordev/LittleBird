@@ -7,6 +7,7 @@ import { LikeArticle } from './entity/like-article.entity';
 import { Response } from 'express';
 import { LaterArticle } from './entity/later-article.entity';
 import { Forum } from '../forum/entity/forum.entity';
+import { contains } from 'class-validator';
 
 @Injectable()
 export class ArticleService {
@@ -55,7 +56,7 @@ export class ArticleService {
 
   async getArticlesByLike(page: number): Promise<Article[]> {
     const articles = await this.articleRepository.createQueryBuilder('article')
-      .select(['article', 'article_img'])
+      .select(['article.article_id', 'article.title', 'article.no_like', 'article.publi_date', 'article_img'])
       .innerJoin('article.article_img_id', 'article_img')
       .orderBy('article.no_like', 'ASC')
       .offset((page - 1) * 6)
@@ -67,7 +68,7 @@ export class ArticleService {
 
   async getArticlesByUserLike(user_id: number, page: number): Promise<LikeArticle[]> {
     let articles = await this.likeArticleRepository.createQueryBuilder('like_article')
-      .select(['like_article', 'article', 'article_img'])
+      .select(['like_article', 'article.article_id', 'article.title', 'article.no_like', 'article.publi_date', 'article_img'])
       .innerJoin('like_article.article_id', 'article')
       .innerJoin('article.article_img_id', 'article_img')
       .where('like_article.user_id = :user_id', { user_id })
@@ -86,6 +87,27 @@ export class ArticleService {
     return articles;
   }
 
+  async getArticlesByUserLater(user_id: number, page: number): Promise<LaterArticle[]> {
+    let articles = await this.laterArticleRepository.createQueryBuilder('later_article')
+      .select(['later_article', 'article.article_id', 'article.title', 'article.no_like', 'article.publi_date', 'article_img'])
+      .innerJoin('later_article.article_id', 'article')
+      .innerJoin('article.article_img_id', 'article_img')
+      .where('later_article.user_id = :user_id', { user_id })
+      .orderBy('article.no_like', 'ASC')
+      .offset((page - 1) * 6)
+      .limit(6)
+      .getMany();
+
+    articles = articles.map((article) => {
+      delete article.later_article_id;
+      delete article.user_id;
+
+      return article;
+    });
+
+    return articles;
+  };
+
   async getArticlesByTheme(response: Response, theme_id: number, page: number): Promise<Response> {
 
     const theme = await this.themeArticleRepository.createQueryBuilder('theme_article')
@@ -98,7 +120,7 @@ export class ArticleService {
     }
 
     let articles = await this.themeArticleRepository.createQueryBuilder('theme_article')
-      .select(['theme_article', 'article', 'article_img'])
+      .select(['theme_article', 'article.article_id', 'article.title', 'article.no_like', 'article.publi_date', 'article_img'])
       .innerJoin('theme_article.article_id', 'article')
       .innerJoin('article.article_img_id', 'article_img')
       .where('theme_article.theme_id = :theme_id', { theme_id })
@@ -115,6 +137,37 @@ export class ArticleService {
     });
 
     return response.status(200).json(articles);
+  };
+
+  async getArticlesAndForuns(page: number): Promise<any> {
+
+    let articles: any[] = await this.articleRepository.createQueryBuilder('article')
+      .select(['article.article_id', 'article.title', 'article.no_like', 'article.publi_date', 'article_img'])
+      .innerJoin('article.article_img_id', 'article_img')
+      .limit(3)
+      .offset((page - 1) * 3)
+      .orderBy('article.publi_date', 'ASC')
+      .getMany();
+
+    let foruns: any[] = await this.forumRepository.createQueryBuilder('forum')
+      .select(['forum', 'forum_img'])
+      .innerJoin('forum.forum_img_id', 'forum_img')
+      .limit(3)
+      .offset((page - 1) * 3)
+      .getMany();
+
+    // articles = articles.map((article) => {
+
+    // });
+    // const articles_foruns = articles.concat(foruns)
+    // console.log(articles_foruns);
+
+
+    return {
+      articles,
+      foruns
+    };
+
   }
 
   async createArticleLike(user_id: number, article_id: number): Promise<void> {
@@ -199,27 +252,5 @@ export class ArticleService {
     return response.status(204).end();
   }
 
-  async getArticlesAndForuns(page: number): Promise<any> {
 
-    const articles = await this.articleRepository.createQueryBuilder('article')
-      .select(['article', 'article_img'])
-      .innerJoin('article.article_img_id', 'article_img')
-      .limit(3)
-      .offset((page - 1) * 3)
-      .orderBy('article.publi_date', 'ASC')
-      .getMany();
-
-    const foruns = await this.forumRepository.createQueryBuilder('forum')
-      .select(['forum', 'forum_img'])
-      .innerJoin('forum.forum_img_id', 'forum_img')
-      .limit(3)
-      .offset((page - 1) * 3)
-      .getMany();
-
-    return {
-      articles,
-      foruns
-    };
-
-  }
 }

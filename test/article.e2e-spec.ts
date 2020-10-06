@@ -153,6 +153,8 @@ describe('Article', () => {
 
       await getConnection().createQueryBuilder().insert().into("like_article").values({ like_article_id: 1, user_id: 1, article_id: 1 }).execute();
 
+      await getConnection().createQueryBuilder().insert().into("later_article").values({ later_article_id: 1, user_id: 1, article_id: 1 }).execute();
+
       const response = await request(app.getHttpServer()).post('/auth/login').send({ email: 'carlosboavida@gm.com', user_pass: '123vidaboa' });
       token = response.body.token;
     });
@@ -172,7 +174,6 @@ describe('Article', () => {
             img_url: expect.any(String)
           },
           title: expect.any(String),
-          article_content: expect.any(String),
           no_like: expect.any(Number),
           publi_date: expect.any(String)
         },
@@ -182,6 +183,34 @@ describe('Article', () => {
     it('> GET /article/user/like Não deve retornar os artigos com o like do usuário (Token JWT inválido)', async () => {
       const response = await request(app.getHttpServer())
         .get('/article/user/like?page=1')
+        .set('Authorization', `Bearer ${token}errado`);
+
+      expect(response.status).toBe(401);
+    });
+
+    it('> GET /article/user/later Deve retornar os artigos que o usuário marcou com ler mais tarde', async () => {
+      const response = await request(app.getHttpServer())
+        .get('/article/user/later?page=1')
+        .set('Authorization', `Bearer ${token}`);
+
+      expect(response.status).toBe(200);
+      expect(response.body[0]).toEqual(expect.objectContaining({
+        article_id: {
+          article_id: expect.any(Number),
+          article_img_id: {
+            article_img_id: expect.any(Number),
+            img_url: expect.any(String)
+          },
+          title: expect.any(String),
+          no_like: expect.any(Number),
+          publi_date: expect.any(String)
+        },
+      }));
+    });
+
+    it('> GET /article/user/later Não deve retornar os artigos que o usuário marcou com ler mais tarde (token JWT inválido)', async () => {
+      const response = await request(app.getHttpServer())
+        .get('/article/user/later?page=1')
         .set('Authorization', `Bearer ${token}errado`);
 
       expect(response.status).toBe(401);
@@ -201,7 +230,6 @@ describe('Article', () => {
             img_url: expect.any(String)
           },
           title: expect.any(String),
-          article_content: expect.any(String),
           no_like: expect.any(Number),
           publi_date: expect.any(String),
         }
@@ -231,7 +259,6 @@ describe('Article', () => {
             img_url: expect.any(String),
           },
           title: expect.any(String),
-          article_content: expect.any(String),
           no_like: expect.any(Number),
           publi_date: expect.any(String)
       }));
@@ -251,7 +278,6 @@ describe('Article', () => {
               img_url: expect.any(String),
             },
             title: expect.any(String),
-            article_content: expect.any(String),
             no_like: expect.any(Number),
             publi_date: expect.any(String)
           },
@@ -262,7 +288,6 @@ describe('Article', () => {
               img_url: expect.any(String),
             },
             title: expect.any(String),
-            article_content: expect.any(String),
             no_like: expect.any(Number),
             publi_date: expect.any(String)
           }

@@ -80,7 +80,6 @@ describe('Interest', () => {
         .send({ themes: '5' })
         .set('Authorization', `Bearer ${token}`);
 
-      console.log(response.body)
       expect(response.status).toBe(404);
     });
   });

@@ -1,6 +1,6 @@
 {
   "name": "api-littlebird",
-  "version": "1.0.0-alpha.4",
+  "version": "1.0.0-alpha.7.2",
   "description": "",
   "author": "",
   "private": true,
@@ -97,7 +97,7 @@
   "husky": {
     "hooks": {
       "pre-commit": "",
-      "pre-push": "yarn test:e2e"
+      "pre-push": ""
     }
   }
 }

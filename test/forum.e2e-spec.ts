@@ -147,6 +147,22 @@ describe('Forum', () => {
         username: 'carlosboaviida',
         born_in: '2020-06-15'
       };
+      const comment = {
+        comment_id: 1,
+        forum_id: 1,
+        user_id: 1,
+        comment_content: '...',
+        publi_date: '2020-03-08',
+        no_like: 10
+      };
+      const comment2 = {
+        comment_id: 2,
+        forum_id: 1,
+        user_id: 1,
+        comment_content: '...',
+        publi_date: '2020-03-08',
+        no_like: 10
+      };
 
       await getConnection().createQueryBuilder().insert().into("user_img").values({ user_img_id: 1, img_url: "http://localhost:4456" }).execute();
       await getConnection().createQueryBuilder().insert().into("tb_user").values(user).execute();
@@ -156,6 +172,9 @@ describe('Forum', () => {
 
       await getConnection().createQueryBuilder().insert().into("forum_img").values({ forum_img_id: 1, img_url: "http://localhost:4456" }).execute();
       await getConnection().createQueryBuilder().insert().into('forum').values(forum).execute();
+
+      await getConnection().createQueryBuilder().insert().into('tb_comment').values(comment).execute();
+      await getConnection().createQueryBuilder().insert().into('tb_comment').values(comment2).execute();
 
       await getConnection().createQueryBuilder().insert().into("theme_forum").values({ theme_forum_id: 1, theme_id: 1, forum_id: 1 }).execute();
 
@@ -193,9 +212,9 @@ describe('Forum', () => {
       }));
     });
 
-    it('> GET /forum/user/like Deve retornar os fóruns ordenados pelo like', async () => {
+    it('> GET /forum Deve retornar os fóruns ordenados pelo like', async () => {
       const response = await request(app.getHttpServer())
-        .get(`/forum/like?page=1`)
+        .get(`/forum?page=1`)
         .set('Authorization', `Bearer ${token}`);
 
       expect(response.status).toBe(200);
@@ -203,10 +222,8 @@ describe('Forum', () => {
         forum_id: expect.any(Number),
         title: expect.any(String),
         no_like: expect.any(Number),
-        forum_img_id: {
-          forum_img_id: expect.any(Number),
-          img_url: expect.any(String)
-        }
+        img_url: expect.any(String),
+        no_comment: expect.any(String)
       }));
     });
 
