@@ -35,7 +35,6 @@ const EditProfile = () => {
       setLastSelectedAvatar(selectedAvatar);
       setSelectedAvatar(newId);
 
-
       let array_aux = imgs;
 
       const aux = array_aux[0];
@@ -43,7 +42,6 @@ const EditProfile = () => {
       array_aux[newId] = aux;
 
       setImgs(array_aux);
-
    }
 
    return (

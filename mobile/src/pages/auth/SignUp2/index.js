@@ -29,7 +29,7 @@ const SignUp2 = () => {
   const navigation = useNavigation();
   const route = useRoute();
   const { user } = route.params;
-  const { signUp, loadingSignUp } = useAuth();
+  const { signUp, loadingAuth } = useAuth();
 
   navigation.setOptions({
     headerStyle: {
@@ -123,7 +123,7 @@ const SignUp2 = () => {
                 <Feather name="log-in" color="#01C24E" size={24} />
               </BtnIcon>
 
-              { loadingSignUp ?
+              { loadingAuth ?
                   <ActivityIndicatorContainer background="#121212">
                     <ActivityIndicator size="small" color="#01C24E" />
                   </ActivityIndicatorContainer>

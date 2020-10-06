@@ -1,4 +1,5 @@
 import React, { useRef } from 'react';
+import { ActivityIndicator } from 'react-native';
 import { StatusBar } from 'expo-status-bar';
 import { useRoute } from '@react-navigation/native';
 import { Form } from '@unform/mobile';
@@ -7,23 +8,22 @@ import { Feather } from '@expo/vector-icons';
 import { useAuth } from '../../../contexts/auth';
 import Input from '../../../components/Input';
 
-import { Container, Title } from './styles';
+import { Container, Title, ActivityIndicatorContainer } from './styles';
 import { BtnLogin, TextBtnLogin, BtnIcon } from '../../../components/BtnNext/styles';
 
 const SignIn = () => {
   const route = useRoute();
   const email = route.params.data.email;
   const formRef = useRef(null);
-  const { signIn } = useAuth();
+  const { signIn, loadingAuth } = useAuth();
 
   async function handleSignIn(data, { reset }) {
     const user = {
       email,
-      password: data.password,
-      username: 'bolinhoroxo'
+      user_pass: data.password,
     }
 
-    await signIn(user);
+    await signIn(user, 'bolinhoroxo');
   }
 
   return (
@@ -46,7 +46,13 @@ const SignIn = () => {
           <BtnIcon background="#E0E0E0">
             <Feather name="arrow-right" color="#690589" size={24} />
           </BtnIcon>
-          <TextBtnLogin color="#690589">próximo</TextBtnLogin>
+              { loadingAuth ?
+                <ActivityIndicatorContainer background="#121212">
+                  <ActivityIndicator size="small" color="#690589" />
+                </ActivityIndicatorContainer>
+                  : 
+                <TextBtnLogin color="#690589">próximo</TextBtnLogin>
+              }
         </BtnLogin>
       </Form>
     </Container>

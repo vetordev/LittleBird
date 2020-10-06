@@ -9,7 +9,7 @@ const AuthContext = createContext();
 export const AuthProvider = ({ children }) => {
    const [user, setUser] = useState(null);
    const [loading, setLoading] = useState(true);
-   const [loadingSignUp, setLoadingSignUp] = useState(false);
+   const [loadingAuth, setLoadingAuth] = useState(false);
    const [token, setToken] = useState(null);
 
    useEffect(() => {
@@ -32,24 +32,48 @@ export const AuthProvider = ({ children }) => {
    }, []);
 
 
-   async function signIn(user) { // receber por parâmetro as informações do usuário e armazená-las no estado aqui.
-      setUser(user);
+   async function signIn(userLogin, username) { // receber por parâmetro as informações do usuário e armazená-las no estado aqui.
+      const user = { 
+         email: userLogin.email,
+         password: userLogin.password,
+         username: username,
+      };
 
-      await AsyncStorage.setItem('@LittleBird:user', JSON.stringify(user));
-      await AsyncStorage.setItem('@LittleBird:token', '194328943s204');
+      api.post('auth/login', userLogin, {
+         onUploadProgress: () => {
+            setLoadingAuth(true);
+         }
+      })
+      .then(async (responseUser) => {
+         console.log('Tudo pronto!');
+
+         setLoadingAuth(false);
+
+         setUser(user);   
+         await setToken('Barer ' + responseUser.data.token);
+
+         console.log('TOKEN:', responseUser.data.token);
+
+         await AsyncStorage.setItem('@LittleBird:user', JSON.stringify(userLogin));
+         await AsyncStorage.setItem('@LittleBird:token', token);
+      })
+      .catch ((error) => { 
+         console.log('Ocorreu um erro no login de usuário: ', error);
+         setLoadingAuth(false);
+      }) 
    }
 
    function signUp(user, userInterests) {
 
          api.post('user', user, {
             onUploadProgress: () => {
-               setLoadingSignUp(true);
+               setLoadingAuth(true);
             }
          })
          .then(async (responseUser) => {
             console.log('Tudo pronto!');
 
-            setLoadingSignUp(false);
+            setLoadingAuth(false);
 
             setUser(user);   
             await setToken('Barer ' + responseUser.data.token);
@@ -62,7 +86,6 @@ export const AuthProvider = ({ children }) => {
          .catch ((error) => { 
             console.log('Ocorreu um erro no cadastro de usuário: ', error);
          }) 
-      
    }
 
    function signOut() {
@@ -73,7 +96,7 @@ export const AuthProvider = ({ children }) => {
    }
 
    return (
-      <AuthContext.Provider value={{ signed: !!user, user, loading, signIn, signOut, signUp, token, loadingSignUp }}>
+      <AuthContext.Provider value={{ signed: !!user, user, loading, signIn, signOut, signUp, token, loadingAuth }}>
          {children}
       </AuthContext.Provider>
    )

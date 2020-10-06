@@ -20,7 +20,7 @@ const HomeAuth = () => {
     // const email = data.email;
     // console.log(email);
 
-    // const response = await api.get('user/email', { email: email });
+    // const response = await api.get('user/email', { body: email});
     
     // console.log(response.data);
 
