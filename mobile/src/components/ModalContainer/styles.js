@@ -27,16 +27,16 @@ export const ChildrenContainer = styled.View`
    /* max-height: 70%; */
 `;
 
-export const BtnConfirm = styled(RectButton)`
+export const BtnConfirmContainer = styled.View`
    background: ${props => props.color_theme};
-   position: relative;
-   bottom: 0px;
+   border-bottom-left-radius: 16px;
+   border-bottom-right-radius: 16px;
+`;
+
+export const BtnConfirm = styled(RectButton)`
    width: 100%;
    justify-content: center;
    align-items: center;
-   border-radius: 16px;
-   border-bottom-left-radius: 16px;
-   border-bottom-right-radius: 17px;
 `;
 
 export const BtnConfirmText = styled.Text`

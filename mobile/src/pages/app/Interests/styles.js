@@ -34,7 +34,7 @@ export const InterestItem = styled.View`
    flex-direction: row;
    align-items: center;
    justify-content: space-between;
-   padding: 10px 0;
+   padding: 10px 5px;
    border-bottom-width: ${ StyleSheet.hairlineWidth }px;
    border-color: #B8B8B880;
 `;
@@ -50,10 +50,6 @@ export const InterestImg = styled.Image`
    background: #f00;
    border-radius: 7px;
    margin-right: 10px;
-`;
-
-export const InterestIcon = styled.TouchableOpacity`
-   
 `;
 
 export const InterestTitle = styled.Text`

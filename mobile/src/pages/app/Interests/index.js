@@ -29,10 +29,6 @@ const Interests = () => {
       setModalDisplay(true);
    }
 
-   
-
-   // function handle
-
    return (
       <Container>
 
@@ -45,22 +41,21 @@ const Interests = () => {
             >
                   <InterestItem>
                      <InterestInfos>
-                        <InterestImg />
-                        <InterestTitle>Lorem Ipsum</InterestTitle>
+                        <InterestImg source={{ uri: 'https://images.unsplash.com/photo-1590765615405-fd9021ab205d?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=700&q=80' }} />
+                        <InterestTitle>Menstruação</InterestTitle>
                      </InterestInfos>
                      <Feather name="plus" color="#01C24E" size={20} />
                   </InterestItem>
 
                   <InterestItem>
                      <InterestInfos>
-                        <InterestImg />
-                        <InterestTitle>Lorem Ipsum</InterestTitle>
+                        <InterestImg source={{ uri: 'https://images.unsplash.com/photo-1512548438457-4c9584d3766b?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=800&q=80' }} />
+                        <InterestTitle>Primeira vez</InterestTitle>
                      </InterestInfos>
                      <TouchableOpacity>
                         <Feather name="plus" color="#01C24E" size={20} />
                      </TouchableOpacity>
                   </InterestItem>
-               {/* </Intetest> */}
             </ModalContainer>
          }  
 
