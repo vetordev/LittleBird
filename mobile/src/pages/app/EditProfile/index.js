@@ -29,7 +29,12 @@ const EditProfile = () => {
 
    function handleSaveProfile() {}
 
-   const [imgs, setImgs] = useState(['https://i.pinimg.com/564x/8b/71/cc/8b71cceff897fc4e9d19205fff28406f.jpg', 'https://i.pinimg.com/564x/2f/e1/0c/2fe10cf1a5e63336cb1ae52c1824c2c8.jpg', 'https://i.pinimg.com/564x/5e/06/89/5e0689b603bb90ecac3bc47b5b39abdf.jpg', 'https://i.pinimg.com/564x/24/ae/47/24ae4734b6f1cc9e76b2184c4cffad5f.jpg']);
+   const [imgs, setImgs] = useState([
+      'https://image.freepik.com/vetores-gratis/ilustracao-de-fatia-de-pizza_179407-45.jpg', 
+      'https://i.pinimg.com/originals/90/1d/45/901d45d05461495b1c0700ce47517135.jpg', 
+      'https://www.nicepng.com/png/detail/147-1477699_hand-drawn-smiling-sun-vector-encapsulated-postscript.png', 
+      'https://cdn.dribbble.com/users/2172174/screenshots/10754281/image7344.png'
+   ]);
 
    function handleEditAvatar(newId) {
       setLastSelectedAvatar(selectedAvatar);
