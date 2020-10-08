@@ -35,7 +35,8 @@ describe('Article', () => {
         title: 'Sexo adolescente',
         article_content: '.....',
         no_like: 123123,
-        publi_date: '2020-12-30'
+        publi_date: '2020-12-30',
+        article_author: 'Carlos'
       }
 
       await getConnection().createQueryBuilder().insert().into("theme_img").values({ theme_img_id: 1, img_url: "http://localhost:4456" }).execute();
@@ -66,7 +67,8 @@ describe('Article', () => {
           title: expect.any(String),
           article_content: expect.any(String),
           no_like: expect.any(Number),
-          publi_date: expect.any(String)
+          publi_date: expect.any(String),
+          article_author: expect.any(String)
         },
         themes: [
           {
@@ -109,7 +111,8 @@ describe('Article', () => {
         title: 'Sexo adolescente',
         article_content: '.....',
         no_like: 1,
-        publi_date: '2020-12-15'
+        publi_date: '2020-12-15',
+        article_author: 'Carlos'
       };
       const article2 = {
         article_id: 2,
@@ -117,7 +120,8 @@ describe('Article', () => {
         title: 'Sexo adolescente',
         article_content: '.....',
         no_like: 2,
-        publi_date: '2020-12-30'
+        publi_date: '2020-12-30',
+        article_author: 'Carlos'
       };
       const user = {
         user_id: 1,
@@ -175,7 +179,8 @@ describe('Article', () => {
           },
           title: expect.any(String),
           no_like: expect.any(Number),
-          publi_date: expect.any(String)
+          publi_date: expect.any(String),
+          article_author: expect.any(String)
         },
       }));
 
@@ -203,7 +208,8 @@ describe('Article', () => {
           },
           title: expect.any(String),
           no_like: expect.any(Number),
-          publi_date: expect.any(String)
+          publi_date: expect.any(String),
+          article_author: expect.any(String)
         },
       }));
     });
@@ -232,6 +238,7 @@ describe('Article', () => {
           title: expect.any(String),
           no_like: expect.any(Number),
           publi_date: expect.any(String),
+          article_author: expect.any(String)
         }
       }));
 
@@ -260,7 +267,8 @@ describe('Article', () => {
           },
           title: expect.any(String),
           no_like: expect.any(Number),
-          publi_date: expect.any(String)
+          publi_date: expect.any(String),
+          article_author: expect.any(String)
       }));
     });
 
@@ -279,7 +287,8 @@ describe('Article', () => {
             },
             title: expect.any(String),
             no_like: expect.any(Number),
-            publi_date: expect.any(String)
+            publi_date: expect.any(String),
+            article_author: expect.any(String)
           },
           {
             article_id: expect.any(Number),
@@ -289,7 +298,8 @@ describe('Article', () => {
             },
             title: expect.any(String),
             no_like: expect.any(Number),
-            publi_date: expect.any(String)
+            publi_date: expect.any(String),
+            article_author: expect.any(String)
           }
         ],
         foruns: [
@@ -321,7 +331,8 @@ describe('Article', () => {
         title: 'Sexo adolescente',
         article_content: '.....',
         no_like: 123123,
-        publi_date: '2020-12-30'
+        publi_date: '2020-12-30',
+        article_author: 'Carlos'
       };
       const user = {
         user_id: 1,
@@ -385,7 +396,8 @@ describe('Article', () => {
         title: 'Sexo adolescente',
         article_content: '.....',
         no_like: 123123,
-        publi_date: '2020-12-30'
+        publi_date: '2020-12-30',
+        article_author: 'Carlos'
       };
       const user = {
         user_id: 1,
@@ -449,7 +461,8 @@ describe('Article', () => {
         title: 'Sexo adolescente',
         article_content: '.....',
         no_like: 123123,
-        publi_date: '2020-12-30'
+        publi_date: '2020-12-30',
+        article_author: 'Carlos'
       };
       const user = {
         user_id: 1,
@@ -515,7 +528,8 @@ describe('Article', () => {
         title: 'Sexo adolescente',
         article_content: '.....',
         no_like: 123123,
-        publi_date: '2020-12-30'
+        publi_date: '2020-12-30',
+        article_author: 'Carlos'
       };
       const user = {
         user_id: 1,

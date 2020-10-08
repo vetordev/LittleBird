@@ -29,6 +29,12 @@ export class Article {
   })
   publi_date: string;
 
+  @Column({
+    type: 'varchar',
+    length: 50
+  })
+  article_author: string;
+
   @OneToOne(type => ArticleImg, {
     onDelete: 'CASCADE',
     onUpdate: 'CASCADE',
