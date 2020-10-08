@@ -49,7 +49,7 @@ describe('Forum', () => {
         user_id: 1,
         email: 'carlosboavida@gm.com',
         user_img_id: 1,
-        user_pass: '123vidaboa',
+        user_pass: '7f69c888bd3d61f20070fae8781a6b355c549b92e76e2955818eb75563a61b15',
         username: 'carlosboaviida',
         born_in: '2020-06-15'
       };
@@ -149,7 +149,7 @@ describe('Forum', () => {
         user_id: 1,
         email: 'carlosboavida@gm.com',
         user_img_id: 1,
-        user_pass: '123vidaboa',
+        user_pass: '7f69c888bd3d61f20070fae8781a6b355c549b92e76e2955818eb75563a61b15',
         username: 'carlosboaviida',
         born_in: '2020-06-15'
       };
@@ -285,7 +285,7 @@ describe('Forum', () => {
         user_id: 1,
         email: 'carlosboavida@gm.com',
         user_img_id: 1,
-        user_pass: '123vidaboa',
+        user_pass: '7f69c888bd3d61f20070fae8781a6b355c549b92e76e2955818eb75563a61b15',
         username: 'carlosboaviida',
         born_in: '2020-06-15'
       };
@@ -355,7 +355,7 @@ describe('Forum', () => {
         user_id: 1,
         email: 'carlosboavida@gm.com',
         user_img_id: 1,
-        user_pass: '123vidaboa',
+        user_pass: '7f69c888bd3d61f20070fae8781a6b355c549b92e76e2955818eb75563a61b15',
         username: 'carlosboaviida',
         born_in: '2020-06-15'
       };
@@ -423,7 +423,7 @@ describe('Forum', () => {
         user_id: 1,
         email: 'carlosboavida@gm.com',
         user_img_id: 1,
-        user_pass: '123vidaboa',
+        user_pass: '7f69c888bd3d61f20070fae8781a6b355c549b92e76e2955818eb75563a61b15',
         username: 'carlosboaviida',
         born_in: '2020-06-15'
       };
@@ -501,7 +501,7 @@ describe('Forum', () => {
         user_id: 1,
         email: 'carlosboavida@gm.com',
         user_img_id: 1,
-        user_pass: '123vidaboa',
+        user_pass: '7f69c888bd3d61f20070fae8781a6b355c549b92e76e2955818eb75563a61b15',
         username: 'carlosboaviida',
         born_in: '2020-06-15'
       };
