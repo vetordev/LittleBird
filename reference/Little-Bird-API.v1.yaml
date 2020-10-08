@@ -984,7 +984,6 @@ paths:
                           type: integer
                         theme_name:
                           type: string
-
               examples:
                 Exemplo de artigo:
                   value:
@@ -1068,6 +1067,10 @@ paths:
                   no_like:
                     type: integer
                     format: int64
+                  forum_description:
+                    type: string
+                  publi_date:
+                    type: string
                   comments:
                     type: array
                     items:
@@ -1099,6 +1102,7 @@ paths:
                         no_like:
                           type: integer
                           format: int64
+                  
               examples:
                 Exemplo de fórum:
                   value:
