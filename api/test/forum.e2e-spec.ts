@@ -34,6 +34,8 @@ describe('Forum', () => {
         forum_img_id: 1,
         title: 'Primeira vez',
         no_like: 123123,
+        forum_description: 'Lorem ipsum dolor sit amet',
+        publi_date: '2020-06-15'
       };
       const comment = {
         comment_id: 1,
@@ -83,6 +85,8 @@ describe('Forum', () => {
           forum_img_id: expect.any(Number),
           img_url: expect.any(String)
         },
+        forum_description: expect.any(String),
+        publi_date: expect.any(String),
         themes: [
           {
             theme_id: expect.any(Number),
@@ -138,6 +142,8 @@ describe('Forum', () => {
         forum_img_id: 1,
         title: 'Primeira vez',
         no_like: 123123,
+        forum_description: 'Lorem ipsum dolor sit amet',
+        publi_date: '2020-06-15'
       };
       const user = {
         user_id: 1,
@@ -198,7 +204,9 @@ describe('Forum', () => {
         forum_img_id: {
           forum_img_id: expect.any(Number),
           img_url: expect.any(String)
-        }
+        },
+        forum_description: expect.any(String),
+        publi_date: expect.any(String),
       }));
     });
     it('> GET /forum/theme/:theme_id/like Não deve retornar os fóruns (Tema não encontrado)', async () => {
@@ -223,7 +231,9 @@ describe('Forum', () => {
         title: expect.any(String),
         no_like: expect.any(Number),
         img_url: expect.any(String),
-        no_comment: expect.any(String)
+        no_comment: expect.any(String),
+        forum_description: expect.any(String),
+        publi_date: expect.any(String),
       }));
     });
 
@@ -240,7 +250,9 @@ describe('Forum', () => {
         forum_img_id: {
           forum_img_id: expect.any(Number),
           img_url: expect.any(String)
-        }
+        },
+        forum_description: expect.any(String),
+        publi_date: expect.any(String),
       }));
     });
 
@@ -266,6 +278,8 @@ describe('Forum', () => {
         forum_img_id: 1,
         title: 'Primeira vez',
         no_like: 123123,
+        forum_description: 'Lorem ipsum dolor sit amet',
+        publi_date: '2020-06-15'
       };
       const user = {
         user_id: 1,
@@ -334,6 +348,8 @@ describe('Forum', () => {
         forum_img_id: 1,
         title: 'Primeira vez',
         no_like: 123123,
+        forum_description: 'Lorem ipsum dolor sit amet',
+        publi_date: '2020-06-15'
       };
       const user = {
         user_id: 1,
@@ -400,6 +416,8 @@ describe('Forum', () => {
         forum_img_id: 1,
         title: 'Primeira vez',
         no_like: 123123,
+        forum_description: 'Lorem ipsum dolor sit amet',
+        publi_date: '2020-06-15'
       };
       const user = {
         user_id: 1,
@@ -476,6 +494,8 @@ describe('Forum', () => {
         forum_img_id: 1,
         title: 'Primeira vez',
         no_like: 123123,
+        forum_description: 'Lorem ipsum dolor sit amet',
+        publi_date: '2020-06-15'
       };
       const user = {
         user_id: 1,

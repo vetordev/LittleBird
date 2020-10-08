@@ -24,6 +24,11 @@ export class Forum {
   })
   forum_description: string;
 
+  @Column({
+    type: 'date'
+  })
+  publi_date: string;
+
   @OneToOne(type => ForumImg, {
     onDelete: 'CASCADE',
     onUpdate: 'CASCADE',
