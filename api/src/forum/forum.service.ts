@@ -30,7 +30,7 @@ export class ForumService {
     }
 
     let foruns: any = await this.themeForumRepository.createQueryBuilder('theme_forum')
-      .select(['theme_forum', 'forum', 'forum_img'])
+      .select(['theme_forum', 'forum.forum_id', 'forum.title', 'forum.no_like', 'forum_img'])
       .innerJoin('theme_forum.forum_id', 'forum')
       .innerJoin('forum.forum_img_id', 'forum_img')
       .where('theme_forum.theme_id = :theme_id', { theme_id })
@@ -78,7 +78,7 @@ export class ForumService {
 
   async getForumByUserLike(user_id: number, page: number): Promise<LikeForum[]> {
     let foruns: any = await this.likeForumRepository.createQueryBuilder('like_forum')
-      .select(['like_forum', 'forum', 'forum_img'])
+      .select(['like_forum', 'forum.forum_id', 'forum.title', 'forum.no_like', 'forum_img'])
       .innerJoin('like_forum.forum_id', 'forum')
       .innerJoin('forum.forum_img_id', 'forum_img')
       .where('like_forum.user_id = :user_id', { user_id })
