@@ -102,7 +102,7 @@ describe('User', () => {
       await getConnection().createQueryBuilder().insert().into("user_img").values({ user_img_id: 1, img_url: "http://localhost:4456" }).execute();
       await getConnection().createQueryBuilder().insert().into("tb_user").values({ email: 'carlosboavida@gm.com',
                                                                                    user_img_id: 1,
-                                                                                   user_pass: '123vidaboa',
+                                                                                   user_pass: '7f69c888bd3d61f20070fae8781a6b355c549b92e76e2955818eb75563a61b15',
                                                                                    username: 'carlosboaviida',
                                                                                    born_in: '2020-06-15'
                                                                                    }).execute();
@@ -151,7 +151,7 @@ describe('User', () => {
       await getConnection().createQueryBuilder().insert().into("user_img").values({ user_img_id: 1, img_url: "http://localhost:4456" }).execute();
       await getConnection().createQueryBuilder().insert().into("tb_user").values({ email: 'carlosboavida@gm.com',
                                                                                    user_img_id: 1,
-                                                                                   user_pass: '123vidaboa',
+                                                                                   user_pass: '7f69c888bd3d61f20070fae8781a6b355c549b92e76e2955818eb75563a61b15',
                                                                                    username: 'carlosboaviida',
                                                                                    born_in: '2020-06-15'
                                                                                    }).execute();
@@ -198,13 +198,13 @@ describe('User', () => {
       await getConnection().createQueryBuilder().insert().into("user_img").values({ user_img_id: 1, img_url: "http://localhost:4456" }).execute();
       await getConnection().createQueryBuilder().insert().into("tb_user").values({ email: 'carlosboavida@gm.com',
                                                                                    user_img_id: 1,
-                                                                                   user_pass: '123vidaboa',
+                                                                                   user_pass: '7f69c888bd3d61f20070fae8781a6b355c549b92e76e2955818eb75563a61b15',
                                                                                    username: 'carlosboaviida',
                                                                                    born_in: '2020-06-15'
                                                                                    }).execute();
       await getConnection().createQueryBuilder().insert().into("tb_user").values({ email: 'carlosboalife@gm.com',
                                                                                    user_img_id: 1,
-                                                                                   user_pass: '123vidaboa',
+                                                                                   user_pass: '7f69c888bd3d61f20070fae8781a6b355c549b92e76e2955818eb75563a61b15',
                                                                                    username: 'carlosboavida',
                                                                                    born_in: '2020-06-15'
                                                                                    }).execute();
@@ -287,7 +287,7 @@ describe('User', () => {
       await getConnection().createQueryBuilder().insert().into("user_img").values({ user_img_id: 1, img_url: "http://localhost:4456" }).execute();
       await getConnection().createQueryBuilder().insert().into("tb_user").values({ email: 'carlosboavida@gm.com',
                                                                                  user_img_id: 1,
-                                                                                 user_pass: '123vidaboa',
+                                                                                 user_pass: '7f69c888bd3d61f20070fae8781a6b355c549b92e76e2955818eb75563a61b15',
                                                                                  username: 'carlosboaviida',
                                                                                  born_in: '2020-06-15'
                                                                                  }).execute();
@@ -297,7 +297,7 @@ describe('User', () => {
       const email = 'carlosboavida@gm.com';
 
       const response = await request(app.getHttpServer())
-        .get(`/user/email?email=${email}`);
+        .get(`/user/email?email=${email}`)
 
       expect(response.status).toBe(200);
       expect(response.body).toEqual(expect.objectContaining({
@@ -310,7 +310,7 @@ describe('User', () => {
       const email = 'carlosboaida@gm.com';
 
       const response = await request(app.getHttpServer())
-        .get(`/user/email?email=${email}`);
+        .get(`/user/email?email=${email}`)
 
       expect(response.status).toBe(200);
       expect(response.body).toEqual(expect.objectContaining({
@@ -322,7 +322,8 @@ describe('User', () => {
     it('> GET /user/email Não deve encontrar o e-mail do usuário (e-mail não enviado ou inválido)', async () => {
       const email = 'carlosboaida';
       const response = await request(app.getHttpServer())
-        .get(`/user/email?email=${email}`);
+        .get('/user/email')
+        .send({ email });
 
       expect(response.status).toBe(400);
 

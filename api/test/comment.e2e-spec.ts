@@ -33,6 +33,8 @@ describe('Comment', () => {
         forum_img_id: 1,
         title: 'Primeira vez',
         no_like: 123123,
+        forum_description: 'Lorem ipsum dolor sit amet',
+        publi_date: '2020-06-15'
       };
       const comment = {
         comment_id: 1,
@@ -46,7 +48,7 @@ describe('Comment', () => {
         user_id: 1,
         email: 'carlosboavida@gm.com',
         user_img_id: 1,
-        user_pass: '123vidaboa',
+        user_pass: '7f69c888bd3d61f20070fae8781a6b355c549b92e76e2955818eb75563a61b15',
         username: 'carlosboaviida',
         born_in: '2020-06-15'
       };
@@ -104,6 +106,8 @@ describe('Comment', () => {
         forum_img_id: 1,
         title: 'Primeira vez',
         no_like: 123123,
+        forum_description: 'Lorem ipsum dolor sit amet',
+        publi_date: '2020-06-15'
       };
       const comment = {
         comment_id: 1,
@@ -117,7 +121,7 @@ describe('Comment', () => {
         user_id: 1,
         email: 'carlosboavida@gm.com',
         user_img_id: 1,
-        user_pass: '123vidaboa',
+        user_pass: '7f69c888bd3d61f20070fae8781a6b355c549b92e76e2955818eb75563a61b15',
         username: 'carlosboaviida',
         born_in: '2020-06-15'
       };
@@ -194,6 +198,8 @@ describe('Comment', () => {
         forum_img_id: 1,
         title: 'Primeira vez',
         no_like: 123123,
+        forum_description: 'Lorem ipsum dolor sit amet',
+        publi_date: '2020-06-15'
       };
       const comment = {
         comment_id: 1,
@@ -207,7 +213,7 @@ describe('Comment', () => {
         user_id: 1,
         email: 'carlosboavida@gm.com',
         user_img_id: 1,
-        user_pass: '123vidaboa',
+        user_pass: '7f69c888bd3d61f20070fae8781a6b355c549b92e76e2955818eb75563a61b15',
         username: 'carlosboaviida',
         born_in: '2020-06-15'
       };
@@ -268,12 +274,14 @@ describe('Comment', () => {
         forum_img_id: 1,
         title: 'Primeira vez',
         no_like: 123123,
+        forum_description: 'Lorem ipsum dolor sit amet',
+        publi_date: '2020-06-15'
       };
       const user = {
         user_id: 1,
         email: 'carlosboavida@gm.com',
         user_img_id: 1,
-        user_pass: '123vidaboa',
+        user_pass: '7f69c888bd3d61f20070fae8781a6b355c549b92e76e2955818eb75563a61b15',
         username: 'carlosboaviida',
         born_in: '2020-06-15'
       };
@@ -351,12 +359,14 @@ describe('Comment', () => {
         forum_img_id: 1,
         title: 'Primeira vez',
         no_like: 123123,
+        forum_description: 'Lorem ipsum dolor sit amet',
+        publi_date: '2020-06-15'
       };
       const user = {
         user_id: 1,
         email: 'carlosboavida@gm.com',
         user_img_id: 1,
-        user_pass: '123vidaboa',
+        user_pass: '7f69c888bd3d61f20070fae8781a6b355c549b92e76e2955818eb75563a61b15',
         username: 'carlosboaviida',
         born_in: '2020-06-15'
       };
@@ -430,12 +440,14 @@ describe('Comment', () => {
         forum_img_id: 1,
         title: 'Primeira vez',
         no_like: 123123,
+        forum_description: 'Lorem ipsum dolor sit amet',
+        publi_date: '2020-06-15'
       };
       const user = {
         user_id: 1,
         email: 'carlosboavida@gm.com',
         user_img_id: 1,
-        user_pass: '123vidaboa',
+        user_pass: '7f69c888bd3d61f20070fae8781a6b355c549b92e76e2955818eb75563a61b15',
         username: 'carlosboaviida',
         born_in: '2020-06-15'
       };
