@@ -136,6 +136,7 @@ describe('Article', () => {
         forum_img_id: 1,
         title: 'Primeira vez',
         no_like: 123123,
+        forum_description: 'Lorem ipsum dolor sit amet'
       };
 
       await getConnection().createQueryBuilder().insert().into("user_img").values({ user_img_id: 1, img_url: "http://localhost:4456" }).execute();
@@ -310,7 +311,8 @@ describe('Article', () => {
             forum_img_id: {
               forum_img_id: expect.any(Number),
               img_url: expect.any(String)
-            }
+            },
+            forum_description: expect.any(String)
           }
         ]
       }));
