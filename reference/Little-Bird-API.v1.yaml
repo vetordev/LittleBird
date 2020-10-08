@@ -543,7 +543,6 @@ paths:
                         no_like: 3600
                     articles:
                       - title: Priveira vez
-                        article_content: Lorem ipsum dolor sit amet.
                         theme: Sexo
                         article_img: 'https://i.ytimg.com/vi/_OFlCtyrt4c/maxresdefault.jpg'
         '404':
@@ -669,7 +668,6 @@ paths:
                   value:
                     - article_id: 1
                       title: Como lidar com a primeira vez
-                      article_content: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.'
                       no_like: 3600
                       publi_date: '2020-05-24'
                       article_img:
@@ -811,11 +809,10 @@ paths:
                     publi_date:
                       type: string
               examples:
-                Exemplo de artigo:
+                Exemplo de artigos:
                   value:
                     - article_id: 1
                       title: Como lidar com a primeira vez
-                      article_content: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.'
                       no_like: 3600
                       publi_date: '2020-05-24'
                       article_img:
@@ -972,6 +969,8 @@ paths:
                     type: string
                   article_content:
                     type: string
+                  article_author:
+                    type: string
                   no_like:
                     type: integer
                   publi_date:
@@ -985,6 +984,7 @@ paths:
                           type: integer
                         theme_name:
                           type: string
+
               examples:
                 Exemplo de artigo:
                   value:
@@ -1487,18 +1487,15 @@ paths:
                           type: string
                     title:
                       type: string
-                    article_content:
-                      type: string
                     no_like:
                       type: integer
                     publi_date:
                       type: string
               examples:
-                Exemplo de artigo:
+                Exemplo de artigos:
                   value:
                     - article_id: 1
                       title: Como lidar com a primeira vez
-                      article_content: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.'
                       no_like: 3600
                       publi_date: '2020-05-24'
                       article_img:
@@ -1561,47 +1558,33 @@ paths:
                   type: object
                   properties:
                     article_id:
+                      type: integer
+                    article_img_id:
                       type: object
                       properties:
-                        article_id:
-                          type: integer
                         article_img_id:
-                          type: object
-                          properties:
-                            article_img_id:
-                              type: integer
-                            img_url:
-                              type: string
-                        title:
-                          type: string
-                        no_like:
                           type: integer
-                        publi_date:
+                        img_url:
                           type: string
-                    theme_id:
-                      type: array
-                      items:
-                        type: object
-                        properties:
-                          theme_id:
-                            type: integer
-                          theme_name:
-                            type: string
+                    title:
+                      type: string
+                    no_like:
+                      type: integer
+                    publi_date:
+                      type: string
               examples:
                 Exemplo de artigos:
                   value:
-                    - article_id:
-                        article_id: 1
-                        title: Como lidar com a primeira vez
-                        article_content: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.'
-                        no_like: 3600
-                        publi_date: '2020-05-24'
-                        article_img:
-                          article_img_id: 1
-                          img_url: 'http://localhost:..'
-                      theme_id:
-                        - theme_id: 1
-                          theme_name: Sexo
+                    article_id: 1
+                    title: Como lidar com a primeira vez
+                    no_like: 3600
+                    publi_date: '2020-05-24'
+                    article_img:
+                      article_img_id: 1
+                      img_url: 'http://localhost:..'
+                  theme_id:
+                    - theme_id: 1
+                      theme_name: Sexo
         '401':
           description: O token JWT é inválido.
           content:
