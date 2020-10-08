@@ -1,4 +1,4 @@
-import { Controller, Post, Body, UseFilters, Get, UseGuards, Req, HttpCode, Put } from '@nestjs/common';
+import { Controller, Post, Body, UseFilters, Get, UseGuards, Req, HttpCode, Put, Query } from '@nestjs/common';
 import { UserService } from './user.service';
 import { CreateUserDto, EmailExistsDto, UpdateUserDto } from './user.dto';
 import { QueryFailedExceptionFilter } from './http-exception.filter';
@@ -33,8 +33,8 @@ export class UserController {
 
   @Get('email')
   @UseFilters(QueryFailedExceptionFilter)
-  async emailExists(@Body() body: EmailExistsDto) {
-    return await this.userService.emailExists(body.email);
+  async emailExists(@Query() query: EmailExistsDto) {
+    return await this.userService.emailExists(query.email);
   }
 
 }

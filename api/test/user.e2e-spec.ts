@@ -297,8 +297,7 @@ describe('User', () => {
       const email = 'carlosboavida@gm.com';
 
       const response = await request(app.getHttpServer())
-        .get('/user/email')
-        .send({ email });
+        .get(`/user/email?email=${email}`);
 
       expect(response.status).toBe(200);
       expect(response.body).toEqual(expect.objectContaining({
@@ -307,12 +306,11 @@ describe('User', () => {
       expect(response.body.email).toBe(true);
     });
 
-    it('> GET /user/email Não deve encontrar o e-mail do usuário', async () => {
+    it('> GET /user/email Não deve encontrar o e-mail do usuário (e-mail não encontrado)', async () => {
       const email = 'carlosboaida@gm.com';
 
       const response = await request(app.getHttpServer())
-        .get('/user/email')
-        .send({ email });
+        .get(`/user/email?email=${email}`);
 
       expect(response.status).toBe(200);
       expect(response.body).toEqual(expect.objectContaining({
@@ -324,8 +322,7 @@ describe('User', () => {
     it('> GET /user/email Não deve encontrar o e-mail do usuário (e-mail não enviado ou inválido)', async () => {
       const email = 'carlosboaida';
       const response = await request(app.getHttpServer())
-        .get('/user/email')
-        .send({ email });
+        .get(`/user/email?email=${email}`);
 
       expect(response.status).toBe(400);
 
