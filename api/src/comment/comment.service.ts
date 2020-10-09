@@ -6,12 +6,14 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Comment } from './entity/comment.entity';
 import { Forum } from '../forum/entity/forum.entity';
 import { CommentGateway } from './comment.gateway';
+import { LikeComment } from './entity/like-comment.entity';
 
 @Injectable()
 export class CommentService {
 
   constructor(
     @InjectRepository(Comment) private readonly commentRepository: Repository<Comment>,
+    @InjectRepository(LikeComment) private readonly likeCommentRepository: Repository<LikeComment>,
     @InjectRepository(Reply) private readonly replyRepository: Repository<Reply>,
     @InjectRepository(Forum) private readonly forumRepository: Repository<Forum>,
     private readonly commentGateway: CommentGateway
@@ -70,15 +72,19 @@ export class CommentService {
     return response.status(200).json(comments);
   };
 
-  async createLike(response: Response, comment_id: number): Promise<Response | void> {
+  async createLike(user_id: number, comment_id: number): Promise<Response | void> {
+
+    await this.likeCommentRepository.createQueryBuilder('like_comment')
+      .insert()
+      .into('like_comment').values({
+        comment_id,
+        user_id,
+      }).execute();
+
     const comment = await this.commentRepository.createQueryBuilder('tb_comment')
       .select(['tb_comment.no_like'])
       .where('tb_comment.comment_id = :comment_id', { comment_id })
       .getOne();
-
-    if(!comment) {
-      return response.status(404).json({ error: 'Comentário não encontrado.' });
-    }
 
     await this.commentRepository.createQueryBuilder('tb_comment')
       .update('tb_comment')
@@ -88,7 +94,6 @@ export class CommentService {
       .where('tb_comment.comment_id = :comment_id', { comment_id })
       .execute();
 
-    return response.status(204).end();
   };
 
   async createReply(comment_id: number, reply_content: string, forum: string,user_id: number): Promise<Response | void> {

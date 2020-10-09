@@ -1,5 +1,6 @@
 import { User } from "../../user/entity/user.entity";
 import { Column, Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
+import { Comment } from './comment.entity'
 
 @Entity('like_comment')
 export class LikeComment {
