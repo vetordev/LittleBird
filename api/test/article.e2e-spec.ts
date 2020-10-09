@@ -111,7 +111,7 @@ describe('Article', () => {
         title: 'Sexo adolescente',
         article_content: '.....',
         no_like: 1,
-        publi_date: '2020-12-15',
+        publi_date: '2020-01-03',
         article_author: 'Carlos'
       };
       const article2 = {
@@ -120,7 +120,7 @@ describe('Article', () => {
         title: 'Sexo adolescente',
         article_content: '.....',
         no_like: 2,
-        publi_date: '2020-12-30',
+        publi_date: '2020-01-02',
         article_author: 'Carlos'
       };
       const user = {
@@ -137,7 +137,7 @@ describe('Article', () => {
         title: 'Primeira vez',
         no_like: 123123,
         forum_description: 'Lorem ipsum dolor sit amet',
-        publi_date: '2020-06-15'
+        publi_date: '2020-01-01'
       };
 
       await getConnection().createQueryBuilder().insert().into("user_img").values({ user_img_id: 1, img_url: "http://localhost:4456" }).execute();
@@ -275,8 +275,7 @@ describe('Article', () => {
         .get(`/article/forum/date?page=1`);
 
       expect(response.status).toBe(200)
-      expect(response.body).toEqual(expect.objectContaining({
-        articles: [
+      expect(response.body).toEqual(expect.arrayContaining([
           {
             article_id: expect.any(Number),
             article_img_id: {
@@ -296,9 +295,7 @@ describe('Article', () => {
             title: expect.any(String),
             no_like: expect.any(Number),
             publi_date: expect.any(String),
-          }
-        ],
-        foruns: [
+          },
           {
             forum_id: expect.any(Number),
             title: expect.any(String),
@@ -310,8 +307,7 @@ describe('Article', () => {
             forum_description: expect.any(String),
             publi_date: expect.any(String),
           }
-        ]
-      }));
+      ]));
     });
   });
 

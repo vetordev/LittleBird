@@ -7,7 +7,7 @@ import { LikeArticle } from './entity/like-article.entity';
 import { Response } from 'express';
 import { LaterArticle } from './entity/later-article.entity';
 import { Forum } from '../forum/entity/forum.entity';
-import { contains } from 'class-validator';
+import { orderByDate } from "./utils/order.date";
 
 @Injectable()
 export class ArticleService {
@@ -156,17 +156,11 @@ export class ArticleService {
       .offset((page - 1) * 3)
       .getMany();
 
-    // articles = articles.map((article) => {
 
-    // });
-    // const articles_foruns = articles.concat(foruns)
-    // console.log(articles_foruns);
+    const articles_foruns = articles.concat(foruns)
+    articles_foruns.sort(orderByDate);
 
-
-    return {
-      articles,
-      foruns
-    };
+    return articles_foruns
 
   }
 
