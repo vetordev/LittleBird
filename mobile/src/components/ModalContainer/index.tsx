@@ -1,5 +1,4 @@
 import React from 'react';
-import { View } from 'react-native';
 
 import { 
    Container,
@@ -26,9 +25,7 @@ const ModalContainer: React.FC<ModalContainerProps> = ({ onPress, color_theme, f
                   { children }
                </ChildrenContainer>
                <BtnConfirmContainer color_theme={color_theme}>
-                  <BtnConfirm 
-                     onPress={onPress} 
-                  >
+                  <BtnConfirm onPress={onPress}>
                      <BtnConfirmText font_color={font_color}>
                         { btn_title }
                      </BtnConfirmText>

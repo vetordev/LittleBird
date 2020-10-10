@@ -1,10 +1,11 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { FlatList, ActivityIndicator } from 'react-native';
 import { StatusBar } from 'expo-status-bar';
 import { useRoute, useNavigation } from '@react-navigation/native';
 import { Feather } from '@expo/vector-icons';
 
 import { useAuth } from '../../../contexts/auth';
+import api from '../../../services/api';
 
 import { 
   Container, 
@@ -26,10 +27,24 @@ import { BtnLogin, TextBtnLogin, BtnIcon } from '../../../components/BtnNext/sty
 
 const SignUp2 = () => {
   const [selectedInterests, setSelectedInterests] = useState([]);
+  const [themes, setThemes] = useState([]);
   const navigation = useNavigation();
   const route = useRoute();
   const { user } = route.params;
   const { signUp, loadingAuth } = useAuth();
+
+
+  useEffect(() => {
+    async function getThemes() {
+      const response = await api.get('theme');
+  
+      setThemes(response.data);
+    }
+
+    getThemes();
+  }, []);
+
+  
 
   navigation.setOptions({
     headerStyle: {
@@ -37,12 +52,10 @@ const SignUp2 = () => {
        backgroundColor: '#01C24E',
     },
     headerTintColor: '#202020'
- })
+  })
 
   async function handleSignUp() {
-
     // const interests = { interests: selectedInterests }
-
     // Object.assign(user, interests);
 
     await signUp(user, selectedInterests);
@@ -102,7 +115,7 @@ const SignUp2 = () => {
       <InterestsContainer>
         <FlatList 
           showsVerticalScrollIndicator={false}
-          data={interests}
+          data={themes}
           keyExtractor={interest => String(interest.theme_id)}
           numColumns={2}
           columnWrapperStyle={{ marginHorizontal: 15 }}
@@ -143,7 +156,7 @@ const SignUp2 = () => {
               />
                 <InterestImage 
                   resizeMode={'cover'} 
-                  source={{ uri: item.theme_img.img_url }} 
+                  source={{ uri: item.theme_img_id.img_url }} 
                 />
               <InterestTitleContainer>
                 <InterestTitle>{item.theme_name}</InterestTitle>

@@ -81,7 +81,7 @@ export const AuthProvider = ({ children }) => {
             console.log('TOKEN:', responseUser.data.token);
 
             await AsyncStorage.setItem('@LittleBird:user', JSON.stringify(user));
-            await AsyncStorage.setItem('@LittleBird:token', token);
+            await AsyncStorage.setItem('@LittleBird:token', responseUser.data.token);
          })
          .catch ((error) => { 
             console.log('Ocorreu um erro no cadastro de usuário: ', error);

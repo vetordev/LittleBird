@@ -18,13 +18,11 @@ export const Content = styled.View`
    border-top-width: 12px;
    border-color: ${props => props.color_theme};
    border-radius: 16px;
-   /* max-height: 90%; */
 `;
 
 export const ChildrenContainer = styled.View`
    padding: 34px 18px;
    align-items: center;
-   /* max-height: 70%; */
 `;
 
 export const BtnConfirmContainer = styled.View`
