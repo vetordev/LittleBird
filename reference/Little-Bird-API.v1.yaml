@@ -380,7 +380,7 @@ paths:
             schema:
               type: object
               properties:
-                theme_id:
+                themes:
                   format: int64
                   type: string
             examples:
@@ -1102,7 +1102,6 @@ paths:
                         no_like:
                           type: integer
                           format: int64
-                  
               examples:
                 Exemplo de fórum:
                   value:
