@@ -76,6 +76,13 @@ describe('User', () => {
     });
 
     it('> POST /user Não deve criar um usuário (Foreign Key Error)', async () => {
+      const user: CreateUserDto = {
+        email: 'carlosboavidaa@gm.com',
+        user_img_id: 2,
+        user_pass: '123vidaboa',
+        username: 'carlosaboavida',
+        born_in: '2020-06-15'
+      };
       const response = await request(app.getHttpServer())
         .post('/user')
         .send(user);
