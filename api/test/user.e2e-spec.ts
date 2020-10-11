@@ -7,6 +7,16 @@ import { getConnection } from "typeorm";
 
 describe('User', () => {
   let app: INestApplication;
+  let token;
+
+  const user = {
+    email: 'carlosboavida@gm.com',
+    user_img_id: 1,
+    user_pass: '123vidaboa',
+    username: 'carlosboaviida',
+    born_in: '2020-06-15'
+  };
+
 
   beforeAll(async () => {
 
@@ -34,13 +44,6 @@ describe('User', () => {
     });
 
     it('> POST /user - Deve criar um usuário', async () => {
-      const user = {
-        email: 'carlosboavida@gm.com',
-        user_img_id: 1,
-        user_pass: '123vidaboa',
-        username: 'carlosboaviida',
-        born_in: '2020-06-15'
-      };
 
       const response = await request(app.getHttpServer())
         .post('/user')
@@ -73,14 +76,6 @@ describe('User', () => {
     });
 
     it('> POST /user Não deve criar um usuário (Foreign Key Error)', async () => {
-      const user: CreateUserDto = {
-        email: 'carlosboavidala@gm.com',
-        user_img_id: 2,
-        user_pass: '123vidaboa',
-        username: 'carlosboavida',
-        born_in: '2020-06-15'
-      };
-
       const response = await request(app.getHttpServer())
         .post('/user')
         .send(user);
@@ -143,7 +138,6 @@ describe('User', () => {
 
   describe('Buscar um usuário', () => {
 
-    let token = null;
     beforeAll(async () => {
       await getConnection().dropDatabase()
       await getConnection().synchronize();
@@ -190,7 +184,6 @@ describe('User', () => {
 
   describe('Alterar um usuário', () => {
 
-    let token = null;
     beforeAll(async () => {
       await getConnection().dropDatabase()
       await getConnection().synchronize();
