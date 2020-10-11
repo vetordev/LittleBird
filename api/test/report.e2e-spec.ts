@@ -6,6 +6,39 @@ import request from 'supertest';
 
 describe('Report', () => {
   let app: INestApplication;
+  let token;
+
+  const forum = {
+    forum_id: 1,
+    forum_img_id: 1,
+    title: 'Primeira vez',
+    no_like: 123123,
+    forum_description: 'Lorem ipsum dolor sit amet',
+    publi_date: '2020-06-15'
+  };
+  const comment = {
+    comment_id: 1,
+    forum_id: 1,
+    user_id: 1,
+    comment_content: '...',
+    publi_date: '2020-03-08',
+    no_like: 10
+  };
+  const user = {
+    user_id: 1,
+    email: 'carlosboavida@gm.com',
+    user_img_id: 1,
+    user_pass: '7f69c888bd3d61f20070fae8781a6b355c549b92e76e2955818eb75563a61b15',
+    username: 'carlosboaviida',
+    born_in: '2020-06-15'
+  };
+  const reply = {
+    reply_id: 1,
+    reply_content: '...',
+    user_id: 1,
+    comment_id: 1,
+    publi_date: '2020-07-22'
+  };
 
   beforeAll(async () => {
 
@@ -25,49 +58,22 @@ describe('Report', () => {
 
   describe('Reportar um comentário', () => {
 
-    let token;
-
     beforeAll(async () => {
-        await getConnection().dropDatabase();
-        await getConnection().synchronize();
+      await getConnection().dropDatabase();
+      await getConnection().synchronize();
 
-        const forum = {
-          forum_id: 1,
-          forum_img_id: 1,
-          title: 'Primeira vez',
-          no_like: 123123,
-          forum_description: 'Lorem ipsum dolor sit amet',
-        publi_date: '2020-06-15'
-        };
-        const comment = {
-          comment_id: 1,
-          forum_id: 1,
-          user_id: 1,
-          comment_content: '...',
-          publi_date: '2020-03-08',
-          no_like: 10
-        };
-        const user = {
-          user_id: 1,
-          email: 'carlosboavida@gm.com',
-          user_img_id: 1,
-          user_pass: '7f69c888bd3d61f20070fae8781a6b355c549b92e76e2955818eb75563a61b15',
-          username: 'carlosboaviida',
-          born_in: '2020-06-15'
-        };
+      await getConnection().createQueryBuilder().insert().into("user_img").values({ user_img_id: 1, img_url: "http://localhost:4456" }).execute();
+      await getConnection().createQueryBuilder().insert().into("tb_user").values(user).execute();
 
-        await getConnection().createQueryBuilder().insert().into("user_img").values({ user_img_id: 1, img_url: "http://localhost:4456" }).execute();
-        await getConnection().createQueryBuilder().insert().into("tb_user").values(user).execute();
+      await getConnection().createQueryBuilder().insert().into("forum_img").values({ forum_img_id: 1, img_url: "http://localhost:4456" }).execute();
+      await getConnection().createQueryBuilder().insert().into('forum').values(forum).execute();
 
-        await getConnection().createQueryBuilder().insert().into("forum_img").values({ forum_img_id: 1, img_url: "http://localhost:4456" }).execute();
-        await getConnection().createQueryBuilder().insert().into('forum').values(forum).execute();
+      await getConnection().createQueryBuilder().insert().into('tb_comment').values(comment).execute();
 
-        await getConnection().createQueryBuilder().insert().into('tb_comment').values(comment).execute();
+      await getConnection().createQueryBuilder().insert().into('report_type').values({ report_type_id: 1, report_type_name: 'Abuso Verbal', report_type_especification: 'lorem ipsum dolor sit amet.' }).execute();
 
-        await getConnection().createQueryBuilder().insert().into('report_type').values({ report_type_id: 1, report_type_name: 'Abuso Verbal', report_type_especification: 'lorem ipsum dolor sit amet.' }).execute();
-
-        const response = await request(app.getHttpServer()).post('/auth/login').send({ email: 'carlosboavida@gm.com', user_pass: '123vidaboa' });
-        token = response.body.token;
+      const response = await request(app.getHttpServer()).post('/auth/login').send({ email: 'carlosboavida@gm.com', user_pass: '123vidaboa' });
+      token = response.body.token;
     });
 
     it('> POST /report/comment/:comment_id Deve reportar um comentário', async () => {
@@ -114,58 +120,25 @@ describe('Report', () => {
   });
 
   describe('Reportar uma resposta', () => {
-    let token;
 
     beforeAll(async () => {
-        await getConnection().dropDatabase();
-        await getConnection().synchronize();
+      await getConnection().dropDatabase();
+      await getConnection().synchronize();
 
-        const forum = {
-          forum_id: 1,
-          forum_img_id: 1,
-          title: 'Primeira vez',
-          no_like: 123123,
-          forum_description: 'Lorem ipsum dolor sit amet',
-          publi_date: '2020-06-15'
-        };
-        const comment = {
-          comment_id: 1,
-          forum_id: 1,
-          user_id: 1,
-          comment_content: '...',
-          publi_date: '2020-03-08',
-          no_like: 10
-        };
-        const user = {
-          user_id: 1,
-          email: 'carlosboavida@gm.com',
-          user_img_id: 1,
-          user_pass: '7f69c888bd3d61f20070fae8781a6b355c549b92e76e2955818eb75563a61b15',
-          username: 'carlosboaviida',
-          born_in: '2020-06-15'
-        };
-        const reply = {
-          reply_id: 1,
-          reply_content: '...',
-          user_id: 1,
-          comment_id: 1,
-          publi_date: '2020-07-22'
-        };
+      await getConnection().createQueryBuilder().insert().into("user_img").values({ user_img_id: 1, img_url: "http://localhost:4456" }).execute();
+      await getConnection().createQueryBuilder().insert().into("tb_user").values(user).execute();
 
-        await getConnection().createQueryBuilder().insert().into("user_img").values({ user_img_id: 1, img_url: "http://localhost:4456" }).execute();
-        await getConnection().createQueryBuilder().insert().into("tb_user").values(user).execute();
+      await getConnection().createQueryBuilder().insert().into("forum_img").values({ forum_img_id: 1, img_url: "http://localhost:4456" }).execute();
+      await getConnection().createQueryBuilder().insert().into('forum').values(forum).execute();
 
-        await getConnection().createQueryBuilder().insert().into("forum_img").values({ forum_img_id: 1, img_url: "http://localhost:4456" }).execute();
-        await getConnection().createQueryBuilder().insert().into('forum').values(forum).execute();
+      await getConnection().createQueryBuilder().insert().into('tb_comment').values(comment).execute();
 
-        await getConnection().createQueryBuilder().insert().into('tb_comment').values(comment).execute();
+      await getConnection().createQueryBuilder().insert().into('reply').values(reply).execute();
 
-        await getConnection().createQueryBuilder().insert().into('reply').values(reply).execute();
+      await getConnection().createQueryBuilder().insert().into('report_type').values({ report_type_id: 1, report_type_name: 'Abuso Verbal', report_type_especification: 'lorem ipsum dolor sit amet.' }).execute();
 
-        await getConnection().createQueryBuilder().insert().into('report_type').values({ report_type_id: 1, report_type_name: 'Abuso Verbal', report_type_especification: 'lorem ipsum dolor sit amet.' }).execute();
-
-        const response = await request(app.getHttpServer()).post('/auth/login').send({ email: 'carlosboavida@gm.com', user_pass: '123vidaboa' });
-        token = response.body.token;
+      const response = await request(app.getHttpServer()).post('/auth/login').send({ email: 'carlosboavida@gm.com', user_pass: '123vidaboa' });
+      token = response.body.token;
     });
 
     it('> POST /report/reply/:reply_id Deve reportar uma resposta', async () => {
