@@ -49,7 +49,7 @@ export class ArticleService {
     });
 
     let recommendations: any[] = await this.recommendationArticleRepository.createQueryBuilder('recommendation_article')
-      .select(['recommendation_article.recommendation_id', 'recommendation_article.recommendation_url', 'recommendation_article.recommendation_type'])
+      .select(['recommendation_article.recommendation_id', 'recommendation_article.recommendation_url', 'recommendation_article.recommendation_type', 'recommendation_article.title'])
       .where('recommendation_article.article_id = :article_id', { article_id })
       .getMany();
 

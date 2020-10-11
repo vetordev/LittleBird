@@ -21,6 +21,7 @@ describe('Article', () => {
     recommendation_id: 1,
     recommendation_url: 'http://localhost',
     recommendation_type: 'Podcast',
+    title: 'Conversa',
     article_id: 1
   };
   const user = {
@@ -118,6 +119,7 @@ describe('Article', () => {
             recommendation_id: expect.any(Number),
             recommendation_url: expect.any(String),
             recommendation_type: expect.any(String),
+            title: expect.any(String)
           }
         ]
       }));

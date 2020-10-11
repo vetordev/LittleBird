@@ -15,9 +15,15 @@ export class RecommendationArticle {
 
   @Column({
     type: 'varchar',
-    length: 50
+    length: 50,
   })
   recommendation_type: string;
+
+  @Column({
+    type: 'varchar',
+    length: 100,
+  })
+  title: string;
 
   @ManyToOne(type => Article, {
     onDelete: 'CASCADE',
@@ -31,4 +37,6 @@ export class RecommendationArticle {
     type: 'integer'
   })
   article_id: number;
+
+
 }
