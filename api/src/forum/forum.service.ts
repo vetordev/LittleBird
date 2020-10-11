@@ -47,7 +47,6 @@ export class ForumService {
     return response.status(200).json(foruns);
   };
 
-  // TODO Adicionar paginação
   async getForumByLike(page: number): Promise<Forum[]> {
     // let foruns = await this.forumRepository.createQueryBuilder('forum')
     //   .select(['forum', 'forum_img'])

@@ -11,6 +11,7 @@ export class ArticleController {
   constructor(private readonly articleService: ArticleService) {}
 
   @Get(':article_id')
+  // @UseFilters(QueryFailedExceptionFilter)
   getArticle(@Res() response, @Param() params: GetArticleDto) {
     return this.articleService.getArticle(response, params.article_id);
   }

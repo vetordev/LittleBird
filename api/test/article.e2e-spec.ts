@@ -38,13 +38,24 @@ describe('Article', () => {
         publi_date: '2020-12-30',
         article_author: 'Carlos'
       }
+      const recommendation = {
+        recommendation_id: 1,
+        recommendation_url: 'http://localhost',
+        recommendation_type: 'Podcast',
+        article_id: 1
+      };
 
       await getConnection().createQueryBuilder().insert().into("theme_img").values({ theme_img_id: 1, img_url: "http://localhost:4456" }).execute();
       await getConnection().createQueryBuilder().insert().into("theme").values({ theme_id: 1, theme_name: "Sexo", theme_img_id: 1 }).execute();
+
       await getConnection().createQueryBuilder().insert().into("theme_img").values({ theme_img_id: 2, img_url: "http://localhost:4456" }).execute();
       await getConnection().createQueryBuilder().insert().into("theme").values({ theme_id: 2, theme_name: "Casamento", theme_img_id: 2 }).execute();
+
       await getConnection().createQueryBuilder().insert().into("article_img").values({ article_img_id: 1, img_url: "http://localhost:4456" }).execute();
       await getConnection().createQueryBuilder().insert().into('article').values(article).execute();
+
+      await getConnection().createQueryBuilder().insert().into('recommendation_article').values(recommendation).execute();
+
       await getConnection().createQueryBuilder().insert().into("theme_article").values({ theme_article_id: 1, theme_id: 1, article_id: 1 }).execute();
       await getConnection().createQueryBuilder().insert().into("theme_article").values({ theme_article_id: 2, theme_id: 2, article_id: 1 }).execute();
     });
@@ -78,6 +89,13 @@ describe('Article', () => {
           {
             theme_id: expect.any(Number),
             theme_name: expect.any(String)
+          }
+        ],
+        recommendations: [
+          {
+            recommendation_id: expect.any(Number),
+            recommendation_url: expect.any(String),
+            recommendation_type: expect.any(String),
           }
         ]
       }));
