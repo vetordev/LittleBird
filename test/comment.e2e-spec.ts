@@ -6,6 +6,40 @@ import request from 'supertest';
 
 describe('Comment', () => {
   let app: INestApplication;
+  let token;
+
+  const forum = {
+    forum_id: 1,
+    forum_img_id: 1,
+    title: 'Primeira vez',
+    no_like: 123123,
+    forum_description: 'Lorem ipsum dolor sit amet',
+    publi_date: '2020-06-15'
+  };
+  const comment = {
+    comment_id: 1,
+    forum_id: 1,
+    user_id: 1,
+    comment_content: '...',
+    publi_date: '2020-03-08',
+    no_like: 10
+  };
+  const user = {
+    user_id: 1,
+    email: 'carlosboavida@gm.com',
+    user_img_id: 1,
+    user_pass: '7f69c888bd3d61f20070fae8781a6b355c549b92e76e2955818eb75563a61b15',
+    username: 'carlosboaviida',
+    born_in: '2020-06-15'
+  };
+  const reply = {
+    reply_id: 1,
+    reply_content: '...',
+    user_id: 1,
+    comment_id: 1,
+    publi_date: '2020-07-22'
+  };
+
 
   beforeAll(async () => {
 
@@ -27,29 +61,6 @@ describe('Comment', () => {
     beforeAll(async () => {
       await getConnection().dropDatabase();
       await getConnection().synchronize();
-
-      const forum = {
-        forum_id: 1,
-        forum_img_id: 1,
-        title: 'Primeira vez',
-        no_like: 123123,
-      };
-      const comment = {
-        comment_id: 1,
-        forum_id: 1,
-        user_id: 1,
-        comment_content: '...',
-        publi_date: '2020-03-08',
-        no_like: 10
-      };
-      const user = {
-        user_id: 1,
-        email: 'carlosboavida@gm.com',
-        user_img_id: 1,
-        user_pass: '123vidaboa',
-        username: 'carlosboaviida',
-        born_in: '2020-06-15'
-      };
 
       await getConnection().createQueryBuilder().insert().into("user_img").values({ user_img_id: 1, img_url: "http://localhost:4456" }).execute();
       await getConnection().createQueryBuilder().insert().into("tb_user").values(user).execute();
@@ -99,35 +110,6 @@ describe('Comment', () => {
       await getConnection().dropDatabase();
       await getConnection().synchronize();
 
-      const forum = {
-        forum_id: 1,
-        forum_img_id: 1,
-        title: 'Primeira vez',
-        no_like: 123123,
-      };
-      const comment = {
-        comment_id: 1,
-        forum_id: 1,
-        user_id: 1,
-        comment_content: '...',
-        publi_date: '2020-03-08',
-        no_like: 10
-      };
-      const user = {
-        user_id: 1,
-        email: 'carlosboavida@gm.com',
-        user_img_id: 1,
-        user_pass: '123vidaboa',
-        username: 'carlosboaviida',
-        born_in: '2020-06-15'
-      };
-      const reply = {
-        reply_id: 1,
-        reply_content: '...',
-        user_id: 1,
-        comment_id: 1,
-        publi_date: '2020-07-22'
-      };
       const reply_2 = {
         reply_id: 2,
         reply_content: '...',
@@ -183,34 +165,9 @@ describe('Comment', () => {
 
   describe('Registrar um like', () => {
 
-    let token;
-
     beforeAll(async () => {
       await getConnection().dropDatabase();
       await getConnection().synchronize();
-
-      const forum = {
-        forum_id: 1,
-        forum_img_id: 1,
-        title: 'Primeira vez',
-        no_like: 123123,
-      };
-      const comment = {
-        comment_id: 1,
-        forum_id: 1,
-        user_id: 1,
-        comment_content: '...',
-        publi_date: '2020-03-08',
-        no_like: 10
-      };
-      const user = {
-        user_id: 1,
-        email: 'carlosboavida@gm.com',
-        user_img_id: 1,
-        user_pass: '123vidaboa',
-        username: 'carlosboaviida',
-        born_in: '2020-06-15'
-      };
 
       await getConnection().createQueryBuilder().insert().into("user_img").values({ user_img_id: 1, img_url: "http://localhost:4456" }).execute();
       await getConnection().createQueryBuilder().insert().into("tb_user").values(user).execute();
@@ -257,34 +214,9 @@ describe('Comment', () => {
 
   describe('Registrar uma resposta', () => {
 
-    let token;
-
     beforeAll(async () => {
       await getConnection().dropDatabase();
       await getConnection().synchronize();
-
-      const forum = {
-        forum_id: 1,
-        forum_img_id: 1,
-        title: 'Primeira vez',
-        no_like: 123123,
-      };
-      const user = {
-        user_id: 1,
-        email: 'carlosboavida@gm.com',
-        user_img_id: 1,
-        user_pass: '123vidaboa',
-        username: 'carlosboaviida',
-        born_in: '2020-06-15'
-      };
-      const comment = {
-        comment_id: 1,
-        forum_id: 1,
-        user_id: 1,
-        comment_content: '...',
-        publi_date: '2020-03-08',
-        no_like: 10
-      };
 
       await getConnection().createQueryBuilder().insert().into("user_img").values({ user_img_id: 1, img_url: "http://localhost:4456" }).execute();
       await getConnection().createQueryBuilder().insert().into("tb_user").values(user).execute();
@@ -340,41 +272,9 @@ describe('Comment', () => {
 
   describe('Remover resposta', () => {
 
-    let token;
-
     beforeAll(async () => {
       await getConnection().dropDatabase();
       await getConnection().synchronize();
-
-      const forum = {
-        forum_id: 1,
-        forum_img_id: 1,
-        title: 'Primeira vez',
-        no_like: 123123,
-      };
-      const user = {
-        user_id: 1,
-        email: 'carlosboavida@gm.com',
-        user_img_id: 1,
-        user_pass: '123vidaboa',
-        username: 'carlosboaviida',
-        born_in: '2020-06-15'
-      };
-      const comment = {
-        comment_id: 1,
-        forum_id: 1,
-        user_id: 1,
-        comment_content: '...',
-        publi_date: '2020-03-08',
-        no_like: 10
-      };
-      const reply = {
-        reply_id: 1,
-        reply_content: '...',
-        user_id: 1,
-        comment_id: 1,
-        publi_date: '2020-07-22'
-      };
 
       await getConnection().createQueryBuilder().insert().into("user_img").values({ user_img_id: 1, img_url: "http://localhost:4456" }).execute();
       await getConnection().createQueryBuilder().insert().into("tb_user").values(user).execute();
@@ -419,34 +319,10 @@ describe('Comment', () => {
   });
 
   describe('Remover um like', () => {
-    let token;
 
     beforeAll(async () => {
       await getConnection().dropDatabase();
       await getConnection().synchronize();
-
-      const forum = {
-        forum_id: 1,
-        forum_img_id: 1,
-        title: 'Primeira vez',
-        no_like: 123123,
-      };
-      const user = {
-        user_id: 1,
-        email: 'carlosboavida@gm.com',
-        user_img_id: 1,
-        user_pass: '123vidaboa',
-        username: 'carlosboaviida',
-        born_in: '2020-06-15'
-      };
-      const comment = {
-        comment_id: 1,
-        forum_id: 1,
-        user_id: 1,
-        comment_content: '...',
-        publi_date: '2020-03-08',
-        no_like: 10
-      };
 
       await getConnection().createQueryBuilder().insert().into("user_img").values({ user_img_id: 1, img_url: "http://localhost:4456" }).execute();
       await getConnection().createQueryBuilder().insert().into("tb_user").values(user).execute();

@@ -22,9 +22,11 @@ export class CommentController {
   };
 
   @Post(':comment_id/like')
+  @HttpCode(204)
   @UseGuards(JwtAuthGuard)
-  createLike(@Res() response, @Param() params: CreateLikeDto)  {
-    return this.commentService.createLike(response, params.comment_id);
+  @UseFilters(QueryFailedExceptionFilter)
+  createLike(@Req() request, @Param() params: CreateLikeDto)  {
+    return this.commentService.createLike(request.user.user_id, params.comment_id);
   };
 
   @Post(':comment_id/reply')

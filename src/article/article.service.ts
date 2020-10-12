@@ -7,7 +7,8 @@ import { LikeArticle } from './entity/like-article.entity';
 import { Response } from 'express';
 import { LaterArticle } from './entity/later-article.entity';
 import { Forum } from '../forum/entity/forum.entity';
-import { contains } from 'class-validator';
+import { orderByDate } from "./utils/order.date";
+import { RecommendationArticle } from './entity/recommendation-article.entity';
 
 @Injectable()
 export class ArticleService {
@@ -15,6 +16,7 @@ export class ArticleService {
   constructor(
     @InjectRepository(Article) private readonly articleRepository: Repository<Article>,
     @InjectRepository(ThemeArticle) private readonly themeArticleRepository: Repository<ThemeArticle>,
+    @InjectRepository(RecommendationArticle) private readonly recommendationArticleRepository: Repository<RecommendationArticle>,
     @InjectRepository(LikeArticle) private readonly likeArticleRepository: Repository<LikeArticle>,
     @InjectRepository(LaterArticle) private readonly laterArticleRepository: Repository<LaterArticle>,
     @InjectRepository(Forum) private readonly forumRepository: Repository<Forum>
@@ -32,8 +34,8 @@ export class ArticleService {
       return response.status(404).json({ error: 'Artigo não foi encontrado.' });
     };
 
-    let themes: any = await this.themeArticleRepository.createQueryBuilder('theme_article')
-      .select(['theme_article', 'theme'])
+    let themes: any[] = await this.themeArticleRepository.createQueryBuilder('theme_article')
+      .select(['theme_article.theme_id', 'theme'])
       .innerJoin('theme_article.theme_id', 'theme')
       .where('theme_article.article_id = :article_id', { article_id })
       .getMany();
@@ -46,12 +48,18 @@ export class ArticleService {
       return theme.theme_id;
     });
 
-    const theme_article = {
+    let recommendations: any[] = await this.recommendationArticleRepository.createQueryBuilder('recommendation_article')
+      .select(['recommendation_article.recommendation_id', 'recommendation_article.recommendation_url', 'recommendation_article.recommendation_type', 'recommendation_article.title'])
+      .where('recommendation_article.article_id = :article_id', { article_id })
+      .getMany();
+
+    const theme_article_recommendation = {
       article,
-      themes
+      themes,
+      recommendations
     }
 
-    return response.status(200).json(theme_article);
+    return response.status(200).json(theme_article_recommendation);
   }
 
   async getArticlesByLike(page: number): Promise<Article[]> {
@@ -141,7 +149,7 @@ export class ArticleService {
 
   async getArticlesAndForuns(page: number): Promise<any> {
 
-    let articles: any[] = await this.articleRepository.createQueryBuilder('article')
+    const articles: any[] = await this.articleRepository.createQueryBuilder('article')
       .select(['article.article_id', 'article.title', 'article.no_like', 'article.publi_date', 'article_img'])
       .innerJoin('article.article_img_id', 'article_img')
       .limit(3)
@@ -149,24 +157,18 @@ export class ArticleService {
       .orderBy('article.publi_date', 'ASC')
       .getMany();
 
-    let foruns: any[] = await this.forumRepository.createQueryBuilder('forum')
+    const foruns: any[] = await this.forumRepository.createQueryBuilder('forum')
       .select(['forum', 'forum_img'])
       .innerJoin('forum.forum_img_id', 'forum_img')
       .limit(3)
       .offset((page - 1) * 3)
       .getMany();
 
-    // articles = articles.map((article) => {
 
-    // });
-    // const articles_foruns = articles.concat(foruns)
-    // console.log(articles_foruns);
+    const articles_foruns = articles.concat(foruns)
+    articles_foruns.sort(orderByDate);
 
-
-    return {
-      articles,
-      foruns
-    };
+    return articles_foruns
 
   }
 
