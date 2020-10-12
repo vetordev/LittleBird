@@ -39,28 +39,27 @@ export const AuthProvider = ({ children }) => {
          username: username,
       };
 
-      api.post('auth/login', userLogin, {
-         onUploadProgress: () => {
-            setLoadingAuth(true);
-         }
-      })
-      .then(async (responseUser) => {
-         console.log('Tudo pronto!');
+      // api.post('auth/login', userLogin, {
+      //    onUploadProgress: () => {
+      //       setLoadingAuth(true);
+      //    }
+      // })
+      // .then(async (responseUser) => {
+      //    console.log('Tudo pronto!');
 
          setLoadingAuth(false);
 
          setUser(user);   
-         await setToken('Barer ' + responseUser.data.token);
+         await setToken('Bearer 2918SDHDSJJK923HDSHDB');
 
-         console.log('TOKEN:', responseUser.data.token);
 
          await AsyncStorage.setItem('@LittleBird:user', JSON.stringify(user));
          await AsyncStorage.setItem('@LittleBird:token', token);
-      })
-      .catch ((error) => { 
-         console.log('Ocorreu um erro no login de usuário: ', error);
-         setLoadingAuth(false);
-      }) 
+      // })
+      // .catch ((error) => { 
+      //    console.log('Ocorreu um erro no login de usuário: ', error);
+      //    setLoadingAuth(false);
+      // }) 
    }
 
    function signUp(user, userInterests) {
@@ -72,16 +71,33 @@ export const AuthProvider = ({ children }) => {
          })
          .then(async (responseUser) => {
             console.log('Tudo pronto!');
+            console.log(responseUser.data.token);
 
-            setLoadingAuth(false);
+            await setToken('Bearer ' + responseUser.data.token);
 
-            setUser(user);   
-            await setToken('Barer ' + responseUser.data.token);
+            api.post('interest', '1, 2, 3', {
+               headers: { 
+                  Authorization: responseUser.data.token 
+               }
+            }) 
+            .then(async () => {
+               setLoadingAuth(false);
+               setUser(user);   
+   
 
-            console.log('TOKEN:', responseUser.data.token);
+               // const responseInterests = api.get('interest?page=1', {
+               //    headers: { 
+               //       Authorization: 'Bearer ' + responseUser.data.token 
+               //    }
+               // })
 
-            await AsyncStorage.setItem('@LittleBird:user', JSON.stringify(user));
-            await AsyncStorage.setItem('@LittleBird:token', responseUser.data.token);
+               // console.log(responseInterests);
+
+               // console.log('TOKEN:', responseUser.data.token);
+   
+               await AsyncStorage.setItem('@LittleBird:user', JSON.stringify(user));
+               await AsyncStorage.setItem('@LittleBird:token', responseUser.data.token);
+            })
          })
          .catch ((error) => { 
             console.log('Ocorreu um erro no cadastro de usuário: ', error);

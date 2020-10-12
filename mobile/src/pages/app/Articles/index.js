@@ -19,14 +19,11 @@ import {
    TitleItem,
    LinkItem,
    LinkItemContainer,
-   Tags,
-   Tag,
-   TagTitle,
-   TagSessionTitle,
    styles
 } from './styles';
 
 import HeaderBtnBack from '../../../components/HeaderBtnBack';
+import TagsThemes from '../../../components/Tags';
 
 const Articles = () => {
    const [liked, setLiked] = useState(false);
@@ -63,23 +60,7 @@ const Articles = () => {
                   stylesheet={styles}
                />
 
-               <View style={{ width: '100%' }}>
-                  <TitleRecommendations>Tags:</TitleRecommendations>
-                  <Tags 
-                     horizontal
-                     showsHorizontalScrollIndicator={false}
-                  >
-                     <Tag>
-                        <TagTitle>Adolescência</TagTitle>
-                     </Tag>
-                     <Tag>
-                        <TagTitle>Puberdade</TagTitle>
-                     </Tag>
-                     <Tag>
-                        <TagTitle>Sexo</TagTitle>
-                     </Tag>
-                  </Tags>
-               </View>
+               <TagsThemes />
 
                <Recommendations>
                   <TitleRecommendations>Saiba mais:</TitleRecommendations>

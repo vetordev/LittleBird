@@ -1,4 +1,5 @@
 import React from 'react';
+import { ScrollView } from 'react-native';
 
 import { 
    Container,
@@ -21,9 +22,11 @@ const ModalContainer: React.FC<ModalContainerProps> = ({ onPress, color_theme, f
       // <ScrollView style={{ position: width: '100%', height: '100%'}}>
          <Container>
             <Content color_theme={color_theme}>
-               <ChildrenContainer>
-                  { children }
-               </ChildrenContainer>
+               <ScrollView>
+                  <ChildrenContainer>
+                     { children }
+                  </ChildrenContainer>
+               </ScrollView>
                <BtnConfirmContainer color_theme={color_theme}>
                   <BtnConfirm onPress={onPress}>
                      <BtnConfirmText font_color={font_color}>

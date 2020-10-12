@@ -5,6 +5,7 @@ import { MaterialIcons } from '@expo/vector-icons';
 import HeaderBtnBack from '../../../components/HeaderBtnBack';
 import ChatMessage from '../../../components/ChatMessage';
 import ModalContainer from '../../../components/ModalContainer';
+import TagsThemes from '../../../components/Tags';
 
 import { 
    Container,
@@ -96,6 +97,8 @@ const Forums = () => {
                <ModalDescription>
                   Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. 
                </ModalDescription>
+               
+               <TagsThemes />
 
                <ModalContent>
                   <ModalSubtitle>
