@@ -984,6 +984,19 @@ paths:
                           type: integer
                         theme_name:
                           type: string
+                  recommendations:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        recommendation_id:
+                          type: integer
+                        recommendation_url:
+                          type: string
+                        recommendation_type:
+                          type: string
+                        recommendation_title:
+                          type: string
               examples:
                 Exemplo de artigo:
                   value:
@@ -999,6 +1012,11 @@ paths:
                     theme_id:
                       - theme_id: 1
                         theme_name: Sexo
+                    recommendations:
+                      - recommendation_id: 1
+                        recommendation_title: Conversa
+                        recommendation_url: 'http://localhost'
+                        recommendation_type: Podcast
         '404':
           description: O artigo solicitado não existe.
           content:
@@ -2564,19 +2582,12 @@ paths:
                     error: Ocorreu um erro. Tente novamente mais tarde.
       operationId: get-user-email
       description: Rota para verificar se um e-mail já está presente no servidor.
-      requestBody:
-        content:
-          application/json:
-            schema:
-              type: object
-              properties:
-                email:
-                  type: string
-            examples:
-              Exemplo de e-mail:
-                value:
-                  email: carlosboavida@gmail.com
-        description: E-mail para busca no servidor.
+      parameters:
+        - schema:
+            type: string
+          in: query
+          name: email
+          description: E-mail para consulta no banco de dados
 components:
   schemas:
     User:
