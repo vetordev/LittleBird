@@ -5,6 +5,7 @@ import { CheckBox } from 'react-native-elements';
 import { useRoute, useNavigation } from '@react-navigation/native';
 import { Form } from '@unform/mobile';
 import { Feather } from '@expo/vector-icons';
+import * as Yup from 'yup';
 
 import Input from '../../../components/Input';
 
@@ -27,17 +28,46 @@ const SignUp1 = () => {
   const email = route.params.data.email;
   const formRef = useRef(null);
 
-  function handleSignUp1 (data, { reset }) {
-    const user = {
-      email,
-      username: data.username,
-      user_pass: data.password,
-      // authorization: toggleCheckBox,
-      user_img_id: 1,
-      born_in: '2019-08-24'
-    }
+  async function handleSignUp1 (data, { reset }) {
+    try {
+      const schema = Yup.object().shape({
+        username: Yup.string().required('Escolha um nome de usuário').min(5),
+        password: Yup.string().required('Escolha uma senha').min(5),
+      });
 
-    navigation.navigate('SignUp2', { user });
+      await schema.validate(data, {
+        abortEarly: false
+      });
+
+      console.log(schema);
+
+      formRef.current.setErrors({});
+
+      const user = {
+        email,
+        username: data.username,
+        user_pass: data.password,
+        user_img_id: 1,
+        born_in: '2019-08-24'
+      }
+
+      if (toggleCheckBox) {
+        navigation.navigate('SignUp2', { user });
+      } else {
+        alert('É preciso concordar com os termos de uso.');
+      }
+
+    } catch (err) {
+      if (err instanceof Yup.ValidationError) {
+        const errorMessages = {};
+
+        err.inner.forEach(error => {
+          errorMessages[error.path] = error.message;
+        })
+
+        formRef.current.setErrors(errorMessages);
+      }
+    }
   }
 
   return (

@@ -3,6 +3,7 @@ import { StatusBar } from 'expo-status-bar';
 import { useNavigation } from '@react-navigation/native';
 import { Form } from '@unform/mobile';
 import { Feather } from '@expo/vector-icons';
+import * as Yup from 'yup';
 
 import Input from '../../../components/Input';
 
@@ -24,12 +25,37 @@ const HomeAuth = () => {
     
     // console.log(response.data);
 
-    if (data.email == "vitorinha@hotmail.com") {
-      navigation.navigate('SignIn', { data });      
-      return;
-    }
+    try {
+      const schema = Yup.object().shape({
+        email: Yup.string().required('Digite seu e-mail.').min(7).email(),
+      });
 
-    navigation.navigate('SignUp1', { data });
+      await schema.validate(data, {
+        abortEarly: false
+      });
+
+      console.log(schema);
+
+      formRef.current.setErrors({});
+
+      if (data.email == "vitorinha@hotmail.com") {
+        navigation.navigate('SignIn', { data });
+        return;
+      }
+  
+      navigation.navigate('SignUp1', { data });
+
+    } catch (err) {
+      if (err instanceof Yup.ValidationError) {
+        const errorMessages = {};
+
+        err.inner.forEach(error => {
+          errorMessages[error.path] = error.message;
+        })
+
+        formRef.current.setErrors(errorMessages);
+      }
+    }
   }
 
   return (

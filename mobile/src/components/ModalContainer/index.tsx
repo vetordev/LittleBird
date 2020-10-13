@@ -19,24 +19,22 @@ interface ModalContainerProps {
 
 const ModalContainer: React.FC<ModalContainerProps> = ({ onPress, color_theme, font_color, children, btn_title }) => {
    return (
-      // <ScrollView style={{ position: width: '100%', height: '100%'}}>
-         <Container>
-            <Content color_theme={color_theme}>
-               <ScrollView>
-                  <ChildrenContainer>
-                     { children }
-                  </ChildrenContainer>
-               </ScrollView>
-               <BtnConfirmContainer color_theme={color_theme}>
-                  <BtnConfirm onPress={onPress}>
-                     <BtnConfirmText font_color={font_color}>
-                        { btn_title }
-                     </BtnConfirmText>
-                  </BtnConfirm>
-               </BtnConfirmContainer>
-            </Content>
-         </Container>
-      // </ScrollView>
+      <Container>
+         <Content color_theme={color_theme}>
+            <ScrollView>
+               <ChildrenContainer>
+                  { children }
+               </ChildrenContainer>
+            </ScrollView>
+            <BtnConfirmContainer color_theme={color_theme}>
+               <BtnConfirm onPress={onPress}>
+                  <BtnConfirmText font_color={font_color}>
+                     { btn_title }
+                  </BtnConfirmText>
+               </BtnConfirm>
+            </BtnConfirmContainer>
+         </Content>
+      </Container>
    );
 }
 

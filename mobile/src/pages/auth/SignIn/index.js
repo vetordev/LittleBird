@@ -4,6 +4,7 @@ import { StatusBar } from 'expo-status-bar';
 import { useRoute } from '@react-navigation/native';
 import { Form } from '@unform/mobile';
 import { Feather } from '@expo/vector-icons';
+import * as Yup from 'yup';
 
 import { useAuth } from '../../../contexts/auth';
 import Input from '../../../components/Input';
@@ -18,12 +19,40 @@ const SignIn = () => {
   const { signIn, loadingAuth } = useAuth();
 
   async function handleSignIn(data, { reset }) {
-    const user = {
-      email,
-      user_pass: data.password,
-    }
+    try {
+      const schema = Yup.object().shape({
+        password: Yup.string().required('A senha é obrigatória'),
+      });
 
-    await signIn(user, 'bolinhoroxo');
+      await schema.validate(data, {
+        abortEarly: false
+      });
+
+      formRef.current.setErrors({});
+
+      if (data.password === 'senha1234') {
+
+        const user = {
+          email,
+          password: data.password,
+        }
+
+        await signIn(user, 'bolinhoroxo');
+      } else {
+        alert('Senha incorreta. Tente novamente.');
+      }
+
+    } catch (err) {
+      if (err instanceof Yup.ValidationError) {
+        const errorMessages = {};
+
+        err.inner.forEach(error => {
+          errorMessages[error.path] = error.message;
+        })
+
+        formRef.current.setErrors(errorMessages);
+      }
+    }
   }
 
   return (

@@ -26,6 +26,7 @@ const Input = ({ name, color, iconName, placeholder, legend, description, defaul
    return (
      <Container>
          <Legend color={color == 'dark' ? '#000' : '#F6F6F6'}>{legend}</Legend>
+            { error && <Feather name="alert-triangle" color="#C80024" size={20} /> }
          <InputContainer color={color}>
          <InputIcon>
             <Feather name={iconName ? iconName : 'send'} color={color == 'dark' ? '#000' : '#F6F6F6'} size={24} />
@@ -38,7 +39,6 @@ const Input = ({ name, color, iconName, placeholder, legend, description, defaul
             keyboardType={name == 'email' ? 'email-address' : 'default'}
             secureTextEntry={name == 'password' ? true: false}
             defaultValue={defaultValue}
-            // value={value}
             onChangeText={value => {
                if (inputRef.current) {
                   inputRef.current.value = value
