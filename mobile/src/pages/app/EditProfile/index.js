@@ -2,6 +2,7 @@ import React, { useRef, useState } from 'react';
 import { View, FlatList } from 'react-native';
 import { Form } from '@unform/mobile';
 import { Feather } from '@expo/vector-icons';
+import * as Yup from 'yup';
 
 import Header from '../../../components/Header';
 import Input from '../../../components/Input';
@@ -27,8 +28,6 @@ const EditProfile = () => {
 
    const formRef = useRef(null);
 
-   function handleSaveProfile() {}
-
    const [imgs, setImgs] = useState([
       'https://image.freepik.com/vetores-gratis/ilustracao-de-fatia-de-pizza_179407-45.jpg', 
       'https://i.pinimg.com/originals/90/1d/45/901d45d05461495b1c0700ce47517135.jpg', 
@@ -47,6 +46,54 @@ const EditProfile = () => {
       array_aux[newId] = aux;
 
       setImgs(array_aux);
+   }
+
+   async function handleSaveProfile(data) {
+      if (data.username === undefined && data.email === undefined) {
+         return false;
+      }
+
+      try {
+         const schema = Yup.object().shape({
+           username: Yup.string().min(5, 'O nome de usuário deve ter pelo menos 5 caracteres.'),
+           email: Yup.string().min(6, 'O e-mail deve ter pelo menos 7 caracteres.').email('O e-mail deve ser válido'),
+         });
+
+         // alert(data.username)
+   
+         await schema.validate(data, {
+           abortEarly: false
+         });
+   
+         console.log(schema);
+   
+         formRef.current.setErrors({});
+   
+         const user = {
+           email,
+           username: data.username,
+           user_pass: data.password,
+           user_img_id: 1,
+           born_in: '2019-08-24'
+         }
+   
+         if (toggleCheckBox) {
+           navigation.navigate('SignUp2', { user });
+         } else {
+           alert('É preciso concordar com os termos de uso.');
+         }
+   
+       } catch (err) {
+         if (err instanceof Yup.ValidationError) {
+           const errorMessages = {};
+   
+           err.inner.forEach(error => {
+             errorMessages[error.path] = error.message;
+           })
+   
+           formRef.current.setErrors(errorMessages);
+         }
+       }
    }
 
    return (
@@ -82,17 +129,18 @@ const EditProfile = () => {
                   name="username"
                   color="light"
                   iconName="user"
-                  placeholder=""
                   legend="Seu nome de usuário"
+                  maxLength={45}
                   defaultValue={user.username}
                />
 
                <Input 
-                  name="mail"
+                  name="email"
                   color="light"
                   iconName="mail"
-                  placeholder=""
                   legend="Seu e-mail"
+                  maxLength={100}
+                  keyboardType="email-address"
                   defaultValue={user.email}
                />
 
@@ -105,7 +153,7 @@ const EditProfile = () => {
                   </BtnAlterPassword>
                </View>
 
-               <BtnSaveProfile>
+               <BtnSaveProfile onPress={() => formRef.current.submitForm()}>
                   <BtnSaveProfileText>
                      Salvar alterações
                   </BtnSaveProfileText>

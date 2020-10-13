@@ -25,7 +25,7 @@ const HomeAuth = () => {
 
     try {
       const schema = Yup.object().shape({
-        email: Yup.string().required('O e-mail não pode ser nulo.').min(7, 'O e-mail deve ter pelo menos 7 caracteres.').email('O e-mail deve ser válido'),
+        email: Yup.string().required('O e-mail não pode ser nulo.').min(6, 'O e-mail deve ter pelo menos 7 caracteres.').email('O e-mail deve ser válido'),
       });
 
       await schema.validate(data, {

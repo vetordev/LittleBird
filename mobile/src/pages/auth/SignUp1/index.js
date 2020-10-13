@@ -1,5 +1,4 @@
 import React, { useState, useRef } from 'react';
-import { ScrollView } from 'react-native';
 import { StatusBar } from 'expo-status-bar';
 import { CheckBox } from 'react-native-elements';
 import { useRoute, useNavigation } from '@react-navigation/native';
