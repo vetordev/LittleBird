@@ -19,15 +19,13 @@ const HomeAuth = () => {
   async function handleSignIn(data, { reset }) {
 
     // const email = data.email;
-    // console.log(email);
-
-    // const response = await api.get('user/email', { body: email});
+    // const response = await api.get('user/email', { body: email });
     
     // console.log(response.data);
 
     try {
       const schema = Yup.object().shape({
-        email: Yup.string().required('Digite seu e-mail.').min(7).email(),
+        email: Yup.string().required('O e-mail não pode ser nulo.').min(7, 'O e-mail deve ter pelo menos 7 caracteres.').email('O e-mail deve ser válido'),
       });
 
       await schema.validate(data, {
@@ -72,6 +70,8 @@ const HomeAuth = () => {
           color="dark" 
           iconName="mail" 
           placeholder="exemplo@exemplo.com"
+          maxLength={100}
+          keyboardType="email-address"
         />
         <BtnLogin background="#121212" onPress={() => formRef.current.submitForm()}>
           <BtnIcon background="#000">

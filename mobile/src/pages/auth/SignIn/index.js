@@ -21,7 +21,7 @@ const SignIn = () => {
   async function handleSignIn(data, { reset }) {
     try {
       const schema = Yup.object().shape({
-        password: Yup.string().required('A senha é obrigatória'),
+        password: Yup.string().required('A senha não pode ser nula.').min(5, 'A senha deve ter pelo menos 5 caracteres.'),
       });
 
       await schema.validate(data, {
@@ -70,6 +70,8 @@ const SignIn = () => {
           iconName="lock"
           placeholder="s3n#@000"
           legend="Sua senha"
+          secureTextEntry={true}
+          maxLength={64}
         />
         <BtnLogin background="#F6F6F6" onPress={() => formRef.current.submitForm()}>
           <BtnIcon background="#E0E0E0">
