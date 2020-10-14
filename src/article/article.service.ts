@@ -158,7 +158,7 @@ export class ArticleService {
       .getMany();
 
     const foruns: any[] = await this.forumRepository.createQueryBuilder('forum')
-      .select(['forum', 'forum_img'])
+      .select(['forum.forum_id', 'forum.title', 'forum.no_like', 'forum.publi_date','forum_img'])
       .innerJoin('forum.forum_img_id', 'forum_img')
       .limit(3)
       .offset((page - 1) * 3)

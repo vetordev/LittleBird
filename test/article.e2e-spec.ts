@@ -1,7 +1,7 @@
 import { INestApplication, ValidationPipe } from "@nestjs/common";
 import { TestingModule, Test } from "@nestjs/testing";
 import { AppModule } from "../src/app.module";
-import { getConnection } from "typeorm";
+import { getConnection, Repository } from "typeorm";
 import request from 'supertest';
 
 describe('Article', () => {
@@ -290,7 +290,7 @@ describe('Article', () => {
       const response = await request(app.getHttpServer())
         .get(`/article/forum/date?page=1`);
 
-      expect(response.status).toBe(200)
+      expect(response.status).toBe(200);
       expect(response.body).toEqual(expect.arrayContaining([
           {
             article_id: expect.any(Number),
@@ -320,7 +320,6 @@ describe('Article', () => {
               forum_img_id: expect.any(Number),
               img_url: expect.any(String)
             },
-            forum_description: expect.any(String),
             publi_date: expect.any(String),
           }
       ]));
