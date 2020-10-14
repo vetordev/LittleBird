@@ -17,10 +17,16 @@ export const AuthProvider = ({ children }) => {
 
          const storagedUser = await AsyncStorage.getItem('@LittleBird:user');
          const storagedToken = await AsyncStorage.getItem('@LittleBird:token');
+         // const notKeepLogin = await AsyncStorage.getItem('@LittleBird:notKeepLogin');
          
          setLoading(false);
 
          console.log('TOKEN:', storagedToken);
+
+         // if (notKeepLogin === 'true') {
+         //    setUser(null);
+         //    await AsyncStorage.setItem('@LittleBird:user', '');
+         // }
 
          // INCLUIR VERFIFICAÇÃO DE TOKEN
          if (storagedUser) {

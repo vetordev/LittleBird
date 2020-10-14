@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Switch, Alert } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { Feather } from '@expo/vector-icons';
@@ -30,23 +30,40 @@ const Settings = () => {
   const [keepLogin, setKeepLogin] = useState(true);
   const { signOut } = useAuth();
   
+  useEffect(() => {
+
+    async function getNotKeepLoading() {
+      const notKeepLogin = await AsyncStorage.getItem('@LittleBird:notKeepLogin');
+
+      if (notKeepLogin) {
+        setKeepLogin(false);
+      }
+    }
+    
+    getNotKeepLoading();
+  }, [])
+
   const toggleTheme = () => setDarkTheme(previousState => !previousState);
   
-  async function toggleKeepLogin() { 
+  function toggleKeepLogin() { 
     setKeepLogin(previousState => !previousState);
+    
     // if (keepLogin) {
     //   Alert.alert(
     //     '', 
-    //     'Para concluir esta ação, é preciso sair do aplicativo. Deseja continuar?',
+    //     'Para concluir esta ação, é preciso reiniciar o aplicativo. Deseja continuar?',
     //     [
     //       {
     //         text: 'Cancelar',
-    //         onPress: () => console.log('aaaa')
+    //         onPress: () => {
+    //           console.log('aaaaaaa'),
+    //           setKeepLogin(true);
+    //         }
     //       },
     //       {
     //         text: 'OK',
-    //         onPress: () => {
-    //           await AsyncStorage.setItem('@LittleBird:notKeepLogin', keepLogin);
+    //         onPress: async () => {
+    //           await AsyncStorage.setItem('@LittleBird:notKeepLogin', 'true');
     //         }
     //       }
     //     ],

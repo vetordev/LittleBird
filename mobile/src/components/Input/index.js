@@ -38,8 +38,7 @@ const Input = ({ name, color, iconName, legend, description, defaultValue, ...re
                </ErrorContent>
                <ErrorDetail />
             </ErrorContainer>
-         }     
-         
+         }        
          <InputContainer color={color}>
          <InputIcon>
             <Feather name={iconName ? iconName : 'send'} color={color == 'dark' ? '#000' : '#F6F6F6'} size={24} />

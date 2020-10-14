@@ -90,7 +90,7 @@ export const CarouselImageFilter = styled.View`
    z-index: 1;
    width: 100%;
    height: 100%;
-   background: rgba(0, 0, 0, 0.4);
+   background: rgba(0, 0, 0, 0.5);
    border-radius: 10px;
 `;
 

@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Dimensions, FlatList, View } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { StatusBar } from 'expo-status-bar';
@@ -7,16 +7,13 @@ import { Feather } from '@expo/vector-icons';
 
 import { useAuth } from '../../../contexts/auth';
 
+import api from '../../../services/api';
+
 import InterestCard from '../../../components/InterestCard';
 
 import { 
   Title,
   UserName,
-  Interest,
-  InterestImage,
-  InterestImageFilter,
-  InterestTitle,
-  InterestTitleContainer,
   InterestsContainer,
   SessionTitleContainer,
   SessionTitle,
@@ -32,11 +29,11 @@ import {
 } from './styles';
 
 const Home = () => {
+  const [recentContent, setRecentContent] = useState([]);
+
   const { user } = useAuth();
   const win = Dimensions.get('window');
   const navigation = useNavigation();
-
-  console.log('username', user);
 
   const interests = [
     {
@@ -77,6 +74,16 @@ const Home = () => {
     navigation.navigate('Interests');
   }
 
+  useEffect(() => {
+    async function getRecentContent() {
+      const response = await api.get('article/forum/date?page=1');
+
+      setRecentContent(response.data);
+    }
+
+    getRecentContent();
+  }, []);
+
   return (
     <>
       <StatusBar style="light" backgroundColor="#121212" />
@@ -99,16 +106,33 @@ const Home = () => {
 
               <Carousel 
                 layout="default"
-                data={interests}
+                data={recentContent}
                 firstItem={1}
                 itemWidth={win.width * 0.8}
                 sliderWidth={win.width}
                 renderItem={({ item }) => (
                   <CarouselItem winWidth={win.width}>
-                    <CarouselImageItem resizeMode={'cover'} source={{ uri: item.theme_img.img_url }} />
-                    <CarouselImageFilter/>
-                    <TitleCarouselItem>As mudanças durante a puberdade</TitleCarouselItem>
-                    <TypeCarouselItem>Artigo</TypeCarouselItem>
+                  {item.article_id ? 
+                    <>
+                      <CarouselImageItem 
+                        resizeMode={'cover'} 
+                        source={{ uri: item.article_img_id.img_url }} 
+                      />
+                      <CarouselImageFilter/>
+                      <TitleCarouselItem>{item.title}</TitleCarouselItem>
+                      <TypeCarouselItem>{'Artigo'}</TypeCarouselItem>
+                    </>
+                    :
+                    <>
+                      <CarouselImageItem 
+                        resizeMode={'cover'} 
+                        source={{ uri: item.forum_img_id.img_url }} 
+                      />
+                      <CarouselImageFilter/>
+                      <TitleCarouselItem>{item.title}</TitleCarouselItem>
+                      <TypeCarouselItem>{'Salas de conversa'}</TypeCarouselItem>
+                    </>
+                  }
                   </CarouselItem>
                 )}
               />
