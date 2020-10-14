@@ -171,6 +171,7 @@ describe('Article', () => {
       await getConnection().createQueryBuilder().insert().into('forum').values(forum).execute();
 
       await getConnection().createQueryBuilder().insert().into("theme_article").values({ theme_article_id: 1, theme_id: 1, article_id: 1 }).execute();
+      await getConnection().createQueryBuilder().insert().into("theme_article").values({ theme_article_id: 2, theme_id: 1, article_id: 2 }).execute();
 
       await getConnection().createQueryBuilder().insert().into("like_article").values({ like_article_id: 1, user_id: 1, article_id: 1 }).execute();
 
@@ -245,16 +246,16 @@ describe('Article', () => {
 
       expect(response.status).toBe(200);
       expect(response.body[0]).toEqual(expect.objectContaining({
-        article_id: {
-          article_id: expect.any(Number),
-          article_img_id: {
-            article_img_id: expect.any(Number),
-            img_url: expect.any(String)
-          },
-          title: expect.any(String),
-          no_like: expect.any(Number),
-          publi_date: expect.any(String),
-        }
+
+        article_id: expect.any(Number),
+        article_img_id: {
+          article_img_id: expect.any(Number),
+          img_url: expect.any(String)
+        },
+        title: expect.any(String),
+        no_like: expect.any(Number),
+        publi_date: expect.any(String),
+
       }));
 
     });
