@@ -38,16 +38,32 @@ const Subjects = () => {
   const win = Dimensions.get('window');
   const navigation = useNavigation();
 
-  function handleThemeFilter(id) {
-    setSelectedTheme(selectedTheme === id ? 0 : id);
+  async function handleThemeFilter(theme_id) {
+    setSelectedTheme(theme_id);
+
+    if (theme_id == 0) {
+      const responseArticles = await api.get('article?page=1');
+      const responseForuns = await api.get('forum?page=1');
+
+      setArticles(responseArticles.data);
+      setForuns(responseForuns.data);
+
+    } else {
+      const responseArticles = await api.get(`article/theme/${theme_id}/like?page=1`);
+      const responseForuns = await api.get(`forum/theme/${theme_id}/like?page=1`);
+
+      setArticles(responseArticles.data);
+      setForuns(responseForuns.data);
+
+    }
   }
 
-  function navigateToArticles(item) {
-    navigation.navigate('Articles');
+  function navigateToArticles(article_id) {
+    navigation.navigate('Articles', { article_id });
   }
 
   function navigateToForums() {
-    navigation.navigate('Forums')
+    navigation.navigate('Forums');
   }
 
   useEffect(() => {
@@ -111,6 +127,7 @@ const Subjects = () => {
           <SessionLineDecoration />
         </SessionHeader>
 
+        { articles &&
           <Carousel 
             layout="tinder"
             layoutCardOffset={9}
@@ -119,7 +136,7 @@ const Subjects = () => {
             itemWidth={win.width * 0.8}
             sliderWidth={win.width}
             renderItem={({ item }) => (
-              <Option winWidth={win.width} onPress={() => navigateToArticles(item)}>
+              <Option winWidth={win.width} onPress={() => navigateToArticles(item.article_id)}>
                 <OptionImage resizeMode="cover" source={{ uri: item.article_img_id.img_url }} />
                 <OptionInfos>
                   <OptionTitle>{item.title}</OptionTitle>
@@ -133,6 +150,7 @@ const Subjects = () => {
               </Option>
             )}
           />
+        }
 
         <SessionHeader>
           <SessionLineDecoration />
@@ -140,35 +158,37 @@ const Subjects = () => {
           <SessionLineDecoration />
         </SessionHeader>
 
-        <Carousel 
-          layout="tinder"
-          layoutCardOffset={9}
-          firstItem={foruns.length - 1}
-          data={foruns}
-          itemWidth={win.width * 0.8}
-          sliderWidth={win.width}
-          renderItem={({ item }) => (
-            <Option winWidth={win.width} onPress={navigateToForums}>
-              <OptionImage 
-                resizeMode="cover" 
-                source={{ uri: item.img_url }} 
-              />
-              <OptionInfos>
-                <OptionTitle>{item.title}</OptionTitle>
-                <OptionReacts>
-                  <Likes>
-                    <Feather name="heart" color="#F6F6F6" size={17} />
-                    <Qtd>{item.no_like}</Qtd>
-                  </Likes>
-                  <Comments>
-                    <Feather name="message-square" color="#F6F6F6" size={17} />
-                    <Qtd>{item.no_comment}</Qtd>
-                  </Comments>
-                </OptionReacts>
-              </OptionInfos>
-            </Option>
-          )}
-        />
+        { foruns &&
+          <Carousel 
+            layout="tinder"
+            layoutCardOffset={9}
+            firstItem={foruns.length - 1}
+            data={foruns}
+            itemWidth={win.width * 0.8}
+            sliderWidth={win.width}
+            renderItem={({ item }) => (
+              <Option winWidth={win.width} onPress={navigateToForums}>
+                <OptionImage 
+                  resizeMode="cover" 
+                  source={{ uri: item.img_url }} 
+                />
+                <OptionInfos>
+                  <OptionTitle>{item.title}</OptionTitle>
+                  <OptionReacts>
+                    <Likes>
+                      <Feather name="heart" color="#F6F6F6" size={17} />
+                      <Qtd>{item.no_like}</Qtd>
+                    </Likes>
+                    <Comments>
+                      <Feather name="message-square" color="#F6F6F6" size={17} />
+                      <Qtd>{item.no_comment}</Qtd>
+                    </Comments>
+                  </OptionReacts>
+                </OptionInfos>  
+              </Option>
+            )}
+          />
+        }
 
       </Container>
     </ScrollView>
