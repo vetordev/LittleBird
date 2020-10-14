@@ -1,10 +1,11 @@
-import React, { useState } from 'react';
-import { View, Text, ScrollView, Dimensions } from 'react-native';
+import React, { useState, useEffect } from 'react';
+import { View, ScrollView, Dimensions } from 'react-native';
 import Carousel from 'react-native-snap-carousel';
-import { Feather, MaterialIcons } from '@expo/vector-icons';
+import { Feather } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
 
-import themes from '../../../services/themes';
+import themesP from '../../../services/themes';
+import api from '../../../services/api';
 
 import { 
   Container,
@@ -29,7 +30,11 @@ import {
 } from './styles';
 
 const Subjects = () => {
+  const [themes, setThemes] = useState([]);
+  const [articles, setArticles] = useState([]);
+  const [foruns, setForuns] = useState([]);
   const [selectedTheme, setSelectedTheme] = useState(0);
+
   const win = Dimensions.get('window');
   const navigation = useNavigation();
 
@@ -44,6 +49,20 @@ const Subjects = () => {
   function navigateToForums() {
     navigation.navigate('Forums')
   }
+
+  useEffect(() => {
+    async function getContent() {
+      const responseThemes = await api.get('theme');
+      const responseArticles = await api.get('article?page=1');
+      const responseForuns = await api.get('forum?page=1');
+
+      setThemes(responseThemes.data);
+      setArticles(responseArticles.data);
+      setForuns(responseForuns.data);
+    }
+
+    getContent();
+  }, []);
   
   return (
     <ScrollView 
@@ -77,7 +96,7 @@ const Subjects = () => {
               >
                 <ThemeImage 
                   resizeMode="cover" 
-                  source={{ uri: item.theme_img.img_url }} 
+                  source={{ uri: item.theme_img_id.img_url }} 
                   />
                 <ThemeImageFilter style={selectedTheme === item.theme_id ? styles.selected : {}} />
                 <ThemeTitle>{item.theme_name}</ThemeTitle>
@@ -95,19 +114,19 @@ const Subjects = () => {
           <Carousel 
             layout="tinder"
             layoutCardOffset={9}
-            firstItem={themes.length - 1}
-            data={themes}
+            firstItem={articles.length - 1}
+            data={articles}
             itemWidth={win.width * 0.8}
             sliderWidth={win.width}
             renderItem={({ item }) => (
               <Option winWidth={win.width} onPress={() => navigateToArticles(item)}>
-                <OptionImage resizeMode="cover" source={{ uri: item.theme_img.img_url }} />
+                <OptionImage resizeMode="cover" source={{ uri: item.article_img_id.img_url }} />
                 <OptionInfos>
-                  <OptionTitle>As mudanças durante a puberdade</OptionTitle>
+                  <OptionTitle>{item.title}</OptionTitle>
                   <OptionReacts>
                     <Likes>
                     <Feather name="heart" color="#F6F6F6" size={17} />
-                      <Qtd>321</Qtd>
+                      <Qtd>{item.no_like}</Qtd>
                     </Likes>
                   </OptionReacts>
                 </OptionInfos>
@@ -124,26 +143,26 @@ const Subjects = () => {
         <Carousel 
           layout="tinder"
           layoutCardOffset={9}
-          firstItem={themes.length - 1}
-          data={themes}
+          firstItem={foruns.length - 1}
+          data={foruns}
           itemWidth={win.width * 0.8}
           sliderWidth={win.width}
           renderItem={({ item }) => (
             <Option winWidth={win.width} onPress={navigateToForums}>
               <OptionImage 
                 resizeMode="cover" 
-                source={{ uri: item.theme_img.img_url }} 
+                source={{ uri: item.img_url }} 
               />
               <OptionInfos>
-                <OptionTitle>As mudanças durante a puberdade</OptionTitle>
+                <OptionTitle>{item.title}</OptionTitle>
                 <OptionReacts>
                   <Likes>
                     <Feather name="heart" color="#F6F6F6" size={17} />
-                    <Qtd>321</Qtd>
+                    <Qtd>{item.no_like}</Qtd>
                   </Likes>
                   <Comments>
                     <Feather name="message-square" color="#F6F6F6" size={17} />
-                    <Qtd>54</Qtd>
+                    <Qtd>{item.no_comment}</Qtd>
                   </Comments>
                 </OptionReacts>
               </OptionInfos>
