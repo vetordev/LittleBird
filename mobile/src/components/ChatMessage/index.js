@@ -39,7 +39,7 @@ const ChatMessage = ({ data }) => {
          <View>
             <MessageHeader userIsMe={userIsMe}>
                <MessageUserAvatar resizeMode="cover" source={{ uri: 'https://i.pinimg.com/564x/34/43/71/344371e32e903084adccaace156dcb4e.jpg' }} />
-               <MessageUsername>bolinhorosa</MessageUsername>
+               <MessageUsername>{data.user_id.username}</MessageUsername>
                <BtnMessageDetails onPress={navigateToComplaint}>
                   <TextBtnMessageDetails>...</TextBtnMessageDetails>
                </BtnMessageDetails>

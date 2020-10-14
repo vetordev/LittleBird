@@ -62,8 +62,10 @@ const Subjects = () => {
     navigation.navigate('Articles', { article_id });
   }
 
-  function navigateToForums() {
-    navigation.navigate('Forums');
+  function navigateToForums(forum_id) {
+
+    console.log(forum_id);
+    navigation.navigate('Forums', { forum_id });
   }
 
   useEffect(() => {
@@ -167,7 +169,7 @@ const Subjects = () => {
             itemWidth={win.width * 0.8}
             sliderWidth={win.width}
             renderItem={({ item }) => (
-              <Option winWidth={win.width} onPress={navigateToForums}>
+              <Option winWidth={win.width} onPress={() => navigateToForums(item.forum_id)}>
                 <OptionImage 
                   resizeMode="cover" 
                   source={{ uri: item.img_url }} 

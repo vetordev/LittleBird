@@ -1,11 +1,14 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { View } from 'react-native';
 import { MaterialIcons } from '@expo/vector-icons';
+import { useRoute } from '@react-navigation/native';
 
 import HeaderBtnBack from '../../../components/HeaderBtnBack';
 import ChatMessage from '../../../components/ChatMessage';
 import ModalContainer from '../../../components/ModalContainer';
 import TagsThemes from '../../../components/Tags';
+
+import api from '../../../services/api';
 
 import { 
    Container,
@@ -35,12 +38,16 @@ import {
 const Forums = () => {
    const [liked, setLiked] = useState(false);   
    const [displayModal, setModalDisplay] = useState(true);
+   const [forum, setForum] = useState({});
+
+   const route = useRoute();
+   const { forum_id } = route.params;
 
    function openModal() {
       setModalDisplay(true);
    }
 
-   const forum = {
+   const forumR = {
       forum_id: 1,
       title: "Camisinha incomoda?",
       theme: {
@@ -84,6 +91,20 @@ const Forums = () => {
       no_like: 3600
    }
 
+   useEffect(() => {
+      console.log('formu', forum_id);
+      async function getForum () {
+         const response = await api.get(`forum/${forum_id}/comment?page=1`);
+
+         console.log(response.data);
+         setForum(response.data);
+      }
+
+      getForum();
+   }, []);
+
+   if (forum.forum_img_id === undefined) return false;
+
    return (
       <View style={{ flex: 1 }}>
          { displayModal &&
@@ -95,10 +116,10 @@ const Forums = () => {
             >
                <ModalTitle>Informações importantes</ModalTitle>
                <ModalDescription>
-                  Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. 
+                  {forum.forum_description}
                </ModalDescription>
                
-               <TagsThemes />
+               {/* <TagsThemes /> */}
 
                <ModalContent>
                   <ModalSubtitle>
@@ -141,7 +162,7 @@ const Forums = () => {
                </HeaderBtnInfo>
             </Header>
 
-            <Cover resizeMode="cover" source={{ uri: forum.forum_img.img_url }} />
+            <Cover resizeMode="cover" source={{ uri: forum.forum_img_id.img_url }} />
             <Content>
                <Options>
                   <Option onPress={() => setLiked(liked ? false : true)}>
