@@ -12,7 +12,7 @@ describe('Forum', () => {
     forum_id: 1,
     forum_img_id: 1,
     title: 'Primeira vez',
-    no_like: 123123,
+    no_like: 1,
     forum_description: 'Lorem ipsum dolor sit amet',
     publi_date: '2020-06-15'
   };
@@ -144,6 +144,14 @@ describe('Forum', () => {
         publi_date: '2020-03-08',
         no_like: 10
       };
+      const forum2 = {
+        forum_id: 2,
+        forum_img_id: 2,
+        title: 'Primeira vez',
+        no_like: 12,
+        forum_description: 'Lorem ipsum dolor sit amet',
+        publi_date: '2020-06-15'
+      };
 
       await getConnection().createQueryBuilder().insert().into("user_img").values({ user_img_id: 1, img_url: "http://localhost:4456" }).execute();
       await getConnection().createQueryBuilder().insert().into("tb_user").values(user).execute();
@@ -153,6 +161,9 @@ describe('Forum', () => {
 
       await getConnection().createQueryBuilder().insert().into("forum_img").values({ forum_img_id: 1, img_url: "http://localhost:4456" }).execute();
       await getConnection().createQueryBuilder().insert().into('forum').values(forum).execute();
+
+      await getConnection().createQueryBuilder().insert().into("forum_img").values({ forum_img_id: 2, img_url: "http://localhost:4456" }).execute();
+      await getConnection().createQueryBuilder().insert().into('forum').values(forum2).execute();
 
       await getConnection().createQueryBuilder().insert().into('tb_comment').values(comment).execute();
       await getConnection().createQueryBuilder().insert().into('tb_comment').values(comment2).execute();
