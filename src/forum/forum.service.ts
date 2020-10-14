@@ -42,8 +42,13 @@ export class ForumService {
     foruns = foruns.map( (forum) => {
       delete forum.theme_forum_id;
       delete forum.theme_id;
+
+      forum.forum_id.img_url = forum.forum_id.forum_img_id.img_url
+
+      delete forum.forum_id.forum_img_id
       return forum.forum_id;
     });
+
     return response.status(200).json(foruns);
   };
 

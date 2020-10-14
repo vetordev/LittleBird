@@ -187,10 +187,7 @@ describe('Forum', () => {
         forum_id: expect.any(Number),
         title: expect.any(String),
         no_like: expect.any(Number),
-        forum_img_id: {
-          forum_img_id: expect.any(Number),
-          img_url: expect.any(String)
-        },
+        img_url: expect.any(String)
       }));
     });
     it('> GET /forum/theme/:theme_id/like Não deve retornar os fóruns (Tema não encontrado)', async () => {
