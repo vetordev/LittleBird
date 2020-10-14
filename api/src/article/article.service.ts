@@ -127,7 +127,7 @@ export class ArticleService {
       return response.status(404).json({ error: 'Tema não existe no servidor ou não possui nenhum artigo.' });
     }
 
-    let articles = await this.themeArticleRepository.createQueryBuilder('theme_article')
+    let articles: any = await this.themeArticleRepository.createQueryBuilder('theme_article')
       .select(['theme_article', 'article.article_id', 'article.title', 'article.no_like', 'article.publi_date', 'article_img'])
       .innerJoin('theme_article.article_id', 'article')
       .innerJoin('article.article_img_id', 'article_img')
@@ -141,7 +141,7 @@ export class ArticleService {
       delete article.theme_id;
       delete article.theme_article_id;
 
-      return article;
+      return article.article_id;
     });
 
     return response.status(200).json(articles);
