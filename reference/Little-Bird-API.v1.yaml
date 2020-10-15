@@ -1634,6 +1634,11 @@ paths:
                   theme_id:
                     - theme_id: 1
                       theme_name: Sexo
+          headers:
+            X-Total-Count:
+              schema:
+                type: string
+              description: Quantidade de páginas
         '401':
           description: O token JWT é inválido.
           content:
@@ -1669,6 +1674,11 @@ paths:
           name: Authorization
           description: Token JWT do usuário
           required: true
+        - schema:
+            type: string
+          in: query
+          name: page
+          description: Paginação
       tags:
         - Article
   '/forum/{forum_id}/like':
@@ -2039,6 +2049,12 @@ paths:
                         user_img_id: 1
                       reply_content: Lorem ipsum dolor sit amet.
                       publi_date: '2020-06-13'
+          headers:
+            X-Total-Count:
+              schema:
+                type: string
+              description: Quantidade de páginas
+              required: true
         '404':
           description: O comentário não existe.
           content:
@@ -2547,6 +2563,12 @@ paths:
                         comment_content: Lorem ipsum dolor sit amet.
                         publi_date: '2020-06-13'
                         no_like: 3600
+          headers:
+            X-Total-Count:
+              schema:
+                type: string
+              description: Quantidade de páginas
+              required: true
         '404':
           description: Forum não encontrado.
           content:
