@@ -746,6 +746,12 @@ paths:
                         forum_img_id: 1
                         img_url: 'http://localhost/...'
                       no_like: 3600
+          headers:
+            X-Total-Count:
+              schema:
+                type: string
+              description: Quantidade de páginas
+              required: true
         '500':
           description: Erro interno na API.
           content:
@@ -881,8 +887,8 @@ paths:
                     title:
                       type: string
                     img_url:
-                          type: string
-                          format: uri
+                      type: string
+                      format: uri
                     no_like:
                       type: integer
                       format: int64
