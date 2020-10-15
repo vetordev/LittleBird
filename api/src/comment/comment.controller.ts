@@ -4,7 +4,6 @@ import { GetRepliesDto, CreateLikeDto, CreateReplyParamDto, CreateReplyBodyDto, 
 import { JwtAuthGuard } from '../auth/jwt/jwt-auth.guard';
 import { QueryFailedExceptionFilter } from './http-exception.filter';
 import { QueryPageDto } from './comment.dto';
-import { query } from 'express';
 
 @Controller('comment')
 export class CommentController {
