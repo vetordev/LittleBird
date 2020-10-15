@@ -39,32 +39,54 @@ export class ForumService {
       .limit(6)
       .getManyAndCount();
 
-    // foruns = foruns.map( (forum) => {
-    //   delete forum.theme_forum_id;
-    //   delete forum.theme_id;
+    const count = foruns[1];
+    let pageCount;
 
-    //   forum.forum_id.img_url = forum.forum_id.forum_img_id.img_url
+    if (count % 6 == 0){
+      pageCount = count / 6;
+    }
+    else {
+      const rest = count % 6;
+      pageCount = ((count - rest) / 6) + 1
+    }
 
-    //   delete forum.forum_id.forum_img_id
-    //   return forum.forum_id;
-    // });
+    foruns = foruns[0].map( (forum) => {
+      delete forum.theme_forum_id;
+      delete forum.theme_id;
 
-    return response.status(200).json(foruns);
+      forum.forum_id.img_url = forum.forum_id.forum_img_id.img_url
+
+      delete forum.forum_id.forum_img_id
+      return forum.forum_id;
+    });
+
+
+    return response.status(200).header('X-Total-Count', pageCount).json(foruns);
   };
 
-  async getForumByLike(page: number): Promise<Forum[]> {
+  async getForumByLike(response: Response, page: number): Promise<Response> {
 
     let query = "SELECT f.forum_id, f.title, i.img_url, f.no_like, (SELECT COUNT(comment_id) FROM tb_comment WHERE forum_id = f.forum_id) AS no_comment";
     query += " FROM forum AS f JOIN forum_img AS i ON (i.forum_img_id = f.forum_img_id)";
     query += " GROUP BY f.forum_id, i.img_url ORDER BY f.no_like ASC";
     query += ` LIMIT 6 OFFSET(${(page - 1) * 6})`;
 
-    let foruns: Forum[] = await this.forumRepository.query(query);
+    const foruns: Forum[] = await this.forumRepository.query(query);
 
-    return foruns;
+    const count: any = await this.forumRepository.count();
+    let pageCount;
+
+    if (count % 6 == 0){
+      pageCount = count / 6;
+    }
+    else {
+      const rest = count % 6;
+      pageCount = ((count - rest) / 6) + 1
+    }
+    return response.status(200).header('X-Total-Count', pageCount).json(foruns);
   };
 
-  async getForumByUserLike(user_id: number, page: number): Promise<LikeForum[]> {
+  async getForumByUserLike(response: Response, user_id: number, page: number): Promise<Response> {
     let foruns: any = await this.likeForumRepository.createQueryBuilder('like_forum')
       .select(['like_forum', 'forum.forum_id', 'forum.title', 'forum.no_like', 'forum_img'])
       .innerJoin('like_forum.forum_id', 'forum')
@@ -73,15 +95,26 @@ export class ForumService {
       .orderBy('forum.no_like', 'ASC')
       .offset((page - 1) * 6)
       .limit(6)
-      .getMany();
-      // .getManyAndCount()
+      .getManyAndCount();
 
-    foruns = foruns.map( (forum) => {
+    const count = foruns[1];
+    let pageCount;
+
+    if (count % 6 == 0){
+      pageCount = count / 6;
+    }
+    else {
+      const rest = count % 6;
+      pageCount = ((count - rest) / 6) + 1
+    }
+
+    foruns = foruns[0].map( (forum) => {
       delete forum.theme_forum_id;
       delete forum.theme_id;
       return forum.forum_id;
     });
-    return foruns;
+
+    return response.status(200).header('X-Total-Count', pageCount).json(foruns);
 
   };
 
@@ -97,7 +130,7 @@ export class ForumService {
       return response.status(404).json({ error: "Forum não encontrado no servidor." })
     };
 
-    let comments = await this.commentRepository.createQueryBuilder('tb_comment')
+    let comments: any = await this.commentRepository.createQueryBuilder('tb_comment')
       .select(['tb_comment', 'user.user_id', 'user.username', 'user_img'])
       .innerJoin('tb_comment.user_id', 'user')
       .innerJoin('user.user_img_id', 'user_img')
@@ -105,9 +138,20 @@ export class ForumService {
       .orderBy('tb_comment.comment_id', 'DESC')
       .offset((page - 1) * 6)
       .limit(6)
-      .getMany();
+      .getManyAndCount();
 
-    comments = comments.map( (comment) => {
+    const count = comments[1];
+    let pageCount;
+
+    if (count % 6 == 0){
+      pageCount = count / 6;
+    }
+    else {
+      const rest = count % 6;
+      pageCount = ((count - rest) / 6) + 1
+    }
+
+    comments = comments[0].map( (comment) => {
       delete comment.forum_id;
       return comment;
     });
@@ -129,7 +173,7 @@ export class ForumService {
       themes
     };
 
-    return response.status(200).json(forum_comments_themes);
+    return response.status(200).header('X-Total-Count', pageCount).json(forum_comments_themes);
   };
 
   async createComment(forum_id: number, comment_content : string, user_id: number): Promise<Response | void> {
