@@ -37,17 +37,17 @@ export class ForumService {
       .orderBy('forum.no_like', 'ASC')
       .offset((page - 1) * 6)
       .limit(6)
-      .getMany();
+      .getManyAndCount();
 
-    foruns = foruns.map( (forum) => {
-      delete forum.theme_forum_id;
-      delete forum.theme_id;
+    // foruns = foruns.map( (forum) => {
+    //   delete forum.theme_forum_id;
+    //   delete forum.theme_id;
 
-      forum.forum_id.img_url = forum.forum_id.forum_img_id.img_url
+    //   forum.forum_id.img_url = forum.forum_id.forum_img_id.img_url
 
-      delete forum.forum_id.forum_img_id
-      return forum.forum_id;
-    });
+    //   delete forum.forum_id.forum_img_id
+    //   return forum.forum_id;
+    // });
 
     return response.status(200).json(foruns);
   };
@@ -74,6 +74,7 @@ export class ForumService {
       .offset((page - 1) * 6)
       .limit(6)
       .getMany();
+      // .getManyAndCount()
 
     foruns = foruns.map( (forum) => {
       delete forum.theme_forum_id;

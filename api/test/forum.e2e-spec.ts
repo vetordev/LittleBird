@@ -152,6 +152,54 @@ describe('Forum', () => {
         forum_description: 'Lorem ipsum dolor sit amet',
         publi_date: '2020-06-15'
       };
+      const forum3 = {
+        forum_id: 3,
+        forum_img_id: 3,
+        title: 'Primeira vez',
+        no_like: 12,
+        forum_description: 'Lorem ipsum dolor sit amet',
+        publi_date: '2020-06-15'
+      };
+      const forum4 = {
+        forum_id: 4,
+        forum_img_id: 4,
+        title: 'Primeira vez',
+        no_like: 12,
+        forum_description: 'Lorem ipsum dolor sit amet',
+        publi_date: '2020-06-15'
+      };
+      const forum5 = {
+        forum_id: 5,
+        forum_img_id: 5,
+        title: 'Primeira vez',
+        no_like: 12,
+        forum_description: 'Lorem ipsum dolor sit amet',
+        publi_date: '2020-06-15'
+      };
+      const forum6 = {
+        forum_id: 6,
+        forum_img_id: 6,
+        title: 'Primeira vez',
+        no_like: 12,
+        forum_description: 'Lorem ipsum dolor sit amet',
+        publi_date: '2020-06-15'
+      };
+      const forum7 = {
+        forum_id: 7,
+        forum_img_id: 7,
+        title: 'Primeira vez',
+        no_like: 12,
+        forum_description: 'Lorem ipsum dolor sit amet',
+        publi_date: '2020-06-15'
+      };
+      const forum8 = {
+        forum_id: 8,
+        forum_img_id: 8,
+        title: 'Primeira vez',
+        no_like: 12,
+        forum_description: 'Lorem ipsum dolor sit amet',
+        publi_date: '2020-06-15'
+      };
 
       await getConnection().createQueryBuilder().insert().into("user_img").values({ user_img_id: 1, img_url: "http://localhost:4456" }).execute();
       await getConnection().createQueryBuilder().insert().into("tb_user").values(user).execute();
@@ -161,14 +209,32 @@ describe('Forum', () => {
 
       await getConnection().createQueryBuilder().insert().into("forum_img").values({ forum_img_id: 1, img_url: "http://localhost:4456" }).execute();
       await getConnection().createQueryBuilder().insert().into('forum').values(forum).execute();
-
       await getConnection().createQueryBuilder().insert().into("forum_img").values({ forum_img_id: 2, img_url: "http://localhost:4456" }).execute();
       await getConnection().createQueryBuilder().insert().into('forum').values(forum2).execute();
+      await getConnection().createQueryBuilder().insert().into("forum_img").values({ forum_img_id: 3, img_url: "http://localhost:4456" }).execute();
+      await getConnection().createQueryBuilder().insert().into('forum').values(forum3).execute();
+      await getConnection().createQueryBuilder().insert().into("forum_img").values({ forum_img_id: 4, img_url: "http://localhost:4456" }).execute();
+      await getConnection().createQueryBuilder().insert().into('forum').values(forum4).execute();
+      await getConnection().createQueryBuilder().insert().into("forum_img").values({ forum_img_id: 5, img_url: "http://localhost:4456" }).execute();
+      await getConnection().createQueryBuilder().insert().into('forum').values(forum5).execute();
+      await getConnection().createQueryBuilder().insert().into("forum_img").values({ forum_img_id: 6, img_url: "http://localhost:4456" }).execute();
+      await getConnection().createQueryBuilder().insert().into('forum').values(forum6).execute();
+      await getConnection().createQueryBuilder().insert().into("forum_img").values({ forum_img_id: 7, img_url: "http://localhost:4456" }).execute();
+      await getConnection().createQueryBuilder().insert().into('forum').values(forum7).execute();
+      await getConnection().createQueryBuilder().insert().into("forum_img").values({ forum_img_id: 8, img_url: "http://localhost:4456" }).execute();
+      await getConnection().createQueryBuilder().insert().into('forum').values(forum8).execute();
 
       await getConnection().createQueryBuilder().insert().into('tb_comment').values(comment).execute();
       await getConnection().createQueryBuilder().insert().into('tb_comment').values(comment2).execute();
 
       await getConnection().createQueryBuilder().insert().into("theme_forum").values({ theme_forum_id: 1, theme_id: 1, forum_id: 1 }).execute();
+      await getConnection().createQueryBuilder().insert().into("theme_forum").values({ theme_forum_id: 2, theme_id: 1, forum_id: 2 }).execute();
+      await getConnection().createQueryBuilder().insert().into("theme_forum").values({ theme_forum_id: 3, theme_id: 1, forum_id: 3 }).execute();
+      await getConnection().createQueryBuilder().insert().into("theme_forum").values({ theme_forum_id: 4, theme_id: 1, forum_id: 4 }).execute();
+      await getConnection().createQueryBuilder().insert().into("theme_forum").values({ theme_forum_id: 5, theme_id: 1, forum_id: 5 }).execute();
+      await getConnection().createQueryBuilder().insert().into("theme_forum").values({ theme_forum_id: 6, theme_id: 1, forum_id: 6 }).execute();
+      await getConnection().createQueryBuilder().insert().into("theme_forum").values({ theme_forum_id: 7, theme_id: 1, forum_id: 7 }).execute();
+      await getConnection().createQueryBuilder().insert().into("theme_forum").values({ theme_forum_id: 8, theme_id: 1, forum_id: 8 }).execute();
 
       await getConnection().createQueryBuilder().insert().into("like_forum").values({ like_forum_id: 1, user_id: 1, forum_id: 1 }).execute();
 
@@ -183,7 +249,8 @@ describe('Forum', () => {
         .get(`/forum/theme/${theme_id}/like?page=1`);
 
       expect(response.status).toBe(200);
-      expect(response.body[0]).toEqual(expect.objectContaining({
+      console.log(response.body)
+      expect(response.body[0][0]).toEqual(expect.objectContaining({
         forum_id: expect.any(Number),
         title: expect.any(String),
         no_like: expect.any(Number),
@@ -207,7 +274,7 @@ describe('Forum', () => {
         .set('Authorization', `Bearer ${token}`);
 
       expect(response.status).toBe(200);
-      expect(response.body[0]).toEqual(expect.objectContaining({
+      expect(response.body[0][0]).toEqual(expect.objectContaining({
         forum_id: expect.any(Number),
         title: expect.any(String),
         no_like: expect.any(Number),
@@ -222,7 +289,7 @@ describe('Forum', () => {
         .set('Authorization', `Bearer ${token}`);
 
       expect(response.status).toBe(200);
-      expect(response.body[0]).toEqual(expect.objectContaining({
+      expect(response.body[0][0]).toEqual(expect.objectContaining({
         forum_id: expect.any(Number),
         title: expect.any(String),
         no_like: expect.any(Number),
