@@ -30,8 +30,8 @@ export class ArticleController {
 
   @Get('user/later')
   @UseGuards(JwtAuthGuard)
-  getArticleByUserLater(@Req() request, @Query() query: QueryPageDto) {
-    return this.articleService.getArticlesByUserLater(request.user.user_id, query.page);
+  getArticleByUserLater(@Res() response, @Req() request, @Query() query: QueryPageDto) {
+    return this.articleService.getArticlesByUserLater(response, request.user.user_id, query.page);
   }
 
   @Get('theme/:theme_id/like')

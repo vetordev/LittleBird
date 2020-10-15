@@ -117,8 +117,8 @@ export class ArticleService {
     return response.status(200).header('x-total-count', pageCount).json(articles);
   }
 
-  async getArticlesByUserLater(user_id: number, page: number): Promise<LaterArticle[]> {
-    let articles = await this.laterArticleRepository.createQueryBuilder('later_article')
+  async getArticlesByUserLater(response: Response, user_id: number, page: number): Promise<Response> {
+    let articles: any = await this.laterArticleRepository.createQueryBuilder('later_article')
       .select(['later_article', 'article.article_id', 'article.title', 'article.no_like', 'article.publi_date', 'article_img'])
       .innerJoin('later_article.article_id', 'article')
       .innerJoin('article.article_img_id', 'article_img')
@@ -126,16 +126,27 @@ export class ArticleService {
       .orderBy('article.no_like', 'ASC')
       .offset((page - 1) * 6)
       .limit(6)
-      .getMany();
+      .getManyAndCount();
 
-    articles = articles.map((article) => {
+    const count = articles[1];
+    let pageCount;
+
+    if (count % 6 == 0){
+      pageCount = count / 6;
+    }
+    else {
+      const rest = count % 6;
+      pageCount = ((count - rest) / 6) + 1
+    }
+
+    articles = articles[0].map((article) => {
       delete article.later_article_id;
       delete article.user_id;
 
       return article;
     });
 
-    return articles;
+    return response.status(200).header('x-total-count', pageCount).json(articles);
   };
 
   async getArticlesByTheme(response: Response, theme_id: number, page: number): Promise<Response> {
