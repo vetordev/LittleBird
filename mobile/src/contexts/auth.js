@@ -29,8 +29,9 @@ export const AuthProvider = ({ children }) => {
          // }
 
          // INCLUIR VERFIFICAÇÃO DE TOKEN
-         if (storagedUser) {
+         if (storagedUser && storagedToken) {
             setUser(JSON.parse(storagedUser));
+            setToken(storagedToken);
          }
       }
 
@@ -56,11 +57,11 @@ export const AuthProvider = ({ children }) => {
          setLoadingAuth(false);
 
          setUser(user);   
-         await setToken('Bearer 2918SDHDSJJK923HDSHDB');
+         setToken('Bearer 2918SDHDSJJK923HDSHDB');
 
 
          await AsyncStorage.setItem('@LittleBird:user', JSON.stringify(user));
-         await AsyncStorage.setItem('@LittleBird:token', token);
+         await AsyncStorage.setItem('@LittleBird:token', 'Bearer 2918SDHDSJJK923HDSHDB');
       // })
       // .catch ((error) => { 
       //    console.log('Ocorreu um erro no login de usuário: ', error);
@@ -79,14 +80,14 @@ export const AuthProvider = ({ children }) => {
             console.log('Tudo pronto!');
             console.log(responseUser.data.token);
 
-            await setToken('Bearer ' + responseUser.data.token);
+            setToken('Bearer ' + responseUser.data.token);
 
-            api.post('interest', '1, 2, 3', {
-               headers: { 
-                  Authorization: responseUser.data.token 
-               }
-            }) 
-            .then(async () => {
+            // api.post('interest', '1, 2, 3', {
+            //    headers: { 
+            //       Authorization: responseUser.data.token 
+            //    }
+            // }) 
+            // .then(async () => {
                setLoadingAuth(false);
                setUser(user);   
    
@@ -103,7 +104,7 @@ export const AuthProvider = ({ children }) => {
    
                await AsyncStorage.setItem('@LittleBird:user', JSON.stringify(user));
                await AsyncStorage.setItem('@LittleBird:token', responseUser.data.token);
-            })
+            // })
          })
          .catch ((error) => { 
             console.log('Ocorreu um erro no cadastro de usuário: ', error);

@@ -1,7 +1,9 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { View } from 'react-native';
 import { MaterialIcons } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
+
+import { useAuth } from '../../contexts/auth';
 
 import { 
    MessageContainer,
@@ -20,10 +22,10 @@ import {
 const ChatMessage = ({ data }) => {
    const [liked, setLiked] = useState(false);
    const [likeQnt, setLikesQnt] = useState(0);
+   const [userIsMe, setUserIsMe] = useState(false);
 
+   const { user } = useAuth();
    const { navigate } = useNavigation();
-
-   const userIsMe = data.user_id == 3 ? true : false;
 
    function handleLike(comment_id) {
       setLiked(liked ? false : true);
@@ -33,6 +35,10 @@ const ChatMessage = ({ data }) => {
    function navigateToComplaint() {
       navigate('Complaint');
    }
+
+   useEffect(() => {
+      setUserIsMe(data.user_id.username == user.username ? true : false);
+   }, [])
 
    return (
       <MessageContainer userIsMe={userIsMe}>

@@ -9,6 +9,7 @@ import ModalContainer from '../../../components/ModalContainer';
 import TagsThemes from '../../../components/Tags';
 
 import api from '../../../services/api';
+import { useAuth } from '../../../contexts/auth';
 
 import { 
    Container,
@@ -39,64 +40,40 @@ const Forums = () => {
    const [liked, setLiked] = useState(false);   
    const [displayModal, setModalDisplay] = useState(true);
    const [forum, setForum] = useState({});
+   const [input, setInput] = useState('');
 
    const route = useRoute();
    const { forum_id } = route.params;
+
+   const { token } = useAuth();
+
+   // console.log(token);
 
    function openModal() {
       setModalDisplay(true);
    }
 
-   const forumR = {
-      forum_id: 1,
-      title: "Camisinha incomoda?",
-      theme: {
-        theme_id: 1,
-        theme_name: "Relacionamento"
-      },
-      comments: [
-         {
-            comment_id: 1,
-            user_id: 1,
-            comment_content: "Lorem ipsum dolor sit amet.",
-            publi_date: "2020-06-13",
-            no_like: 3600
-         },
-         {
-            comment_id: 2,
-            user_id: 3,
-            comment_content: "Lorem ipsum dolxxxxor sit amet.",
-            publi_date: "2020-06-13",
-            no_like: 3600
-         },
-         {
-            comment_id: 4,
-            user_id: 1,
-            comment_content: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. ",
-            publi_date: "2020-06-13",
-            no_like: 3600
-         },
-         {
-            comment_id: 5,
-            user_id: 3,
-            comment_content: "Lorem...",
-            publi_date: "2020-06-13",
-            no_like: 3600
-         },
-      ],
-      forum_img: {
-        forum_img_id: 1,
-        img_url: "https://images.unsplash.com/photo-1575134987638-6c3bc3e2c39a?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1050&q=80"
-      },
-      no_like: 3600
+   async function sendComment() {
+      await api.post(
+         `/forum/${forum_id}/comment`, 
+         {comment_content: input}, 
+         { 
+            headers: {
+               Authorization: token,
+            },
+         }
+      )
+
+      setInput('');
+
+      const response = await api.get(`forum/${forum_id}/comment?page=1`);
+      setForum(response.data);
    }
 
    useEffect(() => {
       console.log('formu', forum_id);
       async function getForum () {
          const response = await api.get(`forum/${forum_id}/comment?page=1`);
-
-         console.log(response.data);
          setForum(response.data);
       }
 
@@ -142,13 +119,13 @@ const Forums = () => {
                      </ModalRuleDescription>
                   </ModalRule>
 
-                  {/* <ModalRuleTitle>3. Lorem Ipsum</ModalRuleTitle>
+                  <ModalRuleTitle>3. Lorem Ipsum</ModalRuleTitle>
                   <ModalRule>
                      <ModalRuleImg />
                      <ModalRuleDescription>
                         Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt. 
                      </ModalRuleDescription>
-                  </ModalRule> */}
+                  </ModalRule>
                   
                </ModalContent>
             </ModalContainer>
@@ -183,8 +160,10 @@ const Forums = () => {
             <Input 
                placeholder="Participe da conversa" 
                placeholderTextColor="#4B4B4B"
+               value={input}
+               onChangeText={text => setInput(text)}
             />
-            <BtnInput>  
+            <BtnInput onPress={sendComment}>  
                <MaterialIcons name="send" size={20} color="#E9E9E9" />
             </BtnInput>
          </InputBlock>
