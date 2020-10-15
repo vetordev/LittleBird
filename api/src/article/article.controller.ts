@@ -4,6 +4,7 @@ import { GetArticleDto, GetArticlesByThemeDto, CreateArticleLikeDto, DeleteArtic
 import { JwtAuthGuard } from '../auth/jwt/jwt-auth.guard';
 import { QueryFailedExceptionFilter } from './http-exception.filter';
 import { request } from 'http';
+import { response } from 'express';
 
 @Controller('article')
 export class ArticleController {
@@ -17,15 +18,14 @@ export class ArticleController {
   }
 
   @Get()
-  @HttpCode(200)
-  getArticleByLike(@Query() query: QueryPageDto) {
-    return this.articleService.getArticlesByLike(query.page);
+  getArticleByLike(@Res() response, @Query() query: QueryPageDto) {
+    return this.articleService.getArticlesByLike(response, query.page);
   }
 
   @Get('user/like')
   @UseGuards(JwtAuthGuard)
-  getArticlesByUserLike(@Req() request, @Query() query: QueryPageDto) {
-    return this.articleService.getArticlesByUserLike(request.user.user_id, query.page);
+  getArticlesByUserLike(@Res() response, @Req() request, @Query() query: QueryPageDto) {
+    return this.articleService.getArticlesByUserLike(response, request.user.user_id, query.page);
   }
 
   @Get('user/later')

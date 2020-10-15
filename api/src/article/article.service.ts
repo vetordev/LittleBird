@@ -62,20 +62,31 @@ export class ArticleService {
     return response.status(200).json(theme_article_recommendation);
   }
 
-  async getArticlesByLike(page: number): Promise<Article[]> {
+  async getArticlesByLike(response: Response, page: number): Promise<Response> {
     const articles = await this.articleRepository.createQueryBuilder('article')
       .select(['article.article_id', 'article.title', 'article.no_like', 'article.publi_date', 'article_img'])
       .innerJoin('article.article_img_id', 'article_img')
       .orderBy('article.no_like', 'ASC')
       .offset((page - 1) * 6)
       .limit(6)
-      .getMany();
+      .getManyAndCount();
 
-    return articles;
+    const count = articles[1];
+    let pageCount;
+
+    if (count % 6 == 0){
+      pageCount = count / 6;
+    }
+    else {
+      const rest = count % 6;
+      pageCount = ((count - rest) / 6) + 1
+    }
+
+    return response.status(200).header('x-total-count', pageCount).json(articles[0]);
   }
 
-  async getArticlesByUserLike(user_id: number, page: number): Promise<LikeArticle[]> {
-    let articles = await this.likeArticleRepository.createQueryBuilder('like_article')
+  async getArticlesByUserLike(response: Response, user_id: number, page: number): Promise<Response> {
+    let articles: any = await this.likeArticleRepository.createQueryBuilder('like_article')
       .select(['like_article', 'article.article_id', 'article.title', 'article.no_like', 'article.publi_date', 'article_img'])
       .innerJoin('like_article.article_id', 'article')
       .innerJoin('article.article_img_id', 'article_img')
@@ -83,16 +94,27 @@ export class ArticleService {
       .orderBy('article.no_like', 'ASC')
       .offset((page - 1) * 6)
       .limit(6)
-      .getMany();
+      .getManyAndCount();
 
-    articles = articles.map((article) => {
+    const count = articles[1];
+    let pageCount;
+
+    if (count % 6 == 0){
+      pageCount = count / 6;
+    }
+    else {
+      const rest = count % 6;
+      pageCount = ((count - rest) / 6) + 1
+    }
+
+    articles = articles[0].map((article) => {
       delete article.like_article_id;
       delete article.user_id;
 
       return article;
     });
 
-    return articles;
+    return response.status(200).header('x-total-count', pageCount).json(articles);
   }
 
   async getArticlesByUserLater(user_id: number, page: number): Promise<LaterArticle[]> {
@@ -135,16 +157,27 @@ export class ArticleService {
       .orderBy('article.no_like', 'ASC')
       .offset((page - 1) * 6)
       .limit(6)
-      .getMany();
+      .getManyAndCount();
 
-    articles = articles.map((article) => {
+    const count = articles[1];
+    let pageCount;
+
+    if (count % 6 == 0){
+      pageCount = count / 6;
+    }
+    else {
+      const rest = count % 6;
+      pageCount = ((count - rest) / 6) + 1
+    }
+
+    articles = articles[0].map((article) => {
       delete article.theme_id;
       delete article.theme_article_id;
 
       return article.article_id;
     });
 
-    return response.status(200).json(articles);
+    return response.status(200).header('x-total-count', pageCount).json(articles);
   };
 
   async getArticlesAndForuns(page: number): Promise<any> {
