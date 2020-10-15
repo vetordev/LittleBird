@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { View } from 'react-native';
+import { View, FlatList } from 'react-native';
 import { MaterialIcons } from '@expo/vector-icons';
 import { useRoute } from '@react-navigation/native';
 
@@ -41,13 +41,13 @@ const Forums = () => {
    const [displayModal, setModalDisplay] = useState(true);
    const [forum, setForum] = useState({});
    const [input, setInput] = useState('');
+   const [page, setPage] = useState(1);
+   const [total, setTotal] = useState(0);
 
    const route = useRoute();
    const { forum_id } = route.params;
 
    const { token } = useAuth();
-
-   // console.log(token);
 
    function openModal() {
       setModalDisplay(true);
@@ -75,6 +75,8 @@ const Forums = () => {
       async function getForum () {
          const response = await api.get(`forum/${forum_id}/comment?page=1`);
          setForum(response.data);
+
+         console.log(response.data);
       }
 
       getForum();
@@ -96,7 +98,7 @@ const Forums = () => {
                   {forum.forum_description}
                </ModalDescription>
                
-               {/* <TagsThemes /> */}
+               <TagsThemes data={forum.themes} />
 
                <ModalContent>
                   <ModalSubtitle>
@@ -149,9 +151,13 @@ const Forums = () => {
 
                <Title>{forum.title}</Title>
 
-               {forum.comments.map(item => (
-                  <ChatMessage key={item.comment_id} data={item} />   
-               ))}
+               <FlatList
+                  data={forum.comments}
+                  keyExtractor={comment => String(comment.comment_id)}
+                  renderItem={({ item }) => (
+                     <ChatMessage key={item.comment_id} data={item} />   
+                  )}
+               />
 
             </Content>
          </Container>   

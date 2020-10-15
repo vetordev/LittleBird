@@ -1,7 +1,7 @@
 import styled from 'styled-components/native';
 
 export const MessageContainer = styled.View`
-   margin-bottom: 0px;
+   margin-bottom: ${props => props.userIsMe ? 7 : 0 }px;
    width: 100%;
    flex-direction: ${props => props.userIsMe ? 'row-reverse' : 'row'};
 `;

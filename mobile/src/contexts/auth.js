@@ -70,6 +70,7 @@ export const AuthProvider = ({ children }) => {
    }
 
    function signUp(user, userInterests) {
+      // console.log(userInterests);
 
          api.post('user', user, {
             onUploadProgress: () => {

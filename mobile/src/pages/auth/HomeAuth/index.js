@@ -18,10 +18,10 @@ const HomeAuth = () => {
 
   async function handleSignIn(data, { reset }) {
 
-    // const email = data.email;
-    // const response = await api.get('user/email', { body: email });
+    const email = data.email;
+    const response = await api.get(`user/email?email=${email}`);
     
-    // console.log(response.data);
+    console.log(response.data);
 
     try {
       const schema = Yup.object().shape({
@@ -36,7 +36,7 @@ const HomeAuth = () => {
 
       formRef.current.setErrors({});
 
-      if (data.email == "vitorinha@hotmail.com") {
+      if (response.data.email) {
         navigation.navigate('SignIn', { data });
         return;
       }
