@@ -189,6 +189,7 @@ describe('Article', () => {
         .set('Authorization', `Bearer ${token}`);
 
       expect(response.status).toBe(200);
+      expect(response.header['x-total-count']).toBe("1");
       expect(response.body[0]).toEqual(expect.objectContaining({
         article_id: {
           article_id: expect.any(Number),
@@ -245,6 +246,7 @@ describe('Article', () => {
         .get(`/article/theme/${theme_id}/like?page=1`);
 
       expect(response.status).toBe(200);
+      expect(response.header['x-total-count']).toBe("1");
       expect(response.body[0]).toEqual(expect.objectContaining({
 
         article_id: expect.any(Number),
@@ -275,6 +277,7 @@ describe('Article', () => {
         .get('/article?page=1');
 
       expect(response.status).toBe(200);
+      expect(response.header['x-total-count']).toBe("1");
       expect(response.body[0]).toEqual(expect.objectContaining({
           article_id: expect.any(Number),
           article_img_id: {
