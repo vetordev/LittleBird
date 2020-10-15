@@ -386,7 +386,7 @@ paths:
             examples:
               Exemplo de corpo da requisição:
                 value:
-                  theme_id: '1, 2, 3'
+                  themes: '1, 2, 3'
         description: O aplicação do usuário deve enviar o "theme_id" dos temas escolhidos pelo usuário.
       tags:
         - Interest
@@ -901,6 +901,12 @@ paths:
                         forum_img_id: 1
                         img_url: 'http://localhost/...'
                       no_like: 3600
+          headers:
+            X-Total-Count:
+              schema:
+                type: string
+              description: Quantidade de páginas
+              required: true
         '404':
           description: O tema solicitado não está registrado no servidor.
           content:
@@ -1138,6 +1144,12 @@ paths:
                       forum_img_id: 1
                       img_url: 'http://localhost/...'
                     no_like: 3600
+          headers:
+            X-Total-Count:
+              schema:
+                type: string
+              description: Quantidade de páginas
+              required: true
         '404':
           description: O forum solicitado não existe.
           content:
@@ -1916,6 +1928,12 @@ paths:
                         forum_img_id: 1
                         img_url: 'http://localhost/...'
                       no_like: 3600
+          headers:
+            X-Total-Count:
+              schema:
+                type: string
+              description: Quantidade de páginas
+              required: true
         '401':
           description: O token JWT é inválido.
           content:
