@@ -1,7 +1,7 @@
 import styled from 'styled-components/native';
 import Constants from 'expo-constants';
 
-export const Container = styled.View`
+export const Container = styled.ScrollView`
    flex: 1;
 `;
 

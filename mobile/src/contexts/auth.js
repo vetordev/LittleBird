@@ -70,7 +70,7 @@ export const AuthProvider = ({ children }) => {
    }
 
    function signUp(user, userInterests) {
-      // console.log(userInterests);
+      console.log(String(userInterests));
 
          api.post('user', user, {
             onUploadProgress: () => {
@@ -83,15 +83,14 @@ export const AuthProvider = ({ children }) => {
 
             setToken('Bearer ' + responseUser.data.token);
 
-            // api.post('interest', '1, 2, 3', {
-            //    headers: { 
-            //       Authorization: responseUser.data.token 
-            //    }
-            // }) 
-            // .then(async () => {
+            api.post('interest', { themes: String(userInterests) }, {
+               headers: { 
+                  Authorization: 'Bearer ' + responseUser.data.token 
+               }
+            }) 
+            .then(async () => {
                setLoadingAuth(false);
                setUser(user);   
-   
 
                // const responseInterests = api.get('interest?page=1', {
                //    headers: { 
@@ -100,12 +99,10 @@ export const AuthProvider = ({ children }) => {
                // })
 
                // console.log(responseInterests);
-
-               // console.log('TOKEN:', responseUser.data.token);
    
                await AsyncStorage.setItem('@LittleBird:user', JSON.stringify(user));
-               await AsyncStorage.setItem('@LittleBird:token', responseUser.data.token);
-            // })
+               await AsyncStorage.setItem('@LittleBird:token', 'Bearer ' + responseUser.data.token);
+            })
          })
          .catch ((error) => { 
             console.log('Ocorreu um erro no cadastro de usuário: ', error);
