@@ -673,6 +673,12 @@ paths:
                       article_img:
                         article_img_id: 1
                         img_url: 'http://localhost:..'
+          headers:
+            X-Total-Count:
+              schema:
+                type: string
+              description: Quantidade de páginas
+              required: true
         '500':
           description: Erro interno na API.
           content:
@@ -824,6 +830,11 @@ paths:
                       article_img:
                         article_img_id: 1
                         img_url: 'http://localhost:..'
+          headers:
+            X-Total-Count:
+              schema:
+                type: string
+              description: Quantidade de páginas
         '404':
           description: O tema solicitado não está registrado no servidor.
           content:
@@ -1534,6 +1545,11 @@ paths:
                       article_img:
                         article_img_id: 1
                         img_url: 'http://localhost:..'
+          headers:
+            X-Total-Count:
+              schema:
+                type: string
+              description: Quantidade de páginas
         '401':
           description: O token JWT é inválido.
           content:
