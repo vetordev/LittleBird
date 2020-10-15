@@ -78,6 +78,7 @@ describe('Comment', () => {
         .get(`/comment/forum/${forum_id}?page=1`)
 
       expect(response.status).toBe(200);
+      expect(response.header['x-total-count']).toBe("1");
       expect(response.body[0]).toEqual(expect.objectContaining({
         comment_id: expect.any(Number),
         user_id: {
@@ -137,6 +138,7 @@ describe('Comment', () => {
         .get(`/comment/${comment_id}/reply?page=1`);
 
       expect(response.status).toBe(200);
+      expect(response.header['x-total-count']).toBe("1");
       expect(response.body[0]).toEqual(expect.objectContaining({
         reply_id: expect.any(Number),
         reply_content: expect.any(String),

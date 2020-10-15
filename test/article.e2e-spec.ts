@@ -189,6 +189,7 @@ describe('Article', () => {
         .set('Authorization', `Bearer ${token}`);
 
       expect(response.status).toBe(200);
+      expect(response.header['x-total-count']).toBe("1");
       expect(response.body[0]).toEqual(expect.objectContaining({
         article_id: {
           article_id: expect.any(Number),
@@ -217,6 +218,7 @@ describe('Article', () => {
         .set('Authorization', `Bearer ${token}`);
 
       expect(response.status).toBe(200);
+      expect(response.header['x-total-count']).toBe("1");
       expect(response.body[0]).toEqual(expect.objectContaining({
         article_id: {
           article_id: expect.any(Number),
@@ -245,6 +247,7 @@ describe('Article', () => {
         .get(`/article/theme/${theme_id}/like?page=1`);
 
       expect(response.status).toBe(200);
+      expect(response.header['x-total-count']).toBe("1");
       expect(response.body[0]).toEqual(expect.objectContaining({
 
         article_id: expect.any(Number),
@@ -275,6 +278,7 @@ describe('Article', () => {
         .get('/article?page=1');
 
       expect(response.status).toBe(200);
+      expect(response.header['x-total-count']).toBe("1");
       expect(response.body[0]).toEqual(expect.objectContaining({
           article_id: expect.any(Number),
           article_img_id: {
@@ -352,7 +356,7 @@ describe('Article', () => {
       expect(response.status).toBe(204);
 
     });
-    it('> POST /article/:article_id/like Não deve registrar um like (Token JWT inválidO)', async () => {
+    it('> POST /article/:article_id/like Não deve registrar um like (Token JWT inválido)', async () => {
       const article_id = 1;
       const response = await request(app.getHttpServer())
         .post(`/article/${article_id}/like`)
@@ -399,7 +403,7 @@ describe('Article', () => {
       expect(response.status).toBe(204);
 
     });
-    it('> POST /article/:article_id/like Não deve registrar um ler mais tarde (Token JWT inválidO)', async () => {
+    it('> POST /article/:article_id/like Não deve registrar um ler mais tarde (Token JWT inválido)', async () => {
       const article_id = 1;
       const response = await request(app.getHttpServer())
         .post(`/article/${article_id}/later`)
@@ -449,7 +453,7 @@ describe('Article', () => {
 
       expect(response.status).toBe(204);
     });
-    it('> POST /article/:article_id/like Não deve remover um like (Token JWT inválidO)', async () => {
+    it('> POST /article/:article_id/like Não deve remover um like (Token JWT inválido)', async () => {
       const article_id = 1;
       const response = await request(app.getHttpServer())
         .delete(`/article/${article_id}/like`)

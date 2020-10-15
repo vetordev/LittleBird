@@ -78,6 +78,7 @@ describe('Forum', () => {
         .get(`/forum/${forum_id}/comment?page=1`);
 
       expect(response.status).toBe(200);
+      expect(response.header['x-total-count']).toBe("1");
       expect(response.body).toEqual(expect.objectContaining({
         forum_id: expect.any(Number),
         title: expect.any(String),
@@ -153,6 +154,7 @@ describe('Forum', () => {
         publi_date: '2020-06-15'
       };
 
+
       await getConnection().createQueryBuilder().insert().into("user_img").values({ user_img_id: 1, img_url: "http://localhost:4456" }).execute();
       await getConnection().createQueryBuilder().insert().into("tb_user").values(user).execute();
 
@@ -169,6 +171,7 @@ describe('Forum', () => {
       await getConnection().createQueryBuilder().insert().into('tb_comment').values(comment2).execute();
 
       await getConnection().createQueryBuilder().insert().into("theme_forum").values({ theme_forum_id: 1, theme_id: 1, forum_id: 1 }).execute();
+      await getConnection().createQueryBuilder().insert().into("theme_forum").values({ theme_forum_id: 2, theme_id: 1, forum_id: 2 }).execute();
 
       await getConnection().createQueryBuilder().insert().into("like_forum").values({ like_forum_id: 1, user_id: 1, forum_id: 1 }).execute();
 
@@ -183,6 +186,7 @@ describe('Forum', () => {
         .get(`/forum/theme/${theme_id}/like?page=1`);
 
       expect(response.status).toBe(200);
+      expect(response.header['x-total-count']).toBe("1");
       expect(response.body[0]).toEqual(expect.objectContaining({
         forum_id: expect.any(Number),
         title: expect.any(String),
@@ -207,6 +211,7 @@ describe('Forum', () => {
         .set('Authorization', `Bearer ${token}`);
 
       expect(response.status).toBe(200);
+      expect(response.header['x-total-count']).toBe("1");
       expect(response.body[0]).toEqual(expect.objectContaining({
         forum_id: expect.any(Number),
         title: expect.any(String),
@@ -222,6 +227,7 @@ describe('Forum', () => {
         .set('Authorization', `Bearer ${token}`);
 
       expect(response.status).toBe(200);
+      expect(response.header['x-total-count']).toBe("1");
       expect(response.body[0]).toEqual(expect.objectContaining({
         forum_id: expect.any(Number),
         title: expect.any(String),

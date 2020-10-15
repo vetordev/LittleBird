@@ -30,7 +30,7 @@ export class CommentService {
       return response.status(404).json({ error: 'Comentário não encontrado.' });
     }
 
-    const replies = await this.replyRepository.createQueryBuilder('reply')
+    const replies: any = await this.replyRepository.createQueryBuilder('reply')
       .select(['reply', 'user.user_id', 'user.username', 'user_img'])
       .innerJoin('reply.user_id', 'user')
       .innerJoin('user.user_img_id', 'user_img')
@@ -38,9 +38,21 @@ export class CommentService {
       .offset((page - 1) * 6)
       .limit(6)
       .orderBy('reply.reply_id', 'DESC')
-      .getMany();
+      .getManyAndCount();
 
-    return response.status(200).json(replies);
+    const count = replies[1];
+    let pageCount;
+
+    if (count % 6 == 0){
+      pageCount = count / 6;
+    }
+    else {
+      const rest = count % 6;
+      pageCount = ((count - rest) / 6) + 1
+    }
+
+    return response.status(200).header('x-total-count', pageCount).json(replies[0]);
+
   };
 
   async getCommentsByForum(response: Response, forum_id: number, page: number) {
@@ -54,7 +66,7 @@ export class CommentService {
       return response.status(404).json({ error: 'Fórum não encontrado.' });
     };
 
-    let comments = await this.commentRepository.createQueryBuilder('tb_comment')
+    let comments: any = await this.commentRepository.createQueryBuilder('tb_comment')
       .select(['tb_comment', 'user.user_id', 'user.username', 'user_img'])
       .innerJoin('tb_comment.user_id', 'user')
       .innerJoin('user.user_img_id', 'user_img')
@@ -62,14 +74,25 @@ export class CommentService {
       .orderBy('tb_comment.comment_id', 'DESC')
       .offset((page - 1) * 6)
       .limit(6)
-      .getMany();
+      .getManyAndCount();
 
-    comments = comments.map( (comment) => {
+    const count = comments[1];
+    let pageCount;
+
+    if (count % 6 == 0){
+      pageCount = count / 6;
+    }
+    else {
+      const rest = count % 6;
+      pageCount = ((count - rest) / 6) + 1
+    }
+
+    comments = comments[0].map( (comment) => {
       delete comment.forum_id;
       return comment;
     });
 
-    return response.status(200).json(comments);
+    return response.status(200).header('x-total-count', pageCount).json(comments);
   };
 
   async createLike(user_id: number, comment_id: number): Promise<Response | void> {

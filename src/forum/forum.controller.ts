@@ -9,22 +9,19 @@ export class ForumController {
   constructor(private readonly forumService: ForumService) {}
 
   @Get('theme/:theme_id/like')
-  @HttpCode(200)
   getForumByTheme(@Res() response, @Param() params: GetForumByThemeDto, @Query() query: QueryPageDto) {
     return this.forumService.getForumByTheme(response, params.theme_id, query.page);
   };
 
   @Get()
-  @HttpCode(200)
-  getForumByLike(@Query() query: QueryPageDto) {
-    return this.forumService.getForumByLike(query.page);
+  getForumByLike(@Res() response, @Query() query: QueryPageDto) {
+    return this.forumService.getForumByLike(response, query.page);
   };
 
   @Get('user/like')
   @UseGuards(JwtAuthGuard)
-  @HttpCode(200)
-  getForumByUserLike(@Req() request, @Query() query: QueryPageDto) {
-    return this.forumService.getForumByUserLike(request.user.user_id, query.page);
+  getForumByUserLike(@Res() response, @Req() request, @Query() query: QueryPageDto) {
+    return this.forumService.getForumByUserLike(response, request.user.user_id, query.page);
   };
 
   @Get(':forum_id/comment')
