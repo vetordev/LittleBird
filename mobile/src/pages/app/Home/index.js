@@ -30,12 +30,13 @@ import {
 
 const Home = () => {
   const [recentContent, setRecentContent] = useState([]);
+  const [interests, setInterests] = useState([]);
 
-  const { user } = useAuth();
+  const { user, token } = useAuth();
   const win = Dimensions.get('window');
   const navigation = useNavigation();
 
-  const interests = [
+  const interestsP = [
     {
       theme_id: 1,
       theme_name: 'Preservativos',
@@ -75,13 +76,24 @@ const Home = () => {
   }
 
   useEffect(() => {
-    async function getRecentContent() {
-      const response = await api.get('article/forum/date?page=1');
+    async function getContent() {
+      const responseRecentContent = await api.get('article/forum/date?page=1');
+      const responseInterests = await api.get('interest?page=1', 
+        { 
+          headers : { 
+            Authorization: token 
+          }
+        });
 
-      setRecentContent(response.data);
+
+      console.log(responseInterests.data);
+
+      // console.log(token);
+      setInterests(responseInterests.data);
+      setRecentContent(responseRecentContent.data);
     }
 
-    getRecentContent();
+    getContent();
   }, []);
 
   return (
@@ -91,7 +103,7 @@ const Home = () => {
         <FlatList 
           showsVerticalScrollIndicator={false}
           data={interests}
-          keyExtractor={interest => String(interest.theme_id)}
+          keyExtractor={interest => String(interest.interest_id)}
           numColumns={2}
           columnWrapperStyle={{ marginHorizontal: 15 }}
           ListHeaderComponent={
@@ -150,7 +162,7 @@ const Home = () => {
           }
           ListFooterComponent={<View style={{ height: 30 }} />}
           renderItem={({ item }) => (
-            <InterestCard img_url={item.theme_img.img_url} name={item.theme_name} notDelete />
+            <InterestCard img_url={item.theme_id.theme_img_id.img_url} name={item.theme_id.theme_name} notDelete />
           )}
         />
       </InterestsContainer>
