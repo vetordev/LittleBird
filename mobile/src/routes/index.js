@@ -19,7 +19,7 @@ const Routes = () => {
 
    }, []);
 
-   if (loading && token === null) {
+   if (loading || token === null) {
       return (
          <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
             <ActivityIndicator size="large" color="#999" />
