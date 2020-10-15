@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { AppLoading } from 'expo';
 import { Dimensions, FlatList, View } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { StatusBar } from 'expo-status-bar';
@@ -77,6 +78,9 @@ const Home = () => {
 
   useEffect(() => {
     async function getContent() {
+
+      console.log('HOMEEEE', token);
+
       const responseRecentContent = await api.get('article/forum/date?page=1');
       const responseInterests = await api.get('interest?page=1', 
         { 
@@ -84,17 +88,15 @@ const Home = () => {
             Authorization: token 
           }
         });
-
-
-      console.log(responseInterests.data);
-
-      // console.log(token);
+        
       setInterests(responseInterests.data);
       setRecentContent(responseRecentContent.data);
     }
 
     getContent();
   }, []);
+
+  if (token === null) return <AppLoading />;
 
   return (
     <>

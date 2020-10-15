@@ -21,7 +21,7 @@ export const AuthProvider = ({ children }) => {
          
          setLoading(false);
 
-         console.log('TOKEN:', storagedToken);
+         console.log('TOKENOW:', storagedToken);
 
          // if (notKeepLogin === 'true') {
          //    setUser(null);
@@ -77,7 +77,7 @@ export const AuthProvider = ({ children }) => {
                setLoadingAuth(true);
             }
          })
-         .then(async (responseUser) => {
+         .then((responseUser) => {
             console.log('Tudo pronto!');
             console.log(responseUser.data.token);
 
@@ -89,16 +89,8 @@ export const AuthProvider = ({ children }) => {
                }
             }) 
             .then(async () => {
-               setLoadingAuth(false);
                setUser(user);   
-
-               // const responseInterests = api.get('interest?page=1', {
-               //    headers: { 
-               //       Authorization: 'Bearer ' + responseUser.data.token 
-               //    }
-               // })
-
-               // console.log(responseInterests);
+               setLoadingAuth(false);
    
                await AsyncStorage.setItem('@LittleBird:user', JSON.stringify(user));
                await AsyncStorage.setItem('@LittleBird:token', 'Bearer ' + responseUser.data.token);
@@ -106,7 +98,7 @@ export const AuthProvider = ({ children }) => {
          })
          .catch ((error) => { 
             console.log('Ocorreu um erro no cadastro de usuário: ', error);
-            setLoadingAuth(false);
+            // setLoadingAuth(false);
          }) 
    }
 

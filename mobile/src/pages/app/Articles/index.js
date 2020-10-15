@@ -8,6 +8,7 @@ import HeaderBtnBack from '../../../components/HeaderBtnBack';
 import TagsThemes from '../../../components/Tags';
 
 import api from '../../../services/api';
+import { useAuth } from '../../../contexts/auth';
 
 import { 
    Container,
@@ -26,6 +27,7 @@ import {
    LinkItemContainer,
    styles
 } from './styles';
+import { set } from 'react-native-reanimated';
 
 const Articles = () => {
    const [article, setArticle] = useState({});
@@ -37,25 +39,62 @@ const Articles = () => {
    const navigation = useNavigation();
    const route = useRoute();
    const { article_id } = route.params;
+   const { token } = useAuth();
 
-   const articleTxt = '<t>Lorem ipsum dolor sit amet, <marker1>consectetur adipiscing elit</marker1>, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. \nUt enim ad minim veniam, quis nostrud <marker2>exercitation</marker2> ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in <marker3>reprehenderit in voluptate</marker3> velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</t>'
+   // const articleTxt = '<t>Lorem ipsum dolor sit amet, <marker1>consectetur adipiscing elit</marker1>, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.<br>Ut enim ad minim veniam, quis nostrud <marker2>exercitation</marker2> ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in <marker3>reprehenderit in voluptate</marker3> velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</t>'
 
    function openWebView(url) {
       navigation.navigate('Webview', { link: url });
    }
 
+   async function handleSetLiked() {
+      if (!liked) {
+         api.post(`article/${article_id}/like`, {}, {
+            headers: {
+               Authorization: token
+            }
+         })
+         .then((response) => {
+            if (response.status == 204) {
+               setLiked(true);
+            }
+         })
+         
+      } else {
+         api.delete(`article/${article_id}/like`, {
+            headers: {
+               Authorization: token
+            }
+         })
+         .then((response) => {
+            if (response.status == 204) {
+               setLiked(false);
+            }
+         })
+      }
+   }
+
    useEffect(() => {
-      async function getArticle() {
-         const response = await api.get(`article/${article_id}`);
+      async function getContent() {
+         const responseArticle = await api.get(`article/${article_id}`);
+         const responseArticlesLiked = await api.get(`/article/user/like?page=1`, {
+            headers: {
+               Authorization: token
+            }
+         });
 
-         setArticle(response.data.article);
-         setRecommendations(response.data.recommendations);
-         setThemes(response.data.themes);
+         responseArticlesLiked.data.map((item) => {
+            item.article_id.article_id === article_id 
+            ? setLiked(true)
+            : ''
+         });
 
-         console.log(response.data.themes);
+         setArticle(responseArticle.data.article);
+         setRecommendations(responseArticle.data.recommendations);
+         setThemes(responseArticle.data.themes);
       }
 
-      getArticle();
+      getContent();
    }, []);
 
    if (article.article_img_id === undefined) return false;
@@ -66,7 +105,7 @@ const Articles = () => {
          <Cover resizeMode="cover" source={{ uri: article.article_img_id.img_url }} />
             <Content>
                <Options>
-                  <Option onPress={() => setLiked(liked ? false : true)}>
+                  <Option onPress={handleSetLiked}>
                      <MaterialIcons name={liked ? 'favorite' : 'favorite-border'} size={20} color={liked ? '#DA2243' : '#F6F6F6'} />
                   </Option>
                   <Option onPress={() => setSaved(saved ? false : true)}>

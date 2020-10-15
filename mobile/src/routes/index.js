@@ -1,5 +1,5 @@
 // controla qual rota estará disponível para o usuário
-import React from 'react';
+import React, { useEffect } from 'react';
 import { View, ActivityIndicator } from 'react-native';
 
 import { useAuth } from '../contexts/auth';
@@ -8,13 +8,18 @@ import AuthRoutes from './auth.routes';
 import AppRoutes from './app.routes';
 
 const Routes = () => {
-   const { signed, loading } = useAuth();
+   const { signed, loading, token } = useAuth();
 
-   console.log(signed);
+   useEffect(() => {
+      console.log('INDEX', token);
 
-   // console.log('loading', loading);
+      // if (token === null) {
+      //    alert('aaaaaaaaaaaa');
+      // }
 
-   if (loading) {
+   }, []);
+
+   if (loading && token === null) {
       return (
          <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
             <ActivityIndicator size="large" color="#999" />
