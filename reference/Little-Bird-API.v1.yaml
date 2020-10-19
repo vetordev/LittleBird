@@ -433,6 +433,12 @@ paths:
                     theme_img:
                       theme_img_id: 1
                       img_url: 'http://localhost:3333'
+          headers:
+            X-Total-Count:
+              schema:
+                type: string
+              description: Quantidade de páginas
+              required: true
         '401':
           description: O token JWT não é válido.
           content:
