@@ -2689,6 +2689,48 @@ paths:
                     error: Ocorreu um erro. Tente novamente mais tarde
       operationId: get-user-img
       description: Rota responsável por enviar as imagens de perfil disponíveis para os usuário.
+  /report/type:
+    get:
+      summary: Buscar os tipos de denúncias
+      tags:
+        - Report
+      responses:
+        '200':
+          description: Os tipos de denúncia foram enviados.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    report_type_id:
+                      type: integer
+                    report_type_name:
+                      type: string
+                    report_type_especification:
+                      type: string
+              examples:
+                Exemplo de denúncias:
+                  value:
+                    - report_type_id: 1
+                      report_type_name: Agressão
+                      report_type_especification: Lorem ipsum dolor sit amet.
+        '500':
+          description: Erro interno na API.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+              examples:
+                Exemplo de erro:
+                  value:
+                    error: Ocorreu um erro. Tente novamente mais tarde
+      operationId: get-report-type
+      description: Rota para enviar os tipos de denúncias presentes na aplicação
 components:
   schemas:
     User:
@@ -3147,3 +3189,4 @@ components:
 tags:
   - name: Comment
   - name: User
+  - name: Report
