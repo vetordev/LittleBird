@@ -10,7 +10,7 @@ export const AvataresContainer = styled.View`
    flex-direction: row;
    margin-bottom: 30px;
    align-items: center;
-   justify-content: center !important;
+   justify-content: center;
    width: 85%;
 `;
 
@@ -18,7 +18,7 @@ export const MainAvatar = styled.Image`
    width: 108px;
    height: 108px;
    border-radius: 29px;
-   margin-right: 10px;
+   margin-right: 4.5px;
    overflow: hidden;
 `;
 

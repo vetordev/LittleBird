@@ -34,7 +34,7 @@ const Home = () => {
 
   const { user, token } = useAuth();
   const win = Dimensions.get('window');
-  const navigation = useNavigation();
+  const { navigate } = useNavigation();
 
   const interestsP = [
     {
@@ -71,8 +71,16 @@ const Home = () => {
     }
   ]
 
+  function navigateToArticles(article_id) {
+    navigate('Articles', { article_id });
+  }
+
+  function navigateToForums(forum_id) {
+    navigate('Forums', { forum_id });
+  }
+
   function navigateToInterests() {
-    navigation.navigate('Interests');
+    navigate('Interests');
   }
 
   useEffect(() => {
@@ -119,9 +127,12 @@ const Home = () => {
                 itemWidth={win.width * 0.8}
                 sliderWidth={win.width}
                 renderItem={({ item }) => (
-                  <CarouselItem winWidth={win.width}>
+                  <>
                   {item.article_id ? 
-                    <>
+                    <CarouselItem 
+                      winWidth={win.width}
+                      onPress={() => navigateToArticles(item.article_id)}
+                    >
                       <CarouselImageItem 
                         resizeMode={'cover'} 
                         source={{ uri: item.article_img_id.img_url }} 
@@ -129,9 +140,12 @@ const Home = () => {
                       <CarouselImageFilter/>
                       <TitleCarouselItem>{item.title}</TitleCarouselItem>
                       <TypeCarouselItem>{'Artigo'}</TypeCarouselItem>
-                    </>
+                    </CarouselItem>
                     :
-                    <>
+                    <CarouselItem 
+                      winWidth={win.width}
+                      onPress={() => navigateToForums(item.forum_id)}
+                    >
                       <CarouselImageItem 
                         resizeMode={'cover'} 
                         source={{ uri: item.forum_img_id.img_url }} 
@@ -139,9 +153,9 @@ const Home = () => {
                       <CarouselImageFilter/>
                       <TitleCarouselItem>{item.title}</TitleCarouselItem>
                       <TypeCarouselItem>{'Salas de conversa'}</TypeCarouselItem>
-                    </>
+                    </CarouselItem>
                   }
-                  </CarouselItem>
+                  </>
                 )}
               />
 

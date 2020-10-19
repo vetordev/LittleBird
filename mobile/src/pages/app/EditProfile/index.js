@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react';
+import React, { useRef, useState, useEffect } from 'react';
 import { View, FlatList } from 'react-native';
 import { Form } from '@unform/mobile';
 import { Feather } from '@expo/vector-icons';
@@ -22,34 +22,37 @@ import {
 } from './styles';
 
 const EditProfile = () => {
-   const [selectedAvatar, setSelectedAvatar] = useState(0);
-   const [lastSelectedAvatar, setLastSelectedAvatar] = useState(0); 
-   const { user } = useAuth();
-
+   const [avatarId, setAvatarId] = useState(2);
+   const { user, setUser } = useAuth();
    const formRef = useRef(null);
 
+   const { user_img_id } = user;
+
    const [imgs, setImgs] = useState([
-      'https://image.freepik.com/vetores-gratis/ilustracao-de-fatia-de-pizza_179407-45.jpg', 
-      'https://i.pinimg.com/originals/90/1d/45/901d45d05461495b1c0700ce47517135.jpg', 
-      'https://www.nicepng.com/png/detail/147-1477699_hand-drawn-smiling-sun-vector-encapsulated-postscript.png', 
-      'https://cdn.dribbble.com/users/2172174/screenshots/10754281/image7344.png'
+      {
+         id: 1,
+         url: 'https://image.freepik.com/vetores-gratis/ilustracao-de-fatia-de-pizza_179407-45.jpg'
+      },
+      {
+         id: 2,
+         url: 'https://i.pinimg.com/originals/90/1d/45/901d45d05461495b1c0700ce47517135.jpg'
+      },
+      {
+         id: 3,
+         url: 'https://www.nicepng.com/png/detail/147-1477699_hand-drawn-smiling-sun-vector-encapsulated-postscript.png', 
+      },
+      {
+         id: 4,
+         url: 'https://cdn.dribbble.com/users/2172174/screenshots/10754281/image7344.png'
+      }
    ]);
 
-   function handleEditAvatar(newId) {
-      setLastSelectedAvatar(selectedAvatar);
-      setSelectedAvatar(newId);
-
-      let array_aux = imgs;
-
-      const aux = array_aux[0];
-      array_aux[0] = array_aux[newId];
-      array_aux[newId] = aux;
-
-      setImgs(array_aux);
+   function handleEditAvatar(id) {
+      setAvatarId(id);
    }
 
    async function handleSaveProfile(data) {
-      if (data.username === undefined && data.email === undefined) {
+      if (data.username === undefined && data.email === undefined && avatarId === user_img_id) {
          return false;
       }
 
@@ -58,30 +61,25 @@ const EditProfile = () => {
            username: Yup.string().min(5, 'O nome de usuário deve ter pelo menos 5 caracteres.'),
            email: Yup.string().min(6, 'O e-mail deve ter pelo menos 7 caracteres.').email('O e-mail deve ser válido'),
          });
-
-         // alert(data.username)
    
          await schema.validate(data, {
            abortEarly: false
          });
    
-         console.log(schema);
-   
          formRef.current.setErrors({});
    
-         const user = {
-           email,
-           username: data.username,
-           user_pass: data.password,
-           user_img_id: 1,
+
+         const newUser = {
+           email: data.email === undefined ? user.email : data.email,
+           username: data.username === undefined ? user.username : data.username,
+           user_img_id: avatarId,
            born_in: '2019-08-24'
          }
-   
-         if (toggleCheckBox) {
-           navigation.navigate('SignUp2', { user });
-         } else {
-           alert('É preciso concordar com os termos de uso.');
-         }
+         
+         console.log(newUser);
+
+         setUser(newUser);
+         
    
        } catch (err) {
          if (err instanceof Yup.ValidationError) {
@@ -96,6 +94,10 @@ const EditProfile = () => {
        }
    }
 
+   useEffect(() => {
+      setAvatarId(user_img_id);
+   }, []);
+
    return (
       <Container>
          <Header title="Editar perfil" />
@@ -106,20 +108,22 @@ const EditProfile = () => {
                onSubmit={handleSaveProfile}
             >
                <AvataresContainer>
+                  <MainAvatar resizeMode="cover" source={{ uri: imgs[avatarId - 1].url }} />
                   <FlatList 
                      data={imgs}
-                     keyExtractor={avatar => String(avatar)}
+                     keyExtractor={avatar => String(avatar.id)}
                      horizontal
-                     contentContainerStyle={{ justifyContent: 'center', alignItems: 'center' }}
-                     renderItem={({ item, index }) => 
-                        index === 0 ? 
-                           <MainAvatar resizeMode="cover" source={{ uri: imgs[0] }} />
-                        : (
-                           <AvatarOption onPress={() => handleEditAvatar(index)}>
-                              <Image resizeMode="cover" 
-                                 source={{ uri: item }} 
-                              />
-                           </AvatarOption>
+                     showsHorizontalScrollIndicator={false}
+                     renderItem={({ item }) => (
+                        <>
+                           { avatarId !== item.id &&
+                              <AvatarOption onPress={() => handleEditAvatar(item.id)}>
+                                 <Image resizeMode="cover" 
+                                    source={{ uri: avatarId !== item.id && item.url }} 
+                                 />
+                              </AvatarOption>
+                           }
+                        </>
                         )
                      }
                   />

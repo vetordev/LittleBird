@@ -66,8 +66,6 @@ const Subjects = () => {
   }
 
   function navigateToForums(forum_id) {
-
-    console.log(forum_id);
     navigate('Forums', { forum_id });
   }
 
