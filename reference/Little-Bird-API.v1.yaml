@@ -2650,6 +2650,44 @@ paths:
           in: query
           name: email
           description: E-mail para consulta no banco de dados
+  /user/img:
+    get:
+      summary: Buscar as imagens de perfil do usuário
+      tags: []
+      responses:
+        '200':
+          description: As imagens de perfil foram encontradas e serão enviadas
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    user_img_id:
+                      type: integer
+                    img_url:
+                      type: string
+              examples:
+                Exemplo de imagens de perfil:
+                  value:
+                    - user_img_id: 1
+                      img_url: 'localhost:3333/'
+        '500':
+          description: Erro interno na API.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+              examples:
+                Exemplo de erro:
+                  value:
+                    error: Ocorreu um erro. Tente novamente mais tarde
+      operationId: get-user-img
+      description: Rota responsável por enviar as imagens de perfil disponíveis para os usuário.
 components:
   schemas:
     User:
