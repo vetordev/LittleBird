@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { FlatList, TouchableOpacity } from 'react-native';
 import { Feather } from '@expo/vector-icons';
 
@@ -7,6 +7,9 @@ import InterestCard from '../../../components/InterestCard';
 import ModalContainer from '../../../components/ModalContainer';
 
 import themes from '../../../services/themes';
+import api from '../../../services/api';
+
+import { useAuth } from '../../../contexts/auth';
 
 import { 
    Container, 
@@ -23,11 +26,26 @@ import {
 
 const Interests = () => {
    const [displayModal, setModalDisplay] = useState(false);
+   const [interests, setInterests] = useState([]);
    const [addedInterest, setAddedInterest] = useState(false);
+   const { token } = useAuth();
 
    function openModal() {
       setModalDisplay(true);
    }
+
+   useEffect(() => {
+      async function getContent() {
+         const responseInterests = await api.get('interest?page=1', { headers: { Authorization: token } });
+         console.log(responseInterests.data);
+
+         setInterests(responseInterests.data);
+      }
+
+      getContent();
+   }, []);
+
+   if (interests.length == 0) return false;
 
    return (
       <Container>
@@ -60,15 +78,15 @@ const Interests = () => {
          }  
 
          <FlatList 
-            data={themes}
-            keyExtractor={theme => String(theme.theme_id)}
+            data={interests}
+            keyExtractor={theme => String(theme.interest_id)}
             numColumns={2}
             columnWrapperStyle={{ marginHorizontal: 15 }}
             ListHeaderComponent={
                <Header title="Seus interesses" />
             }
             renderItem={({ item }) => (
-               <InterestCard img_url={item.theme_img.img_url} name={item.theme_name} />
+               <InterestCard img_url={item.theme_id.theme_img_id.img_url} name={item.theme_id.theme_name} />
             )}
             ListFooterComponent={
                <AddInterest onPress={openModal}>

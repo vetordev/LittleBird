@@ -68,7 +68,6 @@ const EditProfile = () => {
          });
    
          formRef.current.setErrors({});
-   
 
          const newUser = {
            email: data.email === undefined ? user.email : data.email,
@@ -79,11 +78,8 @@ const EditProfile = () => {
 
          setUser(newUser);
 
-         const response = await api.put('user', newUser, { headers: { Authorization: token } });
+         await api.put('user', newUser, { headers: { Authorization: token } });
 
-         console.log(response.status);
-         
-   
        } catch (err) {
          if (err instanceof Yup.ValidationError) {
            const errorMessages = {};
