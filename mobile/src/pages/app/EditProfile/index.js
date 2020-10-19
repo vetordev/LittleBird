@@ -8,6 +8,7 @@ import Header from '../../../components/Header';
 import Input from '../../../components/Input';
 
 import { useAuth } from '../../../contexts/auth';
+import api from '../../../services/api';
 
 import { 
    Container, 
@@ -23,7 +24,7 @@ import {
 
 const EditProfile = () => {
    const [avatarId, setAvatarId] = useState(2);
-   const { user, setUser } = useAuth();
+   const { user, setUser, token } = useAuth();
    const formRef = useRef(null);
 
    const { user_img_id } = user;
@@ -75,10 +76,12 @@ const EditProfile = () => {
            user_img_id: avatarId,
            born_in: '2019-08-24'
          }
-         
-         console.log(newUser);
 
          setUser(newUser);
+
+         const response = await api.put('user', newUser, { headers: { Authorization: token } });
+
+         console.log(response.status);
          
    
        } catch (err) {
