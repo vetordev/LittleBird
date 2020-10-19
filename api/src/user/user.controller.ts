@@ -14,14 +14,19 @@ export class UserController {
   @UseFilters(QueryFailedExceptionFilter)
   async createUser(@Body() user: CreateUserDto) {
     return await this.userService.createUser(user);
-  }
+  };
 
   @Get()
   @UseGuards(JwtAuthGuard)
   async getUser(@Req() request ) {
-
     return await this.userService.getUserById(request.user.user_id);
-  }
+  };
+
+  @Get('img')
+  @HttpCode(200)
+  async getUserImg() {
+    return await this.userService.getUserImg();
+  };
 
   @Put()
   @HttpCode(204)
@@ -29,12 +34,12 @@ export class UserController {
   @UseFilters(QueryFailedExceptionFilter)
   async updateUser(@Req() request, @Body() user: UpdateUserDto) {
     return await this.userService.updateUser(request.user.user_id, user);
-  }
+  };
 
   @Get('email')
   @UseFilters(QueryFailedExceptionFilter)
   async emailExists(@Query() query: EmailExistsDto) {
     return await this.userService.emailExists(query.email);
-  }
+  };
 
 }
