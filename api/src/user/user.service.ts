@@ -54,7 +54,7 @@ export class UserService {
     };
   };
 
-  async getUserImg() {
+  async getUserImg(): Promise<UserImg[]> {
     const user_img = await this.userImgRepository.createQueryBuilder("user_img")
       .select(["user_img"])
       .orderBy('user_img.user_img_id', 'ASC')

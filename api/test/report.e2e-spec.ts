@@ -56,6 +56,34 @@ describe('Report', () => {
     await app.close();
   });
 
+  describe('Buscar os tipos de denúncia', () => {
+
+    beforeAll(async () => {
+      await getConnection().dropDatabase();
+      await getConnection().synchronize();
+
+      await getConnection().createQueryBuilder().insert().into('report_type').values({ report_type_id: 1, report_type_name: 'Abuso Verbal', report_type_especification: 'lorem ipsum dolor sit amet.' }).execute();
+      await getConnection().createQueryBuilder().insert().into('report_type').values({ report_type_id: 2, report_type_name: 'Abuso Verbal', report_type_especification: 'lorem ipsum dolor sit amet.' }).execute();
+      await getConnection().createQueryBuilder().insert().into('report_type').values({ report_type_id: 3, report_type_name: 'Abuso Verbal', report_type_especification: 'lorem ipsum dolor sit amet.' }).execute();
+      await getConnection().createQueryBuilder().insert().into('report_type').values({ report_type_id: 4, report_type_name: 'Abuso Verbal', report_type_especification: 'lorem ipsum dolor sit amet.' }).execute();
+      await getConnection().createQueryBuilder().insert().into('report_type').values({ report_type_id: 5, report_type_name: 'Abuso Verbal', report_type_especification: 'lorem ipsum dolor sit amet.' }).execute();
+    });
+
+    it('> GET /report/type Deve buscar os tipos de denúncias', async () => {
+
+      const response = await request(app.getHttpServer())
+        .get('/report/type')
+
+      expect(response.status).toBe(200)
+      expect(response.body[0]).toEqual(expect.objectContaining({
+        report_type_id: expect.any(Number),
+        report_type_name: expect.any(String),
+        report_type_especification: expect.any(String)
+      }));
+    });
+
+  });
+
   describe('Reportar um comentário', () => {
 
     beforeAll(async () => {

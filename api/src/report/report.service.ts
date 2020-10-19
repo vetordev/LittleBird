@@ -4,6 +4,7 @@ import { CreateReportReplyBodyDto, CreateReportCommentBodyDto } from './report.d
 import { InjectRepository } from '@nestjs/typeorm';
 import { ReportComment } from './entity/report-comment.entity';
 import { ReportReply } from './entity/report-reply.entity';
+import { ReportType } from './entity/report-type.entity';
 
 
 @Injectable()
@@ -11,8 +12,18 @@ export class ReportService {
 
   constructor(
     @InjectRepository(ReportComment) private readonly reportCommentRepository: Repository<ReportComment>,
-    @InjectRepository(ReportReply) private readonly reportReplyRepository: Repository<ReportReply>
+    @InjectRepository(ReportReply) private readonly reportReplyRepository: Repository<ReportReply>,
+    @InjectRepository(ReportType) private readonly reportTypeRepository: Repository<ReportType>
   ) {}
+
+  async getReportType(): Promise<ReportType[]> {
+    const report_type = await this.reportTypeRepository.createQueryBuilder('report_type')
+      .select(['report_type'])
+      .getMany();
+
+    return report_type;
+
+  };
 
   async createReportReply(reply_id: number, report: CreateReportReplyBodyDto, user_id: number): Promise<void> {
     await this.reportReplyRepository.createQueryBuilder('report_reply')
@@ -25,8 +36,9 @@ export class ReportService {
         reporter_user_id: user_id
       })
       .execute();
-    
+
   };
+
   async createReportComment(comment_id: number, report: CreateReportCommentBodyDto, user_id: number): Promise<void> {
     await this.reportCommentRepository.createQueryBuilder('report_comment')
       .insert()
