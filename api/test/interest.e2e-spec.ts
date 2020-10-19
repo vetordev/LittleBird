@@ -91,7 +91,7 @@ describe('Interest', () => {
       await getConnection().createQueryBuilder().insert().into("theme_img").values({ theme_img_id: 1, img_url: "http://localhost:4456" }).execute();
       await getConnection().createQueryBuilder().insert().into("theme").values({ theme_id: 1, theme_name: "Sexo", theme_img_id: 1 }).execute();
       await getConnection().createQueryBuilder().insert().into("interest").values({ interest_id: 1, theme_id: 1, user_id: 1 }).execute();
-      // await getConnection().createQueryBuilder().insert().into("interest").values({ interest_id: 2, theme_id: 1, user_id: 1 }).execute();
+      await getConnection().createQueryBuilder().insert().into("interest").values({ interest_id: 2, theme_id: 1, user_id: 1 }).execute();
 
       const response = await request(app.getHttpServer()).post('/auth/login').send({ email: 'carlosboavida@gm.com', user_pass: '123vidaboa' });
       token = response.body.token;
@@ -103,6 +103,7 @@ describe('Interest', () => {
         .set('Authorization', `Bearer ${token}`);
 
       expect(response.status).toBe(200);
+      expect(response.header['x-total-count']).toBe("1");
       expect(response.body[0]).toEqual(expect.objectContaining({
         user_id: expect.any(Number),
         interest_id: expect.any(Number),
