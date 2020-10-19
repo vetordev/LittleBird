@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { FlatList, TouchableOpacity } from 'react-native';
 import { Feather } from '@expo/vector-icons';
 
@@ -7,6 +7,9 @@ import InterestCard from '../../../components/InterestCard';
 import ModalContainer from '../../../components/ModalContainer';
 
 import themes from '../../../services/themes';
+import api from '../../../services/api';
+
+import { useAuth } from '../../../contexts/auth';
 
 import { 
    Container, 
@@ -23,11 +26,30 @@ import {
 
 const Interests = () => {
    const [displayModal, setModalDisplay] = useState(false);
+   const [interests, setInterests] = useState([]);
+   const [themes, setThemes] = useState([]);
    const [addedInterest, setAddedInterest] = useState(false);
+   const { token } = useAuth();
 
    function openModal() {
       setModalDisplay(true);
    }
+
+   useEffect(() => {
+      async function getContent() {
+         const responseInterests = await api.get('interest?page=1', { headers: { Authorization: token } });
+         const responseThemes = await api.get('theme');
+
+         console.log(responseThemes.data);
+
+         setInterests(responseInterests.data);
+         setThemes(responseThemes.data);
+      }
+
+      getContent();
+   }, []);
+
+   if (interests.length == 0) return false;
 
    return (
       <Container>
@@ -39,36 +61,28 @@ const Interests = () => {
                font_color="#202020"
                btn_title="OK!"
             >
-                  <InterestItem>
+               { themes.map(theme => (
+                  <InterestItem key={theme.theme_id}>
                      <InterestInfos>
-                        <InterestImg source={{ uri: 'https://images.unsplash.com/photo-1590765615405-fd9021ab205d?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=700&q=80' }} />
-                        <InterestTitle>Menstruação</InterestTitle>
+                        <InterestImg source={{ uri: theme.theme_img_id.img_url }} />
+                        <InterestTitle>{theme.theme_name}</InterestTitle>
                      </InterestInfos>
                      <Feather name="plus" color="#01C24E" size={20} />
                   </InterestItem>
-
-                  <InterestItem>
-                     <InterestInfos>
-                        <InterestImg source={{ uri: 'https://images.unsplash.com/photo-1512548438457-4c9584d3766b?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=800&q=80' }} />
-                        <InterestTitle>Primeira vez</InterestTitle>
-                     </InterestInfos>
-                     <TouchableOpacity>
-                        <Feather name="plus" color="#01C24E" size={20} />
-                     </TouchableOpacity>
-                  </InterestItem>
+               ))}
             </ModalContainer>
          }  
 
          <FlatList 
-            data={themes}
-            keyExtractor={theme => String(theme.theme_id)}
+            data={interests}
+            keyExtractor={theme => String(theme.interest_id)}
             numColumns={2}
             columnWrapperStyle={{ marginHorizontal: 15 }}
             ListHeaderComponent={
                <Header title="Seus interesses" />
             }
             renderItem={({ item }) => (
-               <InterestCard img_url={item.theme_img.img_url} name={item.theme_name} />
+               <InterestCard img_url={item.theme_id.theme_img_id.img_url} name={item.theme_id.theme_name} />
             )}
             ListFooterComponent={
                <AddInterest onPress={openModal}>
