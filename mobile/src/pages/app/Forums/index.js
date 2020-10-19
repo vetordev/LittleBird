@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { View, FlatList } from 'react-native';
+import { View, FlatList, Keyboard } from 'react-native';
 import { MaterialIcons } from '@expo/vector-icons';
 import { useRoute } from '@react-navigation/native';
 
@@ -53,7 +53,38 @@ const Forums = () => {
       setModalDisplay(true);
    }
 
+
+   async function handleSetLiked() {
+      setLiked(liked ? false : true);
+
+      if (!liked) {
+         api.post(`forum/${forum_id}/like`, {}, {
+            headers: {
+               Authorization: token
+            }
+         })
+         .then((response) => {
+            if (response.status == 204) {
+               setLiked(true);
+            }
+         })
+         
+      } else {
+         api.delete(`forum/${forum_id}/like`, {
+            headers: {
+               Authorization: token
+            }
+         })
+         .then((response) => {
+            if (response.status == 204) {
+               setLiked(false);
+            }
+         })
+      }
+   }
+
    async function sendComment() {
+      
       await api.post(
          `/forum/${forum_id}/comment`, 
          {comment_content: input}, 
@@ -65,21 +96,31 @@ const Forums = () => {
       )
 
       setInput('');
+      Keyboard.dismiss();
 
       const response = await api.get(`forum/${forum_id}/comment?page=1`);
       setForum(response.data);
    }
 
    useEffect(() => {
-      console.log('formu', forum_id);
-      async function getForum () {
+      async function getContent() {
          const response = await api.get(`forum/${forum_id}/comment?page=1`);
-         setForum(response.data);
+         const responseForumLiked = await api.get(`/forum/user/like?page=1`, {
+            headers: {
+               Authorization: token
+            }
+         });
 
-         console.log(response.data);
+         responseForumLiked.data.map((item) => {
+            item.forum_id === forum_id 
+            ? setLiked(true)
+            : ''
+         });
+
+         setForum(response.data);
       }
 
-      getForum();
+      getContent();
    }, []);
 
    if (forum.forum_img_id === undefined) return false;
@@ -144,7 +185,7 @@ const Forums = () => {
             <Cover resizeMode="cover" source={{ uri: forum.forum_img_id.img_url }} />
             <Content>
                <Options>
-                  <Option onPress={() => setLiked(liked ? false : true)}>
+                  <Option onPress={handleSetLiked}>
                      <MaterialIcons name={liked ? 'favorite' : 'favorite-border'} size={20} color={liked ? '#DA2243' : '#F6F6F6'} />
                   </Option>
                </Options>

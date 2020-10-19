@@ -2,9 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { View, ScrollView, Dimensions } from 'react-native';
 import Carousel from 'react-native-snap-carousel';
 import { Feather } from '@expo/vector-icons';
-import { useNavigation } from '@react-navigation/native';
+import { useNavigation, useRoute } from '@react-navigation/native';
 
-import themesP from '../../../services/themes';
 import api from '../../../services/api';
 
 import { 
@@ -30,13 +29,17 @@ import {
 } from './styles';
 
 const Subjects = () => {
+  const route = useRoute();
+  // const { theme_id } = route.params ? route.params : 0;
+
   const [themes, setThemes] = useState([]);
   const [articles, setArticles] = useState([]);
   const [foruns, setForuns] = useState([]);
   const [selectedTheme, setSelectedTheme] = useState(0);
 
   const win = Dimensions.get('window');
-  const navigation = useNavigation();
+  const { navigate } = useNavigation();
+  
 
   async function handleThemeFilter(theme_id) {
     setSelectedTheme(theme_id);
@@ -59,27 +62,36 @@ const Subjects = () => {
   }
 
   function navigateToArticles(article_id) {
-    navigation.navigate('Articles', { article_id });
+    navigate('Articles', { article_id });
   }
 
   function navigateToForums(forum_id) {
 
     console.log(forum_id);
-    navigation.navigate('Forums', { forum_id });
+    navigate('Forums', { forum_id });
+  }
+
+  function getTag() {
+    try {  
+      const { theme_id } = route.params;
+    
+      handleThemeFilter(theme_id);
+
+    } catch(err) {
+      return false;
+    }
   }
 
   useEffect(() => {
-    async function getContent() {
+    async function getThemes() {
       const responseThemes = await api.get('theme');
-      const responseArticles = await api.get('article?page=1');
-      const responseForuns = await api.get('forum?page=1');
-
       setThemes(responseThemes.data);
-      setArticles(responseArticles.data);
-      setForuns(responseForuns.data);
     }
 
-    getContent();
+    getThemes();
+    getTag();
+    handleThemeFilter(0);
+    
   }, []);
   
   return (
