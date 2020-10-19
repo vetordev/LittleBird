@@ -5,12 +5,14 @@ import { Repository } from 'typeorm';
 import { User } from './entity/user.entity';
 import { AuthService } from '../auth/auth.service';
 import hashPassword from "./utils/hash.password";
+import { UserImg } from './entity/user-img.entity';
 
 @Injectable()
 export class UserService {
 
   constructor(
     @InjectRepository(User) private readonly userRepository: Repository<User>,
+    @InjectRepository(UserImg) private readonly userImgRepository: Repository<UserImg>,
     @Inject(forwardRef(() => AuthService))
     private readonly authService: AuthService
   ){}
@@ -32,7 +34,7 @@ export class UserService {
 
     const token = this.authService.login(payload_user.sub, payload_user.email );
     return token;
-  }
+  };
 
   async getUserByEmail(email: string): Promise<any | null> {
     const user = await this.userRepository.createQueryBuilder("tb_user")
@@ -50,7 +52,16 @@ export class UserService {
       email: user.email,
       user_pass: user.user_pass
     };
-  }
+  };
+
+  async getUserImg(): Promise<UserImg[]> {
+    const user_img = await this.userImgRepository.createQueryBuilder("user_img")
+      .select(["user_img"])
+      .orderBy('user_img.user_img_id', 'ASC')
+      .getMany();
+
+    return user_img;
+  };
 
   async getUserById(user_id: number): Promise<GetUserDto> {
     const user = await this.userRepository.createQueryBuilder("tb_user")
@@ -62,7 +73,7 @@ export class UserService {
       .getOne();
 
     return user;
-  }
+  };
 
   async updateUser(user_id: number, user: UpdateUserDto): Promise<void> {
     await this.userRepository.createQueryBuilder("tb_user")
@@ -70,7 +81,7 @@ export class UserService {
       .set(user)
       .where("tb_user.user_id = :user_id", { user_id })
       .execute()
-  }
+  };
 
   async emailExists(email: string): Promise<object> {
     const user = await this.userRepository.createQueryBuilder('tb_user')

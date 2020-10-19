@@ -189,6 +189,34 @@ describe('User', () => {
     });
   });
 
+  describe('Buscar Imagem de Usuário', () => {
+
+    beforeAll(async () => {
+      await getConnection().dropDatabase()
+      await getConnection().synchronize();
+
+      await getConnection().createQueryBuilder().insert().into("user_img").values({ user_img_id: 1, img_url: "http://localhost:4456" }).execute();
+      await getConnection().createQueryBuilder().insert().into("user_img").values({ user_img_id: 2, img_url: "http://localhost:4456" }).execute();
+      await getConnection().createQueryBuilder().insert().into("user_img").values({ user_img_id: 3, img_url: "http://localhost:4456" }).execute();
+      await getConnection().createQueryBuilder().insert().into("user_img").values({ user_img_id: 4, img_url: "http://localhost:4456" }).execute();
+      await getConnection().createQueryBuilder().insert().into("user_img").values({ user_img_id: 5, img_url: "http://localhost:4456" }).execute();
+
+    });
+
+    it('> GET /user/img Deve buscar as imagens de perfil dos usuários', async () => {
+
+      const response = await request(app.getHttpServer())
+        .get('/user/img');
+
+      expect(response.status).toBe(200)
+      expect(response.body[0]).toEqual(expect.objectContaining({
+        user_img_id: expect.any(Number),
+        img_url: expect.any(String)
+      }));
+    });
+
+  });
+
   describe('Alterar um usuário', () => {
 
     beforeAll(async () => {

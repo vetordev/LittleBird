@@ -33,16 +33,28 @@ export class InterestService {
         .execute();
     };
   }
-  async getInterestByUser(user_id: number, page: number): Promise<Interest[]> {
+  async getInterestByUser(response: Response, user_id: number, page: number): Promise<Response> {
     const themes_interests = await this.interestRespository.createQueryBuilder('interest')
       .innerJoinAndSelect('interest.theme_id', 'theme')
       .innerJoinAndSelect('theme.theme_img_id', 'theme_img')
       .where('interest.user_id = :user_id', { user_id })
       .offset((page - 1) * 4)
       .limit(4)
-      .getMany();
+      .orderBy('interest.interest_id', 'DESC')
+      .getManyAndCount();
 
-    return themes_interests;
+    const count = themes_interests[1];
+    let pageCount;
+
+    if (count % 6 == 0){
+      pageCount = count / 6;
+    }
+    else {
+      const rest = count % 6;
+      pageCount = ((count - rest) / 6) + 1
+    }
+
+    return response.status(200).header('x-total-count', pageCount).json(themes_interests[0]);
 
   }
 
