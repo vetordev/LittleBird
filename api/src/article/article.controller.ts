@@ -40,19 +40,17 @@ export class ArticleController {
   }
 
   @Post(':article_id/later')
-  @HttpCode(204)
   @UseGuards(JwtAuthGuard)
   @UseFilters(QueryFailedExceptionFilter)
-  createArticleLater(@Req() request, @Param() params: CreateArticleLaterDto) {
-    return this.articleService.createArticleLater(request.user.user_id, params.article_id);
+  createArticleLater(@Res() response, @Req() request, @Param() params: CreateArticleLaterDto) {
+    return this.articleService.createArticleLater(response, request.user.user_id, params.article_id);
   }
 
   @Post(':article_id/like')
-  @HttpCode(204)
   @UseGuards(JwtAuthGuard)
   @UseFilters(QueryFailedExceptionFilter)
-  createArticleLike(@Req() request, @Param() params: CreateArticleLikeDto) {
-    return this.articleService.createArticleLike(request.user.user_id, params.article_id);
+  createArticleLike(@Res() response, @Req() request, @Param() params: CreateArticleLikeDto) {
+    return this.articleService.createArticleLike(response, request.user.user_id, params.article_id);
   }
 
   @Delete(':article_id/like')

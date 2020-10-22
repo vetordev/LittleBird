@@ -216,28 +216,46 @@ export class ArticleService {
 
   }
 
-  async createArticleLike(user_id: number, article_id: number): Promise<void> {
+  // TODO Adicionar verificação antes de inserir o like
+  async createArticleLike(response: Response, user_id: number, article_id: number): Promise<Response | void> {
 
-    await this.likeArticleRepository.createQueryBuilder("like_article")
-      .insert()
-      .into('like_article').values({
-        article_id,
-        user_id
-      }).execute();
-
-    const article: any = await this.articleRepository.createQueryBuilder('article')
-    .select(['article.no_like'])
-    .where('article.article_id = :article_id', { article_id })
-    .getOne();
-
-    await this.articleRepository.createQueryBuilder('article')
-      .update('article')
-      .set({
-        no_like: article.no_like + 1,
-      })
+    const article = await this.articleRepository.createQueryBuilder('article')
+      .select(['article.article_id'])
       .where('article.article_id = :article_id', { article_id })
-      .execute();
+      .getOne();
 
+    if(!article) {
+      return response.status(404).json({ error: "A chave estrangeira não existe no servidor." });
+    }
+
+    const like_article = await this.likeArticleRepository.createQueryBuilder('like_article')
+      .select(['like_article.like_article_id'])
+      .where('like_article.article_id = :article_id', { article_id })
+      .getOne();
+
+    if (!like_article) {
+        await this.likeArticleRepository.createQueryBuilder("like_article")
+        .insert()
+        .into('like_article').values({
+          article_id,
+          user_id
+        }).execute();
+
+      const article: any = await this.articleRepository.createQueryBuilder('article')
+      .select(['article.no_like'])
+      .where('article.article_id = :article_id', { article_id })
+      .getOne();
+
+      await this.articleRepository.createQueryBuilder('article')
+        .update('article')
+        .set({
+          no_like: article.no_like + 1,
+        })
+        .where('article.article_id = :article_id', { article_id })
+        .execute();
+    };
+
+    return response.status(204).end();
 
   }
 
@@ -270,13 +288,36 @@ export class ArticleService {
     return response.status(204).end();
   }
 
-  async createArticleLater(user_id: number, article_id: number): Promise<void> {
-    await this.laterArticleRepository.createQueryBuilder("later_article")
+  // TODO Adicionar verificação antes de inserir o later
+  async createArticleLater(response: Response, user_id: number, article_id: number): Promise<Response | void> {
+    const article = await this.articleRepository.createQueryBuilder('article')
+      .select(['article.article_id'])
+      .where('article.article_id = :article_id', { article_id })
+      .getOne();
+
+    if (!article) {
+      return response.status(404).json({ error: 'O artigo não foi encontrado.' });
+    }
+
+    const later_article = await this.laterArticleRepository.createQueryBuilder('later_article')
+      .select(['later_article.later_article_id'])
+      .where('later_article.article_id = :article_id', { article_id })
+      .getOne();
+
+
+
+    if (!later_article) {
+      await this.laterArticleRepository.createQueryBuilder("later_article")
       .insert()
       .into('like_article').values({
         article_id,
         user_id
       }).execute();
+
+    }
+
+    return response.status(204).end();
+
   }
 
   async deleteArticleLater(response: Response, user_id: number, article_id: number): Promise<Response | void> {

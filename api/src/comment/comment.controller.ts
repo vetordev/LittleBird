@@ -4,6 +4,7 @@ import { GetRepliesDto, CreateLikeDto, CreateReplyParamDto, CreateReplyBodyDto, 
 import { JwtAuthGuard } from '../auth/jwt/jwt-auth.guard';
 import { QueryFailedExceptionFilter } from './http-exception.filter';
 import { QueryPageDto } from './comment.dto';
+import { request } from 'http';
 
 @Controller('comment')
 export class CommentController {
@@ -21,11 +22,10 @@ export class CommentController {
   };
 
   @Post(':comment_id/like')
-  @HttpCode(204)
   @UseGuards(JwtAuthGuard)
   @UseFilters(QueryFailedExceptionFilter)
-  createLike(@Req() request, @Param() params: CreateLikeDto)  {
-    return this.commentService.createLike(request.user.user_id, params.comment_id);
+  createLike(@Res() response, @Req() request, @Param() params: CreateLikeDto)  {
+    return this.commentService.createLike(response, request.user.user_id, params.comment_id);
   };
 
   @Post(':comment_id/reply')
@@ -44,7 +44,7 @@ export class CommentController {
 
   @Delete(':comment_id/like')
   @UseGuards(JwtAuthGuard)
-  removeLike(@Res() response, @Param() params: RemoveLikeDto) {
-    return this.commentService.removeLike(response, params.comment_id);
+  removeLike(@Res() response, @Req() request, @Param() params: RemoveLikeDto) {
+    return this.commentService.removeLike(response, request.user.user_id, params.comment_id);
   };
 }
