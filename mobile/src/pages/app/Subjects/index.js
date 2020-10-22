@@ -77,7 +77,7 @@ const Subjects = () => {
       handleThemeFilter(theme_id);
 
     } catch(err) {
-      return false;
+      handleThemeFilter(0);
     }
   }
 
@@ -88,7 +88,6 @@ const Subjects = () => {
     }
 
     getThemes();
-    handleThemeFilter(0);
     getTag();
   }, [isFocused]);
   
