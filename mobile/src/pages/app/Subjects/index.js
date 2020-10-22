@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { View, ScrollView, Dimensions } from 'react-native';
 import Carousel from 'react-native-snap-carousel';
 import { Feather } from '@expo/vector-icons';
-import { useNavigation, useRoute } from '@react-navigation/native';
+import { useNavigation, useRoute, useIsFocused } from '@react-navigation/native';
 
 import api from '../../../services/api';
 
@@ -30,6 +30,7 @@ import {
 
 const Subjects = () => {
   const route = useRoute();
+  const isFocused = useIsFocused();
   // const { theme_id } = route.params ? route.params : 0;
 
   const [themes, setThemes] = useState([]);
@@ -87,10 +88,9 @@ const Subjects = () => {
     }
 
     getThemes();
-    getTag();
     handleThemeFilter(0);
-    
-  }, []);
+    getTag();
+  }, [isFocused]);
   
   return (
     <ScrollView 
