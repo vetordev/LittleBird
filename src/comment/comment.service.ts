@@ -95,31 +95,52 @@ export class CommentService {
     return response.status(200).header('x-total-count', pageCount).json(comments);
   };
 
-  async createLike(user_id: number, comment_id: number): Promise<Response | void> {
+  // TODO Adicionar verificação antes de inserir o like
+  async createLike(response: Response, user_id: number, comment_id: number): Promise<Response | void> {
+    const comment = await this.commentRepository.createQueryBuilder('tb_comment')
+      .select(['tb_comment.comment_id'])
+      .where('tb_comment.comment_id = :comment_id', { comment_id })
+      .getOne();
 
-    await this.likeCommentRepository.createQueryBuilder('like_comment')
+    console.log(comment)
+    if (!comment) {
+      return response.status(404).json({ error: "A chave estrangeira não existe no servidor." });
+    };
+
+    const like_comment = await this.likeCommentRepository.createQueryBuilder('like_comment')
+      .select(['like_comment.like_comment_id'])
+      .where('like_comment.comment_id = :comment_id', { comment_id })
+      .getOne();
+
+    console.log(like_comment)
+    if (!like_comment) {
+      await this.likeCommentRepository.createQueryBuilder('like_comment')
       .insert()
       .into('like_comment').values({
         comment_id,
         user_id,
       }).execute();
 
-    const comment = await this.commentRepository.createQueryBuilder('tb_comment')
-      .select(['tb_comment.no_like'])
-      .where('tb_comment.comment_id = :comment_id', { comment_id })
-      .getOne();
+      const comment = await this.commentRepository.createQueryBuilder('tb_comment')
+        .select(['tb_comment.no_like'])
+        .where('tb_comment.comment_id = :comment_id', { comment_id })
+        .getOne();
 
-    await this.commentRepository.createQueryBuilder('tb_comment')
-      .update('tb_comment')
-      .set({
-        no_like: comment.no_like + 1
-      })
-      .where('tb_comment.comment_id = :comment_id', { comment_id })
-      .execute();
+      await this.commentRepository.createQueryBuilder('tb_comment')
+        .update('tb_comment')
+        .set({
+          no_like: comment.no_like + 1
+        })
+        .where('tb_comment.comment_id = :comment_id', { comment_id })
+        .execute();
+      console.log(1)
+    };
+
+    return response.status(204).end();
 
   };
 
-  async createReply(comment_id: number, reply_content: string, forum: string,user_id: number): Promise<Response | void> {
+  async createReply(comment_id: number, reply_content: string, forum: string,user_id: number): Promise<void> {
     const publi_date = new Date().toLocaleDateString();
 
     const reply = await this.replyRepository.createQueryBuilder('reply')
@@ -160,7 +181,7 @@ export class CommentService {
     return response.status(204).end();
   };
 
-  async removeLike(response: Response, comment_id: number): Promise<Response | void> {
+  async removeLike(response: Response, user_id: number, comment_id: number): Promise<Response | void> {
     const comment = await this.commentRepository.createQueryBuilder('tb_comment')
       .select(['tb_comment.no_like'])
       .where('tb_comment.comment_id = :comment_id', { comment_id })
@@ -169,6 +190,12 @@ export class CommentService {
     if(!comment) {
       return response.status(404).json({ error: 'Comentário não encontrado.' });
     }
+
+    await this.likeCommentRepository.createQueryBuilder('like_comment')
+      .delete()
+      .where('like_comment.user_id = :user_id', { user_id })
+      .andWhere('like_comment.comment_id = :comment_id', { comment_id })
+      .execute();
 
     if(comment.no_like > 0){
       await this.commentRepository.createQueryBuilder('tb_comment')

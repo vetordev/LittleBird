@@ -299,6 +299,7 @@ describe('Comment', () => {
         .set('Authorization', `Bearer ${token}`);
 
       expect(response.status).toBe(204);
+
     });
 
     it('> DELETE /comment/reply/:reply_id Não deve remover um comentário (Token JWT inválido)', async () => {

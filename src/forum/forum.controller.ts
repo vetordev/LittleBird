@@ -3,6 +3,7 @@ import { ForumService } from './forum.service';
 import { GetForumByThemeDto, GetForumAndCommentDto, CreateLikeDto, CreateCommentParamDto, CreateCommentBodyDto, RemoveCommentDto, RemoveLikeDto, QueryPageDto } from './forum.dto';
 import { JwtAuthGuard } from '../auth/jwt/jwt-auth.guard';
 import { QueryFailedExceptionFilter } from './http-exception.filter';
+import { response } from 'express';
 
 @Controller('forum')
 export class ForumController {
@@ -38,11 +39,10 @@ export class ForumController {
   };
 
   @Post(':forum_id/like')
-  @HttpCode(204)
   @UseGuards(JwtAuthGuard)
   @UseFilters(QueryFailedExceptionFilter)
-  createLike(@Param() params: CreateLikeDto, @Req() request) {
-    return this.forumService.createLike(params.forum_id, request.user.user_id)
+  createLike(@Res() response, @Param() params: CreateLikeDto, @Req() request) {
+    return this.forumService.createLike(response, params.forum_id, request.user.user_id)
   };
 
   @Delete('comment/:comment_id')

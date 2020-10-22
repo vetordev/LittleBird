@@ -198,8 +198,26 @@ export class ForumService {
     });
   };
 
-  async createLike(forum_id: number, user_id: number): Promise<void> {
-    await this.likeForumRepository.createQueryBuilder('like_forum')
+  // TODO Adicionar verificação antes de inserir o like
+  async createLike(response: Response, forum_id: number, user_id: number): Promise<Response | void> {
+    const forum = await this.forumRepository.createQueryBuilder('forum')
+      .select(['forum.forum_id'])
+      .where('forum.forum_id = :forum_id', { forum_id })
+      .getOne();
+
+    if (!forum) {
+      return response.status(404).json({ error: "A chave estrangeira não existe no servidor." });
+    };
+
+    const like_forum = await this.likeForumRepository.createQueryBuilder('like_forum')
+      .select(['like_forum.like_forum_id'])
+      .where('like_forum.forum_id = :forum_id', { forum_id })
+      .andWhere('like_forum.user_id = :user_id', { user_id })
+      .getOne();
+
+    if(!like_forum) {
+
+      await this.likeForumRepository.createQueryBuilder('like_forum')
       .insert()
       .into('like_forum')
       .values({
@@ -208,19 +226,22 @@ export class ForumService {
       })
       .execute();
 
+      const forum: any = await this.forumRepository.createQueryBuilder('forum')
+      .select(['forum.no_like'])
+      .where('forum.forum_id = :forum_id', { forum_id })
+      .getOne();
 
-    const forum: any = await this.forumRepository.createQueryBuilder('forum')
-    .select(['forum.no_like'])
-    .where('forum.forum_id = :forum_id', { forum_id })
-    .getOne();
+      await this.forumRepository.createQueryBuilder('forum')
+      .update('forum')
+      .set({
+        no_like: forum.no_like + 1,
+      })
+      .where('forum.forum_id = :forum_id', { forum_id })
+      .execute();
 
-    await this.forumRepository.createQueryBuilder('forum')
-    .update('forum')
-    .set({
-      no_like: forum.no_like + 1,
-    })
-    .where('forum.forum_id = :forum_id', { forum_id })
-    .execute();
+    }
+
+    return response.status(204).end();
   };
 
   async removeComment(response: Response, comment_id: number): Promise<Response | void> {
