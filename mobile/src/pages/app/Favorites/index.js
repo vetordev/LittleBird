@@ -33,8 +33,6 @@ const Favorites = () => {
 
          setArticles(responseArticles.data);
          setForuns(responseForuns.data);
-
-         console.log(responseForuns.data);
       }
 
       getFavorites();
@@ -72,9 +70,9 @@ const Favorites = () => {
             }
             renderItem={({ item }) => (
                selectedCategory ? 
-               <InterestCard img_url={item.article_id.article_img_id.img_url} name={item.article_id.title} />
+                  <InterestCard img_url={item.article_id.article_img_id.img_url} name={item.article_id.title} />
                :
-               <InterestCard img_url={item.forum_img_id.img_url} name={item.title} />
+                  <InterestCard img_url={item.forum_img_id.img_url} name={item.title} />
             )}
          />
       </View>

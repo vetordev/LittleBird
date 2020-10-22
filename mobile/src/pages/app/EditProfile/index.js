@@ -1,5 +1,6 @@
 import React, { useRef, useState, useEffect } from 'react';
 import { View, FlatList } from 'react-native';
+import AsyncStorage from '@react-native-community/async-storage';
 import { Form } from '@unform/mobile';
 import { Feather } from '@expo/vector-icons';
 import * as Yup from 'yup';
@@ -79,6 +80,7 @@ const EditProfile = () => {
          setUser(newUser);
 
          await api.put('user', newUser, { headers: { Authorization: token } });
+         await AsyncStorage.setItem('@LittleBird:user', JSON.stringify(newUser));
 
        } catch (err) {
          if (err instanceof Yup.ValidationError) {
