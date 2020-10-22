@@ -20,7 +20,6 @@ import {
    InterestImg,
    InterestTitle,
    InterestInfos,
-   Intetest,
    InterestIcon,
 } from './styles';
 
@@ -28,11 +27,33 @@ const Interests = () => {
    const [displayModal, setModalDisplay] = useState(false);
    const [interests, setInterests] = useState([]);
    const [themes, setThemes] = useState([]);
-   const [addedInterest, setAddedInterest] = useState(false);
+   const [addedInterest, setAddedInterest] = useState([]);
    const { token } = useAuth();
 
    function openModal() {
       setModalDisplay(true);
+   }
+
+   function handleAddInterest(theme_id) {
+      const alreadyAdded = addedInterest.findIndex(theme => theme == theme_id);
+
+      if (alreadyAdded >= 0) {
+         const filteredThemes = addedInterest.filter(theme => theme !== theme_id);
+
+         setAddedInterest(filteredThemes);
+      } else {
+         setAddedInterest([...addedInterest, theme_id]);
+      }
+   }
+
+   function handleSubmitInterests() {
+      setModalDisplay(false);
+
+      const arrys = interests.filter(item => addedInterest.includes(item.theme_id.theme_id));
+      // console.log(arrys);
+
+      console.log(addedInterest.map(ad => ad != arrys.map(arry => arry.theme_id.theme_id)))
+      // console.log(addedInterest != arrys.theme_id.theme_id);
    }
 
    useEffect(() => {
@@ -40,10 +61,10 @@ const Interests = () => {
          const responseInterests = await api.get('interest?page=1', { headers: { Authorization: token } });
          const responseThemes = await api.get('theme');
 
-         console.log(responseThemes.data);
-
          setInterests(responseInterests.data);
          setThemes(responseThemes.data);
+
+         console.log(responseInterests.data);
       }
 
       getContent();
@@ -56,7 +77,7 @@ const Interests = () => {
 
          { displayModal &&
             <ModalContainer 
-               onPress={() => setModalDisplay(false)}
+               onPress={handleSubmitInterests}
                color_theme="#01C24E"
                font_color="#202020"
                btn_title="OK!"
@@ -67,7 +88,12 @@ const Interests = () => {
                         <InterestImg source={{ uri: theme.theme_img_id.img_url }} />
                         <InterestTitle>{theme.theme_name}</InterestTitle>
                      </InterestInfos>
-                     <Feather name="plus" color="#01C24E" size={20} />
+                     <TouchableOpacity onPress={() => handleAddInterest(theme.theme_id)}>
+                        { addedInterest.includes(theme.theme_id) ?
+                           <Feather name="check" color="#E9E9E9" size={20} /> :
+                           <Feather name="plus" color="#01C24E" size={20} /> 
+                        }
+                     </TouchableOpacity>
                   </InterestItem>
                ))}
             </ModalContainer>

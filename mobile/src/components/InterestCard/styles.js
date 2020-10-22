@@ -5,7 +5,7 @@ export const Container = styled.TouchableOpacity.attrs({
    activeOpacity: 0.8
 })`
    width: 50%;
-   height: 125px;
+   min-height: 125px;
    padding: 4px;
    flex: 1;
    /* background: red; */
@@ -13,7 +13,7 @@ export const Container = styled.TouchableOpacity.attrs({
 
 export const InterestImageFilter = styled.View`
    width: 100%;
-   height: 70%;
+   height: 87.5px;
    z-index: 6;
    position: absolute;
    margin: 4px 0 0 4px;
@@ -24,7 +24,7 @@ export const InterestImageFilter = styled.View`
 
 export const InterestImage = styled.ImageBackground`
    width: 100%;
-   height: 70%;
+   height: 87.5px;
    border-top-left-radius: 6px;
    border-top-right-radius: 6px;
    overflow: hidden;
@@ -39,12 +39,14 @@ export const InterestTitleContainer = styled.View`
    align-items: center;
    border-bottom-left-radius: 6px;
    border-bottom-right-radius: 6px;
+   padding: 5px;
 `;
 
 export const InterestTitle = styled.Text`
    color: #B8B8B8;
    font-size: 14px;
    font-family: Nunito_700Bold;
+   text-align: center;
 `;
 
 export const InterestDelete = styled.TouchableOpacity`

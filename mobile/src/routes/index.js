@@ -8,9 +8,9 @@ import AuthRoutes from './auth.routes';
 import AppRoutes from './app.routes';
 
 const Routes = () => {
-   const { signed, loading, token } = useAuth();
+   const { signed, loading, token, user } = useAuth();
 
-   if (loading) {
+   if (loading || token == undefined && user !== null) {
       return (
          <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
             <ActivityIndicator size="large" color="#999" />

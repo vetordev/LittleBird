@@ -58,8 +58,6 @@ export const InterestTitle = styled.Text`
    font-size: 16px;
 `;
 
-export const Intetest = styled.View`
-   ${InterestItem}:nth-child(2){
-      background: #0ff;
-   }
+export const InterestIcon = styled.TouchableOpacity`
+
 `;
