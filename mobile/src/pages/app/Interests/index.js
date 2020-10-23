@@ -108,7 +108,11 @@ const Interests = () => {
                <Header title="Seus interesses" />
             }
             renderItem={({ item }) => (
-               <InterestCard img_url={item.theme_id.theme_img_id.img_url} name={item.theme_id.theme_name} />
+               <InterestCard 
+                  img_url={item.theme_id.theme_img_id.img_url} 
+                  name={item.theme_id.theme_name} 
+                  idTheme={item.theme_id.theme_id}
+               />
             )}
             ListFooterComponent={
                <AddInterest onPress={openModal}>

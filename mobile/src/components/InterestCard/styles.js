@@ -39,7 +39,7 @@ export const InterestTitleContainer = styled.View`
    align-items: center;
    border-bottom-left-radius: 6px;
    border-bottom-right-radius: 6px;
-   padding: 5px;
+   padding: 7px 5px;
 `;
 
 export const InterestTitle = styled.Text`
