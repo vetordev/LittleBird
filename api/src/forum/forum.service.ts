@@ -141,15 +141,16 @@ export class ForumService {
       .getManyAndCount();
 
     const count = comments[1];
-    let pageCount;
+    console.log(count);
+    // let pageCount;
 
-    if (count % 6 == 0){
-      pageCount = count / 6;
-    }
-    else {
-      const rest = count % 6;
-      pageCount = ((count - rest) / 6) + 1
-    }
+    // if (count % 6 == 0){
+    //   pageCount = count / 6;
+    // }
+    // else {
+    //   const rest = count % 6;
+    //   pageCount = ((count - rest) / 6) + 1
+    // }
 
     comments = comments[0].map( (comment) => {
       delete comment.forum_id;
@@ -173,7 +174,7 @@ export class ForumService {
       themes
     };
 
-    return response.status(200).header('X-Total-Count', pageCount).json(forum_comments_themes);
+    return response.status(200).header('X-Total-Count', count).json(forum_comments_themes);
   };
 
   async createComment(forum_id: number, comment_content : string, user_id: number): Promise<Response | void> {
