@@ -40,9 +40,11 @@ const Forums = () => {
    const [liked, setLiked] = useState(false);   
    const [displayModal, setModalDisplay] = useState(true);
    const [forum, setForum] = useState({});
+   const [comments, setComments] = useState([]);
    const [input, setInput] = useState('');
    const [page, setPage] = useState(1);
    const [total, setTotal] = useState(0);
+   const [loading, setLoading] = useState(false);
 
    const route = useRoute();
    const { forum_id } = route.params;
@@ -83,8 +85,7 @@ const Forums = () => {
       }
    }
 
-   async function sendComment() {
-      
+   async function sendComment() { 
       await api.post(
          `/forum/${forum_id}/comment`, 
          {comment_content: input}, 
@@ -98,13 +99,36 @@ const Forums = () => {
       setInput('');
       Keyboard.dismiss();
 
-      const response = await api.get(`forum/${forum_id}/comment?page=1`);
-      setForum(response.data);
+      loadComments();
+   }
+
+   async function loadComments() {
+      if (loading) {
+         return;
+      }
+
+      if (total > 0 && comments.length == total) {
+         return;
+      }
+
+      setLoading(true);
+      
+      // const response = await api.get(`comment/forum/${forum_id}?page=${page}`);
+      const responseForum = await api.get(`forum/${forum_id}/comment?page=${page}`);
+
+      setComments([... comments, ... responseForum.data.comments]);
+      setTotal(responseForum.headers['X-Total-Count']);
+      setPage(page + 1);
+      setLoading(false);
    }
 
    useEffect(() => {
       async function getContent() {
-         const response = await api.get(`forum/${forum_id}/comment?page=1`);
+         const responseForum = await api.get(`forum/${forum_id}/comment?page=1`);
+         setForum(responseForum.data);
+         // setComments(responseForum.data.comments);
+         loadComments();
+
          const responseForumLiked = await api.get(`/forum/user/like?page=1`, {
             headers: {
                Authorization: token
@@ -116,8 +140,6 @@ const Forums = () => {
             ? setLiked(true)
             : ''
          });
-
-         setForum(response.data);
       }
 
       getContent();
@@ -193,8 +215,10 @@ const Forums = () => {
                <Title>{forum.title}</Title>
 
                <FlatList
-                  data={forum.comments}
+                  data={comments}
                   keyExtractor={comment => String(comment.comment_id)}
+                  onEndReached={loadComments}
+                  onEndReachedThreshold={0.5}
                   renderItem={({ item }) => (
                      <ChatMessage key={item.comment_id} data={item} />   
                   )}
