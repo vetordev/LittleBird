@@ -70,6 +70,7 @@ describe('Forum', () => {
       await getConnection().createQueryBuilder().insert().into("theme_forum").values({ theme_forum_id: 2, theme_id: 2, forum_id: 1 }).execute();
 
       await getConnection().createQueryBuilder().insert().into('tb_comment').values(comment).execute();
+      // await getConnection().createQueryBuilder().insert().into('tb_comment').values(comment2).execute();
     });
 
     it('> GET /forum/:forum_id/comment Deve retonar um fórum se seus comentários', async () => {
