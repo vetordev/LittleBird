@@ -102,7 +102,6 @@ export class CommentService {
       .where('tb_comment.comment_id = :comment_id', { comment_id })
       .getOne();
 
-    console.log(comment)
     if (!comment) {
       return response.status(404).json({ error: "A chave estrangeira não existe no servidor." });
     };
@@ -112,7 +111,6 @@ export class CommentService {
       .where('like_comment.comment_id = :comment_id', { comment_id })
       .getOne();
 
-    console.log(like_comment)
     if (!like_comment) {
       await this.likeCommentRepository.createQueryBuilder('like_comment')
       .insert()
@@ -133,7 +131,6 @@ export class CommentService {
         })
         .where('tb_comment.comment_id = :comment_id', { comment_id })
         .execute();
-      console.log(1)
     };
 
     return response.status(204).end();

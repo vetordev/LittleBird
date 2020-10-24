@@ -51,15 +51,6 @@ describe('Forum', () => {
 
   describe('Buscar um fórum', () => {
 
-    const comment2 = {
-      comment_id: 2,
-      forum_id: 1,
-      user_id: 1,
-      comment_content: '...',
-      publi_date: '2020-03-08',
-      no_like: 10
-    };
-
     beforeAll(async () => {
       await getConnection().dropDatabase();
       await getConnection().synchronize();
@@ -79,7 +70,7 @@ describe('Forum', () => {
       await getConnection().createQueryBuilder().insert().into("theme_forum").values({ theme_forum_id: 2, theme_id: 2, forum_id: 1 }).execute();
 
       await getConnection().createQueryBuilder().insert().into('tb_comment').values(comment).execute();
-      await getConnection().createQueryBuilder().insert().into('tb_comment').values(comment2).execute();
+      // await getConnection().createQueryBuilder().insert().into('tb_comment').values(comment2).execute();
     });
 
     it('> GET /forum/:forum_id/comment Deve retonar um fórum se seus comentários', async () => {
@@ -88,7 +79,7 @@ describe('Forum', () => {
         .get(`/forum/${forum_id}/comment?page=1`);
 
       expect(response.status).toBe(200);
-      expect(response.header['x-total-count']).toBe("2");
+      expect(response.header['x-total-count']).toBe("1");
       expect(response.body).toEqual(expect.objectContaining({
         forum_id: expect.any(Number),
         title: expect.any(String),
