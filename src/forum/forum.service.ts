@@ -40,15 +40,6 @@ export class ForumService {
       .getManyAndCount();
 
     const count = foruns[1];
-    let pageCount;
-
-    if (count % 6 == 0){
-      pageCount = count / 6;
-    }
-    else {
-      const rest = count % 6;
-      pageCount = ((count - rest) / 6) + 1
-    }
 
     foruns = foruns[0].map( (forum) => {
       delete forum.theme_forum_id;
@@ -61,7 +52,7 @@ export class ForumService {
     });
 
 
-    return response.status(200).header('X-Total-Count', pageCount).json(foruns);
+    return response.status(200).header('X-Total-Count', count).json(foruns);
   };
 
   async getForumByLike(response: Response, page: number): Promise<Response> {
@@ -74,16 +65,8 @@ export class ForumService {
     const foruns: Forum[] = await this.forumRepository.query(query);
 
     const count: any = await this.forumRepository.count();
-    let pageCount;
 
-    if (count % 6 == 0){
-      pageCount = count / 6;
-    }
-    else {
-      const rest = count % 6;
-      pageCount = ((count - rest) / 6) + 1
-    }
-    return response.status(200).header('X-Total-Count', pageCount).json(foruns);
+    return response.status(200).header('X-Total-Count', count).json(foruns);
   };
 
   async getForumByUserLike(response: Response, user_id: number, page: number): Promise<Response> {
@@ -98,15 +81,6 @@ export class ForumService {
       .getManyAndCount();
 
     const count = foruns[1];
-    let pageCount;
-
-    if (count % 6 == 0){
-      pageCount = count / 6;
-    }
-    else {
-      const rest = count % 6;
-      pageCount = ((count - rest) / 6) + 1
-    }
 
     foruns = foruns[0].map( (forum) => {
       delete forum.theme_forum_id;
@@ -114,7 +88,7 @@ export class ForumService {
       return forum.forum_id;
     });
 
-    return response.status(200).header('X-Total-Count', pageCount).json(foruns);
+    return response.status(200).header('X-Total-Count', count).json(foruns);
 
   };
 
@@ -141,16 +115,6 @@ export class ForumService {
       .getManyAndCount();
 
     const count = comments[1];
-    console.log(count);
-    // let pageCount;
-
-    // if (count % 6 == 0){
-    //   pageCount = count / 6;
-    // }
-    // else {
-    //   const rest = count % 6;
-    //   pageCount = ((count - rest) / 6) + 1
-    // }
 
     comments = comments[0].map( (comment) => {
       delete comment.forum_id;

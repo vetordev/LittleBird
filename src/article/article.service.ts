@@ -71,18 +71,9 @@ export class ArticleService {
       .limit(6)
       .getManyAndCount();
 
-    const count = articles[1];
-    let pageCount;
+    const count: any = articles[1];
 
-    if (count % 6 == 0){
-      pageCount = count / 6;
-    }
-    else {
-      const rest = count % 6;
-      pageCount = ((count - rest) / 6) + 1
-    }
-
-    return response.status(200).header('x-total-count', pageCount).json(articles[0]);
+    return response.status(200).header('x-total-count', count).json(articles[0]);
   }
 
   async getArticlesByUserLike(response: Response, user_id: number, page: number): Promise<Response> {
@@ -97,15 +88,6 @@ export class ArticleService {
       .getManyAndCount();
 
     const count = articles[1];
-    let pageCount;
-
-    if (count % 6 == 0){
-      pageCount = count / 6;
-    }
-    else {
-      const rest = count % 6;
-      pageCount = ((count - rest) / 6) + 1
-    }
 
     articles = articles[0].map((article) => {
       delete article.like_article_id;
@@ -114,7 +96,7 @@ export class ArticleService {
       return article;
     });
 
-    return response.status(200).header('x-total-count', pageCount).json(articles);
+    return response.status(200).header('x-total-count', count).json(articles);
   }
 
   async getArticlesByUserLater(response: Response, user_id: number, page: number): Promise<Response> {
@@ -129,15 +111,6 @@ export class ArticleService {
       .getManyAndCount();
 
     const count = articles[1];
-    let pageCount;
-
-    if (count % 6 == 0){
-      pageCount = count / 6;
-    }
-    else {
-      const rest = count % 6;
-      pageCount = ((count - rest) / 6) + 1
-    }
 
     articles = articles[0].map((article) => {
       delete article.later_article_id;
@@ -146,7 +119,7 @@ export class ArticleService {
       return article;
     });
 
-    return response.status(200).header('x-total-count', pageCount).json(articles);
+    return response.status(200).header('x-total-count', count).json(articles);
   };
 
   async getArticlesByTheme(response: Response, theme_id: number, page: number): Promise<Response> {
@@ -171,15 +144,6 @@ export class ArticleService {
       .getManyAndCount();
 
     const count = articles[1];
-    let pageCount;
-
-    if (count % 6 == 0){
-      pageCount = count / 6;
-    }
-    else {
-      const rest = count % 6;
-      pageCount = ((count - rest) / 6) + 1
-    }
 
     articles = articles[0].map((article) => {
       delete article.theme_id;
@@ -188,7 +152,7 @@ export class ArticleService {
       return article.article_id;
     });
 
-    return response.status(200).header('x-total-count', pageCount).json(articles);
+    return response.status(200).header('x-total-count', count).json(articles);
   };
 
   async getArticlesAndForuns(page: number): Promise<any> {
