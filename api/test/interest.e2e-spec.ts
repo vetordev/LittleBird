@@ -103,7 +103,7 @@ describe('Interest', () => {
         .set('Authorization', `Bearer ${token}`);
 
       expect(response.status).toBe(200);
-      expect(response.header['x-total-count']).toBe("1");
+      expect(response.header['x-total-count']).toBe("2");
       expect(response.body[0]).toEqual(expect.objectContaining({
         user_id: expect.any(Number),
         interest_id: expect.any(Number),

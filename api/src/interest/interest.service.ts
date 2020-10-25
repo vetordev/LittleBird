@@ -43,18 +43,9 @@ export class InterestService {
       .orderBy('interest.interest_id', 'DESC')
       .getManyAndCount();
 
-    const count = themes_interests[1];
-    let pageCount;
+    const count: any = themes_interests[1];
 
-    if (count % 6 == 0){
-      pageCount = count / 6;
-    }
-    else {
-      const rest = count % 6;
-      pageCount = ((count - rest) / 6) + 1
-    }
-
-    return response.status(200).header('x-total-count', pageCount).json(themes_interests[0]);
+    return response.status(200).header('x-total-count', count).json(themes_interests[0]);
 
   }
 

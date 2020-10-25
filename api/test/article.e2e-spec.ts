@@ -174,8 +174,10 @@ describe('Article', () => {
       await getConnection().createQueryBuilder().insert().into("theme_article").values({ theme_article_id: 2, theme_id: 1, article_id: 2 }).execute();
 
       await getConnection().createQueryBuilder().insert().into("like_article").values({ like_article_id: 1, user_id: 1, article_id: 1 }).execute();
+      await getConnection().createQueryBuilder().insert().into("like_article").values({ like_article_id: 2, user_id: 1, article_id: 2 }).execute();
 
       await getConnection().createQueryBuilder().insert().into("later_article").values({ later_article_id: 1, user_id: 1, article_id: 1 }).execute();
+      await getConnection().createQueryBuilder().insert().into("later_article").values({ later_article_id: 2, user_id: 1, article_id: 2 }).execute();
 
       const response = await request(app.getHttpServer()).post('/auth/login').send({ email: 'carlosboavida@gm.com', user_pass: '123vidaboa' });
       token = response.body.token;
@@ -189,7 +191,7 @@ describe('Article', () => {
         .set('Authorization', `Bearer ${token}`);
 
       expect(response.status).toBe(200);
-      expect(response.header['x-total-count']).toBe("1");
+      expect(response.header['x-total-count']).toBe("2");
       expect(response.body[0]).toEqual(expect.objectContaining({
         article_id: {
           article_id: expect.any(Number),
@@ -218,7 +220,7 @@ describe('Article', () => {
         .set('Authorization', `Bearer ${token}`);
 
       expect(response.status).toBe(200);
-      expect(response.header['x-total-count']).toBe("1");
+      expect(response.header['x-total-count']).toBe("2");
       expect(response.body[0]).toEqual(expect.objectContaining({
         article_id: {
           article_id: expect.any(Number),
@@ -247,7 +249,7 @@ describe('Article', () => {
         .get(`/article/theme/${theme_id}/like?page=1`);
 
       expect(response.status).toBe(200);
-      expect(response.header['x-total-count']).toBe("1");
+      expect(response.header['x-total-count']).toBe("2");
       expect(response.body[0]).toEqual(expect.objectContaining({
 
         article_id: expect.any(Number),
@@ -278,7 +280,7 @@ describe('Article', () => {
         .get('/article?page=1');
 
       expect(response.status).toBe(200);
-      expect(response.header['x-total-count']).toBe("1");
+      expect(response.header['x-total-count']).toBe("2");
       expect(response.body[0]).toEqual(expect.objectContaining({
           article_id: expect.any(Number),
           article_img_id: {

@@ -175,6 +175,7 @@ describe('Forum', () => {
       await getConnection().createQueryBuilder().insert().into("theme_forum").values({ theme_forum_id: 2, theme_id: 1, forum_id: 2 }).execute();
 
       await getConnection().createQueryBuilder().insert().into("like_forum").values({ like_forum_id: 1, user_id: 1, forum_id: 1 }).execute();
+      await getConnection().createQueryBuilder().insert().into("like_forum").values({ like_forum_id: 2, user_id: 1, forum_id: 2 }).execute();
 
       const response = await request(app.getHttpServer()).post('/auth/login').send({ email: 'carlosboavida@gm.com', user_pass: '123vidaboa' });
       token = response.body.token;
@@ -187,7 +188,7 @@ describe('Forum', () => {
         .get(`/forum/theme/${theme_id}/like?page=1`);
 
       expect(response.status).toBe(200);
-      expect(response.header['x-total-count']).toBe("1");
+      expect(response.header['x-total-count']).toBe("2");
       expect(response.body[0]).toEqual(expect.objectContaining({
         forum_id: expect.any(Number),
         title: expect.any(String),
@@ -212,7 +213,7 @@ describe('Forum', () => {
         .set('Authorization', `Bearer ${token}`);
 
       expect(response.status).toBe(200);
-      expect(response.header['x-total-count']).toBe("1");
+      expect(response.header['x-total-count']).toBe("2");
       expect(response.body[0]).toEqual(expect.objectContaining({
         forum_id: expect.any(Number),
         title: expect.any(String),
@@ -228,7 +229,7 @@ describe('Forum', () => {
         .set('Authorization', `Bearer ${token}`);
 
       expect(response.status).toBe(200);
-      expect(response.header['x-total-count']).toBe("1");
+      expect(response.header['x-total-count']).toBe("2");
       expect(response.body[0]).toEqual(expect.objectContaining({
         forum_id: expect.any(Number),
         title: expect.any(String),

@@ -41,17 +41,8 @@ export class CommentService {
       .getManyAndCount();
 
     const count = replies[1];
-    let pageCount;
 
-    if (count % 6 == 0){
-      pageCount = count / 6;
-    }
-    else {
-      const rest = count % 6;
-      pageCount = ((count - rest) / 6) + 1
-    }
-
-    return response.status(200).header('x-total-count', pageCount).json(replies[0]);
+    return response.status(200).header('x-total-count', count).json(replies[0]);
 
   };
 
@@ -77,25 +68,15 @@ export class CommentService {
       .getManyAndCount();
 
     const count = comments[1];
-    let pageCount;
-
-    if (count % 6 == 0){
-      pageCount = count / 6;
-    }
-    else {
-      const rest = count % 6;
-      pageCount = ((count - rest) / 6) + 1
-    }
 
     comments = comments[0].map( (comment) => {
       delete comment.forum_id;
       return comment;
     });
 
-    return response.status(200).header('x-total-count', pageCount).json(comments);
+    return response.status(200).header('x-total-count', count).json(comments);
   };
 
-  // TODO Adicionar verificação antes de inserir o like
   async createLike(response: Response, user_id: number, comment_id: number): Promise<Response | void> {
     const comment = await this.commentRepository.createQueryBuilder('tb_comment')
       .select(['tb_comment.comment_id'])
