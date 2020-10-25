@@ -1644,7 +1644,7 @@ paths:
             X-Total-Count:
               schema:
                 type: string
-              description: Quantidade de páginas
+              description: Quantidade
         '401':
           description: O token JWT é inválido.
           content:
