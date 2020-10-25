@@ -9,6 +9,7 @@ import { LaterArticle } from './entity/later-article.entity';
 import { Forum } from '../forum/entity/forum.entity';
 import { orderByDate } from "./utils/order.date";
 import { RecommendationArticle } from './entity/recommendation-article.entity';
+import { Theme } from '../theme/entity/theme.entity';
 
 @Injectable()
 export class ArticleService {
@@ -19,7 +20,8 @@ export class ArticleService {
     @InjectRepository(RecommendationArticle) private readonly recommendationArticleRepository: Repository<RecommendationArticle>,
     @InjectRepository(LikeArticle) private readonly likeArticleRepository: Repository<LikeArticle>,
     @InjectRepository(LaterArticle) private readonly laterArticleRepository: Repository<LaterArticle>,
-    @InjectRepository(Forum) private readonly forumRepository: Repository<Forum>
+    @InjectRepository(Forum) private readonly forumRepository: Repository<Forum>,
+    @InjectRepository(Theme) private readonly themeRepository: Repository<Theme>
   ) {}
 
   async getArticle(response: Response, article_id: number): Promise<Response | void> {
@@ -124,13 +126,13 @@ export class ArticleService {
 
   async getArticlesByTheme(response: Response, theme_id: number, page: number): Promise<Response> {
 
-    const theme = await this.themeArticleRepository.createQueryBuilder('theme_article')
-      .select(['theme_article.theme_id'])
-      .where('theme_article.theme_id = :theme_id', { theme_id })
+    const theme = await this.themeRepository.createQueryBuilder('theme')
+      .select(['theme.theme_id'])
+      .where('theme.theme_id = :theme_id', { theme_id })
       .getOne();
 
     if (!theme) {
-      return response.status(404).json({ error: 'Tema não existe no servidor ou não possui nenhum artigo.' });
+      return response.status(404).json({ error: 'Tema não existe no servidor.' });
     }
 
     let articles: any = await this.themeArticleRepository.createQueryBuilder('theme_article')
