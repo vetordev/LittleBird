@@ -762,7 +762,7 @@ paths:
             X-Total-Count:
               schema:
                 type: string
-              description: Quantidade de páginas
+              description: Quantidade
               required: true
         '500':
           description: Erro interno na API.
@@ -922,7 +922,7 @@ paths:
             X-Total-Count:
               schema:
                 type: string
-              description: Quantidade de páginas
+              description: Quantidade
               required: true
         '404':
           description: O tema solicitado não está registrado no servidor.
@@ -1165,7 +1165,7 @@ paths:
             X-Total-Count:
               schema:
                 type: string
-              description: Quantidade de páginas
+              description: Quantidade
               required: true
         '404':
           description: O forum solicitado não existe.
@@ -1964,7 +1964,7 @@ paths:
             X-Total-Count:
               schema:
                 type: string
-              description: Quantidade de páginas
+              description: Quantidade
               required: true
         '401':
           description: O token JWT é inválido.
