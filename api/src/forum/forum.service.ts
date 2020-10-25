@@ -7,6 +7,7 @@ import { Response } from 'express';
 import { ThemeForum } from './entity/theme-forum.entity';
 import { LikeForum } from './entity/like-forum.entity';
 import { ForumGateway } from "./forum.gateway";
+import { Theme } from '../theme/entity/theme.entity';
 
 @Injectable()
 export class ForumService {
@@ -15,18 +16,19 @@ export class ForumService {
     @InjectRepository(Forum) private readonly forumRepository: Repository<Forum>,
     @InjectRepository(Comment) private readonly commentRepository: Repository<Comment>,
     @InjectRepository(ThemeForum) private readonly themeForumRepository: Repository<ThemeForum>,
+    @InjectRepository(Theme) private readonly themeRepository: Repository<Theme>,
     @InjectRepository(LikeForum) private readonly likeForumRepository: Repository<LikeForum>,
     private readonly forumGateway: ForumGateway
   ) {}
 
   async getForumByTheme(response: Response, theme_id: number, page: number): Promise<Response | void> {
-    const theme = await this.themeForumRepository.createQueryBuilder('theme_forum')
-      .select(['theme_forum.theme_forum_id'])
-      .where('theme_forum.theme_id = :theme_id', { theme_id })
+    const theme = await this.themeRepository.createQueryBuilder('theme')
+      .select(['theme.theme_id'])
+      .where('theme.theme_id = :theme_id', { theme_id })
       .getOne();
 
     if(!theme) {
-      return response.status(404).json({ error: 'O Tema não existe no servidor ou não possui fóruns.' })
+      return response.status(404).json({ error: 'O Tema não existe no servidor.' })
     }
 
     let foruns: any = await this.themeForumRepository.createQueryBuilder('theme_forum')
