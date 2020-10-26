@@ -51,8 +51,22 @@ const Favorites = () => {
    }
 
    async function getFavoriteForums() {
-      const responseForums = await api.get('/forum/user/like?page=1', { headers: { Authorization: token } });
-      setForums(responseForums.data);
+      if (loading) {
+         return;
+      }
+
+      if (totalForums > 0 && forums.length == totalForums) {
+         return;
+      }
+
+      setLoading(true);
+
+      const responseForums = await api.get(`/forum/user/like?page=${pageForums}`, { headers: { Authorization: token } });
+
+      setForums([... forums, ... responseForums.data]);
+      setTotalForums(responseForums.headers['X-Total-Count']);
+      setPageForums(pageForums + 1);
+      setLoading(false);
    }
 
    useEffect(() => {
