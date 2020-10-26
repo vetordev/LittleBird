@@ -33,7 +33,7 @@ const ChatMessage = ({ data }) => {
    }
 
    function navigateToComplaint() {
-      navigate('Complaint');
+      navigate('Report');
    }
 
    useEffect(() => {

@@ -19,7 +19,7 @@ import {
    TextareaLegend
 } from './styles';
 
-const Complaint = () => {
+const Report = () => {
    const [toggleCheckBox, setToggleCheckBox] = useState(false);
 
    return (
@@ -109,4 +109,4 @@ const Complaint = () => {
    );
 }
 
-export default Complaint;
+export default Report;

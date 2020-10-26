@@ -28,6 +28,9 @@ const Interests = () => {
    const [interests, setInterests] = useState([]);
    const [themes, setThemes] = useState([]);
    const [addedInterest, setAddedInterest] = useState([]);
+   const [page, setPage] = useState(1);
+   const [total, setTotal] = useState(0);
+   const [loading, setLoading] = useState(false);
    const { token } = useAuth();
 
    function openModal() {
@@ -95,14 +98,30 @@ const Interests = () => {
       // console.log(addedInterest != arrys.theme_id.theme_id);
    }
 
+   async function loadInterests() {
+      if (loading) {
+         return;
+      }
+
+      if (total > 0 && interests.length == total) {
+         return;
+      }
+
+      setLoading(true);
+
+      const responseInterests = await api.get(`interest?page=${page}`, { headers: { Authorization: token } });
+      
+      setInterests([... interests, ... responseInterests.data]);
+      setTotal(responseInterests.headers['X-Total-Count']);
+      setPage(page + 1);
+      setLoading(false);
+   }
+
    useEffect(() => {
       async function getContent() {
-         const responseInterests = await api.get('interest?page=1', { headers: { Authorization: token } });
+         loadInterests();
          const responseThemes = await api.get('theme');
-
-         setInterests(responseInterests.data);
          setThemes(responseThemes.data);
-
       }
 
       getContent();
