@@ -18,7 +18,12 @@ import {
 const Favorites = () => {
    const [selectedCategory, setSelectedCategory] = useState(true);  // true = artigos, false = chats
    const [articles, setArticles] = useState([]);
-   const [foruns, setForuns] = useState([]);
+   const [forums, setForums] = useState([]);
+   const [pageArticles, setPageArticles] = useState(1);
+   const [totalArticles, setTotalArticles] = useState(0);
+   const [pageForums, setPageForums] = useState(1);
+   const [totalForums, setTotalForums] = useState(0);
+   const [loading, setLoading] = useState(false);
    
    const { token } = useAuth();
 
@@ -26,26 +31,43 @@ const Favorites = () => {
       setSelectedCategory(!selectedCategory);
    }
 
-   useEffect(() => {
-      async function getFavorites() {
-         const responseArticles = await api.get('/article/user/like?page=1', { headers: { Authorization: token } });
-         const responseForuns = await api.get('/forum/user/like?page=1', { headers: { Authorization: token } });
-
-         setArticles(responseArticles.data);
-         setForuns(responseForuns.data);
-
-         console.log(responseForuns.data);
+   async function getFavoriteArticles() {
+      if (loading) {
+         return;
       }
 
-      getFavorites();
+      if (totalArticles > 0 && articles.length == totalArticles) {
+         return;
+      }
+
+      setLoading(true);
+
+      const responseArticles = await api.get(`/article/user/like?page=${pageArticles}`, { headers: { Authorization: token } });
+      
+      setArticles([... articles, ... responseArticles.data]);
+      setTotalArticles(responseArticles.headers['X-Total-Count']);
+      setPageArticles(pageArticles + 1);
+      setLoading(false);
+   }
+
+   async function getFavoriteForums() {
+      const responseForums = await api.get('/forum/user/like?page=1', { headers: { Authorization: token } });
+      setForums(responseForums.data);
+   }
+
+   useEffect(() => {
+      getFavoriteArticles();
+      getFavoriteForums();
    }, []);
 
    return (
       <View>
          <FlatList 
-            data={selectedCategory ? articles : foruns}
+            data={selectedCategory ? articles : forums}
             keyExtractor={favorite => selectedCategory ? String(favorite.article_id) : String(favorite.forum_id)}
             numColumns={2}
+            onEndReached={selectedCategory ? getFavoriteArticles : getFavoriteForums}
+            onEndReachedThreshold={0.8}
             columnWrapperStyle={{ marginHorizontal: 15 }}
             ListHeaderComponent={
                <>
