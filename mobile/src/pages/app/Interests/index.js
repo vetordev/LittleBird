@@ -160,6 +160,8 @@ const Interests = () => {
             data={interests}
             keyExtractor={theme => String(theme.interest_id)}
             numColumns={2}
+            onEndReached={loadInterests}
+            onEndReachedThreshold={0.8}
             columnWrapperStyle={{ marginHorizontal: 15 }}
             ListHeaderComponent={
                <Header title="Seus interesses" />
