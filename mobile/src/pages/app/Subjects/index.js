@@ -3,6 +3,7 @@ import { View, ScrollView, Dimensions } from 'react-native';
 import Carousel from 'react-native-snap-carousel';
 import { Feather } from '@expo/vector-icons';
 import { useNavigation, useRoute, useIsFocused } from '@react-navigation/native';
+import { SvgUri } from 'react-native-svg';
 
 import api from '../../../services/api';
 
@@ -25,7 +26,10 @@ import {
   Likes,
   Qtd,
   styles,
-  AllThemes
+  AllThemes,
+  WarningContainer,
+  WarningContent,
+  WarningMessage
 } from './styles';
 
 const Subjects = () => {
@@ -124,7 +128,7 @@ const Subjects = () => {
                 <ThemeImage 
                   resizeMode="cover" 
                   source={{ uri: item.theme_img_id.img_url }} 
-                  />
+                />
                 <ThemeImageFilter style={selectedTheme === item.theme_id ? styles.selected : {}} />
                 <ThemeTitle>{item.theme_name}</ThemeTitle>
               </Theme>
@@ -138,7 +142,7 @@ const Subjects = () => {
           <SessionLineDecoration />
         </SessionHeader>
 
-        { articles &&
+        { articles.length > 0 ?
           <Carousel 
             layout="tinder"
             layoutCardOffset={9}
@@ -161,6 +165,13 @@ const Subjects = () => {
               </Option>
             )}
           />
+          :
+          <WarningContainer>
+            <WarningContent>
+              <SvgUri uri="https://www.flaticon.com/svg/static/icons/svg/3468/3468182.svg" width={130} height={130} />
+              <WarningMessage>Ainda não temos artigos sobre esse assunto.</WarningMessage>
+            </WarningContent>
+          </WarningContainer>
         }
 
         <SessionHeader>
@@ -169,7 +180,7 @@ const Subjects = () => {
           <SessionLineDecoration />
         </SessionHeader>
 
-        { foruns &&
+        { foruns.length > 0 ?
           <Carousel 
             layout="tinder"
             layoutCardOffset={9}
@@ -199,8 +210,14 @@ const Subjects = () => {
               </Option>
             )}
           />
+          :
+          <WarningContainer>
+            <WarningContent>
+              <SvgUri uri="https://www.flaticon.com/svg/static/icons/svg/3468/3468182.svg" width={130} height={130} />
+              <WarningMessage>Ainda não temos salas de conversa sobre esse assunto.</WarningMessage>
+            </WarningContent>
+          </WarningContainer>
         }
-
       </Container>
     </ScrollView>
   );

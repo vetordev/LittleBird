@@ -49,10 +49,49 @@ const Interests = () => {
    function handleSubmitInterests() {
       setModalDisplay(false);
 
-      const arrys = interests.filter(item => addedInterest.includes(item.theme_id.theme_id));
-      // console.log(arrys);
+      // console.log(addedInterest);
 
-      console.log(addedInterest.map(ad => ad != arrys.map(arry => arry.theme_id.theme_id)))
+      // console.log(interests[1].theme_id.theme_id);
+
+      interests.forEach(async interest => {
+         const interest_id = interest.theme_id.theme_id;
+
+         if (addedInterest.includes(interest_id)) {
+            console.log('sim', interest_id);
+            // const response = await api.post('interest', 
+            //    { themes: interest_id }, 
+            //    { headers: 
+            //       {
+            //          Authorization: token
+            //       } 
+            //    }
+            // )
+
+            // console.log(response.status);
+         }
+         
+         addedInterest.forEach(added => console.log(added !== interest_id && added))
+         // console.log(addedInterest ? addedInterest)
+
+
+         // addedInterest.forEach(added => {
+         //    if (added == interest.theme_id.theme_id){ 
+         //       console.log(added, 'oi');
+         //       return;
+         //    }
+         //    else {
+         //       console.log(added, 'tchau');
+         //       return;
+         //    }
+         // })
+      });
+
+      
+
+      // const arrys = interests.filter(item => addedInterest.includes(item.theme_id.theme_id));
+      // // console.log(arrys);
+
+      // addedInterest.map(ad => ad != arrys.map(arry => console.log(arry.theme_id.theme_id)))
       // console.log(addedInterest != arrys.theme_id.theme_id);
    }
 
@@ -64,7 +103,6 @@ const Interests = () => {
          setInterests(responseInterests.data);
          setThemes(responseThemes.data);
 
-         console.log(responseInterests.data);
       }
 
       getContent();
@@ -80,7 +118,7 @@ const Interests = () => {
                onPress={handleSubmitInterests}
                color_theme="#01C24E"
                font_color="#202020"
-               btn_title="OK!"
+               btn_title="SALVAR"
             >
                { themes.map(theme => (
                   <InterestItem key={theme.theme_id}>
