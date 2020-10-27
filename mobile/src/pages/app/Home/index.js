@@ -41,8 +41,8 @@ const Home = () => {
     navigate('Articles', { article_id });
   }
 
-  function navigateToForums(forum_id) {
-    navigate('Forums', { forum_id });
+  function navigateToForums(forum_id, forum_title) {
+    navigate('Forums', { forum_id, forum_title });
   }
 
   function navigateToInterests() {
@@ -110,7 +110,7 @@ const Home = () => {
                     :
                     <CarouselItem 
                       winWidth={win.width}
-                      onPress={() => navigateToForums(item.forum_id)}
+                      onPress={() => navigateToForums(item.forum_id, item.title)}
                     >
                       <CarouselImageItem 
                         resizeMode={'cover'} 
