@@ -1,12 +1,14 @@
-import React, { useRef, useState, useEffect } from 'react';
+import React, { useRef, useState } from 'react';
 import { View, FlatList } from 'react-native';
 import AsyncStorage from '@react-native-community/async-storage';
 import { Form } from '@unform/mobile';
 import { Feather } from '@expo/vector-icons';
+import { SvgUri } from 'react-native-svg';
 import * as Yup from 'yup';
 
 import Header from '../../../components/Header';
 import Input from '../../../components/Input';
+import ModalContainer from '../../../components/ModalContainer';
 
 import { useAuth } from '../../../contexts/auth';
 import { useAvatar } from '../../../contexts/useAvatar';
@@ -22,10 +24,14 @@ import {
    MainAvatar,
    AvataresContainer,
    AvatarOption,
-   Image
+   Image,
+   ModalMessage,
+   ModalMessageContent
 } from './styles';
 
 const EditProfile = () => {
+   const [displayModal, setModalDisplay] = useState(false);
+
    const { user, setUser, token } = useAuth();
    const { avatares, avatar, setAvatar } = useAvatar();
    
@@ -62,6 +68,8 @@ const EditProfile = () => {
          await api.put('user', newUser, { headers: { Authorization: token } });
          await AsyncStorage.setItem('@LittleBird:user', JSON.stringify(newUser));
 
+         setModalDisplay(true);
+
        } catch (err) {
          if (err instanceof Yup.ValidationError) {
            const errorMessages = {};
@@ -74,8 +82,22 @@ const EditProfile = () => {
          }
        }
    }
-   
+
    return (
+      <>
+      { displayModal &&
+         <ModalContainer
+            onPress={() => setModalDisplay(false)}
+            color_theme="#D85517"
+            font_color="#202020"
+            btn_title="ok!"
+         >
+            <ModalMessageContent>
+               <SvgUri uri="https://www.flaticon.com/svg/static/icons/svg/3468/3468210.svg" width={135} height={135} />
+               <ModalMessage>Dados alterados com sucesso!</ModalMessage>
+            </ModalMessageContent>
+         </ModalContainer>
+      }
       <Container>
          <Header title="Editar perfil" />
 
@@ -141,6 +163,7 @@ const EditProfile = () => {
                </BtnSaveProfile>
             </Form>
       </Container>
+      </>
    );
 }
 
