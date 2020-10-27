@@ -27,7 +27,6 @@ import {
    LinkItemContainer,
    styles
 } from './styles';
-import { set } from 'react-native-reanimated';
 
 const Articles = () => {
    const [article, setArticle] = useState({});
@@ -46,6 +45,8 @@ const Articles = () => {
    function openWebView(url) {
       navigation.navigate('Webview', { link: url });
    }
+
+   console.log('article_id', article_id);
 
    async function handleSetLiked() {
       if (!liked) {

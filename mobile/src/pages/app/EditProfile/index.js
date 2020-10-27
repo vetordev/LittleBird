@@ -88,7 +88,7 @@ const EditProfile = () => {
       { displayModal &&
          <ModalContainer
             onPress={() => setModalDisplay(false)}
-            color_theme="#D85517"
+            color_theme="#01C24E"
             font_color="#202020"
             btn_title="ok!"
          >
