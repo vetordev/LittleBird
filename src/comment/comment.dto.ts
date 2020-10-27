@@ -46,9 +46,9 @@ export class CreateReplyQueryDto {
 }
 
 export class HandleJoinCommentDto {
-  nameRoom: string;
+  idRoom: string;
 };
 
 export class HandleLeaveCommentDto {
-  nameRoom: string;
+  idRoom: string;
 };
