@@ -40,13 +40,13 @@ export class CommentGateway implements OnGatewayInit, OnGatewayConnection, OnGat
 
   @SubscribeMessage('join comment')
   handleJoinComment(@ConnectedSocket() client: Socket, @MessageBody() data: HandleJoinCommentDto): void {
-    //comment room = nameForum - comment_id
-    client.join(data.nameRoom);
+    //comment room = forum_id-comment_id
+    client.join(data.idRoom);
   };
 
   @SubscribeMessage('leave comment')
   handleLeaveComment(@ConnectedSocket() client: Socket, @MessageBody() data: HandleLeaveCommentDto): void {
-    client.leave(data.nameRoom);
+    client.leave(data.idRoom);
   };
 
   async handleNewMessage(message: Message): Promise<void> {
