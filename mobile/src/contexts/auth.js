@@ -72,35 +72,6 @@ export const AuthProvider = ({ children }) => {
          setLoadingAuth(false);
          return error;
       }
-      
-
-      // console.log(responseUser.status)
-
-      // return "vai mano pfv"
-      // if (responseUser.status == 401) {
-      
-   
-         
-
-      
-         
-      //    return responseUser.status;
-         
-      // } else {
-      //    return 'bosta';
-      // }
-      
-      
-      
-      
-      
-
-      
-      // })
-      // .catch ((error) => { 
-      //    console.log('Ocorreu um erro no login de usuário: ', error);
-      //    setLoadingAuth(false);
-      // }) 
    }
 
    function signUp(user, userInterests) {
