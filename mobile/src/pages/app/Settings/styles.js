@@ -94,3 +94,17 @@ export const BtnLogoutText = styled.Text`
    font-size: 18px;
    margin-right: 5px;
 `;
+
+export const ModalMessageContent = styled.View`
+   align-items: center;
+   margin: -20px 0;
+`;
+
+export const ModalMessage = styled.Text`
+   font-family: Ubuntu_700Bold;
+   color: #E9E9E9;
+   font-size: 20px;
+   max-width: 70%;
+   text-align: center;
+   margin-top: 8px;
+`;

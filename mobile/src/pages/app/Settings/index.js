@@ -3,9 +3,13 @@ import { Switch, Alert } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { Feather } from '@expo/vector-icons';
 import AsyncStorage from '@react-native-community/async-storage';
+import { SvgUri } from 'react-native-svg';
 import * as MailComposer from 'expo-mail-composer';
 
 import HeaderBtnBack from '../../../components/HeaderBtnBack';
+import Header from '../../../components/Header';
+import ModalContainer from '../../../components/ModalContainer';
+
 import { useAuth } from '../../../contexts/auth';
 
 import { 
@@ -20,11 +24,13 @@ import {
   PanicBtn,
   PanicBtnTitle,
   BtnLogout,
-  BtnLogoutText
+  BtnLogoutText,
+  ModalMessage,
+  ModalMessageContent
 } from './styles';
-import Header from '../../../components/Header';
 
 const Settings = () => {
+  const [displayModal, setModalDisplay] = useState(false);
   const navigation = useNavigation();
   const [darkTheme, setDarkTheme] = useState(true);
   const [keepLogin, setKeepLogin] = useState(true);
@@ -43,10 +49,13 @@ const Settings = () => {
     getNotKeepLoading();
   }, [])
 
-  const toggleTheme = () => setDarkTheme(previousState => !previousState);
+  function toggleTheme () { 
+    // setDarkTheme(!darkTheme); 
+    setModalDisplay(true);
+  }
   
   function toggleKeepLogin() { 
-    setKeepLogin(previousState => !previousState);
+    setKeepLogin(!keepLogin);
     
     // if (keepLogin) {
     //   Alert.alert(
@@ -84,6 +93,20 @@ const Settings = () => {
   }
 
   return (
+    <>
+    { displayModal &&
+        <ModalContainer
+          onPress={() => setModalDisplay(false)}
+          color_theme="#834397"
+          font_color="#E9E9E9"
+          btn_title="tudo bem"
+        >
+          <ModalMessageContent>
+              <SvgUri uri="https://www.flaticon.com/svg/static/icons/svg/3468/3468419.svg" width={135} height={135} />
+              <ModalMessage>A alteração de temas ainda está sendo desenvolvida</ModalMessage>
+          </ModalMessageContent>
+        </ModalContainer>
+    }
     <Container>
       <Header title="Configurações" />
 
@@ -136,6 +159,7 @@ const Settings = () => {
         </BtnLogout>
       </Content>
     </Container>
+    </>
   );
 }
 
