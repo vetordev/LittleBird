@@ -4,6 +4,8 @@ import { BackHandler } from 'react-native';
 
 import api from '../services/api';
 
+import { useAvatar } from '../contexts/useAvatar';
+
 const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
@@ -11,6 +13,8 @@ export const AuthProvider = ({ children }) => {
    const [loading, setLoading] = useState(true);
    const [loadingAuth, setLoadingAuth] = useState(false);
    const [token, setToken] = useState(null);
+
+   const { setAvatar } = useAvatar();
 
    useEffect(() => {
       async function loadStoragedData() {
@@ -28,10 +32,10 @@ export const AuthProvider = ({ children }) => {
          //    await AsyncStorage.setItem('@LittleBird:user', '');
          // }
 
-         // INCLUIR VERFIFICAÇÃO DE TOKEN
          if (storagedUser && storagedToken) {
             setUser(JSON.parse(storagedUser));
             setToken(storagedToken);
+            setAvatar(JSON.parse(storagedUser).user_img_id);
          }
       }
 
@@ -39,7 +43,7 @@ export const AuthProvider = ({ children }) => {
    }, []);
 
 
-   async function signIn(userLogin, username) { // receber por parâmetro as informações do usuário e armazená-las no estado aqui.
+   async function signIn(userLogin, username) {
       try {
          const user = { 
             email: userLogin.email,

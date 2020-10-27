@@ -27,12 +27,12 @@ export default function App() {
   
   return (
     <NavigationContainer>
-      <AuthProvider>
-        <AvatarProvider>
+      <AvatarProvider>
+        <AuthProvider>      
           <Routes />
           <StatusBar style="auto" />
-        </AvatarProvider>
-      </AuthProvider>
+        </AuthProvider>
+      </AvatarProvider>
     </NavigationContainer>
   );
 }

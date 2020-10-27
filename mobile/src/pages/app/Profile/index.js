@@ -4,6 +4,7 @@ import { useNavigation } from '@react-navigation/native';
 import { Feather } from '@expo/vector-icons';
 
 import { useAuth } from '../../../contexts/auth';
+import { useAvatar } from '../../../contexts/useAvatar';
 
 import { 
    Container, 
@@ -22,6 +23,7 @@ import {
 const Profile = () => {
    const { navigate } = useNavigation();
    const { user } = useAuth();
+   const { avatar, avatares } = useAvatar();
 
    function navigateToEditProfile() {
       navigate('EditProfile');
@@ -61,7 +63,7 @@ const Profile = () => {
                </IconContainer>
             </Header>
             
-            <ProfilePicture resizeMode="cover" source={require('../../../assets/profilePicture1.png')} />
+            <ProfilePicture resizeMode="cover" source={{ uri: avatares[avatar - 1].url }} />
             <Username>@{user.username}</Username>
 
             <ProfileSession onPress={navigateToInterests}>

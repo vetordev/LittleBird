@@ -26,7 +26,6 @@ import {
 } from './styles';
 
 const EditProfile = () => {
-   const [avatarId, setAvatarId] = useState(2);
    const { user, setUser, token } = useAuth();
    const { avatares, avatar, setAvatar } = useAvatar();
    
@@ -34,31 +33,8 @@ const EditProfile = () => {
 
    const { user_img_id } = user;
 
-   const [imgs, setImgs] = useState([
-      {
-         id: 1,
-         url: 'https://image.freepik.com/vetores-gratis/ilustracao-de-fatia-de-pizza_179407-45.jpg'
-      },
-      {
-         id: 2,
-         url: 'https://i.pinimg.com/originals/90/1d/45/901d45d05461495b1c0700ce47517135.jpg'
-      },
-      {
-         id: 3,
-         url: 'https://www.nicepng.com/png/detail/147-1477699_hand-drawn-smiling-sun-vector-encapsulated-postscript.png', 
-      },
-      {
-         id: 4,
-         url: 'https://cdn.dribbble.com/users/2172174/screenshots/10754281/image7344.png'
-      }
-   ]);
-
-   function handleEditAvatar(id) {
-      // setAvatarId(id);
-   }
-
    async function handleSaveProfile(data) {
-      if (data.username === undefined && data.email === undefined && avatarId === user_img_id) {
+      if (data.username === undefined && data.email === undefined && avatar === user_img_id) {
          return false;
       }
 
@@ -98,11 +74,7 @@ const EditProfile = () => {
          }
        }
    }
-
-   useEffect(() => {
-      setAvatar(user_img_id);
-   }, []);
-
+   
    return (
       <Container>
          <Header title="Editar perfil" />
