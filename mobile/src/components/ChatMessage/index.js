@@ -4,6 +4,7 @@ import { MaterialIcons } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
 
 import { useAuth } from '../../contexts/auth';
+import { useAvatar } from '../../contexts/useAvatar';
 
 import { 
    MessageContainer,
@@ -26,6 +27,9 @@ const ChatMessage = ({ data }) => {
 
    const { user } = useAuth();
    const { navigate } = useNavigation();
+   const { avatares } = useAvatar();
+
+   const user_img = data.user_id.user_img_id.user_img_id;
 
    function handleLike(comment_id) {
       setLiked(liked ? false : true);
@@ -44,7 +48,7 @@ const ChatMessage = ({ data }) => {
       <MessageContainer userIsMe={userIsMe}>
          <View>
             <MessageHeader userIsMe={userIsMe}>
-               <MessageUserAvatar resizeMode="cover" source={{ uri: 'https://i.pinimg.com/564x/34/43/71/344371e32e903084adccaace156dcb4e.jpg' }} />
+               <MessageUserAvatar resizeMode="cover" source={{ uri: avatares[user_img - 1].url }} />
                <MessageUsername>{data.user_id.username}</MessageUsername>
                <BtnMessageDetails onPress={navigateToComplaint}>
                   <TextBtnMessageDetails>...</TextBtnMessageDetails>
