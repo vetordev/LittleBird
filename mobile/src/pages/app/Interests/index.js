@@ -110,8 +110,22 @@ const Interests = () => {
       setLoading(true);
 
       const responseInterests = await api.get(`interest?page=${page}`, { headers: { Authorization: token } });
-      
+      // console.log();
+      // console.log(respons  eInterests.data);
+
       setInterests([... interests, ... responseInterests.data]);
+      
+      console.log(addedInterest);
+      // interests.map(response => {
+      //    setAddedInterest([... addedInterest, response.theme_id.theme_id])
+      //    console.log('response', response.theme_id.theme_id)
+
+      //    console.log('addedInterest', addedInterest);
+      // });
+
+      
+      
+
       setTotal(responseInterests.headers['X-Total-Count']);
       setPage(page + 1);
       setLoading(false);

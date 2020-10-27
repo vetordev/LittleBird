@@ -32,8 +32,6 @@ const HomeAuth = () => {
         abortEarly: false
       });
 
-      console.log(schema);
-
       formRef.current.setErrors({});
 
       if (response.data.email) {

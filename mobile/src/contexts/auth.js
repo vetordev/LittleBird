@@ -40,28 +40,62 @@ export const AuthProvider = ({ children }) => {
 
 
    async function signIn(userLogin, username) { // receber por parâmetro as informações do usuário e armazená-las no estado aqui.
-      const user = { 
-         email: userLogin.email,
-         password: userLogin.password,
-         username: username,
-      };
+      try {
+         const user = { 
+            email: userLogin.email,
+            username: username,
+         };
+   
+         const userLoginObj = {
+            email: userLogin.email,
+            user_pass: userLogin.password
+         }
 
-      // api.post('auth/login', userLogin, {
-      //    onUploadProgress: () => {
-      //       setLoadingAuth(true);
-      //    }
-      // })
-      // .then(async (responseUser) => {
-      //    console.log('Tudo pronto!');
+         const responseUser = await api.post('auth/login', userLoginObj, {
+            onUploadProgress: () => {
+               setLoadingAuth(true);
+            }
+         });
 
+         setUser(user); 
+         setToken('Bearer ' + responseUser.data.token);
+         
+         await AsyncStorage.setItem('@LittleBird:user', JSON.stringify(user));
+         await AsyncStorage.setItem('@LittleBird:token', 'Bearer ' + responseUser.data.token);
+            
          setLoadingAuth(false);
 
-         setUser(user);   
-         setToken('Bearer 2918SDHDSJJK923HDSHDB');
+         return responseUser.status;
+      }
 
+      catch(error) {
+         setLoadingAuth(false);
+         return error;
+      }
+      
 
-         await AsyncStorage.setItem('@LittleBird:user', JSON.stringify(user));
-         await AsyncStorage.setItem('@LittleBird:token', 'Bearer 2918SDHDSJJK923HDSHDB');
+      // console.log(responseUser.status)
+
+      // return "vai mano pfv"
+      // if (responseUser.status == 401) {
+      
+   
+         
+
+      
+         
+      //    return responseUser.status;
+         
+      // } else {
+      //    return 'bosta';
+      // }
+      
+      
+      
+      
+      
+
+      
       // })
       // .catch ((error) => { 
       //    console.log('Ocorreu um erro no login de usuário: ', error);
@@ -70,7 +104,6 @@ export const AuthProvider = ({ children }) => {
    }
 
    function signUp(user, userInterests) {
-      console.log(String(userInterests));
 
          api.post('user', user, {
             onUploadProgress: () => {
