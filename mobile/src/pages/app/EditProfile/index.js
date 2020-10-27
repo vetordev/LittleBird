@@ -9,6 +9,8 @@ import Header from '../../../components/Header';
 import Input from '../../../components/Input';
 
 import { useAuth } from '../../../contexts/auth';
+import { useAvatar } from '../../../contexts/useAvatar';
+
 import api from '../../../services/api';
 
 import { 
@@ -26,6 +28,8 @@ import {
 const EditProfile = () => {
    const [avatarId, setAvatarId] = useState(2);
    const { user, setUser, token } = useAuth();
+   const { avatares, avatar, setAvatar } = useAvatar();
+   
    const formRef = useRef(null);
 
    const { user_img_id } = user;
@@ -50,7 +54,7 @@ const EditProfile = () => {
    ]);
 
    function handleEditAvatar(id) {
-      setAvatarId(id);
+      // setAvatarId(id);
    }
 
    async function handleSaveProfile(data) {
@@ -73,7 +77,7 @@ const EditProfile = () => {
          const newUser = {
            email: data.email === undefined ? user.email : data.email,
            username: data.username === undefined ? user.username : data.username,
-           user_img_id: avatarId,
+           user_img_id: avatar,
            born_in: '2019-08-24'
          }
 
@@ -96,7 +100,7 @@ const EditProfile = () => {
    }
 
    useEffect(() => {
-      setAvatarId(user_img_id);
+      setAvatar(user_img_id);
    }, []);
 
    return (
@@ -109,18 +113,18 @@ const EditProfile = () => {
                onSubmit={handleSaveProfile}
             >
                <AvataresContainer>
-                  <MainAvatar resizeMode="cover" source={{ uri: imgs[avatarId - 1].url }} />
+                  <MainAvatar resizeMode="cover" source={{ uri: avatares[avatar - 1].url }} />
                   <FlatList 
-                     data={imgs}
+                     data={avatares}
                      keyExtractor={avatar => String(avatar.id)}
                      horizontal
                      showsHorizontalScrollIndicator={false}
                      renderItem={({ item }) => (
                         <>
-                           { avatarId !== item.id &&
-                              <AvatarOption onPress={() => handleEditAvatar(item.id)}>
+                           { avatar !== item.id &&
+                              <AvatarOption onPress={() => setAvatar(item.id)}>
                                  <Image resizeMode="cover" 
-                                    source={{ uri: avatarId !== item.id && item.url }} 
+                                    source={{ uri: avatar !== item.id && item.url }} 
                                  />
                               </AvatarOption>
                            }

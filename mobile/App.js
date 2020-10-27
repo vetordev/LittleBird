@@ -7,6 +7,8 @@ import { Ubuntu_500Medium, Ubuntu_700Bold, Ubuntu_400Regular , useFonts } from '
 import { Nunito_400Regular, Nunito_700Bold, Nunito_800ExtraBold } from '@expo-google-fonts/nunito';
 
 import { AuthProvider } from './src/contexts/auth';
+import { AvatarProvider } from './src/contexts/useAvatar';
+
 import Routes from './src/routes';
 
 export default function App() {
@@ -26,8 +28,10 @@ export default function App() {
   return (
     <NavigationContainer>
       <AuthProvider>
-        <Routes />
-        <StatusBar style="auto" />
+        <AvatarProvider>
+          <Routes />
+          <StatusBar style="auto" />
+        </AvatarProvider>
       </AuthProvider>
     </NavigationContainer>
   );
