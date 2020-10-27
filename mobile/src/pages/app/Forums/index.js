@@ -52,8 +52,6 @@ const Forums = () => {
 
    const { forum_id, forum_title } = route.params;
 
-   const socket = io(`${api}/forum`)
-
    function openModal() {
       setModalDisplay(true);
    }
@@ -123,6 +121,8 @@ const Forums = () => {
       setPage(page + 1);
       setLoading(false);
    }
+
+   const socket = io(`${api}/forum`);
 
    socket.emit('join forum', { nameRoom: forum_title });
 

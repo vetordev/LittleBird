@@ -1,5 +1,6 @@
-import React, { useRef } from 'react';
+import React, { useRef, useState } from 'react';
 import { StatusBar } from 'expo-status-bar';
+import { ActivityIndicator } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { Form } from '@unform/mobile';
 import { Feather } from '@expo/vector-icons';
@@ -7,21 +8,24 @@ import * as Yup from 'yup';
 
 import Input from '../../../components/Input';
 
-import { Container, Title } from './styles';
+import { Container, Title, ActivityIndicatorContainer } from './styles';
 import { BtnLogin, TextBtnLogin, BtnIcon } from '../../../components/BtnNext/styles';
 
 import api from '../../../services/api';
 
 const HomeAuth = () => {
+  const [loading, setLoading] = useState(false);
+
   const navigation = useNavigation();
   const formRef = useRef(null);
 
   async function handleSignIn(data, { reset }) {
+    setLoading(true);
 
     const email = data.email;
     const response = await api.get(`user/email?email=${email}`);
-    
-    console.log(response.data);
+
+    setLoading(false);
 
     try {
       const schema = Yup.object().shape({
@@ -75,7 +79,13 @@ const HomeAuth = () => {
           <BtnIcon background="#000">
             <Feather name="arrow-right" color="#D85517" size={24} />
           </BtnIcon>
-          <TextBtnLogin color="#D85517">próximo</TextBtnLogin>
+          { loading ?
+              <ActivityIndicatorContainer>
+                <ActivityIndicator size="small" color="#D85517" />
+              </ActivityIndicatorContainer>
+            : 
+            <TextBtnLogin color="#D85517">próximo</TextBtnLogin>
+          }   
         </BtnLogin>
       </Form>
     </Container>

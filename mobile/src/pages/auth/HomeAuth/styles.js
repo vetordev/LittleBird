@@ -14,3 +14,9 @@ export const Title = styled.Text`
    margin-bottom: 52px;
    width: 300px;
 `;
+
+export const ActivityIndicatorContainer = styled.View`
+   flex: 1;
+   justify-content: center;
+   align-items: center;
+`;
