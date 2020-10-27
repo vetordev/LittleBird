@@ -44,6 +44,8 @@ export const AuthProvider = ({ children }) => {
          const user = { 
             email: userLogin.email,
             username: username,
+            user_img_id: 1,
+            born_in: '2019-08-24',
          };
    
          const userLoginObj = {
