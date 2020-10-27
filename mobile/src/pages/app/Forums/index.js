@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import { View, FlatList, Keyboard } from 'react-native';
+import { View, FlatList, Keyboard, LogBox } from 'react-native';
 import { MaterialIcons } from '@expo/vector-icons';
 import { useRoute } from '@react-navigation/native';
+import io from 'socket.io-client';
 
 import HeaderBtnBack from '../../../components/HeaderBtnBack';
 import ChatMessage from '../../../components/ChatMessage';
@@ -47,14 +48,15 @@ const Forums = () => {
    const [loading, setLoading] = useState(false);
 
    const route = useRoute();
-   const { forum_id } = route.params;
-
    const { token } = useAuth();
+
+   const { forum_id, forum_title } = route.params;
+
+   const socket = io(`${api}/forum`)
 
    function openModal() {
       setModalDisplay(true);
    }
-
 
    async function handleSetLiked() {
       setLiked(liked ? false : true);
@@ -99,7 +101,7 @@ const Forums = () => {
       setInput('');
       Keyboard.dismiss();
 
-      loadComments();
+      // loadComments();
    }
 
    async function loadComments() {
@@ -122,6 +124,16 @@ const Forums = () => {
       setLoading(false);
    }
 
+   socket.emit('join forum', { nameRoom: forum_title });
+
+   socket.on('new message', message => {
+      console.log(message.comment_content)
+
+      console.log('socket', socket.connected); 
+
+      setComments([... message, ... comments]);
+   });
+
    useEffect(() => {
       async function getContent() {
          const responseForum = await api.get(`forum/${forum_id}/comment?page=1`);
@@ -140,6 +152,8 @@ const Forums = () => {
             ? setLiked(true)
             : ''
          });
+
+         // socket.connect();
       }
 
       getContent();

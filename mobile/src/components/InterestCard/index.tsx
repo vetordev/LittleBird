@@ -55,7 +55,7 @@ const InterestCard: React.FC<InterestCardProps> = ({ img_url, name, notDelete, t
                   resizeMode={'cover'} 
                   source={{ uri: img_url }}>
                   { !notDelete &&
-                     <InterestDelete>
+                     <InterestDelete onPress={() => console.log('pressed')}>
                         <Feather name="x" color="#232323" size={12} />
                      </InterestDelete>
                   }

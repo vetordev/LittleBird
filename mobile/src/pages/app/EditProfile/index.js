@@ -1,5 +1,5 @@
 import React, { useRef, useState } from 'react';
-import { View, FlatList } from 'react-native';
+import { View, FlatList, ActivityIndicator } from 'react-native';
 import AsyncStorage from '@react-native-community/async-storage';
 import { Form } from '@unform/mobile';
 import { Feather } from '@expo/vector-icons';
@@ -31,6 +31,7 @@ import {
 
 const EditProfile = () => {
    const [displayModal, setModalDisplay] = useState(false);
+   const [loading, setLoading] = useState(false);
 
    const { user, setUser, token } = useAuth();
    const { avatares, avatar, setAvatar } = useAvatar();
@@ -45,6 +46,8 @@ const EditProfile = () => {
       }
 
       try {
+         setLoading(true);
+
          const schema = Yup.object().shape({
            username: Yup.string().min(5, 'O nome de usuário deve ter pelo menos 5 caracteres.'),
            email: Yup.string().min(6, 'O e-mail deve ter pelo menos 7 caracteres.').email('O e-mail deve ser válido'),
@@ -69,6 +72,7 @@ const EditProfile = () => {
          await AsyncStorage.setItem('@LittleBird:user', JSON.stringify(newUser));
 
          setModalDisplay(true);
+         setLoading(false);
 
        } catch (err) {
          if (err instanceof Yup.ValidationError) {
@@ -157,9 +161,14 @@ const EditProfile = () => {
                </View>
 
                <BtnSaveProfile onPress={() => formRef.current.submitForm()}>
-                  <BtnSaveProfileText>
-                     Salvar alterações
-                  </BtnSaveProfileText>
+                  { loading ?
+                     <ActivityIndicator size="small" color="#E9E9E9" />
+                     :
+                     <BtnSaveProfileText>
+                        Salvar alterações
+                     </BtnSaveProfileText>
+                  }
+                  
                </BtnSaveProfile>
             </Form>
       </Container>

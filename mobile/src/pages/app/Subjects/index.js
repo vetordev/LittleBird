@@ -62,7 +62,6 @@ const Subjects = () => {
 
       setArticles(responseArticles.data);
       setForuns(responseForuns.data);
-
     }
   }
 
@@ -70,8 +69,8 @@ const Subjects = () => {
     navigate('Articles', { article_id });
   }
 
-  function navigateToForums(forum_id) {
-    navigate('Forums', { forum_id });
+  function navigateToForums(forum_id, forum_title) {
+    navigate('Forums', { forum_id, forum_title });
   }
 
   function getTag() {
@@ -189,7 +188,7 @@ const Subjects = () => {
             itemWidth={win.width * 0.8}
             sliderWidth={win.width}
             renderItem={({ item }) => (
-              <Option winWidth={win.width} onPress={() => navigateToForums(item.forum_id)}>
+              <Option winWidth={win.width} onPress={() => navigateToForums(item.forum_id, item.title)}>
                 <OptionImage 
                   resizeMode="cover" 
                   source={{ uri: item.img_url }} 
