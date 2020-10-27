@@ -49,10 +49,10 @@ export class QueryPageDto {
 };
 
 export class HandleJoinForumDto {
-  nameRoom: string;
+  idRoom: string;
 };
 
 export class HandleLeaveForumDto {
-  nameRoom: string;
+  idRoom: string;
 };
 
