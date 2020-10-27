@@ -30,8 +30,6 @@ const SignIn = () => {
 
       formRef.current.setErrors({});
 
-      // if (data.password === 'senha1234') {
-
       const user = {
         email,
         password: data.password,
@@ -42,12 +40,6 @@ const SignIn = () => {
       if (responseLogin !== 201) {
         alert('Senha incorreta. Tente novamente.');
       }
-      
-      
-      
-      // } else {
-      //   
-      // }
 
     } catch (err) {
       if (err instanceof Yup.ValidationError) {
