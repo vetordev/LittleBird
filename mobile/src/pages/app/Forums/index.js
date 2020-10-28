@@ -251,6 +251,11 @@ const Forums = () => {
                renderItem={({ item }) => (
                   <ChatMessage data={item} />   
                )}
+               
+               ListFooterComponent={
+                  loading && 
+                  <ActivityIndicator size="small" color="#E9E9E9" />
+               }
             />
          </Container>   
          
