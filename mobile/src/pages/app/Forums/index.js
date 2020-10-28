@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { View, FlatList, Keyboard, LogBox } from 'react-native';
+import { View, FlatList, Keyboard, Text } from 'react-native';
 import { MaterialIcons } from '@expo/vector-icons';
 import { useRoute } from '@react-navigation/native';
 import io from 'socket.io-client';
@@ -35,6 +35,7 @@ import {
    ModalRule,
    ModalRuleImg,
    ModalRuleDescription,
+   Desc
 } from './styles';
 
 const Forums = () => {
@@ -85,10 +86,21 @@ const Forums = () => {
       }
    }
 
+   // const socket = io(`${api}/forum`);
+   // socket.emit('join forum', { idRoom: forum_id });
+
+   // socket.on('new message', message => {
+   //    console.log(message)
+
+   //    // console.log('socket', socket.connected); 
+
+   //    // setComments([... message, ... comments]);
+   // });
+   
    async function sendComment() { 
       await api.post(
          `/forum/${forum_id}/comment`, 
-         {comment_content: input}, 
+         { comment_content: input }, 
          { 
             headers: {
                Authorization: token,
@@ -98,8 +110,9 @@ const Forums = () => {
 
       setInput('');
       Keyboard.dismiss();
-
-      // loadComments();
+   
+      
+      loadComments();  
    }
 
    async function loadComments() {
@@ -116,28 +129,25 @@ const Forums = () => {
       // const response = await api.get(`comment/forum/${forum_id}?page=${page}`);
       const responseForum = await api.get(`forum/${forum_id}/comment?page=${page}`);
 
+      setForum(responseForum.data);
+
+      // console.log('responseForum.data.comments', responseForum.data.comments);
+      // console.log('comments', comments);
+
+      console.log('content');
+
       setComments([... comments, ... responseForum.data.comments]);
       setTotal(responseForum.headers['X-Total-Count']);
       setPage(page + 1);
       setLoading(false);
    }
 
-   const socket = io(`${api}/forum`);
-
-   socket.emit('join forum', { nameRoom: forum_title });
-
-   socket.on('new message', message => {
-      console.log(message.comment_content)
-
-      console.log('socket', socket.connected); 
-
-      setComments([... message, ... comments]);
-   });
-
    useEffect(() => {
+      console.log('useeffect');
+
       async function getContent() {
-         const responseForum = await api.get(`forum/${forum_id}/comment?page=1`);
-         setForum(responseForum.data);
+         // const responseForum = await api.get(`forum/${forum_id}/comment?page=1`);
+         
          // setComments(responseForum.data.comments);
          loadComments();
 
@@ -152,8 +162,6 @@ const Forums = () => {
             ? setLiked(true)
             : ''
          });
-
-         // socket.connect();
       }
 
       getContent();
@@ -211,34 +219,39 @@ const Forums = () => {
          }  
 
          <Container showsVerticalScrollIndicator={false}>
-            <Header>
-               <HeaderBtnBack />
-               <HeaderBtnInfo onPress={openModal}>
-                  <InfoIcon>i</InfoIcon>
-               </HeaderBtnInfo>
-            </Header>
+            <FlatList
+               ListHeaderComponent= {
+                  <>
+                     <Header>
+                        <HeaderBtnBack />
+                        <HeaderBtnInfo onPress={openModal}>
+                           <InfoIcon>i</InfoIcon>
+                        </HeaderBtnInfo>
+                     </Header>
 
-            <Cover resizeMode="cover" source={{ uri: forum.forum_img_id.img_url }} />
-            <Content>
-               <Options>
-                  <Option onPress={handleSetLiked}>
-                     <MaterialIcons name={liked ? 'favorite' : 'favorite-border'} size={20} color={liked ? '#DA2243' : '#F6F6F6'} />
-                  </Option>
-               </Options>
+                     <Cover resizeMode="cover" source={{ uri: forum.forum_img_id.img_url }} />
+                     <Desc>
+                        <Options>
+                           <Option onPress={handleSetLiked}>
+                           <MaterialIcons name={liked ? 'favorite' : 'favorite-border'} size={20} color={liked ? '#DA2243' : '#F6F6F6'} />
+                        </Option>
+                        </Options>
 
-               <Title>{forum.title}</Title>
+                        <Title>{forum.title}</Title>
+                     </Desc>
+                  </>
+               }
+               data={comments}
+               keyExtractor={comment => String(comment.comment_id)}
+               onEndReached={loadComments}
+               showsVerticalScrollIndicator={true}
+               onEndReachedThreshold={0.3}
 
-               <FlatList
-                  data={comments}
-                  keyExtractor={comment => String(comment.comment_id)}
-                  onEndReached={loadComments}
-                  onEndReachedThreshold={0.5}
-                  renderItem={({ item }) => (
-                     <ChatMessage key={item.comment_id} data={item} />   
-                  )}
-               />
-
-            </Content>
+               style={{ backgroundColor: '#121212' }}
+               renderItem={({ item }) => (
+                  <ChatMessage data={item} />   
+               )}
+            />
          </Container>   
          
          <InputBlock>

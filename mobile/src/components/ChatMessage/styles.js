@@ -4,6 +4,7 @@ export const MessageContainer = styled.View`
    margin-bottom: ${props => props.userIsMe ? 7 : 0 }px;
    width: 100%;
    flex-direction: ${props => props.userIsMe ? 'row-reverse' : 'row'};
+   padding: 0 25px;
 `;
 
 export const MessageHeader = styled.View`

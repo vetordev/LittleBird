@@ -1,12 +1,14 @@
 import styled from 'styled-components/native';
 import Constants from 'expo-constants';
 
-export const Container = styled.ScrollView`
+export const Container = styled.View`
    flex: 1;
+   background: #f00;
 `;
 
 export const Header = styled.View`
    justify-content: space-between;
+   /* padding: 0 -25px; */
 `;
 
 export const HeaderBtnInfo = styled.TouchableOpacity`
@@ -22,6 +24,15 @@ export const HeaderBtnInfo = styled.TouchableOpacity`
    z-index: 1;
 `;
 
+export const Desc = styled.View`
+   padding: 0 25px;
+   border-top-left-radius: 50px;
+   border-top-right-radius: 50px;
+   z-index: 3;
+   background: #121212;
+   margin-top: -44px;
+`;
+
 export const InfoIcon = styled.Text`
    color: #E9E9E9;
    font-family: Nunito_800ExtraBold;
@@ -32,6 +43,7 @@ export const Cover = styled.ImageBackground`
    width: 100%;
    height: 230px;
    background: red;
+   /* margin: 0 -25px; */
 `;
 
 export const Content = styled.View`
