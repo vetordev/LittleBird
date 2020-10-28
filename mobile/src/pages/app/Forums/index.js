@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { View, FlatList, Keyboard, Text } from 'react-native';
+import { View, FlatList, Keyboard, Text, ActivityIndicator } from 'react-native';
 import { MaterialIcons } from '@expo/vector-icons';
 import { useRoute } from '@react-navigation/native';
 import io from 'socket.io-client';
@@ -242,10 +242,10 @@ const Forums = () => {
                   </>
                }
                data={comments}
-               keyExtractor={comment => String(comment.comment_id)}
+               keyExtractor={(item, index) => String(index)}
                onEndReached={loadComments}
                showsVerticalScrollIndicator={true}
-               onEndReachedThreshold={0.3}
+               onEndReachedThreshold={0.4}
 
                style={{ backgroundColor: '#121212' }}
                renderItem={({ item }) => (
