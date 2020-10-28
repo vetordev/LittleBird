@@ -1,4 +1,6 @@
-import { Controller, Get } from '@nestjs/common';
+import { Controller, Get, Query, Res } from '@nestjs/common';
+import { response } from 'express';
+import { QueryPageDto } from './theme.dto';
 import { ThemeService } from './theme.service';
 
 
@@ -7,8 +9,8 @@ export class ThemeController {
   constructor(private readonly themeService: ThemeService) { }
 
   @Get()
-  async getTheme() {
-    return this.themeService.getThemes()
+  async getTheme(@Res() response, @Query() query: QueryPageDto) {
+    return this.themeService.getThemes(response, query.page)
   }
 
 }
