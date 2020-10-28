@@ -197,6 +197,7 @@ export class ArticleService {
     const like_article = await this.likeArticleRepository.createQueryBuilder('like_article')
       .select(['like_article.like_article_id'])
       .where('like_article.article_id = :article_id', { article_id })
+      .andWhere('like_article.user_id = :user_id', { user_id })
       .getOne();
 
     if (!like_article) {
