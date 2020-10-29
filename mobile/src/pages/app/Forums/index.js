@@ -51,7 +51,9 @@ const Forums = () => {
    const route = useRoute();
    const { token } = useAuth();
 
-   const { forum_id, forum_title } = route.params;
+   const socket = io(`https://little-bird-api.herokuapp.com/forum`);
+
+   const { forum_id } = route.params;
 
    function openModal() {
       setModalDisplay(true);
@@ -86,17 +88,6 @@ const Forums = () => {
       }
    }
 
-   // const socket = io(`${api}/forum`);
-   // socket.emit('join forum', { idRoom: forum_id });
-
-   // socket.on('new message', message => {
-   //    console.log(message)
-
-   //    // console.log('socket', socket.connected); 
-
-   //    // setComments([... message, ... comments]);
-   // });
-   
    async function sendComment() { 
       await api.post(
          `/forum/${forum_id}/comment`, 
@@ -110,9 +101,7 @@ const Forums = () => {
 
       setInput('');
       Keyboard.dismiss();
-   
-      
-      loadComments();  
+      // loadComments();  
    }
 
    async function loadComments() {
@@ -134,8 +123,6 @@ const Forums = () => {
       // console.log('responseForum.data.comments', responseForum.data.comments);
       // console.log('comments', comments);
 
-      console.log('content');
-
       setComments([... comments, ... responseForum.data.comments]);
       setTotal(responseForum.headers['X-Total-Count']);
       setPage(page + 1);
@@ -143,7 +130,7 @@ const Forums = () => {
    }
 
    useEffect(() => {
-      console.log('useeffect');
+      socket.emit('join forum', { idRoom: forum_id });
 
       async function getContent() {
          // const responseForum = await api.get(`forum/${forum_id}/comment?page=1`);
@@ -166,6 +153,15 @@ const Forums = () => {
 
       getContent();
    }, []);
+
+   socket.on('new message', async message => {
+      const responseForum = await api.get(`forum/${forum_id}/comment?page=1`);
+      setTotal(responseForum.headers['X-Total-Count']);
+
+      // console.log(total);
+
+      setComments(comments.concat(message));
+   });
 
    if (forum.forum_img_id === undefined) return false;
 
@@ -230,6 +226,7 @@ const Forums = () => {
                      </Header>
 
                      <Cover resizeMode="cover" source={{ uri: forum.forum_img_id.img_url }} />
+
                      <Desc>
                         <Options>
                            <Option onPress={handleSetLiked}>
@@ -248,6 +245,7 @@ const Forums = () => {
                onEndReachedThreshold={0.4}
 
                style={{ backgroundColor: '#121212' }}
+
                renderItem={({ item }) => (
                   <ChatMessage data={item} />   
                )}

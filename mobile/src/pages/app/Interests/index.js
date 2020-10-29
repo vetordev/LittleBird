@@ -1,12 +1,11 @@
 import React, { useState, useEffect } from 'react';
-import { FlatList, TouchableOpacity } from 'react-native';
+import { FlatList, TouchableOpacity, Text } from 'react-native';
 import { Feather } from '@expo/vector-icons';
 
 import Header from '../../../components/Header';
 import InterestCard from '../../../components/InterestCard';
 import ModalContainer from '../../../components/ModalContainer';
 
-import themes from '../../../services/themes';
 import api from '../../../services/api';
 
 import { useAuth } from '../../../contexts/auth';
@@ -27,75 +26,47 @@ const Interests = () => {
    const [displayModal, setModalDisplay] = useState(false);
    const [interests, setInterests] = useState([]);
    const [themes, setThemes] = useState([]);
-   const [addedInterest, setAddedInterest] = useState([]);
+   const [addedThemeId, setAddedThemeId] = useState([]);
+   const [removedThemeId, setRemovedThemeId] = useState([]);
    const [page, setPage] = useState(1);
    const [total, setTotal] = useState(0);
    const [loading, setLoading] = useState(false);
    const { token } = useAuth();
 
+   let interestArray = [];
+
    function openModal() {
       setModalDisplay(true);
+
+      interests.forEach(interest => interestArray.push(interest.theme_id.theme_id));
+
+      setAddedThemeId([... addedThemeId, ... interestArray]);
    }
 
    function handleAddInterest(theme_id) {
-      const alreadyAdded = addedInterest.findIndex(theme => theme == theme_id);
+      const alreadyAdded = addedThemeId.findIndex(theme => theme == theme_id);
 
       if (alreadyAdded >= 0) {
-         const filteredThemes = addedInterest.filter(theme => theme !== theme_id);
+         const filteredThemes = addedThemeId.filter(theme => theme !== theme_id);
 
-         setAddedInterest(filteredThemes);
+         setAddedThemeId(filteredThemes);
       } else {
-         setAddedInterest([...addedInterest, theme_id]);
+         setAddedThemeId([...addedThemeId, theme_id]);
       }
    }
 
    function handleSubmitInterests() {
       setModalDisplay(false);
 
-      // console.log(addedInterest);
+      // interests.forEach(async interest => {
+      //    const interest_id = interest.theme_id.theme_id;
 
-      // console.log(interests[1].theme_id.theme_id);
-
-      interests.forEach(async interest => {
-         const interest_id = interest.theme_id.theme_id;
-
-         if (addedInterest.includes(interest_id)) {
-            console.log('sim', interest_id);
-            // const response = await api.post('interest', 
-            //    { themes: interest_id }, 
-            //    { headers: 
-            //       {
-            //          Authorization: token
-            //       } 
-            //    }
-            // )
-
-            // console.log(response.status);
-         }
+      //    if (addedThemeId.includes(interest_id)) {
+      //       console.log('sim', interest_id);
+      //    }
          
-         addedInterest.forEach(added => console.log(added !== interest_id && added))
-         // console.log(addedInterest ? addedInterest)
-
-
-         // addedInterest.forEach(added => {
-         //    if (added == interest.theme_id.theme_id){ 
-         //       console.log(added, 'oi');
-         //       return;
-         //    }
-         //    else {
-         //       console.log(added, 'tchau');
-         //       return;
-         //    }
-         // })
-      });
-
-      
-
-      // const arrys = interests.filter(item => addedInterest.includes(item.theme_id.theme_id));
-      // // console.log(arrys);
-
-      // addedInterest.map(ad => ad != arrys.map(arry => console.log(arry.theme_id.theme_id)))
-      // console.log(addedInterest != arrys.theme_id.theme_id);
+      //    addedThemeId.forEach(added => console.log(added !== interest_id && added))
+      // });
    }
 
    async function loadInterests() {
@@ -110,21 +81,9 @@ const Interests = () => {
       setLoading(true);
 
       const responseInterests = await api.get(`interest?page=${page}`, { headers: { Authorization: token } });
-      // console.log();
-      // console.log(respons  eInterests.data);
+      // console.log('responseInterests.data', responseInterests.data);
 
-      setInterests([... interests, ... responseInterests.data]);
-      
-      console.log(addedInterest);
-      // interests.map(response => {
-      //    setAddedInterest([... addedInterest, response.theme_id.theme_id])
-      //    console.log('response', response.theme_id.theme_id)
-
-      //    console.log('addedInterest', addedInterest);
-      // });
-
-      
-      
+      setInterests([... interests, ... responseInterests.data]); 
 
       setTotal(responseInterests.headers['X-Total-Count']);
       setPage(page + 1);
@@ -160,9 +119,9 @@ const Interests = () => {
                         <InterestTitle>{theme.theme_name}</InterestTitle>
                      </InterestInfos>
                      <TouchableOpacity onPress={() => handleAddInterest(theme.theme_id)}>
-                        { addedInterest.includes(theme.theme_id) ?
+                        { addedThemeId.includes(theme.theme_id) ?
                            <Feather name="check" color="#E9E9E9" size={20} /> :
-                           <Feather name="plus" color="#01C24E" size={20} /> 
+                           <Feather name="plus" color="#01C24E" size={20} />
                         }
                      </TouchableOpacity>
                   </InterestItem>
