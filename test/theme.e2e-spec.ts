@@ -39,9 +39,10 @@ describe('Theme', () => {
 
     it('> GET /theme Deve retornar todos os temas', async () => {
       const response = await request(app.getHttpServer())
-        .get('/theme');
+        .get('/theme?page=1');
 
       expect(response.status).toBe(200);
+      expect(response.header['x-total-count']).toBe("2");
       expect(response.body[0]).toEqual(expect.objectContaining({
         theme_id: expect.any(Number),
         theme_name: expect.any(String),

@@ -50,6 +50,7 @@ export class InterestService {
   }
 
   async deleteInterest(interest_id: number, response: Response): Promise<Response> {
+    /*
     const interest = await this.interestRespository.createQueryBuilder('interest')
       .select('interest.interest_id')
       .where('interest.interest_id = :interest_id', { interest_id })
@@ -57,6 +58,7 @@ export class InterestService {
 
     if (!interest)
       return response.status(404).json({ error: "O interesse não foi encontrado no servidor" });
+    */
 
     await this.interestRespository.createQueryBuilder('interest')
       .delete()

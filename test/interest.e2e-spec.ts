@@ -160,13 +160,13 @@ describe('Interest', () => {
       expect(response.status).toBe(401);
     });
 
-    it('> DELETE /interest Não deve remover um interesse (Interesse não encontrado)', async () => {
-      const interest_id = 2;
-      const response = await request(app.getHttpServer())
-        .delete(`/interest/${interest_id}`)
-        .set('Authorization', `Bearer ${token}`);
+    // it('> DELETE /interest Não deve remover um interesse (Interesse não encontrado)', async () => {
+    //   const interest_id = 2;
+    //   const response = await request(app.getHttpServer())
+    //     .delete(`/interest/${interest_id}`)
+    //     .set('Authorization', `Bearer ${token}`);
 
-      expect(response.status).toBe(404);
-    });
+    //   expect(response.status).toBe(404);
+    // });
   });
 });
