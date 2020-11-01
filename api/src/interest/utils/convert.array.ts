@@ -1,6 +1,6 @@
-export function convertToArray(string: String) {
+export function convertToArray(string: string) {
 
-  let array = string.split(',').map(item => (
+  const array = string.split(',').map(item => (
     item.trim()
   ));
 
