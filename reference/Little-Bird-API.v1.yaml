@@ -641,6 +641,12 @@ paths:
       description: Rota para buscar todos os temas da aplicação ordenados alfabeticamente.
       tags:
         - Theme
+      parameters:
+        - schema:
+            type: string
+          in: query
+          name: page
+          description: Paginação dos temas
   /article:
     get:
       summary: Buscar artigos ordenados pelo like
