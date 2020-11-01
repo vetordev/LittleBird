@@ -181,6 +181,8 @@ paths:
                       img_url:
                         type: string
                         format: int64
+                  user_id:
+                    type: integer
                 required:
                   - username
                   - email
