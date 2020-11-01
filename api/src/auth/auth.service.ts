@@ -2,6 +2,7 @@ import { Injectable, Inject, forwardRef } from '@nestjs/common';
 import { UserService } from '../user/user.service';
 import { JwtService } from "@nestjs/jwt";
 import hashPassword from "../user/utils/hash.password";
+
 @Injectable()
 export class AuthService {
 

@@ -32,8 +32,8 @@ export class UserService {
 
     const payload_user = { sub: created_user.identifiers[0].user_id, email: user.email };
 
-    const token = this.authService.login(payload_user.sub, payload_user.email );
-    return token;
+    const token = (await this.authService.login(payload_user.sub, payload_user.email)).token;
+    return { token };
   };
 
   async getUserByEmail(email: string): Promise<any | null> {
