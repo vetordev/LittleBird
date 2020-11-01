@@ -123,6 +123,13 @@ describe('User', () => {
       expect(response.status).toBe(201);
       expect(response.body).toEqual(expect.objectContaining({
         token: expect.any(String),
+        user_id: expect.any(Number),
+        username: expect.any(String),
+        email: expect.any(String),
+        user_img_id: {
+          user_img_id: expect.any(Number),
+          img_url: expect.any(String)
+        }
       }));
 
     });
@@ -169,6 +176,7 @@ describe('User', () => {
 
       expect(response.status).toBe(200);
       expect(response.body).toEqual(expect.objectContaining({
+        user_id: expect.any(Number),
         username: expect.any(String),
         email: expect.any(String),
         user_img_id: {

@@ -21,9 +21,11 @@ export class AuthService {
 
   //Gera o token JWT
   async login(user_id: number, email: string) {
+    const user = await this.userService.getUserById(user_id)
     const payload = { sub: user_id, email: email };
     return {
-      token: this.jwtService.sign(payload)
+      token: this.jwtService.sign(payload),
+      ...user
     }
   }
 
