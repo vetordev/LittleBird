@@ -86,7 +86,7 @@ const Subjects = () => {
 
   useEffect(() => {
     async function getThemes() {
-      const responseThemes = await api.get('theme');
+      const responseThemes = await api.get('theme?page=1');
       setThemes(responseThemes.data);
     }
 

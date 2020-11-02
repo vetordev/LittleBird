@@ -33,40 +33,38 @@ const Interests = () => {
    const [loading, setLoading] = useState(false);
    const { token } = useAuth();
 
-   let interestArray = [];
+   let interestAux = [];
 
    function openModal() {
       setModalDisplay(true);
 
-      interests.forEach(interest => interestArray.push(interest.theme_id.theme_id));
+      interests.forEach(interest => interestAux.push(interest.theme_id.theme_id));
 
-      setAddedThemeId([... addedThemeId, ... interestArray]);
+      setAddedThemeId([... addedThemeId, ... interestAux]);
    }
 
    function handleAddInterest(theme_id) {
-      const alreadyAdded = addedThemeId.findIndex(theme => theme == theme_id);
-
-      if (alreadyAdded >= 0) {
-         const filteredThemes = addedThemeId.filter(theme => theme !== theme_id);
-
-         setAddedThemeId(filteredThemes);
+      if (addedThemeId.includes(theme_id)){
+         setRemovedThemeId([... removedThemeId, theme_id]);
       } else {
-         setAddedThemeId([...addedThemeId, theme_id]);
+         setAddedThemeId([... addedThemeId, theme_id]);
       }
    }
 
-   function handleSubmitInterests() {
+   async function handleSubmitInterests() {
       setModalDisplay(false);
 
-      // interests.forEach(async interest => {
-      //    const interest_id = interest.theme_id.theme_id;
+      console.log(addedThemeId.toString());
 
-      //    if (addedThemeId.includes(interest_id)) {
-      //       console.log('sim', interest_id);
-      //    }
-         
-      //    addedThemeId.forEach(added => console.log(added !== interest_id && added))
-      // });
+      await api.post(
+         'interest', 
+         { themes: addedThemeId.toString() }, 
+         {
+            headers: {
+               Authorization: token
+            }
+         }
+      )     
    }
 
    async function loadInterests() {
@@ -81,7 +79,6 @@ const Interests = () => {
       setLoading(true);
 
       const responseInterests = await api.get(`interest?page=${page}`, { headers: { Authorization: token } });
-      // console.log('responseInterests.data', responseInterests.data);
 
       setInterests([... interests, ... responseInterests.data]); 
 
@@ -93,7 +90,7 @@ const Interests = () => {
    useEffect(() => {
       async function getContent() {
          loadInterests();
-         const responseThemes = await api.get('theme');
+         const responseThemes = await api.get('theme?page=1');
          setThemes(responseThemes.data);
       }
 
