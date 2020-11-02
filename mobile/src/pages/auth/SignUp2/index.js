@@ -28,24 +28,15 @@ import { BtnLogin, TextBtnLogin, BtnIcon } from '../../../components/BtnNext/sty
 const SignUp2 = () => {
   const [selectedInterests, setSelectedInterests] = useState([]);
   const [themes, setThemes] = useState([]);
+  const [page, setPage] = useState(1);
+  const [total, setTotal] = useState(0);
+
   const navigation = useNavigation();
-  const route = useRoute();
-  const { user } = route.params;
   const { signUp, loadingAuth } = useAuth();
 
-
-  useEffect(() => {
-    async function getThemes() {
-      const response = await api.get('theme');
+  const route = useRoute();
+  const { user } = route.params;
   
-      setThemes(response.data);
-    }
-
-    getThemes();
-  }, []);
-
-  
-
   navigation.setOptions({
     headerStyle: {
        elevation: 0,
@@ -73,41 +64,22 @@ const SignUp2 = () => {
     }
   }
 
-  const interests = [
-    {
-      theme_id: 1,
-      theme_name: 'Preservativos',
-      theme_img: {
-          theme_img_id: 1,
-          img_url: 'https://images.unsplash.com/photo-1576071804486-b8bc22106dbf?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1083&q=80'
-      }
-    },
-    {
-      theme_id: 2,
-      theme_name: 'Masturbação',
-      theme_img: {
-          theme_img_id: 1,
-          img_url: 'https://images.unsplash.com/photo-1568383245703-b6fccedeefba?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1050&q=80'
-      }
-    },
-    {
-      theme_id: 3,
-      theme_name: 'Puberdade',
-      theme_img: {
-          theme_img_id: 1,
-          img_url: 'https://images.unsplash.com/photo-1520095972714-909e91b038e5?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1050&q=80'
-      }
-    },
-    {
-      theme_id: 4,
-      theme_name: 'LGBTQ+',
-      theme_img: {
-          theme_img_id: 1,
-          img_url: 'https://images.unsplash.com/photo-1562592619-908ca07deace?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=750&q=80'
-      }
-    }
-  ]
+  async function loadThemes() {
+    if (total > 0 && themes.length == total) {
+      return;
+   }
+
+    const response = await api.get(`theme?page=${page}`);
   
+    setThemes([... themes, ... response.data]);
+    setTotal(response.headers['X-Total-Count']);
+    setPage(page + 1);
+  }
+
+  useEffect(() => {
+    loadThemes();
+  }, []);
+
   return (
     <Container showsVerticalScrollIndicator={false}>
       <StatusBar style="dark" />
@@ -127,9 +99,11 @@ const SignUp2 = () => {
           }
           ListFooterComponent={
             <Content>
-            <LoadInterests>
-              <Feather name="plus" size={30} color="#01C24E" />
-            </LoadInterests>
+            { themes.length < total &&
+              <LoadInterests onPress={loadThemes}>
+                <Feather name="plus" size={30} color="#01C24E" />
+              </LoadInterests>
+            }
 
             <BtnLogin background="#121212" onPress={handleSignUp} style={{ marginBottom: 25 }}>
               <BtnIcon background="#000">

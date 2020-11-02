@@ -43,14 +43,14 @@ export const AuthProvider = ({ children }) => {
    }, []);
 
 
-   async function signIn(userLogin, username) {
+   async function signIn(userLogin) {
       try {
-         const user = { 
-            email: userLogin.email,
-            username: username,
-            user_img_id: 1,
-            born_in: '2019-08-24',
-         };
+         // const user = { 
+         //    email: userLogin.email,
+         //    username: 'username',
+         //    user_img_id: 1,
+         //    born_in: '2019-08-24',
+         // };
    
          const userLoginObj = {
             email: userLogin.email,
@@ -62,6 +62,13 @@ export const AuthProvider = ({ children }) => {
                setLoadingAuth(true);
             }
          });
+
+         const user = {
+            user_id: responseUser.data.user_id,
+            username: responseUser.data.username,
+            email: responseUser.data.email,
+            user_img_id: responseUser.data.user_img_id.user_img_id,
+         }
 
          setUser(user); 
          setToken('Bearer ' + responseUser.data.token);
