@@ -12,7 +12,7 @@ export class ThemeService {
     const themes = await this.themeRepository.createQueryBuilder("theme")
       .innerJoinAndSelect("theme.theme_img_id", "theme_img")
       .orderBy('theme.theme_name', 'ASC')
-      .offset((page - 1) * 6)
+      .offset((page - 1) * 4)
       .limit(4)
       .getManyAndCount();
 
