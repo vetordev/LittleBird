@@ -10,7 +10,7 @@ export class CreateInterestDto {
 export class DeleteInterestDto {
   @IsString()
   @IsNotEmpty()
-  interest_id: number;
+  interests: string;
 
 }
 

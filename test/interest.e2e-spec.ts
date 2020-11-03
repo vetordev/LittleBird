@@ -58,7 +58,19 @@ describe('Interest', () => {
         .send({ themes: '1, 2' })
         .set('Authorization', `Bearer ${token}`);
 
-      expect(response.status).toBe(204);
+      expect(response.status).toBe(201);
+      expect(response.body[0]).toEqual(expect.objectContaining({
+        user_id: expect.any(Number),
+        interest_id: expect.any(Number),
+        theme_id: {
+          theme_id: expect.any(Number),
+          theme_name: expect.any(String),
+          theme_img_id: {
+            theme_img_id: expect.any(Number),
+            img_url: expect.any(String)
+          }
+        }
+      }));
     });
 
     it('> POST /interest Não deve criar um interesse (Token JWT inválido)', async () => {
@@ -134,27 +146,32 @@ describe('Interest', () => {
 
       await getConnection().createQueryBuilder().insert().into("user_img").values({ user_img_id: 1, img_url: "http://localhost:4456" }).execute();
       await getConnection().createQueryBuilder().insert().into("tb_user").values(user).execute();
+
       await getConnection().createQueryBuilder().insert().into("theme_img").values({ theme_img_id: 1, img_url: "http://localhost:4456" }).execute();
       await getConnection().createQueryBuilder().insert().into("theme").values({ theme_id: 1, theme_name: "Sexo", theme_img_id: 1 }).execute();
+      await getConnection().createQueryBuilder().insert().into("theme_img").values({ theme_img_id: 2, img_url: "http://localhost:4456" }).execute();
+      await getConnection().createQueryBuilder().insert().into("theme").values({ theme_id: 2, theme_name: "Casamento", theme_img_id: 2 }).execute();
+
       await getConnection().createQueryBuilder().insert().into("interest").values({ interest_id: 1, theme_id: 1, user_id: 1 }).execute();
+      await getConnection().createQueryBuilder().insert().into("interest").values({ interest_id: 2, theme_id: 2, user_id: 1 }).execute();
 
       const response = await request(app.getHttpServer()).post('/auth/login').send({ email: 'carlosboavida@gm.com', user_pass: '123vidaboa' });
       token = response.body.token;
     });
 
     it('> DELETE /interest/:interest_id Deve remover um interesse', async () => {
-      const interest_id = 1;
       const response = await request(app.getHttpServer())
-        .delete(`/interest/${interest_id}`)
+        .delete(`/interest`)
+        .send({ interests: "1, 2" })
         .set('Authorization', `Bearer ${token}`);
 
       expect(response.status).toBe(204);
     });
 
     it('> DELETE /interest/:interest_id Não deve remover um interesse (Token JWT inválido)', async () => {
-      const interest_id = 1;
       const response = await request(app.getHttpServer())
-        .delete(`/interest/${interest_id}`)
+        .delete(`/interest`)
+        .send({ interests: "1, 2" })
         .set('Authorization', `Bearer ${token}errado`);
 
       expect(response.status).toBe(401);
