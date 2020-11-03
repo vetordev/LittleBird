@@ -24,6 +24,15 @@ paths:
                 properties:
                   token:
                     type: string
+                  username:
+                    type: string
+                  email:
+                    type: string
+                    format: email
+                  user_img_id:
+                    type: integer
+                  user_id:
+                    type: integer
                 required:
                   - token
               examples:
@@ -526,6 +535,74 @@ paths:
           required: true
       tags:
         - Interest
+    delete:
+      summary: O usuário remover um interesse
+      operationId: delete-interest-interest_id
+      responses:
+        '204':
+          description: O interesse do usuário foi removido.
+        '401':
+          description: O token JWT é inválido.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+              examples:
+                Exemplo de erro:
+                  value:
+                    error: O token JWT é inválido.
+        '404':
+          description: O interesse não foi encontrado no servidor.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+              examples:
+                Exemplo de erro:
+                  value:
+                    error: O interesse não foi encontrado no servidor.
+        '500':
+          description: Erro interno na API.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+              examples:
+                Exemplo de erro:
+                  value:
+                    error: Ocorreu um erro. Tente novamente mais tarde.
+      parameters:
+        - schema:
+            type: string
+          in: header
+          name: Authorization
+          description: Token JWT do usuário
+          required: true
+      description: Rota para remover o interesse do usuário em um tema.
+      tags:
+        - Interest
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                interests:
+                  type: string
+            examples:
+              Exemplo de interesses:
+                value:
+                  interest: '1, 2, 3'
+        description: Deve ser enviado uma lista dos interesses que precisar ser removidos.
   /article/forum/date:
     get:
       summary: Buscar os artigos e fóruns mais recentes
@@ -634,6 +711,25 @@ paths:
       tags:
         - Article and Forum
     parameters: []
+    delete:
+      summary: O usuário remover um interesse
+      operationId: delete-interest-interest_id
+      responses:
+        '204':
+          description: O interesse do usuário foi removido.
+        '401':
+          description: O token JWT é inválido.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+              examples:
+                Exemplo de erro:
+                  value:
+                    error: O token JWT é inválido.
   /theme:
     get:
       summary: Buscas temas
@@ -2235,68 +2331,6 @@ paths:
         description: Corpo da resposta do usuário.
       tags:
         - Comment
-  '/interest/{interest_id}':
-    parameters:
-      - schema:
-          type: string
-        name: interest_id
-        in: path
-        required: true
-    delete:
-      summary: O usuário remover um interesse
-      operationId: delete-interest-interest_id
-      responses:
-        '204':
-          description: O interesse do usuário foi removido.
-        '401':
-          description: O token JWT é inválido.
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  error:
-                    type: string
-              examples:
-                Exemplo de erro:
-                  value:
-                    error: O token JWT é inválido.
-        '404':
-          description: O interesse não foi encontrado no servidor.
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  error:
-                    type: string
-              examples:
-                Exemplo de erro:
-                  value:
-                    error: O interesse não foi encontrado no servidor.
-        '500':
-          description: Erro interno na API.
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  error:
-                    type: string
-              examples:
-                Exemplo de erro:
-                  value:
-                    error: Ocorreu um erro. Tente novamente mais tarde.
-      parameters:
-        - schema:
-            type: string
-          in: header
-          name: Authorization
-          description: Token JWT do usuário
-          required: true
-      description: Rota para remover o interesse do usuário em um tema.
-      tags:
-        - Interest
   '/report/comment/{comment_id}':
     parameters:
       - schema:
