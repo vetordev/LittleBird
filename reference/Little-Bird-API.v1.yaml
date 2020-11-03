@@ -327,8 +327,48 @@ paths:
       summary: Adicionar vários interesses
       operationId: post-interest
       responses:
-        '204':
+        '201':
           description: Os interesses foram adicionados com sucesso.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    interest_id:
+                      type: integer
+                      format: int64
+                    user_id:
+                      type: integer
+                      format: int64
+                    theme_id:
+                      type: object
+                      properties:
+                        theme_id:
+                          type: integer
+                          format: int64
+                        theme_name:
+                          type: string
+                        theme_img_id:
+                          type: object
+                          properties:
+                            theme_img_id:
+                              type: integer
+                              format: int64
+                            img_url:
+                              type: string
+              examples:
+                Exemplo de interesses:
+                  value:
+                    - user_id: 1
+                      interest_id: 1
+                      theme_id:
+                        theme_id: 1
+                        theme_name: Gravidez
+                        theme_img:
+                          theme_img_id: 1
+                          img_url: 'http://localhost:3333'
         '401':
           description: O token JWT não é válido.
           content:
@@ -430,11 +470,14 @@ paths:
               examples:
                 Exemplo de interesse:
                   value:
-                    theme_id: 1
-                    theme_name: Gravidez
-                    theme_img:
-                      theme_img_id: 1
-                      img_url: 'http://localhost:3333'
+                    - user_id: 1
+                      interest_id: 1
+                      theme_id:
+                        theme_id: 1
+                        theme_name: Gravidez
+                        theme_img:
+                          theme_img_id: 1
+                          img_url: 'http://localhost:3333'
           headers:
             X-Total-Count:
               schema:
