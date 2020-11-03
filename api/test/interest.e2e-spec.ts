@@ -58,7 +58,19 @@ describe('Interest', () => {
         .send({ themes: '1, 2' })
         .set('Authorization', `Bearer ${token}`);
 
-      expect(response.status).toBe(204);
+      expect(response.status).toBe(201);
+      expect(response.body[0]).toEqual(expect.objectContaining({
+        user_id: expect.any(Number),
+        interest_id: expect.any(Number),
+        theme_id: {
+          theme_id: expect.any(Number),
+          theme_name: expect.any(String),
+          theme_img_id: {
+            theme_img_id: expect.any(Number),
+            img_url: expect.any(String)
+          }
+        }
+      }));
     });
 
     it('> POST /interest Não deve criar um interesse (Token JWT inválido)', async () => {

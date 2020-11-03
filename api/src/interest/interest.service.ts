@@ -4,6 +4,7 @@ import { Repository } from 'typeorm';
 import { Interest } from './entity/interest.entity';
 import { Response } from 'express';
 import { convertToArray } from "./utils/convert.array";
+import { arrayContains } from 'class-validator';
 
 @Injectable()
 export class InterestService {
@@ -11,9 +12,10 @@ export class InterestService {
     @InjectRepository(Interest) private readonly interestRespository: Repository<Interest>,
   ) {}
 
-  async createInterest(user_id: number, themes: string): Promise<void | Response> {
+  async createInterest(user_id: number, themes: string): Promise<Interest[]> {
 
     const themesArray = convertToArray(themes);
+    let interestArray: Array<number> = [];
 
     for (const theme_id of themesArray) {
       const interest = await this.interestRespository.createQueryBuilder('interest')
@@ -22,16 +24,28 @@ export class InterestService {
       .andWhere('interest.theme_id = :theme_id', { theme_id })
       .getOne();
 
-      if(!interest)
+      if(!interest){
 
-        await this.interestRespository.createQueryBuilder('interest')
-        .insert()
-        .into('interest').values({
-          user_id,
-          theme_id
-        })
-        .execute();
+        const createdInterest = await this.interestRespository.createQueryBuilder('interest')
+          .insert()
+          .into('interest').values({
+            user_id,
+            theme_id
+          })
+          .execute();
+
+          interestArray.push(createdInterest.identifiers[0].interest_id);
+        }
     };
+    const interests = await this.interestRespository.createQueryBuilder('interest')
+      .innerJoinAndSelect('interest.theme_id', 'theme')
+      .innerJoinAndSelect('theme.theme_img_id', 'theme_img')
+      .where('interest.interest_id IN(:...interestArray)', { interestArray: interestArray[0] != undefined ? interestArray : [0]})
+      .orderBy('interest.interest_id', 'DESC')
+      .getMany();
+
+    return interests;
+
   }
   async getInterestByUser(response: Response, user_id: number, page: number): Promise<Response> {
     const themes_interests = await this.interestRespository.createQueryBuilder('interest')

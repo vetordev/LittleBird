@@ -14,7 +14,9 @@ export class QueryFailedExceptionFilter implements ExceptionFilter {
         error: "O theme_id não existe no servidor.",
       };
       response.status(404).json(errorResponse);
-    } else
+    } else {
+      console.log(exception)
       response.status(500).json({ error: "Erro interno no servidor." });
+    }
   }
 }
