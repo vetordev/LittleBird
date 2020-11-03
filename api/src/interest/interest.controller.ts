@@ -2,7 +2,7 @@ import { Controller, Post, Get, Delete, Req, Body, Param, UseGuards, HttpCode, R
 import { CreateInterestDto, DeleteInterestDto, QueryPageDto } from './interest.dto';
 import { InterestService } from './interest.service';
 import { JwtAuthGuard } from '../auth/jwt/jwt-auth.guard';
-import { response, Response } from 'express';
+import { Response } from 'express';
 import { QueryFailedExceptionFilter } from './http-exception.filter';
 
 @Controller('interest')
@@ -24,10 +24,10 @@ export class InterestController {
     return this.interestService.getInterestByUser(response, request.user.user_id, query.page);
   }
 
-  @Delete(':interest_id')
+  @Delete()
   @UseGuards(JwtAuthGuard)
-  deleteInterest(@Res() response: Response, @Param() params: DeleteInterestDto) {
-    return this.interestService.deleteInterest(params.interest_id, response)
+  deleteInterest(@Res() response: Response, @Body() body: DeleteInterestDto) {
+    return this.interestService.deleteInterest(body.interests, response)
   }
 
 }
