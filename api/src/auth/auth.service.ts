@@ -22,7 +22,8 @@ export class AuthService {
 
   //Gera o token JWT
   async login(user_id: number, email: string) {
-    const user = await this.userService.getUserById(user_id)
+    const user: any = await this.userService.getUserById(user_id)
+    user.user_img_id = user.user_img_id.user_img_id;
     const payload = { sub: user_id, email: email };
     return {
       token: this.jwtService.sign(payload),
