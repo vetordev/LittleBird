@@ -46,8 +46,6 @@ const Articles = () => {
       navigation.navigate('Webview', { link: url });
    }
 
-   console.log('article_id', article_id);
-
    async function handleSetLiked() {
       if (!liked) {
          api.post(`article/${article_id}/like`, {}, {

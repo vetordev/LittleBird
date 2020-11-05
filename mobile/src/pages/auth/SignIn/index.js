@@ -43,7 +43,7 @@ const SignIn = () => {
         password: data.password,
       }
 
-      const responseLogin = await signIn(user, 'bolinhoroxo');
+      const responseLogin = await signIn(user);
       
       if (responseLogin !== 201) {
         setModalDisplay(true);

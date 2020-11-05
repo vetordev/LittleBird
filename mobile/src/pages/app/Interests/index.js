@@ -45,16 +45,16 @@ const Interests = () => {
 
    function handleAddInterest(theme_id) {
       if (addedThemeId.includes(theme_id)){
+         addedThemeId.splice(addedThemeId.indexOf(theme_id), 1);
          setRemovedThemeId([... removedThemeId, theme_id]);
       } else {
+         removedThemeId.splice(removedThemeId.indexOf(theme_id), 1);
          setAddedThemeId([... addedThemeId, theme_id]);
       }
    }
 
    async function handleSubmitInterests() {
       setModalDisplay(false);
-
-      console.log(addedThemeId.toString());
 
       await api.post(
          'interest', 
@@ -64,7 +64,21 @@ const Interests = () => {
                Authorization: token
             }
          }
-      )     
+      )
+
+      if (removedThemeId != '') {
+         let interestsToRemove = interests.filter(interest => removedThemeId.includes(interest.theme_id.theme_id));
+         let interestsIdsToRemove = interestsToRemove.map(interest => interest.interest_id);
+
+         const headers = {
+            'Authorization': token
+          }
+          const data = {
+            interests: interestsIdsToRemove.toString()
+          }
+
+         await api.delete('interest', { headers, data });
+      }
    }
 
    async function loadInterests() {
