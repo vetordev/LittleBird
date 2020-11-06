@@ -45,7 +45,7 @@ const Favorites = () => {
       const responseArticles = await api.get(`/article/user/like?page=${pageArticles}`, { headers: { Authorization: token } });
       
       setArticles([... articles, ... responseArticles.data]);
-      setTotalArticles(responseArticles.headers['X-Total-Count']);
+      setTotalArticles(responseArticles.headers['x-total-count']);
       setPageArticles(pageArticles + 1);
       setLoading(false);
    }
@@ -64,7 +64,7 @@ const Favorites = () => {
       const responseForums = await api.get(`/forum/user/like?page=${pageForums}`, { headers: { Authorization: token } });
 
       setForums([... forums, ... responseForums.data]);
-      setTotalForums(responseForums.headers['X-Total-Count']);
+      setTotalForums(responseForums.headers['x-total-count']);
       setPageForums(pageForums + 1);
       setLoading(false);
    }

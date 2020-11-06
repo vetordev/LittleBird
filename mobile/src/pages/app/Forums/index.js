@@ -51,9 +51,9 @@ const Forums = () => {
    const route = useRoute();
    const { token } = useAuth();
 
-   const socket = io(`https://little-bird-api.herokuapp.com/forum`);
-
    const { forum_id } = route.params;
+
+   const socket = io(`https://little-bird-api.herokuapp.com/forum`);
 
    function openModal() {
       setModalDisplay(true);
@@ -98,7 +98,6 @@ const Forums = () => {
             },
          }
       )
-
       setInput('');
       Keyboard.dismiss();
       // loadComments();  
@@ -120,22 +119,31 @@ const Forums = () => {
 
       setForum(responseForum.data);
 
-      // console.log('responseForum.data.comments', responseForum.data.comments);
-      // console.log('comments', comments);
-
+      // console.log([... comments, ... responseForum.data.comments]);
       setComments([... comments, ... responseForum.data.comments]);
-      setTotal(responseForum.headers['X-Total-Count']);
-      setPage(page + 1);
+
       setLoading(false);
    }
 
-   useEffect(() => {
-      socket.emit('join forum', { idRoom: forum_id });
+   function handleNewMessage(message) {
+      console.log('before_________________________________________________________________________________________________________________');
+            console.log(comments);
+      
+            const msg = [message];
+            setComments([... comments, ... msg]);
+      
+            console.log('after_________________________________________________________________________________________________________________');
+            console.log(comments);
+   }
 
+   useEffect(() => {
+      let isMounted = true;
       async function getContent() {
-         // const responseForum = await api.get(`forum/${forum_id}/comment?page=1`);
+         socket.emit('join forum', { idRoom: forum_id });
+         socket.on('new message', message => {
+            handleNewMessage(message);
+         });
          
-         // setComments(responseForum.data.comments);
          loadComments();
 
          const responseForumLiked = await api.get(`/forum/user/like?page=1`, {
@@ -146,22 +154,13 @@ const Forums = () => {
 
          responseForumLiked.data.map((item) => {
             item.forum_id === forum_id 
-            ? setLiked(true)
+            ? (isMounted && setLiked(true))
             : ''
          });
       }
-
       getContent();
+      return () => { isMounted = false };
    }, []);
-
-   socket.on('new message', async message => {
-      const responseForum = await api.get(`forum/${forum_id}/comment?page=1`);
-      setTotal(responseForum.headers['X-Total-Count']);
-
-      // console.log(total);
-
-      setComments(comments.concat(message));
-   });
 
    if (forum.forum_img_id === undefined) return false;
 
@@ -240,7 +239,7 @@ const Forums = () => {
                }
                data={comments}
                keyExtractor={(item, index) => String(index)}
-               onEndReached={loadComments}
+               // onEndReached={loadComments}
                showsVerticalScrollIndicator={true}
                onEndReachedThreshold={0.4}
 

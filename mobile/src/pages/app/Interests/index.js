@@ -96,7 +96,7 @@ const Interests = () => {
 
       setInterests([... interests, ... responseInterests.data]); 
 
-      setTotal(responseInterests.headers['X-Total-Count']);
+      setTotal(responseInterests.headers['x-total-count']);
       setPage(page + 1);
       setLoading(false);
    }

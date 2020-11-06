@@ -23,7 +23,7 @@ import {
 const ChatMessage = ({ data }) => {
    const [liked, setLiked] = useState(false);
    const [likeQnt, setLikesQnt] = useState(0);
-   const [userIsMe, setUserIsMe] = useState(false);
+   const [userAmI, setUserAmI] = useState(false);
 
    const { user } = useAuth();
    const { navigate } = useNavigation();
@@ -41,24 +41,27 @@ const ChatMessage = ({ data }) => {
    }
 
    useEffect(() => {
-      setUserIsMe(data.user_id.username == user.username ? true : false);
+      setUserAmI(data.user_id.username == user.username ? true : false);
+      // console.log(data.user_id.username, user.username);
+
+      // data.user_id.username == user.username ? console.log(true) : console.log(false)
    }, [])
 
    return (
-      <MessageContainer userIsMe={userIsMe}>
+      <MessageContainer userAmI={userAmI}>
          <View>
-            <MessageHeader userIsMe={userIsMe}>
+            <MessageHeader userAmI={userAmI}>
                <MessageUserAvatar resizeMode="cover" source={{ uri: avatares[user_img - 1].url }} />
                <MessageUsername>{data.user_id.username}</MessageUsername>
                <BtnMessageDetails onPress={navigateToComplaint}>
                   <TextBtnMessageDetails>...</TextBtnMessageDetails>
                </BtnMessageDetails>
             </MessageHeader>
-            <MessageContent userIsMe={userIsMe}>
-               <MessageText userIsMe={userIsMe}>{data.comment_content}</MessageText>
+            <MessageContent userAmI={userAmI}>
+               <MessageText userAmI={userAmI}>{data.comment_content}</MessageText>
             </MessageContent>
 
-            { !userIsMe &&
+            { !userAmI &&
                <LikeContainer>
                   <Like onPress={() => handleLike(data.comment_id)}>
                      <MaterialIcons name={liked ? 'favorite' : 'favorite-border'} size={14} color="#DA2243"/>

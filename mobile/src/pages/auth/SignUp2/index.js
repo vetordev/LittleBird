@@ -72,7 +72,7 @@ const SignUp2 = () => {
     const response = await api.get(`theme?page=${page}`);
   
     setThemes([... themes, ... response.data]);
-    setTotal(response.headers['X-Total-Count']);
+    setTotal(response.headers['x-total-count']);
     setPage(page + 1);
   }
 
