@@ -64,7 +64,7 @@ const Home = () => {
 
     setLoading(true);
 
-    const responseRecentContent = await api.get('article/forum/date?page=1');
+    const responseRecentContent = await api.get(`article/forum/date?page=${page}`);
     
     setRecentContent([... recentContent, ... responseRecentContent.data]);
 
