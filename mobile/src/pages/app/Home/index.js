@@ -31,6 +31,9 @@ import {
 const Home = () => {
   const [recentContent, setRecentContent] = useState([]);
   const [interests, setInterests] = useState([]);
+  const [page, setPage] = useState(1);
+  const [total, setTotal] = useState(0);
+  const [loading, setLoading] = useState(false);
 
   const { user, token } = useAuth();
   const win = Dimensions.get('window');
@@ -49,9 +52,31 @@ const Home = () => {
     navigate('Interests');
   }
 
+
+  async function loadRecentContent() {
+    if (loading) {
+      return;
+    }
+
+    if (total > 0 && recentContent.length == total) {
+      return;
+    }
+
+    setLoading(true);
+
+    const responseRecentContent = await api.get('article/forum/date?page=1');
+    
+    setRecentContent([... recentContent, ... responseRecentContent.data]);
+
+    setTotal(responseRecentContent.headers['x-total-count']);
+    setPage(page + 1);
+    setLoading(false);
+  }
+
   useEffect(() => {
     async function getContent() {
-      const responseRecentContent = await api.get('article/forum/date?page=1');
+      loadRecentContent();
+
       const responseInterests = await api.get('interest?page=1', 
         { 
           headers : { 
@@ -60,7 +85,6 @@ const Home = () => {
         });
         
       setInterests(responseInterests.data);
-      setRecentContent(responseRecentContent.data);
     }
 
     getContent();
@@ -89,7 +113,10 @@ const Home = () => {
               <Carousel 
                 layout="default"
                 data={recentContent}
-                firstItem={1}
+                // 
+                // firstItem={1}
+                onEndReached={loadRecentContent}
+                onEndReachedThreshold={0.1}
                 itemWidth={win.width * 0.8}
                 sliderWidth={win.width}
                 renderItem={({ item }) => (
