@@ -37,9 +37,16 @@ const Subjects = () => {
   const [articles, setArticles] = useState([]);
   const [foruns, setForuns] = useState([]);
   const [selectedTheme, setSelectedTheme] = useState(0);
-  const [page, setPage] = useState(1);
-  const [total, setTotal] = useState(0);
-  const [loading, setLoading] = useState(false);
+  // const [lastSelectedTheme, setLastSelectedTheme] = useState(0);
+  const [pageThemes, setPageThemes] = useState(1);
+  const [totalThemes, setTotalThemes] = useState(0);
+  const [loadingThemes, setLoadingThemes] = useState(false);
+  const [pageArticles, setPageArticles] = useState(1);
+  const [totalArticles, setTotalArticles] = useState(0);
+  const [loadingArticles, setLoadingArticles] = useState(false);
+  const [pageForums, setPageForums] = useState(1);
+  const [totalForums, setTotalForums] = useState(0);
+  const [loadingForums, setLoadingForums] = useState(false);
 
   const route = useRoute();
   const isFocused = useIsFocused();
@@ -48,24 +55,77 @@ const Subjects = () => {
   const { navigate } = useNavigation();
   
 
-  async function handleThemeFilter(theme_id) {
+  async function handleThemeFilter(theme_id) {    
     setSelectedTheme(theme_id);
 
-    if (theme_id == 0) {
-      const responseArticles = await api.get('article?page=1');
-      const responseForuns = await api.get('forum?page=1');
+    let responseForuns;
+    let responseArticles;
 
-      setArticles(responseArticles.data);
-      setForuns(responseForuns.data);
+    if (theme_id == 0) {
+      responseForuns = await api.get('forum?page=1');
+      responseArticles = await api.get('article?page=1');
+      
+    } else {
+      responseForuns = await api.get(`forum/theme/${theme_id}/like?page=1`);
+      responseArticles = await api.get(`article/theme/${theme_id}/like?page=1`);
+    }
+
+    setForuns(responseForuns.data);
+    setArticles(responseArticles.data);
+  }
+
+  async function loadArticles() {
+    if (loadingArticles) {
+      return;
+    }
+
+    if (totalArticles > 0 && articles.length == totalArticles) {
+      return;
+    }
+    
+    setLoadingArticles(true);
+
+    let responseArticles;
+
+    if (selectedTheme == 0) {
+      responseArticles = await api.get(`article?page=${pageArticles}`);
 
     } else {
-      const responseArticles = await api.get(`article/theme/${theme_id}/like?page=1`);
-      const responseForuns = await api.get(`forum/theme/${theme_id}/like?page=1`);
-
-      setArticles(responseArticles.data);
-      setForuns(responseForuns.data);
+      responseArticles = await api.get(`article/theme/${selectedTheme}/like?page=${pageArticles}`);
     }
+
+    setArticles([... articles, ... responseArticles.data]);
+    setTotalArticles(responseArticles.headers['x-total-count']);
+    setPageArticles(pageArticles + 1);
+    setLoadingArticles(false);
   }
+
+  async function loadForums() {
+    if (loadingForums) {
+      return;
+    }
+
+    if (totalForums > 0 && articles.length == totalForums) {
+      return;
+    }
+    
+    setLoadingForums(true);
+
+    let responseForums;
+
+    if (selectedTheme == 0) {
+      responseForums = await api.get(`forum?page=${pageForums}`);
+
+    } else {
+      responseForums = await api.get(`forum/theme/${selectedTheme}/like?page=${pageForums}`);
+    }
+
+    setArticles([... articles, ... responseForums.data]);
+    setTotalForums(responseForums.headers['x-total-count']);
+    setPageForums(pageForums + 1);
+    setLoadingForums(false);
+  }
+
 
   function navigateToArticles(article_id) {
     navigate('Articles', { article_id });
@@ -87,23 +147,23 @@ const Subjects = () => {
   }
 
   async function loadThemes() {
-    if (loading) {
+    if (loadingThemes) {
       return;
     }
 
-    if (total > 0 && themes.length == total) {
+    if (totalThemes > 0 && themes.length == totalThemes) {
       return;
     }
 
-    setLoading(true);
+    setLoadingThemes(true);
 
-    const responseThemes = await api.get(`theme?page=${page}`);
+    const responseThemes = await api.get(`theme?page=${pageThemes}`);
 
     setThemes([... themes, ... responseThemes.data]);
 
-    setTotal(responseThemes.headers['x-total-count']);
-    setPage(page + 1);
-    setLoading(false);
+    setTotalThemes(responseThemes.headers['x-total-count']);
+    setPageThemes(pageThemes + 1);
+    setLoadingThemes(false);
   }
 
   useEffect(() => {
@@ -125,6 +185,7 @@ const Subjects = () => {
             horizontal
             showsHorizontalScrollIndicator={false}
             data={themes}
+            // initialScrollIndex={themes.indexOf(selectedTheme)}
             keyExtractor={theme => String(theme.theme_id)}
             contentContainerStyle={{ paddingHorizontal: 14, alignItems: 'center' }}
             ListHeaderComponent= {
@@ -162,6 +223,8 @@ const Subjects = () => {
           <Carousel 
             layout="tinder"
             layoutCardOffset={9}
+            onEndReached={loadArticles}
+            onEndReachedThreshold={0.7}
             firstItem={articles.length - 1}
             data={articles}
             itemWidth={win.width * 0.8}
@@ -200,6 +263,8 @@ const Subjects = () => {
           <Carousel 
             layout="tinder"
             layoutCardOffset={9}
+            onEndReached={loadForums}
+            onEndReachedThreshold={0.7}
             firstItem={foruns.length - 1}
             data={foruns}
             itemWidth={win.width * 0.8}
