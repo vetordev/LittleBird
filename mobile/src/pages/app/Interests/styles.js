@@ -30,11 +30,11 @@ export const AddInterestText = styled.Text`
 `;
 
 export const InterestItem = styled.View`
-   width: 100%;
    flex-direction: row;
    align-items: center;
    justify-content: space-between;
-   padding: 10px 5px;
+   padding: 10px 0;
+   margin: 0 10px;
    border-bottom-width: ${ StyleSheet.hairlineWidth }px;
    border-color: #B8B8B880;
 `;
@@ -47,7 +47,7 @@ export const InterestInfos = styled.View`
 export const InterestImg = styled.Image`
    width: 68px;
    height: 45px;
-   background: #f00;
+   background: #000;
    border-radius: 7px;
    margin-right: 10px;
 `;

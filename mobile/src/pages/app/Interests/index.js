@@ -28,9 +28,12 @@ const Interests = () => {
    const [themes, setThemes] = useState([]);
    const [addedThemeId, setAddedThemeId] = useState([]);
    const [removedThemeId, setRemovedThemeId] = useState([]);
-   const [page, setPage] = useState(1);
-   const [total, setTotal] = useState(0);
-   const [loading, setLoading] = useState(false);
+   const [pageInterests, setPageInterests] = useState(1);
+   const [totalInterests, setTotalInterests] = useState(0);
+   const [loadingInterests, setLoadingInterests] = useState(false);
+   const [pageThemes, setPageThemes] = useState(1);
+   const [totalThemes, setTotalThemes] = useState(0);
+   const [loadingThemes, setLoadingThemes] = useState(false);
    const { token } = useAuth();
 
    let interestAux = [];
@@ -82,33 +85,48 @@ const Interests = () => {
    }
 
    async function loadInterests() {
-      if (loading) {
+      if (loadingInterests) {
          return;
       }
 
-      if (total > 0 && interests.length == total) {
+      if (totalInterests > 0 && interests.length == totalInterests) {
          return;
       }
 
-      setLoading(true);
+      setLoadingInterests(true);
 
-      const responseInterests = await api.get(`interest?page=${page}`, { headers: { Authorization: token } });
+      const responseInterests = await api.get(`interest?page=${pageInterests}`, { headers: { Authorization: token } });
 
       setInterests([... interests, ... responseInterests.data]); 
 
-      setTotal(responseInterests.headers['x-total-count']);
-      setPage(page + 1);
-      setLoading(false);
+      setTotalInterests(responseInterests.headers['x-total-count']);
+      setPageInterests(pageInterests + 1);
+      setLoadingInterests(false);
+   }
+
+   async function loadThemes() {
+      if (loadingThemes) {
+         return;
+       }
+   
+       if (totalThemes > 0 && themes.length == totalThemes) {
+         return;
+       }
+   
+       setLoadingThemes(true);
+   
+       const responseThemes = await api.get(`theme?page=${pageThemes}`);
+   
+       setThemes([... themes, ... responseThemes.data]);
+   
+       setTotalThemes(responseThemes.headers['x-total-count']);
+       setPageThemes(pageThemes + 1);
+       setLoadingThemes(false);
    }
 
    useEffect(() => {
-      async function getContent() {
-         loadInterests();
-         const responseThemes = await api.get('theme?page=1');
-         setThemes(responseThemes.data);
-      }
-
-      getContent();
+      loadInterests();
+      loadThemes();
    }, []);
 
    if (interests.length == 0) return false;
@@ -123,20 +141,28 @@ const Interests = () => {
                font_color="#202020"
                btn_title="SALVAR"
             >
-               { themes.map(theme => (
-                  <InterestItem key={theme.theme_id}>
-                     <InterestInfos>
-                        <InterestImg source={{ uri: theme.theme_img_id.img_url }} />
-                        <InterestTitle>{theme.theme_name}</InterestTitle>
-                     </InterestInfos>
-                     <TouchableOpacity onPress={() => handleAddInterest(theme.theme_id)}>
-                        { addedThemeId.includes(theme.theme_id) ?
-                           <Feather name="check" color="#E9E9E9" size={20} /> :
-                           <Feather name="plus" color="#01C24E" size={20} />
-                        }
-                     </TouchableOpacity>
-                  </InterestItem>
-               ))}
+               <FlatList 
+                  data={themes}
+                  keyExtractor={theme => String(theme.theme_id)}
+                  onEndReached={loadThemes}
+                  onEndReachedThreshold={0.7}
+                  renderItem={({ item: theme }) => (
+                     <InterestItem>
+                        <InterestInfos>
+                           <InterestImg source={{ uri: theme.theme_img_id.img_url }} />
+                           <InterestTitle>{theme.theme_name}</InterestTitle>
+                        </InterestInfos>
+                        <TouchableOpacity
+                           onPress={() => handleAddInterest(theme.theme_id)}
+                        >
+                           { addedThemeId.includes(theme.theme_id) ?
+                              <Feather name="check" color="#E9E9E9" size={20} /> :
+                              <Feather name="plus" color="#01C24E" size={20} />
+                           }
+                        </TouchableOpacity>
+                     </InterestItem>
+                  )} 
+               />
             </ModalContainer>
          }  
 
