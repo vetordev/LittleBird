@@ -113,8 +113,6 @@ const Home = () => {
               <Carousel 
                 layout="default"
                 data={recentContent}
-                // 
-                // firstItem={1}
                 onEndReached={loadRecentContent}
                 onEndReachedThreshold={0.1}
                 itemWidth={win.width * 0.8}

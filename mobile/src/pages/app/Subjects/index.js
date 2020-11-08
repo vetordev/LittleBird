@@ -33,13 +33,16 @@ import {
 } from './styles';
 
 const Subjects = () => {
-  const route = useRoute();
-  const isFocused = useIsFocused();
-
   const [themes, setThemes] = useState([]);
   const [articles, setArticles] = useState([]);
   const [foruns, setForuns] = useState([]);
   const [selectedTheme, setSelectedTheme] = useState(0);
+  const [page, setPage] = useState(1);
+  const [total, setTotal] = useState(0);
+  const [loading, setLoading] = useState(false);
+
+  const route = useRoute();
+  const isFocused = useIsFocused();
 
   const win = Dimensions.get('window');
   const { navigate } = useNavigation();
@@ -83,13 +86,28 @@ const Subjects = () => {
     }
   }
 
-  useEffect(() => {
-    async function getThemes() {
-      const responseThemes = await api.get('theme?page=1');
-      setThemes(responseThemes.data);
+  async function loadThemes() {
+    if (loading) {
+      return;
     }
 
-    getThemes();
+    if (total > 0 && themes.length == total) {
+      return;
+    }
+
+    setLoading(true);
+
+    const responseThemes = await api.get(`theme?page=${page}`);
+
+    setThemes([... themes, ... responseThemes.data]);
+
+    setTotal(responseThemes.headers['x-total-count']);
+    setPage(page + 1);
+    setLoading(false);
+  }
+
+  useEffect(() => {
+    loadThemes();
     getTag();
   }, [isFocused]);
   
@@ -102,9 +120,10 @@ const Subjects = () => {
         <Title>Escolha um assunto</Title>
         <View style={{ marginBottom: 20 }}>
           <FlatList 
+            onEndReached={loadThemes}
+            onEndReachedThreshold={0.7}
             horizontal
             showsHorizontalScrollIndicator={false}
-            horizontal 
             data={themes}
             keyExtractor={theme => String(theme.theme_id)}
             contentContainerStyle={{ paddingHorizontal: 14, alignItems: 'center' }}
@@ -131,9 +150,8 @@ const Subjects = () => {
                 <ThemeTitle>{item.theme_name}</ThemeTitle>
               </Theme>
             )}
-            />
+          />
         </View>
-
         <SessionHeader>
           <SessionLineDecoration />
               <SessionTitle>Artigos</SessionTitle>
