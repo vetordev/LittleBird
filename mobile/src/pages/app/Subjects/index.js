@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { View, ScrollView, Dimensions } from 'react-native';
+import { View, ScrollView, Dimensions, FlatList } from 'react-native';
 import Carousel from 'react-native-snap-carousel';
 import { Feather } from '@expo/vector-icons';
 import { useNavigation, useRoute, useIsFocused } from '@react-navigation/native';
@@ -35,7 +35,6 @@ import {
 const Subjects = () => {
   const route = useRoute();
   const isFocused = useIsFocused();
-  // const { theme_id } = route.params ? route.params : 0;
 
   const [themes, setThemes] = useState([]);
   const [articles, setArticles] = useState([]);
@@ -102,28 +101,28 @@ const Subjects = () => {
       <Container>
         <Title>Escolha um assunto</Title>
         <View style={{ marginBottom: 20 }}>
-          <ScrollView 
+          <FlatList 
             horizontal
             showsHorizontalScrollIndicator={false}
+            horizontal 
+            data={themes}
+            keyExtractor={theme => String(theme.theme_id)}
             contentContainerStyle={{ paddingHorizontal: 14, alignItems: 'center' }}
-          >
-            <AllThemes 
-              key={String(0)} 
-              onPress={() => handleThemeFilter(0)}
-            >
-              <ThemeImage 
-                resizeMode="cover" 
-                source={{ uri: 'https://images.unsplash.com/photo-1564115484-a4aaa88d5449?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1050&q=80' }} 
-              />
-              <ThemeImageFilter style={selectedTheme === 0 ? styles.selected : {}} />
-              <ThemeTitle>Todos</ThemeTitle>
-            </AllThemes>
-
-            {themes.map(item => (
-              <Theme 
-                key={String(item.theme_id)} 
-                onPress={() => handleThemeFilter(item.theme_id)}
+            ListHeaderComponent= {
+              <AllThemes 
+                key={String(0)} 
+                onPress={() => handleThemeFilter(0)}
               >
+                <ThemeImage 
+                  resizeMode="cover" 
+                  source={{ uri: 'https://images.unsplash.com/photo-1564115484-a4aaa88d5449?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1050&q=80' }} 
+                />
+                <ThemeImageFilter style={selectedTheme === 0 ? styles.selected : {}} />
+                <ThemeTitle>Todos</ThemeTitle>
+              </AllThemes>
+            }
+            renderItem={({ item }) => (
+              <Theme onPress={() => handleThemeFilter(item.theme_id)}>
                 <ThemeImage 
                   resizeMode="cover" 
                   source={{ uri: item.theme_img_id.img_url }} 
@@ -131,8 +130,8 @@ const Subjects = () => {
                 <ThemeImageFilter style={selectedTheme === item.theme_id ? styles.selected : {}} />
                 <ThemeTitle>{item.theme_name}</ThemeTitle>
               </Theme>
-            ))}
-          </ScrollView>
+            )}
+            />
         </View>
 
         <SessionHeader>
