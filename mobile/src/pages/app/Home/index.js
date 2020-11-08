@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Dimensions, FlatList, View } from 'react-native';
-import { useNavigation } from '@react-navigation/native';
+import { useNavigation, useIsFocused } from '@react-navigation/native';
 import { StatusBar } from 'expo-status-bar';
 import Carousel from 'react-native-snap-carousel';
 import { Feather } from '@expo/vector-icons';
@@ -38,6 +38,7 @@ const Home = () => {
   const { user, token } = useAuth();
   const win = Dimensions.get('window');
   const { navigate } = useNavigation();
+  const isFocused = useIsFocused();
 
 
   function navigateToArticles(article_id) {
@@ -88,7 +89,7 @@ const Home = () => {
     }
 
     getContent();
-  }, []);
+  }, [isFocused]);
 
   return (
     <>
