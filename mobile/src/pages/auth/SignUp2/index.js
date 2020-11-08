@@ -4,6 +4,8 @@ import { StatusBar } from 'expo-status-bar';
 import { useRoute, useNavigation } from '@react-navigation/native';
 import { Feather } from '@expo/vector-icons';
 
+import { BtnLogin, TextBtnLogin, BtnIcon } from '../../../components/BtnNext/styles';
+
 import { useAuth } from '../../../contexts/auth';
 import api from '../../../services/api';
 
@@ -22,8 +24,6 @@ import {
   ActivityIndicatorContainer,
   styles
 } from './styles';
-
-import { BtnLogin, TextBtnLogin, BtnIcon } from '../../../components/BtnNext/styles';
 
 const SignUp2 = () => {
   const [selectedInterests, setSelectedInterests] = useState([]);

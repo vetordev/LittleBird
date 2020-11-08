@@ -1,6 +1,7 @@
 import React, { useState, useRef } from 'react';
 import { ScrollView } from 'react-native';
 import { StatusBar } from 'expo-status-bar';
+import moment from 'moment';
 import { CheckBox } from 'react-native-elements';
 import { useRoute, useNavigation } from '@react-navigation/native';
 import { Form } from '@unform/mobile';
@@ -8,6 +9,7 @@ import { Feather } from '@expo/vector-icons';
 import * as Yup from 'yup';
 
 import Input from '../../../components/Input';
+import InputDate from '../../../components/InputDate';
 
 import { 
   Container, 
@@ -22,52 +24,93 @@ import { BtnLogin, TextBtnLogin, BtnIcon } from '../../../components/BtnNext/sty
 
 const SignUp1 = () => {
   const [toggleCheckBox, setToggleCheckBox] = useState(false);
+  const [date, setDate] = useState('');
+  const [userBirth, setUserBirth] = useState('');
+  const [dateError, setDateError] = useState(null);
 
   const navigation = useNavigation();
   const route = useRoute();
   const email = route.params.data.email;
   const formRef = useRef(null);
 
-  async function handleSignUp1 (data, { reset }) {
-    try {
-      const schema = Yup.object().shape({
-        fullname: Yup.string().required('Seu nome não pode ser nulo.').min(6, 'O nome completo deve ter pelo menos 6 caracteres.'),
-        username: Yup.string().required('O nome de usuário não pode ser nulo.').min(5, 'O nome de usuário deve ter pelo menos 5 caracteres.'),
-        password: Yup.string().required('A senha não pode ser nula.').min(5, 'A senha deve ter pelo menos 5 caracteres.'),
-      });
 
-      await schema.validate(data, {
-        abortEarly: false
-      });
-
-      formRef.current.setErrors({});
-
-      const user = {
-        email,
-        name: data.fullname,
-        username: data.username,
-        user_pass: data.password,
-        user_img_id: 1,
-        born_in: '2019-08-24'
-      }
-
-      if (toggleCheckBox) {
-        navigation.navigate('SignUp2', { user });
-      } else {
-        alert('É preciso concordar com os termos de uso.');
-      }
-
-    } catch (err) {
-      if (err instanceof Yup.ValidationError) {
-        const errorMessages = {};
-
-        err.inner.forEach(error => {
-          errorMessages[error.path] = error.message;
-        })
-
-        formRef.current.setErrors(errorMessages);
-      }
+  function handleSetDate(text) {
+    if (text.length === 2) {
+      setDate(text + "/");
     }
+    else if (text.length === 5) {
+      setDate(text + "/");
+    }
+    else {
+      setDate(text);
+    }
+
+    if (text.length === 10) {
+      const day = String(text[0]) + String(text[1]);
+      const month = String(text[3]) + String(text[4]);
+      const year = String(text[6]) + String(text[7]) + String(text[8]) + String(text[9]);
+
+      setUserBirth(`${year}-${month}-${day}`);
+    }
+  }
+
+  function validateDate() {
+    if (moment(userBirth).isValid()) {
+      // variações
+      setDateError(null);
+      return true;
+    } else {
+      setDateError('Insira uma data de nascimento correta.');
+      return false;
+    }
+  }
+
+  async function handleSignUp1 (data, { reset }) {
+
+    validateDate();
+
+      try {
+        const schema = Yup.object().shape({
+          fullname: Yup.string().required('Seu nome não pode ser nulo.').min(6, 'O nome completo deve ter pelo menos 6 caracteres.'),
+          username: Yup.string().required('O nome de usuário não pode ser nulo.').min(5, 'O nome de usuário deve ter pelo menos 5 caracteres.'),
+          password: Yup.string().required('A senha não pode ser nula.').min(5, 'A senha deve ter pelo menos 5 caracteres.'),
+        });
+
+        await schema.validate(data, {
+          abortEarly: false
+        });
+
+        formRef.current.setErrors({});
+
+        if (!dateError) {
+          const user = {
+            email,
+            name: data.fullname,
+            username: data.username,
+            user_pass: data.password,
+            user_img_id: 1,
+            born_in: userBirth
+          }
+
+          if (toggleCheckBox) {
+            navigation.navigate('SignUp2', { user });
+          } else {
+            alert('É preciso concordar com os termos de uso.');
+          }
+        }
+
+      } catch (err) {
+        if (err instanceof Yup.ValidationError) {
+          const errorMessages = {};
+
+          err.inner.forEach(error => {
+            errorMessages[error.path] = error.message;
+          })
+
+          formRef.current.setErrors(errorMessages);
+        }
+      }
+    
   }
 
   return (
@@ -88,6 +131,15 @@ const SignUp1 = () => {
             legend="Seu nome completo"
             description="Não se preocupe, nenhum outro usuário terá acesso ao seu nome verdadeiro."
             maxLength={45}
+          />
+
+          <InputDate 
+            iconName="calendar"
+            placeholder="DD / MM / AAAA"
+            legend="Sua data de nascimento"
+            value={date}
+            onChangeText={text => handleSetDate(text)}
+            error={dateError}
           />
 
           <Input 
