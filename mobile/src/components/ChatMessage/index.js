@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { View } from 'react-native';
 import { MaterialIcons } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
+import { Feather } from '@expo/vector-icons';
 
 import { useAuth } from '../../contexts/auth';
 import { useAvatar } from '../../contexts/useAvatar';
@@ -54,7 +55,8 @@ const ChatMessage = ({ data }) => {
                <MessageUserAvatar resizeMode="cover" source={{ uri: avatares[user_img - 1].url }} />
                <MessageUsername>{data.user_id.username}</MessageUsername>
                <BtnMessageDetails onPress={navigateToComplaint}>
-                  <TextBtnMessageDetails>...</TextBtnMessageDetails>
+                  <Feather name="flag" color="#787878" />
+                  {/* <TextBtnMessageDetails>...</TextBtnMessageDetails> */}
                </BtnMessageDetails>
             </MessageHeader>
             <MessageContent userAmI={userAmI}>

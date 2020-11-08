@@ -64,7 +64,10 @@ export const NumLikes = styled.Text`
 
 export const BtnMessageDetails = styled.TouchableOpacity`
    margin-left: 7px;
-   height: 33px;
+   /* flex: 1; */
+
+
+   /* height: 33px; */
    /* background: #f00; */
 `;
 
