@@ -33,30 +33,8 @@ const SignUp1 = () => {
   const email = route.params.data.email;
   const formRef = useRef(null);
 
-
-  function handleSetDate(text) {
-    if (text.length === 2) {
-      setDate(text + "/");
-    }
-    else if (text.length === 5) {
-      setDate(text + "/");
-    }
-    else {
-      setDate(text);
-    }
-
-    if (text.length === 10) {
-      const day = String(text[0]) + String(text[1]);
-      const month = String(text[3]) + String(text[4]);
-      const year = String(text[6]) + String(text[7]) + String(text[8]) + String(text[9]);
-
-      setUserBirth(`${year}-${month}-${day}`);
-    }
-  }
-
   function validateDate() {
     if (moment(userBirth).isValid()) {
-      // variações
       setDateError(null);
       return true;
     } else {
@@ -65,51 +43,49 @@ const SignUp1 = () => {
     }
   }
 
-  async function handleSignUp1 (data, { reset }) {
-
+  async function handleSignUp1 (data) {
     validateDate();
 
-      try {
-        const schema = Yup.object().shape({
-          fullname: Yup.string().required('Seu nome não pode ser nulo.').min(6, 'O nome completo deve ter pelo menos 6 caracteres.'),
-          username: Yup.string().required('O nome de usuário não pode ser nulo.').min(5, 'O nome de usuário deve ter pelo menos 5 caracteres.'),
-          password: Yup.string().required('A senha não pode ser nula.').min(5, 'A senha deve ter pelo menos 5 caracteres.'),
-        });
+    try {
+      const schema = Yup.object().shape({
+        fullname: Yup.string().required('Seu nome não pode ser nulo.').min(6, 'O nome completo deve ter pelo menos 6 caracteres.'),
+        username: Yup.string().required('O nome de usuário não pode ser nulo.').min(5, 'O nome de usuário deve ter pelo menos 5 caracteres.'),
+        password: Yup.string().required('A senha não pode ser nula.').min(5, 'A senha deve ter pelo menos 5 caracteres.'),
+      });
 
-        await schema.validate(data, {
-          abortEarly: false
-        });
+      await schema.validate(data, {
+        abortEarly: false
+      });
 
-        formRef.current.setErrors({});
+      formRef.current.setErrors({});
 
-        if (!dateError) {
-          const user = {
-            email,
-            name: data.fullname,
-            username: data.username,
-            user_pass: data.password,
-            user_img_id: 1,
-            born_in: userBirth
-          }
-
-          if (toggleCheckBox) {
-            navigation.navigate('SignUp2', { user });
-          } else {
-            alert('É preciso concordar com os termos de uso.');
-          }
+      if (!dateError) {
+        const user = {
+          email,
+          name: data.fullname,
+          username: data.username,
+          user_pass: data.password,
+          user_img_id: 1,
+          born_in: userBirth
         }
 
-      } catch (err) {
-        if (err instanceof Yup.ValidationError) {
-          const errorMessages = {};
-
-          err.inner.forEach(error => {
-            errorMessages[error.path] = error.message;
-          })
-
-          formRef.current.setErrors(errorMessages);
+        if (toggleCheckBox) {
+          navigation.navigate('SignUp2', { user });
+        } else {
+          alert('É preciso concordar com os termos de uso.');
         }
       }
+
+    } catch (err) {
+      if (err instanceof Yup.ValidationError) {
+        const errorMessages = {};
+
+        err.inner.forEach(error => {
+          errorMessages[error.path] = error.message;
+        })
+        formRef.current.setErrors(errorMessages);
+      }
+    }
     
   }
 
@@ -138,7 +114,8 @@ const SignUp1 = () => {
             placeholder="DD / MM / AAAA"
             legend="Sua data de nascimento"
             value={date}
-            onChangeText={text => handleSetDate(text)}
+            setDate={setDate}
+            setUserBirth={setUserBirth}
             error={dateError}
           />
 

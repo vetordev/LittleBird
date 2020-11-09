@@ -56,7 +56,9 @@ const Input = ({ name, color, iconName, legend, description, defaultValue, ...re
             {...rest}
          />
          </InputContainer>
-         <Description color={color == 'dark' ? '#000' : '#F6F6F6'}>{description}</Description>
+         { description &&
+            <Description color={color == 'dark' ? '#000' : '#F6F6F6'}>{description}</Description>
+         }
      </Container>   
    );
 }
