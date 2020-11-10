@@ -33,6 +33,8 @@ paths:
                     type: integer
                   user_id:
                     type: integer
+                  fullname:
+                    type: string
                 required:
                   - token
               examples:
@@ -192,6 +194,8 @@ paths:
                         format: int64
                   user_id:
                     type: integer
+                  fullname:
+                    type: string
                 required:
                   - username
                   - email
@@ -322,6 +326,8 @@ paths:
                 born_in:
                   type: string
                   format: date
+                fullname:
+                  type: string
             examples:
               Exemplo de dados a serem alterados:
                 value:
