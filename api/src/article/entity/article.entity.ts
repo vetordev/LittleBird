@@ -15,7 +15,7 @@ export class Article {
 
   @Column({
     type: 'varchar',
-    length: 700
+    length: 1600
   })
   article_content: string;
 

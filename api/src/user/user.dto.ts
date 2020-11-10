@@ -7,6 +7,9 @@ export class CreateUserDto {
   username: string;
 
   @IsNotEmpty()
+  fullname: string;
+
+  @IsNotEmpty()
   @IsEmail()
   email: string;
 
@@ -19,7 +22,7 @@ export class CreateUserDto {
 
   @IsNotEmpty()
   // @IsDateString()
-  born_in: string
+  born_in: string;
 }
 
 export class UpdateUserDto {
@@ -43,6 +46,10 @@ export class UpdateUserDto {
   @IsString()
   @IsOptional()
   born_in ?: string;
+
+  @IsString()
+  @IsOptional()
+  fullname ?: string;
 }
 
 export class EmailExistsDto {
@@ -58,4 +65,5 @@ export class GetUserDto {
   email: string;
   user_img_id: number;
   username: string;
+  fullname: string;
 }
