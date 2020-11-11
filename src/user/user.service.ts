@@ -26,7 +26,8 @@ export class UserService {
         user_pass: hashPassword(user.user_pass),
         username: user.username,
         born_in: user.born_in,
-        user_img_id: user.user_img_id
+        user_img_id: user.user_img_id,
+        fullname: user.fullname
       })
       .execute();
 
@@ -65,7 +66,7 @@ export class UserService {
 
   async getUserById(user_id: number): Promise<GetUserDto> {
     const user = await this.userRepository.createQueryBuilder("tb_user")
-      .select(['tb_user.user_id', 'tb_user.email', 'tb_user.username', 'tb_user.user_img_id'])
+      .select(['tb_user.user_id', 'tb_user.email', 'tb_user.username', 'tb_user.user_img_id', 'tb_user.fullname'])
       .innerJoinAndSelect('tb_user.user_img_id', 'user_img')
       .where('tb_user.user_id = :user_id', { user_id })
       .getOne();

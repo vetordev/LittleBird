@@ -14,7 +14,8 @@ describe('User', () => {
     user_img_id: 1,
     user_pass: '123vidaboa',
     username: 'carlosboaviida',
-    born_in: '2020-06-15'
+    born_in: '2020-06-15',
+    fullname: 'vitoria da silva'
   };
 
 
@@ -62,7 +63,8 @@ describe('User', () => {
         user_img_id: 1,
         user_pass: '123vidaboa',
         username: 'carlosboavida',
-        born_in: '2020-06-15'
+        born_in: '2020-06-15',
+        fullname: 'vitoria da silva'
       };
 
       const response = await request(app.getHttpServer())
@@ -81,7 +83,8 @@ describe('User', () => {
         user_img_id: 2,
         user_pass: '123vidaboa',
         username: 'carlosaboavida',
-        born_in: '2020-06-15'
+        born_in: '2020-06-15',
+        fullname: 'vitoria da silva'
       };
       const response = await request(app.getHttpServer())
         .post('/user')
@@ -106,7 +109,8 @@ describe('User', () => {
                                                                                    user_img_id: 1,
                                                                                    user_pass: '7f69c888bd3d61f20070fae8781a6b355c549b92e76e2955818eb75563a61b15',
                                                                                    username: 'carlosboaviida',
-                                                                                   born_in: '2020-06-15'
+                                                                                   born_in: '2020-06-15',
+                                                                                   fullname: 'vitoria da silva'
                                                                                    }).execute();
     });
 
@@ -126,7 +130,8 @@ describe('User', () => {
         user_id: expect.any(Number),
         username: expect.any(String),
         email: expect.any(String),
-        user_img_id: expect.any(Number)
+        user_img_id: expect.any(Number),
+        fullname: expect.any(String)
       }));
 
     });
@@ -158,7 +163,8 @@ describe('User', () => {
                                                                                    user_img_id: 1,
                                                                                    user_pass: '7f69c888bd3d61f20070fae8781a6b355c549b92e76e2955818eb75563a61b15',
                                                                                    username: 'carlosboaviida',
-                                                                                   born_in: '2020-06-15'
+                                                                                   born_in: '2020-06-15',
+                                                                                   fullname: 'vitoria da silva'
                                                                                    }).execute();
 
       const response = await request(app.getHttpServer()).post('/auth/login').send({ email: 'carlosboavida@gm.com', user_pass: '123vidaboa' });
@@ -179,7 +185,8 @@ describe('User', () => {
         user_img_id: {
           user_img_id: expect.any(Number),
           img_url: expect.any(String)
-        }
+        },
+        fullname: expect.any(String)
       }));
 
     });
@@ -233,13 +240,15 @@ describe('User', () => {
                                                                                    user_img_id: 1,
                                                                                    user_pass: '7f69c888bd3d61f20070fae8781a6b355c549b92e76e2955818eb75563a61b15',
                                                                                    username: 'carlosboaviida',
-                                                                                   born_in: '2020-06-15'
+                                                                                   born_in: '2020-06-15',
+                                                                                   fullname: 'vitoria da silva'
                                                                                    }).execute();
       await getConnection().createQueryBuilder().insert().into("tb_user").values({ email: 'carlosboalife@gm.com',
                                                                                    user_img_id: 1,
                                                                                    user_pass: '7f69c888bd3d61f20070fae8781a6b355c549b92e76e2955818eb75563a61b15',
                                                                                    username: 'carlosboavida',
-                                                                                   born_in: '2020-06-15'
+                                                                                   born_in: '2020-06-15',
+                                                                                   fullname: 'vitoria da silva'
                                                                                    }).execute();
 
       const response = await request(app.getHttpServer()).post('/auth/login').send({ email: 'carlosboavida@gm.com', user_pass: '123vidaboa' });
@@ -252,7 +261,8 @@ describe('User', () => {
         email: 'carlosboaalt@gm.com',
         user_img_id: 1,
         username: 'carlosboaal',
-        born_in: '2020-06-17'
+        born_in: '2020-06-17',
+        fullname: 'vitoria lopes'
       };
       const response = await request(app.getHttpServer())
         .put('/user')
@@ -268,7 +278,8 @@ describe('User', () => {
         email: 'carlosboa-alt@gm.com',
         user_img_id: 1,
         username: 'carlosboaaltalt',
-        born_in: '2020-06-17'
+        born_in: '2020-06-17',
+        fullname: 'vitoria da silva'
       };
       const response = await request(app.getHttpServer())
         .put('/user')
@@ -283,7 +294,8 @@ describe('User', () => {
         email: 'carlosboalife@gm.com',
         user_img_id: 1,
         username: 'carlosboavida',
-        born_in: '2020-06-15'
+        born_in: '2020-06-15',
+        fullname: 'vitoria da silva'
       };
 
       const response = await request(app.getHttpServer())
@@ -299,7 +311,8 @@ describe('User', () => {
         email: 'carlosboalifee@gm.com',
         user_img_id: 2,
         username: 'carlosboaviida',
-        born_in: '2020-06-15'
+        born_in: '2020-06-15',
+        fullname: 'vitoria da silva'
       };
 
       const response = await request(app.getHttpServer())
@@ -322,7 +335,8 @@ describe('User', () => {
                                                                                  user_img_id: 1,
                                                                                  user_pass: '7f69c888bd3d61f20070fae8781a6b355c549b92e76e2955818eb75563a61b15',
                                                                                  username: 'carlosboaviida',
-                                                                                 born_in: '2020-06-15'
+                                                                                 born_in: '2020-06-15',
+                                                                                 fullname: 'vitoria da silva'
                                                                                  }).execute();
     });
 
