@@ -56,6 +56,7 @@ const InputDate = ({ name, color, iconName, legend, description, defaultValue, e
          <TextInput 
             placeholderTextColor={color == 'dark' ? 'rgba(0, 0, 0, 0.29)' : 'rgba(255, 255, 255, 0.29)'}
             color={color}
+            // value={defaultValue}
             onChangeText={text => handleSetDate(text)}
             keyboardType="numeric"
             defaultValue={defaultValue}

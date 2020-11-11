@@ -63,12 +63,9 @@ export const AuthProvider = ({ children }) => {
             }
          });
 
-         const user = {
-            user_id: responseUser.data.user_id,
-            username: responseUser.data.username,
-            email: responseUser.data.email,
-            user_img_id: responseUser.data.user_img_id.user_img_id,
-         }
+         const user = responseUser.data;
+
+         console.log(responseUser.data);
 
          setUser(user); 
          setToken('Bearer ' + responseUser.data.token);

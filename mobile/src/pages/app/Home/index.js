@@ -74,6 +74,9 @@ const Home = () => {
     setLoading(false);
   }
 
+
+  console.log(user);
+
   useEffect(() => {
     async function getContent() {
       loadRecentContent();
