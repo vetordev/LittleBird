@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react';
+import React, { useRef, useState, useEffect } from 'react';
 import { View, FlatList, ActivityIndicator } from 'react-native';
 import AsyncStorage from '@react-native-community/async-storage';
 import { Form } from '@unform/mobile';
@@ -8,6 +8,7 @@ import * as Yup from 'yup';
 
 import Header from '../../../components/Header';
 import Input from '../../../components/Input';
+import InputDate from '../../../components/InputDate';
 import ModalContainer from '../../../components/ModalContainer';
 
 import { useAuth } from '../../../contexts/auth';
@@ -32,6 +33,9 @@ import {
 const EditProfile = () => {
    const [displayModal, setModalDisplay] = useState(false);
    const [loading, setLoading] = useState(false);
+   const [date, setDate] = useState('');
+   const [userBirth, setUserBirth] = useState('');
+   const [dateError, setDateError] = useState(null);
 
    const { user, setUser, token } = useAuth();
    const { avatares, avatar, setAvatar } = useAvatar();
@@ -87,6 +91,10 @@ const EditProfile = () => {
        }
    }
 
+   useEffect(() => {
+      setDate(user.born_in);
+   });
+
    return (
       <>
       { displayModal &&
@@ -132,6 +140,17 @@ const EditProfile = () => {
                   />
                </AvataresContainer>
 
+               <InputDate 
+                  iconName="calendar"
+                  color="light"
+                  placeholder="DD / MM / AAAA"
+                  legend="Sua data de nascimento"
+                  setDate={setDate}
+                  setUserBirth={setUserBirth}
+                  error={dateError}
+                  defaultValue={date}
+               />
+               
                <Input 
                   name="username"
                   color="light"

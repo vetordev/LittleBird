@@ -15,7 +15,7 @@ import {
    ErrorContent,
 } from '../Input/styles';
 
-const InputDate = ({ name, color, iconName, legend, description, defaultValue, error, value, onChangeText, setDate, setUserBirth, ...rest }) => {
+const InputDate = ({ name, color, iconName, legend, description, defaultValue, error, onChangeText, setDate, setUserBirth, ...rest }) => {
 
    function handleSetDate(text) {
       if (text.length === 2) {
@@ -56,8 +56,8 @@ const InputDate = ({ name, color, iconName, legend, description, defaultValue, e
          <TextInput 
             placeholderTextColor={color == 'dark' ? 'rgba(0, 0, 0, 0.29)' : 'rgba(255, 255, 255, 0.29)'}
             color={color}
-            value={value}
             onChangeText={text => handleSetDate(text)}
+            keyboardType="numeric"
             defaultValue={defaultValue}
             maxLength={10}
             {...rest}

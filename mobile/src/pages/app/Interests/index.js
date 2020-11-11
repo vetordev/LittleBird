@@ -129,8 +129,6 @@ const Interests = () => {
       loadThemes();
    }, []);
 
-   if (interests.length == 0) return false;
-
    return (
       <Container>
 
@@ -141,28 +139,30 @@ const Interests = () => {
                font_color="#202020"
                btn_title="SALVAR"
             >
-               <FlatList 
-                  data={themes}
-                  keyExtractor={theme => String(theme.theme_id)}
-                  onEndReached={loadThemes}
-                  onEndReachedThreshold={0.7}
-                  renderItem={({ item: theme }) => (
-                     <InterestItem>
-                        <InterestInfos>
-                           <InterestImg source={{ uri: theme.theme_img_id.img_url }} />
-                           <InterestTitle>{theme.theme_name}</InterestTitle>
-                        </InterestInfos>
-                        <TouchableOpacity
-                           onPress={() => handleAddInterest(theme.theme_id)}
-                        >
-                           { addedThemeId.includes(theme.theme_id) ?
-                              <Feather name="check" color="#E9E9E9" size={20} /> :
-                              <Feather name="plus" color="#01C24E" size={20} />
-                           }
-                        </TouchableOpacity>
-                     </InterestItem>
-                  )} 
-               />
+               { interests.length !== 0 &&  
+                  <FlatList 
+                     data={themes}
+                     keyExtractor={theme => String(theme.theme_id)}
+                     onEndReached={loadThemes}
+                     onEndReachedThreshold={0.7}
+                     renderItem={({ item: theme }) => (
+                        <InterestItem>
+                           <InterestInfos>
+                              <InterestImg source={{ uri: theme.theme_img_id.img_url }} />
+                              <InterestTitle>{theme.theme_name}</InterestTitle>
+                           </InterestInfos>
+                           <TouchableOpacity
+                              onPress={() => handleAddInterest(theme.theme_id)}
+                           >
+                              { addedThemeId.includes(theme.theme_id) ?
+                                 <Feather name="check" color="#E9E9E9" size={20} /> :
+                                 <Feather name="plus" color="#01C24E" size={20} />
+                              }
+                           </TouchableOpacity>
+                        </InterestItem>
+                     )} 
+                  />
+               }
             </ModalContainer>
          }  
 

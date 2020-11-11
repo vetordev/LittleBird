@@ -128,6 +128,7 @@ const SignUp1 = () => {
             description="Este nome é o que os outros usuários irão ver. Não revele sua identidade verdadeira para o público."
             maxLength={45}
           />
+          
           <Input 
             name="password" 
             color="light"
