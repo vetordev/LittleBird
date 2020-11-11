@@ -62,7 +62,7 @@ const SignUp1 = () => {
       if (!dateError) {
         const user = {
           email,
-          name: data.fullname,
+          fullname: data.fullname,
           username: data.username,
           user_pass: data.password,
           user_img_id: 1,
