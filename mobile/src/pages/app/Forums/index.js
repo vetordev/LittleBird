@@ -242,13 +242,10 @@ const Forums = () => {
                // onEndReached={loadComments}
                showsVerticalScrollIndicator={true}
                onEndReachedThreshold={0.4}
-
                style={{ backgroundColor: '#121212' }}
-
                renderItem={({ item }) => (
                   <ChatMessage data={item} />   
                )}
-               
                ListFooterComponent={
                   loading && 
                   <ActivityIndicator size="small" color="#E9E9E9" />
