@@ -66,7 +66,7 @@ export class UserService {
 
   async getUserById(user_id: number): Promise<GetUserDto> {
     const user = await this.userRepository.createQueryBuilder("tb_user")
-      .select(['tb_user.user_id', 'tb_user.email', 'tb_user.username', 'tb_user.user_img_id', 'tb_user.fullname'])
+      .select(['tb_user.user_id', 'tb_user.email', 'tb_user.username', 'tb_user.user_img_id', 'tb_user.fullname', 'tb_user.born_in'])
       .innerJoinAndSelect('tb_user.user_img_id', 'user_img')
       .where('tb_user.user_id = :user_id', { user_id })
       .getOne();

@@ -131,7 +131,8 @@ describe('User', () => {
         username: expect.any(String),
         email: expect.any(String),
         user_img_id: expect.any(Number),
-        fullname: expect.any(String)
+        fullname: expect.any(String),
+        born_in: expect.any(String)
       }));
 
     });
