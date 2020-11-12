@@ -185,12 +185,14 @@ const Interests = () => {
                )
             }
             ListFooterComponent={
-               <AddInterest onPress={openModal}>
-                  <AddInterestContent>
-                     <Feather name="plus" size={40} color="#01C24E" />
-                     <AddInterestText>Adicionar novo interesse</AddInterestText>
-                  </AddInterestContent>
-               </AddInterest>
+               !loadingInterests && (
+                  <AddInterest onPress={openModal}>
+                     <AddInterestContent>
+                        <Feather name="plus" size={40} color="#01C24E" />
+                        <AddInterestText>Adicionar novo interesse</AddInterestText>
+                     </AddInterestContent>
+                  </AddInterest>
+               )
             }
             ListFooterComponentStyle={{ marginHorizontal: 15 }}
          />

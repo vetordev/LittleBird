@@ -8,7 +8,7 @@ export const Container = styled.View`
 
 export const AddInterest = styled(RectButton)`
    width: 50%;
-   height: 125px;
+   height: 125px !important;
    padding: 4px;
    flex: 1;
 `;
