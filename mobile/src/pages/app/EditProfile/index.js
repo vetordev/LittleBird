@@ -37,7 +37,6 @@ const EditProfile = () => {
    const [loading, setLoading] = useState(false);
    const [date, setDate] = useState(user.born_in);
    const [userBirth, setUserBirth] = useState('');
-   const [dateError, setDateError] = useState(null);
 
    const { avatares, avatar, setAvatar } = useAvatar();
    
@@ -46,17 +45,19 @@ const EditProfile = () => {
    const { user_img_id } = user;
 
    async function handleSaveProfile(data) {
-      if (data.fullname === undefined && data.username === undefined && data.email === undefined && avatar === user_img_id) {
+      if (data.username === undefined && data.birth === undefined && data.email === undefined && data.fullname === undefined && avatar === user_img_id) {
          return false;
       }
 
       try {
-         setLoading(true);
+         // setLoading(true);
+         console.log('birth', data);
 
          const schema = Yup.object().shape({
-            fullname: Yup.string().required('Seu nome não pode ser nulo.').min(6, 'O nome completo deve ter pelo menos 6 caracteres.'),
+            fullname: Yup.string().min(6, 'O nome completo deve ter pelo menos 6 caracteres.'),
             username: Yup.string().min(5, 'O nome de usuário deve ter pelo menos 5 caracteres.'),
             email: Yup.string().min(6, 'O e-mail deve ter pelo menos 7 caracteres.').email('O e-mail deve ser válido'),
+            birth: Yup.date().min(1),
          });
    
          await schema.validate(data, {
@@ -65,21 +66,21 @@ const EditProfile = () => {
    
          formRef.current.setErrors({});
 
-         const newUser = {
-            fullname: data.fullname === undefined ? user.fullname : data.fullname,
-            email: data.email === undefined ? user.email : data.email,
-            username: data.username === undefined ? user.username : data.username,
-            user_img_id: avatar,
-            born_in: '2019-08-24'
-         }
+         // const newUser = {
+         //    fullname: data.fullname === undefined ? user.fullname : data.fullname,
+         //    email: data.email === undefined ? user.email : data.email,
+         //    username: data.username === undefined ? user.username : data.username,
+         //    user_img_id: avatar,
+         //    born_in: '2019-08-24'
+         // }
 
-         setUser(newUser);
+         // setUser(newUser);
 
-         await api.put('user', newUser, { headers: { Authorization: token } });
-         await AsyncStorage.setItem('@LittleBird:user', JSON.stringify(newUser));
+         // await api.put('user', newUser, { headers: { Authorization: token } });
+         // await AsyncStorage.setItem('@LittleBird:user', JSON.stringify(newUser));
 
-         setModalDisplay(true);
-         setLoading(false);
+         // setModalDisplay(true);
+         // setLoading(false);
 
        } catch (err) {
          if (err instanceof Yup.ValidationError) {
@@ -154,13 +155,13 @@ const EditProfile = () => {
 
                <InputDate 
                   iconName="calendar"
+                  name="birth"
                   color="light"
                   placeholder="DD / MM / AAAA"
                   legend="Sua data de nascimento"
                   setDate={setDate}
+                  // value={date}
                   setUserBirth={setUserBirth}
-                  error={dateError}
-                  value={date}
                   defaultValue={user.born_in}
                />
                

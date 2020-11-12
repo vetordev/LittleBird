@@ -1,5 +1,5 @@
-import React from 'react';
-import { View } from 'react-native';
+import React, { useEffect, useRef } from 'react';
+import { useField } from '@unform/core';
 import { Feather } from '@expo/vector-icons';
 
 import { 
@@ -15,7 +15,18 @@ import {
    ErrorContent,
 } from '../Input/styles';
 
-const InputDate = ({ name, color, iconName, legend, description, defaultValue, error, onChangeText, setDate, setUserBirth, ...rest }) => {
+const InputDate = ({ name, color, iconName, legend, description, defaultValue, onChangeText, setDate, setUserBirth, ...rest }) => {
+   const inputRef = useRef(null);
+   const { fieldName, registerField, error } = useField(name);
+
+   useEffect(() => {
+      registerField({
+         name: fieldName,
+         ref: inputRef.current,
+         path: 'value'
+      })
+   }, [fieldName, registerField])
+
 
    function handleSetDate(text) {
       if (text.length === 2) {
