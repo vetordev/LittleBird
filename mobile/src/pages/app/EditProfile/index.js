@@ -94,7 +94,7 @@ const EditProfile = () => {
          }
        }
    }
-
+   
    useEffect(() => {
       setDate(user.born_in);
    });
@@ -159,8 +159,6 @@ const EditProfile = () => {
                   color="light"
                   placeholder="DD / MM / AAAA"
                   legend="Sua data de nascimento"
-                  // setDate={setDate}
-                  // value={date}
                   setUserBirth={setUserBirth}
                   defaultValue={user.born_in}
                />

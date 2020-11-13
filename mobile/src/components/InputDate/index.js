@@ -16,7 +16,7 @@ import {
 } from '../Input/styles';
 
 const InputDate = ({ name, color, iconName, legend, description, defaultValue, onChangeText, setDate, setUserBirth, ...rest }) => {
-   const [value, setValue] = useState('');
+   const [value, setValue] = useState(defaultValue);
    const [keyPressed, setKeyPressed] = useState('');
    const inputRef = useRef(null);
    const { fieldName, registerField, error } = useField(name);
@@ -82,9 +82,10 @@ const InputDate = ({ name, color, iconName, legend, description, defaultValue, o
             // value={defaultValue}
             onChangeText={text => handleSetDate(text)}
             keyboardType="default"
-            defaultValue={defaultValue}
+            defaultValue={value}
             maxLength={10}
-            value={value}
+            // TODO: ajustar defaultvalue
+            // value={value ? value : defaultValue}
             onKeyPress={e => setKeyPressed(e.nativeEvent.key)}
             {...rest}
          />
