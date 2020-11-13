@@ -3,6 +3,7 @@ import { ArticleService } from './article.service';
 import { GetArticleDto, GetArticlesByThemeDto, CreateArticleLikeDto, DeleteArticleLikeDto, CreateArticleLaterDto, DeleteArticleLaterDto, GetArticlesAndForunsDto, QueryPageDto } from './article.dto';
 import { JwtAuthGuard } from '../auth/jwt/jwt-auth.guard';
 import { QueryFailedExceptionFilter } from './http-exception.filter';
+import { response } from 'express';
 
 @Controller('article')
 export class ArticleController {
@@ -65,7 +66,7 @@ export class ArticleController {
 
   @Get('forum/date')
   @HttpCode(200)
-  getArticlesAndForuns(@Query() query: QueryPageDto) {
-    return this.articleService.getArticlesAndForuns(query.page);
+  getArticlesAndForuns(@Res() response, @Query() query: QueryPageDto) {
+    return this.articleService.getArticlesAndForuns(response, query.page);
   }
 }

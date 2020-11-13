@@ -157,7 +157,7 @@ export class ArticleService {
     return response.status(200).header('x-total-count', count).json(articles);
   };
 
-  async getArticlesAndForuns(page: number): Promise<any> {
+  async getArticlesAndForuns(response: Response, page: number): Promise<any> {
 
     const articles: any[] = await this.articleRepository.createQueryBuilder('article')
       .select(['article.article_id', 'article.title', 'article.no_like', 'article.publi_date', 'article_img'])
@@ -165,20 +165,21 @@ export class ArticleService {
       .limit(3)
       .offset((page - 1) * 3)
       .orderBy('article.publi_date', 'ASC')
-      .getMany();
+      .getManyAndCount();
 
     const foruns: any[] = await this.forumRepository.createQueryBuilder('forum')
       .select(['forum.forum_id', 'forum.title', 'forum.no_like', 'forum.publi_date','forum_img'])
       .innerJoin('forum.forum_img_id', 'forum_img')
       .limit(3)
       .offset((page - 1) * 3)
-      .getMany();
+      .getManyAndCount();
 
+    const total = articles[1] + foruns[1];
 
-    const articles_foruns = articles.concat(foruns)
+    const articles_foruns = articles[0].concat(foruns[0])
     articles_foruns.sort(orderByDate);
 
-    return articles_foruns
+    return response.status(200).header('x-total-count', total).json(articles_foruns)
 
   }
 
