@@ -104,7 +104,7 @@ const Home = () => {
           ListHeaderComponent={
             <>
               <Title>Olá novamente, <UserName>{user.username}</UserName></Title>
-              <IconContainer2 onPress={() => { navigation.navigate('Reform') }}>
+              <IconContainer2 onPress={() => { navigate('Reform') }}>
                 <Feather name="bell" size={15} color="#E9E9E9" />
               </IconContainer2>
               <SessionTitleContainer>

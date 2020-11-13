@@ -5,8 +5,8 @@ import { useNavigation } from '@react-navigation/native';
 // import { Container } from './styles';
 
 const Notifications = () => {
-  const navigation = useNavigation();
-  // navigation.navigate('Reform');
+  const { navigate } = useNavigation();
+  navigate('Reform');
 
   return <View />;
 }
