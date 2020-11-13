@@ -166,7 +166,7 @@ const Interests = () => {
          }  
 
          <FlatList 
-            data={interests}
+            data={[... interests, { addInterests: true }]}
             keyExtractor={theme => String(theme.interest_id)}
             numColumns={2}
             onEndReached={loadInterests}
@@ -175,17 +175,17 @@ const Interests = () => {
             ListHeaderComponent={
                <Header title="Seus interesses" />
             }
-            renderItem={({ item }) => 
-               interests.length !== 0 && (
-                  <InterestCard 
-                     img_url={item.theme_id.theme_img_id.img_url} 
-                     name={item.theme_id.theme_name} 
-                     idTheme={item.theme_id.theme_id}
-                  />
-               )
-            }
-            ListFooterComponent={
-               !loadingInterests && (
+            renderItem={({ item }) =>{
+               if(item.interest_id) {
+                  return (
+                     <InterestCard 
+                        img_url={item.theme_id.theme_img_id.img_url} 
+                        name={item.theme_id.theme_name} 
+                        idTheme={item.theme_id.theme_id}
+                     />
+                  )
+               }  
+               return (
                   <AddInterest onPress={openModal}>
                      <AddInterestContent>
                         <Feather name="plus" size={40} color="#01C24E" />
@@ -193,7 +193,7 @@ const Interests = () => {
                      </AddInterestContent>
                   </AddInterest>
                )
-            }
+            }}
             ListFooterComponentStyle={{ marginHorizontal: 15 }}
          />
          
