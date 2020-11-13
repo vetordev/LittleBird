@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { useField } from '@unform/core';
 import { Feather } from '@expo/vector-icons';
 
@@ -16,6 +16,8 @@ import {
 } from '../Input/styles';
 
 const InputDate = ({ name, color, iconName, legend, description, defaultValue, onChangeText, setDate, setUserBirth, ...rest }) => {
+   const [value, setValue] = useState('');
+   const [keyPressed, setKeyPressed] = useState('');
    const inputRef = useRef(null);
    const { fieldName, registerField, error } = useField(name);
 
@@ -27,16 +29,23 @@ const InputDate = ({ name, color, iconName, legend, description, defaultValue, o
       })
    }, [fieldName, registerField])
 
-
    function handleSetDate(text) {
-      if (text.length === 2) {
-        setDate(text + "/");
-      }
-      else if (text.length === 5) {
-        setDate(text + "/");
-      }
-      else {
-        setDate(text);
+      // console.log(Number.isInteger(text[text.length - 1]));
+
+      if (inputRef.current) {
+
+         if (text.length === 2 || text.length === 5) {
+            if (keyPressed !== 'Backspace') {
+               inputRef.current.value = text + "/";
+            } else {
+               inputRef.current.value = text
+            }
+         }
+         else {
+            inputRef.current.value = text;
+         }
+         
+         setValue(inputRef.current.value);
       }
   
       if (text.length === 10) {
@@ -48,6 +57,8 @@ const InputDate = ({ name, color, iconName, legend, description, defaultValue, o
       }
    }
 
+   // console.log(error);
+
    return (
       <Container>
          <Legend color={color == 'dark' ? '#000' : '#F6F6F6'}>{legend}</Legend>
@@ -55,7 +66,12 @@ const InputDate = ({ name, color, iconName, legend, description, defaultValue, o
             <ErrorContainer>
                <ErrorContent>
                   <Feather name="alert-triangle" color="#FF5520" size={20} />
-                  <ErrorMessage>{error}</ErrorMessage>
+                  <ErrorMessage>
+                     { error === 'birth must be a `date` type, but the final value was: `Invalid Date` (cast from the value `""`).' ?
+                        'Insira uma data de nascimento válida.' :
+                        error
+                     }
+                  </ErrorMessage>
                </ErrorContent>
                <ErrorDetail />
             </ErrorContainer>
@@ -65,13 +81,16 @@ const InputDate = ({ name, color, iconName, legend, description, defaultValue, o
             <Feather name={iconName ? iconName : 'send'} color={color == 'dark' ? '#000' : '#F6F6F6'} size={24} />
          </InputIcon>
          <TextInput 
+            ref={inputRef}
             placeholderTextColor={color == 'dark' ? 'rgba(0, 0, 0, 0.29)' : 'rgba(255, 255, 255, 0.29)'}
             color={color}
             // value={defaultValue}
             onChangeText={text => handleSetDate(text)}
-            keyboardType="numeric"
+            keyboardType="default"
             defaultValue={defaultValue}
             maxLength={10}
+            value={value}
+            onKeyPress={e => setKeyPressed(e.nativeEvent.key)}
             {...rest}
          />
          </InputContainer>

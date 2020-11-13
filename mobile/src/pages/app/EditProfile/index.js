@@ -57,7 +57,7 @@ const EditProfile = () => {
             fullname: Yup.string().min(6, 'O nome completo deve ter pelo menos 6 caracteres.'),
             username: Yup.string().min(5, 'O nome de usuário deve ter pelo menos 5 caracteres.'),
             email: Yup.string().min(6, 'O e-mail deve ter pelo menos 7 caracteres.').email('O e-mail deve ser válido'),
-            birth: Yup.date().min(1),
+            birth: Yup.date(),
          });
    
          await schema.validate(data, {
@@ -159,7 +159,7 @@ const EditProfile = () => {
                   color="light"
                   placeholder="DD / MM / AAAA"
                   legend="Sua data de nascimento"
-                  setDate={setDate}
+                  // setDate={setDate}
                   // value={date}
                   setUserBirth={setUserBirth}
                   defaultValue={user.born_in}
