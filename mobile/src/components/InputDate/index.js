@@ -66,12 +66,7 @@ const InputDate = ({ name, color, iconName, legend, description, defaultValue, o
             <ErrorContainer>
                <ErrorContent>
                   <Feather name="alert-triangle" color="#FF5520" size={20} />
-                  <ErrorMessage>
-                     { error === 'birth must be a `date` type, but the final value was: `Invalid Date` (cast from the value `""`).' ?
-                        'Insira uma data de nascimento válida.' :
-                        error
-                     }
-                  </ErrorMessage>
+                  <ErrorMessage>Insira uma data de nascimento válida.</ErrorMessage>
                </ErrorContent>
                <ErrorDetail />
             </ErrorContainer>
