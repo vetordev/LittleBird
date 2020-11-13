@@ -679,6 +679,11 @@ paths:
                       - title: Priveira vez
                         theme: Sexo
                         article_img: 'https://i.ytimg.com/vi/_OFlCtyrt4c/maxresdefault.jpg'
+          headers:
+            x-total-count:
+              schema:
+                type: string
+              description: Número total de conteúdo
         '404':
           description: Não foi encontrado artigos ou fóruns.
           content:
@@ -717,25 +722,6 @@ paths:
       tags:
         - Article and Forum
     parameters: []
-    delete:
-      summary: O usuário remover um interesse
-      operationId: delete-interest-interest_id
-      responses:
-        '204':
-          description: O interesse do usuário foi removido.
-        '401':
-          description: O token JWT é inválido.
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  error:
-                    type: string
-              examples:
-                Exemplo de erro:
-                  value:
-                    error: O token JWT é inválido.
   /theme:
     get:
       summary: Buscas temas
