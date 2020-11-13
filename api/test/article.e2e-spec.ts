@@ -299,6 +299,7 @@ describe('Article', () => {
         .get(`/article/forum/date?page=1`);
 
       expect(response.status).toBe(200);
+      expect(response.header['x-total-count']).toBe("3");
       expect(response.body).toEqual(expect.arrayContaining([
           {
             article_id: expect.any(Number),
