@@ -684,6 +684,7 @@ paths:
               schema:
                 type: string
               description: Número total de conteúdo
+              required: true
         '404':
           description: Não foi encontrado artigos ou fóruns.
           content:
