@@ -144,7 +144,9 @@ export class ForumService {
   };
 
   async createComment(forum_id: number, comment_content : string, user_id: number): Promise<Response | void> {
-    const publi_date = new Date().toLocaleDateString();
+    const publi_date = new Date().toLocaleString("pt-BR", {timeZone: "America/Sao_Paulo"})
+
+    console.log(publi_date)
     const comment = await this.commentRepository.createQueryBuilder('tb_comment')
       .insert()
       .into('tb_comment')
@@ -161,6 +163,7 @@ export class ForumService {
       forum_id,
       comment_id: comment.identifiers[0].comment_id,
       comment_content,
+      publi_date,
       user_id
     });
   };

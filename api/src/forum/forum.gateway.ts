@@ -12,6 +12,7 @@ class Message {
   user_id: number;
   comment_id: number;
   comment_content: string;
+  publi_date: string;
 };
 
 @Injectable()
@@ -61,6 +62,7 @@ export class ForumGateway implements OnGatewayInit, OnGatewayConnection, OnGatew
     this.wss.to(String(message.forum_id)).emit('new message', {
       comment_id: message.comment_id,
       comment_content: message.comment_content,
+      publi_date: message.publi_date,
       user_id: user,
       no_like: 0
     });
