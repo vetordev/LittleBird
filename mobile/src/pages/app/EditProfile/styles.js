@@ -11,7 +11,7 @@ export const AvataresContainer = styled.View`
    margin-bottom: 30px;
    align-items: center;
    justify-content: center;
-   width: 85%;
+   width: 80%;
 `;
 
 export const MainAvatar = styled.Image`
@@ -53,7 +53,7 @@ export const BtnSaveProfileText = styled.Text`
 export const BtnAlterPassword = styled.TouchableOpacity`
    flex-direction: row;
    align-items: center;
-   margin-top: -7px;
+   /* margin-top: -7px; */
 `;
 
 export const BtnAlterPasswordText = styled.Text`

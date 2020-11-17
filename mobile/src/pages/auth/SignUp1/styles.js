@@ -21,7 +21,7 @@ export const CheckBoxContainer = styled.View`
    /* background: #d00; */
    padding: 0;
    width: 80%;
-   margin: -15px 0 20px 0;
+   margin: 5px 0 20px 0;
 `;
 
 export const CheckedIconContainer = styled.View`
@@ -42,6 +42,7 @@ export const LegendCheckBox = styled.Text`
 
    position: relative;
    left: -10px;
+   max-width: 90%;
 `;
 
 export const TextBold = styled.Text`

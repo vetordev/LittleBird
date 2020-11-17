@@ -1,6 +1,7 @@
 import React, { useRef, useState, useEffect } from 'react';
 import { View, FlatList, ActivityIndicator } from 'react-native';
 import AsyncStorage from '@react-native-community/async-storage';
+import moment from 'moment';
 import { Form } from '@unform/mobile';
 import { Feather } from '@expo/vector-icons';
 import { SvgUri } from 'react-native-svg';
@@ -15,6 +16,7 @@ import { useAuth } from '../../../contexts/auth';
 import { useAvatar } from '../../../contexts/useAvatar';
 
 import api from '../../../services/api';
+import formatDateToAPI from '../../../utils/formatDateToAPI';
 
 import { 
    Container, 
@@ -51,19 +53,36 @@ const EditProfile = () => {
 
       try {
          // setLoading(true);
-         console.log('birth', data);
-
+         // let dateFormat;
          const schema = Yup.object().shape({
             fullname: Yup.string().min(6, 'O nome completo deve ter pelo menos 6 caracteres.'),
             username: Yup.string().min(5, 'O nome de usuário deve ter pelo menos 5 caracteres.'),
             email: Yup.string().min(6, 'O e-mail deve ter pelo menos 7 caracteres.').email('O e-mail deve ser válido'),
-            birth: Yup.date(),
+            birth: Yup.date().transform((value, originalValue) => {               
+
+               formatDateToAPI(originalValue).then((dateFormated) => {
+                  console.log(moment(dateFormated).isValid());
+
+                  console.log(dateFormated);
+   
+                  return moment(dateFormated).isValid() ? formRef.current.setFieldError('birth', null) : formRef.current.setFieldError('birth', 'Insira uma data de nascimento válida.');
+               });
+               // const day = String(originalValue[0]) + String(originalValue[1]);
+               // const month = String(originalValue[3]) + String(originalValue[4]);
+               // const year = String(originalValue[6]) + String(originalValue[7]) + String(originalValue[8]) + String(originalValue[9]);
+               
+               // const dateFormated = moment(`${year}-${month}-${day}`).format('YYYY-MM-DD');
+
+               
+            })
          });
+
+         console.log('birth', data);
    
          await schema.validate(data, {
            abortEarly: false
          });
-   
+
          formRef.current.setErrors({});
 
          // const newUser = {
@@ -94,7 +113,7 @@ const EditProfile = () => {
          }
        }
    }
-   
+
    useEffect(() => {
       setDate(user.born_in);
    });
@@ -159,7 +178,6 @@ const EditProfile = () => {
                   color="light"
                   placeholder="DD / MM / AAAA"
                   legend="Sua data de nascimento"
-                  setUserBirth={setUserBirth}
                   defaultValue={user.born_in}
                />
                

@@ -15,7 +15,7 @@ import {
    ErrorContent,
 } from '../Input/styles';
 
-const InputDate = ({ name, color, iconName, legend, description, defaultValue, onChangeText, setDate, setUserBirth, ...rest }) => {
+const InputDate = ({ name, color, iconName, legend, description, defaultValue, onChangeText, setDate, ...rest }) => {
    const [value, setValue] = useState(defaultValue);
    const [keyPressed, setKeyPressed] = useState('');
    const inputRef = useRef(null);
@@ -46,14 +46,6 @@ const InputDate = ({ name, color, iconName, legend, description, defaultValue, o
          }
          
          setValue(inputRef.current.value);
-      }
-  
-      if (text.length === 10) {
-        const day = String(text[0]) + String(text[1]);
-        const month = String(text[3]) + String(text[4]);
-        const year = String(text[6]) + String(text[7]) + String(text[8]) + String(text[9]);
-  
-        setUserBirth(`${year}-${month}-${day}`);
       }
    }
 

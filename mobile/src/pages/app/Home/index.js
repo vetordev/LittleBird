@@ -10,6 +10,7 @@ import { useAuth } from '../../../contexts/auth';
 import api from '../../../services/api';
 
 import InterestCard from '../../../components/InterestCard';
+import LoadingHomeContent from '../../../components/Shimmer/LoadingHomeContent';
 
 import { 
   Title,
@@ -111,45 +112,50 @@ const Home = () => {
                 <SessionTitle>Mais recentes</SessionTitle>
               </SessionTitleContainer>
 
-              <Carousel 
-                layout="default"
-                data={recentContent}
-                onEndReached={loadRecentContent}
-                onEndReachedThreshold={0.1}
-                itemWidth={win.width * 0.8}
-                sliderWidth={win.width}
-                renderItem={({ item }) => (
-                  <>
-                  {item.article_id ? 
-                    <CarouselItem 
-                      winWidth={win.width}
-                      onPress={() => navigateToArticles(item.article_id)}
-                    >
-                      <CarouselImageItem 
-                        resizeMode={'cover'} 
-                        source={{ uri: item.article_img_id.img_url }} 
-                      />
-                      <CarouselImageFilter/>
-                      <TitleCarouselItem>{item.title}</TitleCarouselItem>
-                      <TypeCarouselItem>{'Artigo'}</TypeCarouselItem>
-                    </CarouselItem>
-                    :
-                    <CarouselItem 
-                      winWidth={win.width}
-                      onPress={() => navigateToForums(item.forum_id, item.title)}
-                    >
-                      <CarouselImageItem 
-                        resizeMode={'cover'} 
-                        source={{ uri: item.forum_img_id.img_url }} 
-                      />
-                      <CarouselImageFilter/>
-                      <TitleCarouselItem>{item.title}</TitleCarouselItem>
-                      <TypeCarouselItem>{'Salas de conversa'}</TypeCarouselItem>
-                    </CarouselItem>
-                  }
-                  </>
-                )}
-              />
+              { loading 
+                ?
+                  <LoadingHomeContent />
+                : 
+                <Carousel 
+                  layout="default"
+                  data={recentContent}
+                  onEndReached={loadRecentContent}
+                  onEndReachedThreshold={0.1}
+                  itemWidth={win.width * 0.8}
+                  sliderWidth={win.width}
+                  renderItem={({ item }) => (
+                    <>
+                    {item.article_id ? 
+                      <CarouselItem 
+                        winWidth={win.width}
+                        onPress={() => navigateToArticles(item.article_id)}
+                      >
+                        <CarouselImageItem 
+                          resizeMode={'cover'} 
+                          source={{ uri: item.article_img_id.img_url }} 
+                        />
+                        <CarouselImageFilter/>
+                        <TitleCarouselItem>{item.title}</TitleCarouselItem>
+                        <TypeCarouselItem>{'Artigo'}</TypeCarouselItem>
+                      </CarouselItem>
+                      :
+                      <CarouselItem 
+                        winWidth={win.width}
+                        onPress={() => navigateToForums(item.forum_id, item.title)}
+                      >
+                        <CarouselImageItem 
+                          resizeMode={'cover'} 
+                          source={{ uri: item.forum_img_id.img_url }} 
+                        />
+                        <CarouselImageFilter/>
+                        <TitleCarouselItem>{item.title}</TitleCarouselItem>
+                        <TypeCarouselItem>{'Salas de conversa'}</TypeCarouselItem>
+                      </CarouselItem>
+                    }
+                    </>
+                  )}
+                />
+              }
 
               <InterestOptionsContainer>
                 <InterestsTitleContainer onPress={navigateToInterests}>

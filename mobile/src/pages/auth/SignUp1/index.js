@@ -66,7 +66,7 @@ const SignUp1 = () => {
           username: data.username,
           user_pass: data.password,
           user_img_id: 1,
-          born_in: userBirth
+          born_in: '2003-02-04'
         }
 
         if (toggleCheckBox) {
@@ -111,12 +111,11 @@ const SignUp1 = () => {
 
           <InputDate 
             iconName="calendar"
+            name="birth"
+            color="light"
             placeholder="DD / MM / AAAA"
             legend="Sua data de nascimento"
-            value={date}
-            setDate={setDate}
-            setUserBirth={setUserBirth}
-            error={dateError}
+            // defaultValue={user.born_in}
           />
 
           <Input 
