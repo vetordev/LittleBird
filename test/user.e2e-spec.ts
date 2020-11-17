@@ -3,7 +3,7 @@ import { TestingModule, Test } from "@nestjs/testing";
 import { AppModule } from "../src/app.module";
 import request from 'supertest';
 import { CreateUserDto } from "src/user/user.dto";
-import { getConnection } from "typeorm";
+import { getConnection, Repository } from "typeorm";
 
 describe('User', () => {
   let app: INestApplication;
@@ -349,7 +349,8 @@ describe('User', () => {
 
       expect(response.status).toBe(200);
       expect(response.body).toEqual(expect.objectContaining({
-        email: expect.any(Boolean)
+        email: expect.any(Boolean),
+        username: expect.any(String)
       }));
       expect(response.body.email).toBe(true);
     });
