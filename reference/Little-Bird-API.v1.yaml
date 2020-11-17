@@ -2703,6 +2703,8 @@ paths:
                 properties:
                   email:
                     type: boolean
+                  username:
+                    type: string
               examples:
                 Exemplo de resposta:
                   value:
