@@ -348,7 +348,6 @@ describe('User', () => {
         .get(`/user/email?email=${email}`)
 
       expect(response.status).toBe(200);
-      console.log(response.body)
       expect(response.body).toEqual(expect.objectContaining({
         email: expect.any(Boolean),
         username: expect.any(String)
