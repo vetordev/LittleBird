@@ -84,13 +84,13 @@ export class UserService {
 
   async emailExists(email: string): Promise<object> {
     const user = await this.userRepository.createQueryBuilder('tb_user')
-      .select(['tb_user.email'])
+      .select(['tb_user.email', 'tb_user.username'])
       .where('tb_user.email = :email', { email })
       .getOne()
 
     if(!user) {
       return { email: false }
     }
-    return { email: true }
+    return { email: true, username: user.username }
   };
 }
