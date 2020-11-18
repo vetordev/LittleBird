@@ -142,27 +142,6 @@ export const Qtd = styled.Text`
    margin-left: 5px;
 `;
 
-export const WarningContainer = styled.View`
-   align-items: center;
-   justify-content: center;
-`;
-
-export const WarningContent = styled.View`
-   width: 80%;
-   height: 200px;
-   align-items: center;
-   justify-content: center;
-`;
-
-export const WarningMessage = styled.Text`
-   font-family: Ubuntu_400Regular;
-   color: #FFFFFF50;
-   font-size: 18px;
-   text-align: center;
-   margin-top: 10px;
-   max-width: 90%;
-`;
-
 export const styles = StyleSheet.create({
    selected: {
       borderWidth: 2,

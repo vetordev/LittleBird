@@ -3,9 +3,10 @@ import { View, ScrollView, Dimensions, FlatList } from 'react-native';
 import Carousel from 'react-native-snap-carousel';
 import { Feather } from '@expo/vector-icons';
 import { useNavigation, useRoute, useIsFocused } from '@react-navigation/native';
-import { SvgUri } from 'react-native-svg';
 
 import api from '../../../services/api';
+
+import NoticeinScreen from '../../../components/NoticeInScreen';
 
 import { 
   Container,
@@ -27,9 +28,6 @@ import {
   Qtd,
   styles,
   AllThemes,
-  WarningContainer,
-  WarningContent,
-  WarningMessage
 } from './styles';
 
 const Subjects = () => {
@@ -244,18 +242,16 @@ const Subjects = () => {
               </Option>
             )}
           />
-          :
-          <WarningContainer>
-            <WarningContent>
-              <SvgUri uri="https://www.flaticon.com/svg/static/icons/svg/3468/3468182.svg" width={130} height={130} />
-              <WarningMessage>Ainda não temos artigos sobre esse assunto.</WarningMessage>
-            </WarningContent>
-          </WarningContainer>
+        :
+          <NoticeinScreen
+            img_url="https://www.flaticon.com/svg/static/icons/svg/3468/3468182.svg"
+            message="Ainda não temos artigos sobre esse assunto."
+          />
         }
 
         <SessionHeader>
           <SessionLineDecoration />
-              <SessionTitle>Salas de conversa</SessionTitle>
+            <SessionTitle>Salas de conversa</SessionTitle>
           <SessionLineDecoration />
         </SessionHeader>
 
@@ -292,12 +288,10 @@ const Subjects = () => {
             )}
           />
           :
-          <WarningContainer>
-            <WarningContent>
-              <SvgUri uri="https://www.flaticon.com/svg/static/icons/svg/3468/3468182.svg" width={130} height={130} />
-              <WarningMessage>Ainda não temos salas de conversa sobre esse assunto.</WarningMessage>
-            </WarningContent>
-          </WarningContainer>
+          <NoticeinScreen
+            img_url="https://www.flaticon.com/svg/static/icons/svg/3468/3468182.svg"
+            message="Ainda não temos salas de conversa sobre esse assunto."
+          />
         }
       </Container>
     </ScrollView>
