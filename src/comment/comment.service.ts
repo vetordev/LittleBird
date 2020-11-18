@@ -66,6 +66,8 @@ export class CommentService {
 
     if (lastMessage > totalComments.comment_id || lastMessage == 0)
       diffTotalLast = 0;
+    else if(lastMessage - totalComments.comment_id == 0)
+      diffTotalLast = totalComments.comment_id - lastMessage;
     else
       diffTotalLast = totalComments.comment_id - lastMessage + 1;
 
