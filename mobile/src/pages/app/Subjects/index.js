@@ -71,6 +71,9 @@ const Subjects = () => {
 
     setForuns(responseForuns.data);
     setArticles(responseArticles.data);
+
+    setLoadingArticles(false);
+    setLoadingForums(false);
   }
 
   async function loadArticles() {
@@ -166,6 +169,9 @@ const Subjects = () => {
   }
 
   useEffect(() => {
+    setLoadingArticles(true);
+    setLoadingForums(true);
+    
     loadThemes();
     getTag();
   }, [isFocused]);
@@ -219,11 +225,9 @@ const Subjects = () => {
         </SessionHeader>
 
         { loadingArticles ?
-        
           <ShimmerSubjectsContent />
-
-          :
-          (articles.length > 0 ?
+          : (
+            articles.length > 0 ?
             <Carousel 
               layout="tinder"
               layoutCardOffset={9}
@@ -261,43 +265,47 @@ const Subjects = () => {
           <SessionLineDecoration />
         </SessionHeader>
 
-        { foruns.length > 0 ?
-          <Carousel 
-            layout="tinder"
-            layoutCardOffset={9}
-            onEndReached={loadForums}
-            onEndReachedThreshold={0.7}
-            firstItem={foruns.length - 1}
-            data={foruns}
-            itemWidth={win.width * 0.8}
-            sliderWidth={win.width}
-            renderItem={({ item }) => (
-              <Option winWidth={win.width} onPress={() => navigateToForums(item.forum_id, item.title)}>
-                <OptionImage 
-                  resizeMode="cover" 
-                  source={{ uri: item.img_url }} 
-                />
-                <OptionInfos>
-                  <OptionTitle>{item.title}</OptionTitle>
-                  <OptionReacts>
-                    <Likes>
-                      <Feather name="heart" color="#F6F6F6" size={17} />
-                      <Qtd>{item.no_like}</Qtd>
-                    </Likes>
-                    <Comments>
-                      <Feather name="message-square" color="#F6F6F6" size={17} />
-                      <Qtd>{item.no_comment}</Qtd>
-                    </Comments>
-                  </OptionReacts>
-                </OptionInfos>  
-              </Option>
-            )}
-          />
-          :
-          <NoticeinScreen
-            img_url="https://www.flaticon.com/svg/static/icons/svg/3468/3468182.svg"
-            message="Ainda não temos salas de conversa sobre esse assunto."
-          />
+        { loadingForums ?
+          <ShimmerSubjectsContent />
+        : (
+            foruns.length > 0 ?
+              <Carousel 
+                layout="tinder"
+                layoutCardOffset={9}
+                onEndReached={loadForums}
+                onEndReachedThreshold={0.7}
+                firstItem={foruns.length - 1}
+                data={foruns}
+                itemWidth={win.width * 0.8}
+                sliderWidth={win.width}
+                renderItem={({ item }) => (
+                  <Option winWidth={win.width} onPress={() => navigateToForums(item.forum_id, item.title)}>
+                    <OptionImage 
+                      resizeMode="cover" 
+                      source={{ uri: item.img_url }} 
+                    />
+                    <OptionInfos>
+                      <OptionTitle>{item.title}</OptionTitle>
+                      <OptionReacts>
+                        <Likes>
+                          <Feather name="heart" color="#F6F6F6" size={17} />
+                          <Qtd>{item.no_like}</Qtd>
+                        </Likes>
+                        <Comments>
+                          <Feather name="message-square" color="#F6F6F6" size={17} />
+                          <Qtd>{item.no_comment}</Qtd>
+                        </Comments>
+                      </OptionReacts>
+                    </OptionInfos>  
+                  </Option>
+                )}
+              />
+            :
+              <NoticeinScreen
+                img_url="https://www.flaticon.com/svg/static/icons/svg/3468/3468182.svg"
+                message="Ainda não temos salas de conversa sobre esse assunto."
+              />
+          )
         }
       </Container>
     </ScrollView>
