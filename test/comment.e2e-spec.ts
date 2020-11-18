@@ -59,6 +59,23 @@ describe('Comment', () => {
   });
   describe('Buscar Comentários', () => {
 
+    const comment2 = {
+      comment_id: 2,
+      forum_id: 1,
+      user_id: 1,
+      comment_content: '...',
+      publi_date: '2020-03-08',
+      no_like: 10
+    };
+    const comment3 = {
+      comment_id: 3,
+      forum_id: 1,
+      user_id: 1,
+      comment_content: '...',
+      publi_date: '2020-03-08',
+      no_like: 10
+    };
+
     beforeAll(async () => {
       await getConnection().dropDatabase();
       await getConnection().synchronize();
@@ -70,16 +87,18 @@ describe('Comment', () => {
       await getConnection().createQueryBuilder().insert().into('forum').values(forum).execute();
 
       await getConnection().createQueryBuilder().insert().into('tb_comment').values(comment).execute();
+      await getConnection().createQueryBuilder().insert().into('tb_comment').values(comment2).execute();
+      await getConnection().createQueryBuilder().insert().into('tb_comment').values(comment3).execute();
 
     });
 
     it('> GET /comment/forum/:forum_id Deve retornar os comentários do forum', async () => {
       const forum_id = 1;
       const response = await request(app.getHttpServer())
-        .get(`/comment/forum/${forum_id}?page=1`)
+        .get(`/comment/forum/${forum_id}?page=1&lastMessage=3`)
 
       expect(response.status).toBe(200);
-      expect(response.header['x-total-count']).toBe("1");
+      expect(response.header['x-total-count']).toBe("3");
       expect(response.body[0]).toEqual(expect.objectContaining({
         comment_id: expect.any(Number),
         user_id: {
@@ -98,7 +117,7 @@ describe('Comment', () => {
     it('> GET /comment/forum/:forum_id Não deve retornar os comentários do forum (Forum não encontrado)', async () => {
       const forum_id = 2;
       const response = await request(app.getHttpServer())
-        .get(`/comment/forum/${forum_id}?page=1`)
+        .get(`/comment/forum/${forum_id}?page=1&lastMessage=0`)
 
       expect(response.status).toBe(404);
       expect(response.body).toEqual(expect.objectContaining({

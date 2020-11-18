@@ -1,10 +1,8 @@
 import { Controller, Get, Res, Param, Post, Req, UseGuards, HttpCode, Body, Delete, UseFilters, Query } from '@nestjs/common';
 import { CommentService } from './comment.service';
-import { GetRepliesDto, CreateLikeDto, CreateReplyParamDto, CreateReplyBodyDto, RemoveReplyDto, RemoveLikeDto, GetCommentsByForumDto, CreateReplyQueryDto } from './comment.dto';
+import { GetRepliesDto, CreateLikeDto, CreateReplyParamDto, CreateReplyBodyDto, RemoveReplyDto, RemoveLikeDto, GetCommentsByForumDto, CreateReplyQueryDto, QueryPageDto, GetCommentsByForumQueryDto } from './comment.dto';
 import { JwtAuthGuard } from '../auth/jwt/jwt-auth.guard';
 import { QueryFailedExceptionFilter } from './http-exception.filter';
-import { QueryPageDto } from './comment.dto';
-import { request } from 'http';
 
 @Controller('comment')
 export class CommentController {
@@ -17,8 +15,8 @@ export class CommentController {
   };
 
   @Get('forum/:forum_id')
-  getCommentsByForum(@Res() response, @Param() params: GetCommentsByForumDto, @Query() query: QueryPageDto) {
-    return this.commentService.getCommentsByForum(response, params.forum_id, query.page);
+  getCommentsByForum(@Res() response, @Param() params: GetCommentsByForumDto, @Query() query: GetCommentsByForumQueryDto) {
+    return this.commentService.getCommentsByForum(response, params.forum_id, query.page, query.lastMessage);
   };
 
   @Post(':comment_id/like')

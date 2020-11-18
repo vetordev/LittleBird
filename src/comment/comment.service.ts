@@ -46,7 +46,9 @@ export class CommentService {
 
   };
 
-  async getCommentsByForum(response: Response, forum_id: number, page: number) {
+  async getCommentsByForum(response: Response, forum_id: number, page: number, lastMessage: number) {
+
+    let diffTotalLast;
 
     const forum = await this.forumRepository.createQueryBuilder('forum')
       .select(['forum'])
@@ -57,13 +59,23 @@ export class CommentService {
       return response.status(404).json({ error: 'Fórum não encontrado.' });
     };
 
+    const totalComments = await this.commentRepository.createQueryBuilder('tb_comment')
+      .select(['tb_comment.comment_id'])
+      .orderBy('tb_comment.comment_id', 'DESC')
+      .getOne();
+
+    if (lastMessage > totalComments.comment_id || lastMessage == 0)
+      diffTotalLast = 0;
+    else
+      diffTotalLast = totalComments.comment_id - lastMessage + 1;
+
     let comments: any = await this.commentRepository.createQueryBuilder('tb_comment')
       .select(['tb_comment', 'user.user_id', 'user.username', 'user_img'])
       .innerJoin('tb_comment.user_id', 'user')
       .innerJoin('user.user_img_id', 'user_img')
       .where('tb_comment.forum_id = :forum_id', { forum_id })
       .orderBy('tb_comment.comment_id', 'DESC')
-      .offset((page - 1) * 6)
+      .offset(((page - 1) * 6) + diffTotalLast)
       .limit(6)
       .getManyAndCount();
 
