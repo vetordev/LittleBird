@@ -7,6 +7,7 @@ import { useNavigation, useRoute, useIsFocused } from '@react-navigation/native'
 import api from '../../../services/api';
 
 import NoticeinScreen from '../../../components/NoticeInScreen';
+import ShimmerSubjectsContent from '../../../components/Shimmer/ShimmerSubjectsContent';
 
 import { 
   Container,
@@ -118,7 +119,7 @@ const Subjects = () => {
       responseForums = await api.get(`forum/theme/${selectedTheme}/like?page=${pageForums}`);
     }
 
-    setArticles([... articles, ... responseForums.data]);
+    setForuns([... foruns, ... responseForums.data]);
     setTotalForums(responseForums.headers['x-total-count']);
     setPageForums(pageForums + 1);
     setLoadingForums(false);
@@ -217,36 +218,41 @@ const Subjects = () => {
           <SessionLineDecoration />
         </SessionHeader>
 
-        { articles.length > 0 ?
-          <Carousel 
-            layout="tinder"
-            layoutCardOffset={9}
-            onEndReached={loadArticles}
-            onEndReachedThreshold={0.7}
-            firstItem={articles.length - 1}
-            data={articles}
-            itemWidth={win.width * 0.8}
-            sliderWidth={win.width}
-            renderItem={({ item }) => (
-              <Option winWidth={win.width} onPress={() => navigateToArticles(item.article_id)}>
-                <OptionImage resizeMode="cover" source={{ uri: item.article_img_id.img_url }} />
-                <OptionInfos>
-                  <OptionTitle>{item.title}</OptionTitle>
-                  <OptionReacts>
-                    <Likes>
-                    <Feather name="heart" color="#F6F6F6" size={17} />
-                      <Qtd>{item.no_like}</Qtd>
-                    </Likes>
-                  </OptionReacts>
-                </OptionInfos>
-              </Option>
-            )}
-          />
-        :
-          <NoticeinScreen
-            img_url="https://www.flaticon.com/svg/static/icons/svg/3468/3468182.svg"
-            message="Ainda não temos artigos sobre esse assunto."
-          />
+        { loadingArticles ?
+        
+          <ShimmerSubjectsContent />
+
+          :
+          (articles.length > 0 ?
+            <Carousel 
+              layout="tinder"
+              layoutCardOffset={9}
+              onEndReached={loadArticles}
+              onEndReachedThreshold={0.7}
+              firstItem={articles.length - 1}
+              data={articles}
+              itemWidth={win.width * 0.8}
+              sliderWidth={win.width}
+              renderItem={({ item }) => (
+                <Option winWidth={win.width} onPress={() => navigateToArticles(item.article_id)}>
+                  <OptionImage resizeMode="cover" source={{ uri: item.article_img_id.img_url }} />
+                  <OptionInfos>
+                    <OptionTitle>{item.title}</OptionTitle>
+                    <OptionReacts>
+                      <Likes>
+                      <Feather name="heart" color="#F6F6F6" size={17} />
+                        <Qtd>{item.no_like}</Qtd>
+                      </Likes>
+                    </OptionReacts>
+                  </OptionInfos>
+                </Option>
+              )}
+            />  
+          :
+            <NoticeinScreen
+              img_url="https://www.flaticon.com/svg/static/icons/svg/3468/3468182.svg"
+              message="Ainda não temos artigos sobre esse assunto."
+            />)
         }
 
         <SessionHeader>
