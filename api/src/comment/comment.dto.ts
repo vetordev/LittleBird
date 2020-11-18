@@ -35,9 +35,18 @@ export class GetCommentsByForumDto {
   forum_id: number;
 };
 
+export class GetCommentsByForumQueryDto {
+  @IsString() @IsNotEmpty()
+  page: number;
+
+  @IsString() @IsNotEmpty()
+  lastMessage: number;
+};
+
 export class QueryPageDto {
   @IsString() @IsNotEmpty()
   page: number;
+
 };
 
 export class CreateReplyQueryDto {
