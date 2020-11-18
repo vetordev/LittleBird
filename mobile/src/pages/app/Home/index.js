@@ -10,8 +10,8 @@ import { useAuth } from '../../../contexts/auth';
 import api from '../../../services/api';
 
 import InterestCard from '../../../components/InterestCard';
-import LoadingHomeContent from '../../../components/Shimmer/LoadingHomeContent';
-import LoadingInterestCard from '../../../components/Shimmer/LoadingInterestCard';
+import ShimmerHomeContent from '../../../components/Shimmer/ShimmerHomeContent';
+import ShimmerInterestCard from '../../../components/Shimmer/ShimmerInterestCard';
 
 import { 
   Title,
@@ -102,7 +102,7 @@ const Home = () => {
       <InterestsContainer>
         <FlatList 
           showsVerticalScrollIndicator={false}
-          data={loadingInterests ? [<LoadingInterestCard />] : interests}
+          data={loadingInterests ? [<ShimmerInterestCard />] : interests}
           keyExtractor={interest => String(interest.interest_id)}
           numColumns={2}
           columnWrapperStyle={{ marginHorizontal: 15 }}
@@ -118,7 +118,7 @@ const Home = () => {
 
               { loadingRecentContent 
                 ?
-                  <LoadingHomeContent />
+                  <ShimmerHomeContent />
                 : 
                 <Carousel 
                   layout="default"
@@ -175,7 +175,7 @@ const Home = () => {
           ListFooterComponent={<View style={{ height: 30 }} />}
           renderItem={({ item }) =>(
              loadingInterests ? 
-                <LoadingInterestCard />
+                <ShimmerInterestCard />
               :
                 <InterestCard 
                   img_url={item.theme_id.theme_img_id.img_url} 

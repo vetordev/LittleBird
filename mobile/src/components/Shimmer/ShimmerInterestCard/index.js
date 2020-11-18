@@ -2,7 +2,7 @@ import React from 'react';
 
 import { Container, Shimmer, Row } from './styles';
 
-const LoadingInterestCard = () => {
+const ShimmerInterestCard = () => {
   return (
       <Container>
          <Row>
@@ -17,4 +17,4 @@ const LoadingInterestCard = () => {
   );
 }
 
-export default LoadingInterestCard;
+export default ShimmerInterestCard;

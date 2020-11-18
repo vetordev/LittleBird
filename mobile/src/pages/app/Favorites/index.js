@@ -3,8 +3,8 @@ import { FlatList, View } from 'react-native';
 
 import Header from '../../../components/Header';
 import InterestCard from '../../../components/InterestCard';
+import ShimmerInterestCard from '../../../components/Shimmer/ShimmerInterestCard';
 
-import themes from '../../../services/themes';
 import api from '../../../services/api';
 
 import { useAuth } from '../../../contexts/auth';
@@ -77,7 +77,7 @@ const Favorites = () => {
    return (
       <View>
          <FlatList 
-            data={selectedCategory ? articles : forums}
+            data={loading ? [<ShimmerInterestCard />] : (selectedCategory ? articles : forums)}
             keyExtractor={favorite => selectedCategory ? String(favorite.article_id) : String(favorite.forum_id)}
             numColumns={2}
             onEndReached={selectedCategory ? getFavoriteArticles : getFavoriteForums}
@@ -107,22 +107,26 @@ const Favorites = () => {
                </>
             }
             renderItem={({ item }) => (
-               selectedCategory ? 
-                  <InterestCard 
-                     img_url={item.article_id.article_img_id.img_url} 
-                     name={item.article_id.title} 
-                     type="article"
-                     idContent={item.article_id.article_id}
-                     isContent={true}
-                  />
-               :
-                  <InterestCard 
-                     img_url={item.forum_img_id.img_url} 
-                     name={item.title} 
-                     type="forum"
-                     idContent={item.forum_id}
-                     isContent={true}
-                  />
+               loading ?
+                  <ShimmerInterestCard />
+               : (
+                  selectedCategory ? 
+                     <InterestCard 
+                        img_url={item.article_id.article_img_id.img_url} 
+                        name={item.article_id.title} 
+                        type="article"
+                        idContent={item.article_id.article_id}
+                        isContent={true}
+                     />
+                  :
+                     <InterestCard 
+                        img_url={item.forum_img_id.img_url} 
+                        ne="forum"
+                        idContent={item.forum_id}
+                        isConame={item.title} 
+                        typtent={true}
+                     />
+               )
             )}
          />
       </View>
