@@ -5,6 +5,7 @@ import { Feather } from '@expo/vector-icons';
 import Header from '../../../components/Header';
 import InterestCard from '../../../components/InterestCard';
 import ModalContainer from '../../../components/ModalContainer';
+import ShimmerInterestCard from '../../../components/Shimmer/ShimmerInterestCard';
 
 import api from '../../../services/api';
 
@@ -166,7 +167,7 @@ const Interests = () => {
          }  
 
          <FlatList 
-            data={[... interests, { addInterests: true }]}
+            data={loadingInterests ? [<ShimmerInterestCard />] : [... interests, { addInterests: true }]}
             keyExtractor={theme => String(theme.interest_id)}
             numColumns={2}
             onEndReached={loadInterests}
@@ -175,24 +176,30 @@ const Interests = () => {
             ListHeaderComponent={
                <Header title="Seus interesses" />
             }
-            renderItem={({ item }) =>{
-               if(item.interest_id) {
+            renderItem={({ item }) => {
+
+               if (loadingInterests) {
+                  return item;
+               } else {
+
+                  if (item.interest_id) {
+                     return (
+                        <InterestCard 
+                           img_url={item.theme_id.theme_img_id.img_url} 
+                           name={item.theme_id.theme_name} 
+                           idTheme={item.theme_id.theme_id}
+                        />
+                     )
+                  }  
                   return (
-                     <InterestCard 
-                        img_url={item.theme_id.theme_img_id.img_url} 
-                        name={item.theme_id.theme_name} 
-                        idTheme={item.theme_id.theme_id}
-                     />
+                     <AddInterest onPress={openModal}>
+                        <AddInterestContent>
+                           <Feather name="plus" size={40} color="#01C24E" />
+                           <AddInterestText>Adicionar novo interesse</AddInterestText>
+                        </AddInterestContent>
+                     </AddInterest>
                   )
-               }  
-               return (
-                  <AddInterest onPress={openModal}>
-                     <AddInterestContent>
-                        <Feather name="plus" size={40} color="#01C24E" />
-                        <AddInterestText>Adicionar novo interesse</AddInterestText>
-                     </AddInterestContent>
-                  </AddInterest>
-               )
+               }
             }}
             ListFooterComponentStyle={{ marginHorizontal: 15 }}
          />

@@ -175,7 +175,7 @@ const Home = () => {
           ListFooterComponent={<View style={{ height: 30 }} />}
           renderItem={({ item }) =>(
              loadingInterests ? 
-                <ShimmerInterestCard />
+                item
               :
                 <InterestCard 
                   img_url={item.theme_id.theme_img_id.img_url} 
