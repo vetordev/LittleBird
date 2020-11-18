@@ -2688,6 +2688,12 @@ paths:
           name: page
           description: Paginação dos comentários
           required: true
+        - schema:
+            type: string
+          in: query
+          name: lastMessage
+          description: Última mensagem recebida no primeira busca
+          required: true
   /user/email:
     get:
       summary: Buscar e-mail
