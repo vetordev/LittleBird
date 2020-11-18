@@ -11,6 +11,7 @@ import api from '../../../services/api';
 
 import InterestCard from '../../../components/InterestCard';
 import LoadingHomeContent from '../../../components/Shimmer/LoadingHomeContent';
+import LoadingInterestCard from '../../../components/Shimmer/LoadingInterestCard';
 
 import { 
   Title,
@@ -34,7 +35,8 @@ const Home = () => {
   const [interests, setInterests] = useState([]);
   const [page, setPage] = useState(1);
   const [total, setTotal] = useState(0);
-  const [loading, setLoading] = useState(false);
+  const [loadingRecentContent, setLoadingRecentContent] = useState(false);
+  const [loadingInterests, setLoadingInterests] = useState(false);
 
   const { user, token } = useAuth();
   const win = Dimensions.get('window');
@@ -56,7 +58,7 @@ const Home = () => {
 
 
   async function loadRecentContent() {
-    if (loading) {
+    if (loadingRecentContent) {
       return;
     }
 
@@ -64,7 +66,7 @@ const Home = () => {
       return;
     }
 
-    setLoading(true);
+    setLoadingRecentContent(true);
 
     const responseRecentContent = await api.get(`article/forum/date?page=${page}`);
     
@@ -72,13 +74,14 @@ const Home = () => {
 
     setTotal(responseRecentContent.headers['x-total-count']);
     setPage(page + 1);
-    setLoading(false);
+    setLoadingRecentContent(false);
   }
 
   useEffect(() => {
     async function getContent() {
       loadRecentContent();
 
+      setLoadingInterests(true);
       const responseInterests = await api.get('interest?page=1', 
         { 
           headers : { 
@@ -87,6 +90,7 @@ const Home = () => {
         });
         
       setInterests(responseInterests.data);
+      setLoadingInterests(false);
     }
 
     getContent();
@@ -98,7 +102,7 @@ const Home = () => {
       <InterestsContainer>
         <FlatList 
           showsVerticalScrollIndicator={false}
-          data={interests}
+          data={loadingInterests ? [<LoadingInterestCard />] : interests}
           keyExtractor={interest => String(interest.interest_id)}
           numColumns={2}
           columnWrapperStyle={{ marginHorizontal: 15 }}
@@ -112,7 +116,7 @@ const Home = () => {
                 <SessionTitle>Mais recentes</SessionTitle>
               </SessionTitleContainer>
 
-              { loading 
+              { loadingRecentContent 
                 ?
                   <LoadingHomeContent />
                 : 
@@ -169,14 +173,18 @@ const Home = () => {
             </>
           }
           ListFooterComponent={<View style={{ height: 30 }} />}
-          renderItem={({ item }) => (
-            <InterestCard 
-              img_url={item.theme_id.theme_img_id.img_url} 
-              name={item.theme_id.theme_name} 
-              notDelete 
-              idTheme={item.theme_id.theme_id}
-            />
-          )}
+          renderItem={({ item }) =>(
+             loadingInterests ? 
+                <LoadingInterestCard />
+              :
+                <InterestCard 
+                  img_url={item.theme_id.theme_img_id.img_url} 
+                  name={item.theme_id.theme_name} 
+                  notDelete 
+                  idTheme={item.theme_id.theme_id}
+                />
+            )
+          }
         />
       </InterestsContainer>
     </>

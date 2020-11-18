@@ -8,7 +8,6 @@ export const Container = styled.TouchableOpacity.attrs({
    min-height: 125px;
    padding: 4px;
    /* flex: 1; */
-   /* background: red; */
 `;
 
 export const InterestImageFilter = styled.View`
