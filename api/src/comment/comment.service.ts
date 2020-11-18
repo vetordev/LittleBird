@@ -66,10 +66,8 @@ export class CommentService {
 
     if (lastMessage > totalComments.comment_id || lastMessage == 0)
       diffTotalLast = 0;
-    else if(lastMessage - totalComments.comment_id == 0)
-      diffTotalLast = totalComments.comment_id - lastMessage;
     else
-      diffTotalLast = totalComments.comment_id - lastMessage + 1;
+      diffTotalLast = totalComments.comment_id - lastMessage;
 
     let comments: any = await this.commentRepository.createQueryBuilder('tb_comment')
       .select(['tb_comment', 'user.user_id', 'user.username', 'user_img'])
