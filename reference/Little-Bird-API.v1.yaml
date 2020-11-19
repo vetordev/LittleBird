@@ -2307,7 +2307,7 @@ paths:
             type: string
           in: query
           name: forum
-          description: Nome do fórum em que o comentário está
+          description: ID do fórum em que o comentário está
           required: true
       requestBody:
         content:
