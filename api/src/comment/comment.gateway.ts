@@ -52,7 +52,7 @@ export class CommentGateway implements OnGatewayInit, OnGatewayConnection, OnGat
   async handleNewMessage(message: Message): Promise<void> {
 
     const user = await this.userRepository.createQueryBuilder('tb_user')
-    .select(['tb_user.user_id', 'tb_user.username', 'tb_user.user_img'])
+    .select(['tb_user.user_id', 'tb_user.username', 'user_img'])
     .innerJoin('tb_user.user_img_id', 'user_img')
     .where('tb_user.user_id = :user_id', { user_id: message.user_id })
     .getOne();
