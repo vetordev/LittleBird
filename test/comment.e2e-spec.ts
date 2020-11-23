@@ -155,7 +155,7 @@ describe('Comment', () => {
     it('> GET /comment/:comment_id/reply Deve retonar as repostas de um comentário', async () => {
       const comment_id = 1;
       const response = await request(app.getHttpServer())
-        .get(`/comment/${comment_id}/reply?page=1`);
+        .get(`/comment/${comment_id}/reply?page=1&lastMessage=1`);
 
       expect(response.status).toBe(200);
       expect(response.header['x-total-count']).toBe("2");
@@ -176,7 +176,7 @@ describe('Comment', () => {
     it('> GET /comment/:comment_id/reply Não deve retonar as repostas de um comentário (Comentário não encontrado)', async () => {
       const comment_id = 2;
       const response = await request(app.getHttpServer())
-        .get(`/comment/${comment_id}/reply?page=1`);
+        .get(`/comment/${comment_id}/reply?page=1&lastMessage=1`);
 
       expect(response.status).toBe(404);
       expect(response.body).toEqual(expect.objectContaining({
