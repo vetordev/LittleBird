@@ -1,6 +1,6 @@
 import { Controller, Get, Res, Param, Post, Req, UseGuards, HttpCode, Body, Delete, UseFilters, Query } from '@nestjs/common';
 import { CommentService } from './comment.service';
-import { GetRepliesDto, CreateLikeDto, CreateReplyParamDto, CreateReplyBodyDto, RemoveReplyDto, RemoveLikeDto, GetCommentsByForumDto, CreateReplyQueryDto, QueryPageDto, GetCommentsByForumQueryDto } from './comment.dto';
+import { GetRepliesDto, CreateLikeDto, CreateReplyParamDto, CreateReplyBodyDto, RemoveReplyDto, RemoveLikeDto, GetCommentsByForumDto, CreateReplyQueryDto, QueryPageDto } from './comment.dto';
 import { JwtAuthGuard } from '../auth/jwt/jwt-auth.guard';
 import { QueryFailedExceptionFilter } from './http-exception.filter';
 
@@ -11,11 +11,11 @@ export class CommentController {
 
   @Get(':comment_id/reply')
   getReplies(@Res() response, @Param() params: GetRepliesDto, @Query() query: QueryPageDto) {
-    return this.commentService.getReplies(response, params.comment_id, query.page);
+    return this.commentService.getReplies(response, params.comment_id, query.page, query.lastMessage);
   };
 
   @Get('forum/:forum_id')
-  getCommentsByForum(@Res() response, @Param() params: GetCommentsByForumDto, @Query() query: GetCommentsByForumQueryDto) {
+  getCommentsByForum(@Res() response, @Param() params: GetCommentsByForumDto, @Query() query: QueryPageDto) {
     return this.commentService.getCommentsByForum(response, params.forum_id, query.page, query.lastMessage);
   };
 

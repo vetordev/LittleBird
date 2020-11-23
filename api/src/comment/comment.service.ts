@@ -19,7 +19,9 @@ export class CommentService {
     private readonly commentGateway: CommentGateway
   ) {};
 
-  async getReplies(response: Response, comment_id: number, page: number): Promise<Response> {
+  async getReplies(response: Response, comment_id: number, page: number, lastMessage: number): Promise<Response> {
+
+    let diffTotalLast;
 
     const comment = await this.commentRepository.createQueryBuilder('tb_comment')
       .select(['tb_comment.comment_id'])
@@ -30,12 +32,22 @@ export class CommentService {
       return response.status(404).json({ error: 'Comentário não encontrado.' });
     }
 
+    const totalReplies = await this.replyRepository.createQueryBuilder('reply')
+      .select(['reply.reply_id'])
+      .orderBy('reply.reply_id', 'DESC')
+      .getOne();
+
+    if(lastMessage > totalReplies.reply_id || lastMessage == 0)
+      diffTotalLast = 0;
+    else
+      diffTotalLast = totalReplies.reply_id - lastMessage;
+
     const replies: any = await this.replyRepository.createQueryBuilder('reply')
       .select(['reply', 'user.user_id', 'user.username', 'user_img'])
       .innerJoin('reply.user_id', 'user')
       .innerJoin('user.user_img_id', 'user_img')
       .where('reply.comment_id = :comment_id', { comment_id })
-      .offset((page - 1) * 6)
+      .offset(((page - 1) * 6) + diffTotalLast)
       .limit(6)
       .orderBy('reply.reply_id', 'DESC')
       .getManyAndCount();
