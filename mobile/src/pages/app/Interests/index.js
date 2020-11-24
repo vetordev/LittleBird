@@ -180,8 +180,8 @@ const Interests = () => {
 
                if (loadingInterests) {
                   return item;
-               } else {
 
+               } else {
                   if (item.interest_id) {
                      return (
                         <InterestCard 

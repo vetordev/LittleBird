@@ -33,51 +33,51 @@ import {
 } from './styles';
 
 const EditProfile = () => {
-   const { user, setUser, token } = useAuth();
-
    const [displayModal, setModalDisplay] = useState(false);
    const [loading, setLoading] = useState(false);
-   const [date, setDate] = useState(user.born_in);
+   const [date, setDate] = useState('');
    const [userBirth, setUserBirth] = useState('');
-
+   const [dateError, setDateError] = useState(null);
+   
+   const { user, setUser, token } = useAuth();
    const { avatares, avatar, setAvatar } = useAvatar();
    
    const formRef = useRef(null);
 
    const { user_img_id } = user;
 
+   function validateDate() {
+      if (!userBirth) {
+         return false;
+      }
+      if (moment(userBirth, 'DD/MM/YYYY').isValid()) {
+         setDateError(null);
+         const finalDate = moment(userBirth, 'DD/MM/YYYY').format('DD-MM-YYYY');
+         return finalDate;
+
+      } else {
+         setDateError('Insira uma data de nascimento correta.');
+         return false;
+      }
+    }
+
    async function handleSaveProfile(data) {
-      if (data.username === undefined && data.birth === undefined && data.email === undefined && data.fullname === undefined && avatar === user_img_id) {
+      const finalDate = validateDate();
+
+      if (!finalDate) {
+         return false;
+      }
+
+      if (data.username === undefined && data.email === undefined && data.fullname === undefined && avatar === user_img_id) {
          return false;
       }
 
       try {
-         // setLoading(true);
-         // let dateFormat;
          const schema = Yup.object().shape({
             fullname: Yup.string().min(6, 'O nome completo deve ter pelo menos 6 caracteres.'),
             username: Yup.string().min(5, 'O nome de usuário deve ter pelo menos 5 caracteres.'),
-            email: Yup.string().min(6, 'O e-mail deve ter pelo menos 7 caracteres.').email('O e-mail deve ser válido'),
-            birth: Yup.date().transform((value, originalValue) => {               
-
-               formatDateToAPI(originalValue).then((dateFormated) => {
-                  console.log(moment(dateFormated).isValid());
-
-                  console.log(dateFormated);
-   
-                  return moment(dateFormated).isValid() ? formRef.current.setFieldError('birth', null) : formRef.current.setFieldError('birth', 'Insira uma data de nascimento válida.');
-               });
-               // const day = String(originalValue[0]) + String(originalValue[1]);
-               // const month = String(originalValue[3]) + String(originalValue[4]);
-               // const year = String(originalValue[6]) + String(originalValue[7]) + String(originalValue[8]) + String(originalValue[9]);
-               
-               // const dateFormated = moment(`${year}-${month}-${day}`).format('YYYY-MM-DD');
-
-               
-            })
+            email: Yup.string().min(6, 'O e-mail deve ter pelo menos 7 caracteres.').email('O e-mail deve ser válido')
          });
-
-         console.log('birth', data);
    
          await schema.validate(data, {
            abortEarly: false
@@ -85,37 +85,40 @@ const EditProfile = () => {
 
          formRef.current.setErrors({});
 
-         // const newUser = {
-         //    fullname: data.fullname === undefined ? user.fullname : data.fullname,
-         //    email: data.email === undefined ? user.email : data.email,
-         //    username: data.username === undefined ? user.username : data.username,
-         //    user_img_id: avatar,
-         //    born_in: '2019-08-24'
-         // }
+         console.log('erros retirados');
 
-         // setUser(newUser);
-
-         // await api.put('user', newUser, { headers: { Authorization: token } });
-         // await AsyncStorage.setItem('@LittleBird:user', JSON.stringify(newUser));
-
-         // setModalDisplay(true);
-         // setLoading(false);
-
-       } catch (err) {
-         if (err instanceof Yup.ValidationError) {
-           const errorMessages = {};
-   
-           err.inner.forEach(error => {
-             errorMessages[error.path] = error.message;
-           })
-   
-           formRef.current.setErrors(errorMessages);
+         const newUser = {
+            fullname: data.fullname === undefined ? user.fullname : data.fullname,
+            email: data.email === undefined ? user.email : data.email,
+            username: data.username === undefined ? user.username : data.username,
+            user_img_id: avatar,
+            born_in: finalDate,
          }
-       }
+         
+         setUser(newUser);
+         setLoading(true);
+
+         await api.put('user', newUser, { headers: { Authorization: token } });
+         await AsyncStorage.setItem('@LittleBird:user', JSON.stringify(newUser));
+
+         setModalDisplay(true);
+         setLoading(false);
+
+      } catch (err) {
+         if (err instanceof Yup.ValidationError) {
+            const errorMessages = {};
+
+            err.inner.forEach(error => {
+               errorMessages[error.path] = error.message;
+            })
+
+            formRef.current.setErrors(errorMessages);
+         }
+      }
    }
 
    useEffect(() => {
-      setDate(user.born_in);
+      setDate(moment(user.born_in, 'DD-MM-YYYY').format('DD/MM/YYYY'));
    });
 
    return (
@@ -178,7 +181,11 @@ const EditProfile = () => {
                   color="light"
                   placeholder="DD / MM / AAAA"
                   legend="Sua data de nascimento"
-                  defaultValue={user.born_in}
+                  defaultValue={moment(user.born_in, 'DD-MM-YYYY').format('DD/MM/YYYY')}
+                  value={date}
+                  setDate={setDate}
+                  setUserBirth={setUserBirth}
+                  error={dateError}
                />
                
                <Input 

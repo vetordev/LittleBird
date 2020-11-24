@@ -15,41 +15,61 @@ import {
    ErrorContent,
 } from '../Input/styles';
 
-const InputDate = ({ name, color, iconName, legend, description, defaultValue, onChangeText, setDate, ...rest }) => {
-   const [value, setValue] = useState(defaultValue);
+const InputDate = ({ name, color, iconName, legend, description, defaultValue, onChangeText, setDate, setUserBirth, error, value, ...rest }) => {
+   // const [value, setValue] = useState(defaultValue);
    const [keyPressed, setKeyPressed] = useState('');
-   const inputRef = useRef(null);
-   const { fieldName, registerField, error } = useField(name);
+   // const inputRef = useRef(null);
+   // const { fieldName, registerField, error } = useField(name);
 
-   useEffect(() => {
-      registerField({
-         name: fieldName,
-         ref: inputRef.current,
-         path: 'value'
-      })
-   }, [fieldName, registerField])
+   // useEffect(() => {
+   //    registerField({
+   //       name: fieldName,
+   //       ref: inputRef.current,
+   //       path: 'value'
+   //    })
+   // }, [fieldName, registerField])
+
+   // function handleSetDate(text) {
+   //    // console.log(Number.isInteger(text[text.length - 1]));
+
+      
+   //    if (text.length === 2 || text.length === 5) {
+   //       if (keyPressed !== 'Backspace') {
+   //          inputRef.current.value = text + "/";
+   //       } else {
+   //          inputRef.current.value = text
+   //       }
+   //    }
+   //    else {
+   //       inputRef.current.value = text;
+   //    }
+      
+   //    setValue(inputRef.current.value);
+      
+   // }
 
    function handleSetDate(text) {
-      // console.log(Number.isInteger(text[text.length - 1]));
-
-      if (inputRef.current) {
-
-         if (text.length === 2 || text.length === 5) {
-            if (keyPressed !== 'Backspace') {
-               inputRef.current.value = text + "/";
-            } else {
-               inputRef.current.value = text
-            }
-         }
-         else {
-            inputRef.current.value = text;
-         }
-         
-         setValue(inputRef.current.value);
-      }
+      setDate('kkkkkkkkk');
+      setUserBirth(text);
+      // if (text.length === 2) {
+      //   setDate(text + "/");
+      // }
+      // else if (text.length === 5) {
+      //   setDate(text + "/");
+      // }
+      // else {
+      //   setDate(text);
+      // }
+  
+      // if (text.length === 10) {
+      //   const day = String(text[0]) + String(text[1]);
+      //   const month = String(text[3]) + String(text[4]);
+      //   const year = String(text[6]) + String(text[7]) + String(text[8]) + String(text[9]);
+  
+      //   setUserBirth(`${year}-${month}-${day}`);
+      // }
    }
 
-   // console.log(error);
 
    return (
       <Container>
@@ -68,18 +88,15 @@ const InputDate = ({ name, color, iconName, legend, description, defaultValue, o
             <Feather name={iconName ? iconName : 'send'} color={color == 'dark' ? '#000' : '#F6F6F6'} size={24} />
          </InputIcon>
          <TextInput 
-            ref={inputRef}
             placeholderTextColor={color == 'dark' ? 'rgba(0, 0, 0, 0.29)' : 'rgba(255, 255, 255, 0.29)'}
             color={color}
-            // value={defaultValue}
             onChangeText={text => handleSetDate(text)}
             keyboardType="default"
-            defaultValue={value}
+            defaultValue={defaultValue}
+            // value={value}
             maxLength={10}
-            // TODO: ajustar defaultvalue
-            // value={value ? value : defaultValue}
             onKeyPress={e => setKeyPressed(e.nativeEvent.key)}
-            {...rest}
+            {... rest}
          />
          </InputContainer>
       </Container>   

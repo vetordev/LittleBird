@@ -45,6 +45,8 @@ const SignUp1 = () => {
 
   async function handleSignUp1 (data) {
     validateDate();
+    
+    console.log(userBirth);
 
     try {
       const schema = Yup.object().shape({
@@ -66,7 +68,7 @@ const SignUp1 = () => {
           username: data.username,
           user_pass: data.password,
           user_img_id: 1,
-          born_in: '2003-02-04'
+          born_in: userBirth
         }
 
         if (toggleCheckBox) {
@@ -115,7 +117,10 @@ const SignUp1 = () => {
             color="light"
             placeholder="DD / MM / AAAA"
             legend="Sua data de nascimento"
-            // defaultValue={user.born_in}
+            value={date}
+            setDate={setDate}
+            setUserBirth={setUserBirth}
+            error={dateError}
           />
 
           <Input 
