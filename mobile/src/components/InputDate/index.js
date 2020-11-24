@@ -1,5 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
-import { useField } from '@unform/core';
+import React, { useState } from 'react';
 import { Feather } from '@expo/vector-icons';
 
 import { 
@@ -8,7 +7,6 @@ import {
    InputContainer, 
    InputIcon, 
    Legend, 
-   Description,
    ErrorContainer,
    ErrorMessage,
    ErrorDetail,
@@ -16,50 +14,19 @@ import {
 } from '../Input/styles';
 
 const InputDate = ({ name, color, iconName, legend, description, defaultValue, onChangeText, setDate, setUserBirth, error, value, ...rest }) => {
-   // const [value, setValue] = useState(defaultValue);
    const [keyPressed, setKeyPressed] = useState('');
-   // const inputRef = useRef(null);
-   // const { fieldName, registerField, error } = useField(name);
-
-   // useEffect(() => {
-   //    registerField({
-   //       name: fieldName,
-   //       ref: inputRef.current,
-   //       path: 'value'
-   //    })
-   // }, [fieldName, registerField])
-
-   // function handleSetDate(text) {
-   //    // console.log(Number.isInteger(text[text.length - 1]));
-
-      
-   //    if (text.length === 2 || text.length === 5) {
-   //       if (keyPressed !== 'Backspace') {
-   //          inputRef.current.value = text + "/";
-   //       } else {
-   //          inputRef.current.value = text
-   //       }
-   //    }
-   //    else {
-   //       inputRef.current.value = text;
-   //    }
-      
-   //    setValue(inputRef.current.value);
-      
-   // }
 
    function handleSetDate(text) {
-      setDate('kkkkkkkkk');
-      setUserBirth(text);
-      // if (text.length === 2) {
-      //   setDate(text + "/");
-      // }
-      // else if (text.length === 5) {
-      //   setDate(text + "/");
-      // }
-      // else {
-      //   setDate(text);
-      // }
+
+      if (text.length === 2) {
+        setUserBirth(text + "/");
+      }
+      else if (text.length === 5) {
+        setUserBirth(text + "/");
+      }
+      else {
+        setUserBirth(text);
+      }
   
       // if (text.length === 10) {
       //   const day = String(text[0]) + String(text[1]);
@@ -69,7 +36,6 @@ const InputDate = ({ name, color, iconName, legend, description, defaultValue, o
       //   setUserBirth(`${year}-${month}-${day}`);
       // }
    }
-
 
    return (
       <Container>
