@@ -7,7 +7,7 @@ export class ReportType {
 
   @Column({
     type: 'varchar',
-    length: 45
+    length: 50
   })
   report_type_name: string;
 

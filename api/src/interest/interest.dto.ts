@@ -1,16 +1,16 @@
 import { IsInt, IsNotEmpty, IsString } from "class-validator"
 
 export class CreateInterestDto {
-  @IsInt()
+  @IsString()
   @IsNotEmpty()
-  theme_id: number;
+  themes: string;
 
 }
 
 export class DeleteInterestDto {
   @IsString()
   @IsNotEmpty()
-  interest_id: number;
+  interests: string;
 
 }
 

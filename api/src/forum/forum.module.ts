@@ -9,9 +9,10 @@ import { LikeForum } from './entity/like-forum.entity';
 import { CommentModule } from '../comment/comment.module';
 import { ForumGateway } from './forum.gateway';
 import { UserModule } from '../user/user.module';
+import { ThemeModule } from '../theme/theme.module';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([ ForumImg, Forum, ThemeForum, LikeForum ]), forwardRef(() => CommentModule), UserModule],
+  imports: [TypeOrmModule.forFeature([ ForumImg, Forum, ThemeForum, LikeForum ]), forwardRef(() => CommentModule), UserModule, ThemeModule],
   controllers: [ForumController],
   providers: [ForumService, ForumGateway],
   exports: [TypeOrmModule, ForumGateway]

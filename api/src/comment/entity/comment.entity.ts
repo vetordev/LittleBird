@@ -10,7 +10,7 @@ export class Comment {
 
   @Column({
     type: 'varchar',
-    length: 100
+    length: 200
   })
   comment_content: string;
 
