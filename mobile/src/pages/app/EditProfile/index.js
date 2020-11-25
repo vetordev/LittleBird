@@ -64,11 +64,7 @@ const EditProfile = () => {
    async function handleSaveProfile(data) {
       const finalDate = validateDate();
 
-      if (!finalDate) {
-         return false;
-      }
-
-      if (data.username === undefined && data.email === undefined && data.fullname === undefined && avatar === user_img_id) {
+      if (data.username === undefined && data.email === undefined && data.fullname === undefined && avatar === user_img_id && !finalDate) {
          return false;
       }
 
@@ -85,23 +81,22 @@ const EditProfile = () => {
 
          formRef.current.setErrors({});
 
-         console.log('erros retirados');
-
          const newUser = {
             fullname: data.fullname === undefined ? user.fullname : data.fullname,
             email: data.email === undefined ? user.email : data.email,
             username: data.username === undefined ? user.username : data.username,
             user_img_id: avatar,
-            born_in: finalDate,
+            born_in: !finalDate ? user.born_in : finalDate,
          }
+         setModalDisplay(true);
+         console.log('newUser', newUser);
          
          setUser(newUser);
          setLoading(true);
 
-         await api.put('user', newUser, { headers: { Authorization: token } });
+         // await api.put('user', newUser, { headers: { Authorization: token } });
          await AsyncStorage.setItem('@LittleBird:user', JSON.stringify(newUser));
 
-         setModalDisplay(true);
          setLoading(false);
 
       } catch (err) {
