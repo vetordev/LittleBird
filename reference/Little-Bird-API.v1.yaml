@@ -1,0 +1,3278 @@
+openapi: 3.0.0
+info:
+  title: Little Bird API
+  version: '1.0'
+  description: API Restful do aplicativo Little Bird
+  contact:
+    name: Vitor da SIlva Pires Bezerra
+    email: vitor13m2003@gmail.com
+    url: 'https://www.linkedin.com/in/vitor-da-silva-pires-bezerra-84a5371a0/'
+servers:
+  - url: 'https://little-bird-api.herokuapp.com'
+paths:
+  /auth/login:
+    post:
+      summary: Login do usuário
+      operationId: post-user-login
+      responses:
+        '201':
+          description: O usuário foi logado e a API retorna um token JWT que deve ser usado para fazer todas as requisições que precisam dos dados do usuário.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  token:
+                    type: string
+                  username:
+                    type: string
+                  email:
+                    type: string
+                    format: email
+                  user_img_id:
+                    type: integer
+                  user_id:
+                    type: integer
+                  fullname:
+                    type: string
+                required:
+                  - token
+              examples:
+                Exemplo de um token JWT:
+                  value:
+                    token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1bmlxdWVfbmFtZSI6IlRoaWFnbyIsInN1YiI6IjEzIiwianRpIjoiZDBlMGFkZDItOTlkMC00NWY1LThlYzEtY2FiYzIwZjkxMGYyIiwiaWF0IjoxNTAwMDMzMjE0LCJKd3RWYWxpZGF0aW9uIjoiVXN1YXJpbyIsIm5iZiI6MTUwMDAzMzIxMywiZXhwIjoxNTAwMDMzMjczLCJpc3MiOiJJc3N1ZXIiLCJhdWQiOiJBdWRpZW5jZSJ9.SmjuyXgloA2RUhIlAEetrQwfC0EhBmhu-xOMzyY3Y_Q
+        '401':
+          description: O usuário não foi cadastrado ainda no banco de dados
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                required:
+                  - error
+              examples:
+                Exemplo de erro:
+                  value:
+                    error: Usuário não encontrado
+        '500':
+          description: Erro interno na API
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                required:
+                  - error
+              examples:
+                Exemplo de erro:
+                  value:
+                    error: Ocorreu um erro. Tente novamente mais tarde.
+      description: Rota para login de um usuário da aplicação.
+      parameters: []
+      tags:
+        - User
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                email:
+                  type: string
+                user_pass:
+                  type: string
+            examples:
+              Exemplo de dados de login:
+                value:
+                  email: user@example.com
+                  user_pass: pa$$word
+        description: O usuário deve enviar seu nome de usuário (username) e senha (password) para fazer login.
+    parameters: []
+  /user:
+    post:
+      summary: Cadastrar um usuário
+      operationId: post-user
+      responses:
+        '201':
+          description: O usuário foi cadastrado com sucesso e lhe foi enviado um token JWT que deve ser usado nas próximas requisições que necessitem dos seus dados.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  token:
+                    type: string
+              examples:
+                Exemplo de um token JWT:
+                  value:
+                    token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1bmlxdWVfbmFtZSI6IlRoaWFnbyIsInN1YiI6IjEzIiwianRpIjoiZDBlMGFkZDItOTlkMC00NWY1LThlYzEtY2FiYzIwZjkxMGYyIiwiaWF0IjoxNTAwMDMzMjE0LCJKd3RWYWxpZGF0aW9uIjoiVXN1YXJpbyIsIm5iZiI6MTUwMDAzMzIxMywiZXhwIjoxNTAwMDMzMjczLCJpc3MiOiJJc3N1ZXIiLCJhdWQiOiJBdWRpZW5jZSJ9.SmjuyXgloA2RUhIlAEetrQwfC0EhBmhu-xOMzyY3Y_Q
+        '404':
+          description: A imagem do usuário não foi encontrada.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+              examples:
+                Exemplo de erro:
+                  value:
+                    error: O user_img_id não existe no servidor.
+        '409':
+          description: O E-mail ou o username do usuário já estão presente na aplicação.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+              examples:
+                Exemplo de erro:
+                  value:
+                    error: E-mail ou username já cadastrados no servidor
+        '500':
+          description: Erro interno na API.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+              examples:
+                Exemplo de erro:
+                  value:
+                    error: Ocorreu um erro. Tente novamente mais tarde.
+      description: Rota para cadastro de um usuário na aplicação.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/User'
+            examples:
+              Exemplo de usuário:
+                value:
+                  username: carlosboavida
+                  user_pass: J_alme_45
+                  email: carlos.vida789@gmail.com
+                  user_img_id: 1
+                  born_in: '2003-06-13'
+        description: O usuário deve enviar seus dados para fazer cadastro.
+      tags:
+        - User
+    get:
+      summary: Buscar um usuário
+      operationId: get-user
+      responses:
+        '200':
+          description: O usuário foi autorizado e seus dados foram enviados.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  username:
+                    type: string
+                  email:
+                    type: string
+                    format: email
+                  user_img_id:
+                    type: object
+                    format: int64
+                    properties:
+                      user_img_id:
+                        type: integer
+                        format: int64
+                      img_url:
+                        type: string
+                        format: int64
+                  user_id:
+                    type: integer
+                  fullname:
+                    type: string
+                required:
+                  - username
+                  - email
+                  - user_img_id
+              examples:
+                Exemplo de usuário:
+                  value:
+                    username: carlosboavida
+                    email: carlos.vida789@gmail.com
+                    user_img_id: 1
+        '401':
+          description: O token JWT não é válido.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+              examples:
+                Exemplo de erro:
+                  value:
+                    error: O token é inválido ou já expirou
+        '500':
+          description: Erro interno na API.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+              examples:
+                Exemplo de erro:
+                  value:
+                    error: Ocorreu um erro. Tente novamente mais tarde.
+      description: Rota para buscar um usuário especifíco da aplicação
+      parameters:
+        - schema:
+            type: string
+          in: header
+          name: Authorization
+          description: Token JWT deve ser passado por meio deste header
+          required: true
+      tags:
+        - User
+    parameters: []
+    put:
+      summary: Alterar um usuário
+      operationId: put-user
+      responses:
+        '204':
+          description: Os dados do usuário foram atualizados com sucesso.
+        '401':
+          description: O token JWT não é válido.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+              examples:
+                Exemplo de erro:
+                  value:
+                    error: O token é inválido ou já expirou
+        '404':
+          description: A imagem do usuário não foi encontrado no servidor.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+              examples:
+                Exemplo de erro:
+                  value:
+                    error: O user_img_id não existe no servidor.
+        '409':
+          description: O e-mail ou username recebidos já estão presente no servidor.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+              examples:
+                Exemplo de erro:
+                  value:
+                    error: O e-mail ou username informados já estão presentes no banco de dados.
+        '500':
+          description: Erro interno na API.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+              examples:
+                Exemplo de erro:
+                  value:
+                    error: Ocorreu um erro. Tente novamente mais tarde.
+      parameters:
+        - schema:
+            type: string
+          in: header
+          name: Authorization
+          required: true
+          description: Token JWT deve ser passado por meio deste header
+      description: Rota para alterar os dados de um usuário.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                username:
+                  type: string
+                email:
+                  type: string
+                  format: email
+                user_img_id:
+                  type: integer
+                  format: int64
+                born_in:
+                  type: string
+                  format: date
+                fullname:
+                  type: string
+            examples:
+              Exemplo de dados a serem alterados:
+                value:
+                  username: carlosmavida
+                  email: carlos.boa789@gmail.com
+                  user_img_id: 1
+        description: O usuário envia os dados que serão alterados
+      tags:
+        - User
+  /interest:
+    post:
+      summary: Adicionar vários interesses
+      operationId: post-interest
+      responses:
+        '201':
+          description: Os interesses foram adicionados com sucesso.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    interest_id:
+                      type: integer
+                      format: int64
+                    user_id:
+                      type: integer
+                      format: int64
+                    theme_id:
+                      type: object
+                      properties:
+                        theme_id:
+                          type: integer
+                          format: int64
+                        theme_name:
+                          type: string
+                        theme_img_id:
+                          type: object
+                          properties:
+                            theme_img_id:
+                              type: integer
+                              format: int64
+                            img_url:
+                              type: string
+              examples:
+                Exemplo de interesses:
+                  value:
+                    - user_id: 1
+                      interest_id: 1
+                      theme_id:
+                        theme_id: 1
+                        theme_name: Gravidez
+                        theme_img:
+                          theme_img_id: 1
+                          img_url: 'http://localhost:3333'
+        '401':
+          description: O token JWT não é válido.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+              examples:
+                Exemplo de erro:
+                  value:
+                    error: O token é inválido ou já expirou
+        '404':
+          description: Algum tema não foi encontrado no servidor.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+              examples:
+                Exemplo de erro:
+                  value:
+                    error: O tema especificado não existe
+        '500':
+          description: Erro interno na API.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+              examples:
+                Exemplo de erro:
+                  value:
+                    error: Ocorreu um erro. Tente novamente mais tarde.
+      parameters:
+        - schema:
+            type: string
+          in: header
+          name: Authorization
+          required: true
+          description: Token JWT deve ser passado por meio deste header
+      description: Rota para adicionar interesses de um usuário.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                themes:
+                  format: int64
+                  type: string
+            examples:
+              Exemplo de corpo da requisição:
+                value:
+                  themes: '1, 2, 3'
+        description: O aplicação do usuário deve enviar o "theme_id" dos temas escolhidos pelo usuário.
+      tags:
+        - Interest
+    get:
+      summary: Buscar interesses
+      operationId: get-interest
+      responses:
+        '200':
+          description: Os temas de interesse do usuário serão retornados.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    interest_id:
+                      type: integer
+                      format: int64
+                    user_id:
+                      type: integer
+                      format: int64
+                    theme_id:
+                      type: object
+                      properties:
+                        theme_id:
+                          type: integer
+                          format: int64
+                        theme_name:
+                          type: string
+                        theme_img_id:
+                          type: object
+                          properties:
+                            theme_img_id:
+                              type: integer
+                              format: int64
+                            img_url:
+                              type: string
+              examples:
+                Exemplo de interesse:
+                  value:
+                    - user_id: 1
+                      interest_id: 1
+                      theme_id:
+                        theme_id: 1
+                        theme_name: Gravidez
+                        theme_img:
+                          theme_img_id: 1
+                          img_url: 'http://localhost:3333'
+          headers:
+            X-Total-Count:
+              schema:
+                type: string
+              description: Quantidade
+              required: true
+        '401':
+          description: O token JWT não é válido.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+              examples:
+                Exemplo de erro:
+                  value:
+                    error: O token JWT não é válido.
+        '500':
+          description: Erro interno na API.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+              examples:
+                Exemplo de erro:
+                  value:
+                    error: Ocorreu um erro. Tente novamente mais tarde
+      description: Rota para buscar os temas de interesses de um usuário.
+      parameters:
+        - schema:
+            type: string
+          in: header
+          name: Authorization
+          description: '  Token JWT deve ser passado por meio deste header'
+          required: true
+        - schema:
+            type: integer
+          in: query
+          name: page
+          description: Paginação dos interesses
+          required: true
+      tags:
+        - Interest
+    delete:
+      summary: O usuário remover um interesse
+      operationId: delete-interest-interest_id
+      responses:
+        '204':
+          description: O interesse do usuário foi removido.
+        '401':
+          description: O token JWT é inválido.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+              examples:
+                Exemplo de erro:
+                  value:
+                    error: O token JWT é inválido.
+        '404':
+          description: O interesse não foi encontrado no servidor.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+              examples:
+                Exemplo de erro:
+                  value:
+                    error: O interesse não foi encontrado no servidor.
+        '500':
+          description: Erro interno na API.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+              examples:
+                Exemplo de erro:
+                  value:
+                    error: Ocorreu um erro. Tente novamente mais tarde.
+      parameters:
+        - schema:
+            type: string
+          in: header
+          name: Authorization
+          description: Token JWT do usuário
+          required: true
+      description: Rota para remover o interesse do usuário em um tema.
+      tags:
+        - Interest
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                interests:
+                  type: string
+            examples:
+              Exemplo de interesses:
+                value:
+                  interest: '1, 2, 3'
+        description: Deve ser enviado uma lista dos interesses que precisar ser removidos.
+  /article/forum/date:
+    get:
+      summary: Buscar os artigos e fóruns mais recentes
+      responses:
+        '200':
+          description: Os artigos e fóruns serão retornados.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  foruns:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        title:
+                          type: string
+                        forum_img_id:
+                          type: object
+                          format: uri
+                          properties:
+                            forum_img_id:
+                              type: integer
+                            forum_img:
+                              type: string
+                        no_like:
+                          type: integer
+                          format: int64
+                        forum_id:
+                          type: integer
+                  articles:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        title:
+                          type: string
+                        article_content:
+                          type: string
+                        article_img_id:
+                          type: object
+                          format: uri
+                          properties:
+                            article_img_id:
+                              type: integer
+                            forum_img:
+                              type: string
+                        no_like:
+                          type: integer
+                          format: int64
+                        publi_date:
+                          type: string
+                        article_id:
+                          type: integer
+                required:
+                  - foruns
+                  - articles
+              examples:
+                Exemplo de artigos e foruns:
+                  value:
+                    foruns:
+                      - title: Relacionamento abusivo
+                        theme: Relacionamento
+                        forum_img: 'https://pm1.narvii.com/7068/1e882493719dd6e412d5973165c2e3fe71afedb1r1-1080-1080v2_uhq.jpg'
+                        no_like: 3600
+                    articles:
+                      - title: Priveira vez
+                        theme: Sexo
+                        article_img: 'https://i.ytimg.com/vi/_OFlCtyrt4c/maxresdefault.jpg'
+          headers:
+            x-total-count:
+              schema:
+                type: string
+              description: Número total de conteúdo
+              required: true
+        '404':
+          description: Não foi encontrado artigos ou fóruns.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+              examples:
+                Exemplo de erro:
+                  value:
+                    error: Não foi encontrado artigos ou fóruns
+        '500':
+          description: Erro interno na API.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+              examples:
+                Exempçlo de erro:
+                  value:
+                    error: Ocorreu um erro. Tente novamente mais tarde.
+      operationId: get-article-forum
+      description: Rota para pegar os artigos e fóruns mais recentes.
+      parameters:
+        - schema:
+            type: integer
+          in: query
+          name: page
+          required: true
+          description: Paginação dos artigos
+      tags:
+        - Article and Forum
+    parameters: []
+  /theme:
+    get:
+      summary: Buscas temas
+      responses:
+        '200':
+          description: Os temas serão retornados.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    theme_id:
+                      type: integer
+                      format: int64
+                    theme_name:
+                      type: string
+                    theme_img_id:
+                      type: object
+                      properties:
+                        theme_img_id:
+                          type: integer
+                          format: int64
+                        img_url:
+                          type: string
+                          format: uri
+              examples:
+                Exemplo de temas:
+                  value:
+                    - theme_id: 1
+                      theme_name: Gravidez
+                      theme_img_id:
+                        theme_img_id: 1
+                        img_url: 'http://localhost:3333/...'
+        '500':
+          description: Erro interno na API.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+              examples:
+                Exemplo de erro:
+                  value:
+                    error: Ocorreu um erro. Tente novamente mais tarde.
+      operationId: get-theme
+      description: Rota para buscar todos os temas da aplicação ordenados alfabeticamente.
+      tags:
+        - Theme
+      parameters:
+        - schema:
+            type: string
+          in: query
+          name: page
+          description: Paginação dos temas
+  /article:
+    get:
+      summary: Buscar artigos ordenados pelo like
+      responses:
+        '200':
+          description: Os artigos ordenados pelo número de like serão retornados.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    article_id:
+                      type: integer
+                    article_img_id:
+                      type: object
+                      properties:
+                        article_img_id:
+                          type: integer
+                        img_url:
+                          type: string
+                    title:
+                      type: string
+                    no_like:
+                      type: integer
+                    publi_date:
+                      type: string
+              examples:
+                Exemplo de artigo:
+                  value:
+                    - article_id: 1
+                      title: Como lidar com a primeira vez
+                      no_like: 3600
+                      publi_date: '2020-05-24'
+                      article_img:
+                        article_img_id: 1
+                        img_url: 'http://localhost:..'
+          headers:
+            X-Total-Count:
+              schema:
+                type: string
+              description: Quantidade
+              required: true
+        '500':
+          description: Erro interno na API.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+              examples:
+                Exemplo de erro:
+                  value:
+                    error: Ocorreu um erro. Tente novamente mais tarde.
+        '':
+          description: ''
+      operationId: get-article-like
+      description: Rota para buscar todos os artigos ordenados pelo número de likes (do maior para o menor).
+      tags:
+        - Article
+      parameters:
+        - schema:
+            type: integer
+          in: query
+          name: page
+          description: Paginação dos artigos
+          required: true
+    parameters: []
+  /forum:
+    get:
+      summary: Buscar fóruns ordenados pelo like
+      responses:
+        '200':
+          description: Os fóruns ordenados pelo número de like serão retornados.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    forum_id:
+                      type: integer
+                      format: int64
+                    title:
+                      type: string
+                    forum_img:
+                      type: object
+                      properties:
+                        forum_img_id:
+                          type: integer
+                          format: int64
+                        img_url:
+                          type: string
+                          format: uri
+                    no_like:
+                      type: integer
+                      format: int64
+                    like:
+                      type: boolean
+                    no_comment:
+                      type: integer
+              examples:
+                Exemplo de fóruns:
+                  value:
+                    - forum_id: 1
+                      title: Relacionamento abusivo
+                      theme:
+                        theme_id: 1
+                        theme_name: Relacionamento
+                      forum_img:
+                        forum_img_id: 1
+                        img_url: 'http://localhost/...'
+                      no_like: 3600
+          headers:
+            X-Total-Count:
+              schema:
+                type: string
+              description: Quantidade
+              required: true
+        '500':
+          description: Erro interno na API.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+              examples:
+                Exemplo de erro:
+                  value:
+                    error: Ocorreu um erro interno. Tente novamente mais tarde.
+      operationId: get-forum-like
+      description: Rota para buscar todos os fóruns ordenados pelo número de likes (do maior para o menor).
+      tags:
+        - Forum
+      parameters:
+        - schema:
+            type: integer
+          in: query
+          name: page
+          required: true
+          description: Paginação dos fóruns (6 por envio)
+    parameters: []
+  '/article/theme/{theme_id}/like':
+    parameters:
+      - schema:
+          type: integer
+        name: theme_id
+        in: path
+        required: true
+        description: Chave primária do tema dos artigos
+    get:
+      summary: Buscar os artigos de um tema ordenados pelo like
+      responses:
+        '200':
+          description: Os artigos de um tema ordenados pelo like serão retornados.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    article_id:
+                      type: integer
+                    article_img_id:
+                      type: object
+                      properties:
+                        article_img_id:
+                          type: integer
+                        img_url:
+                          type: string
+                    title:
+                      type: string
+                    article_content:
+                      type: string
+                    no_like:
+                      type: integer
+                    publi_date:
+                      type: string
+              examples:
+                Exemplo de artigos:
+                  value:
+                    - article_id: 1
+                      title: Como lidar com a primeira vez
+                      no_like: 3600
+                      publi_date: '2020-05-24'
+                      article_img:
+                        article_img_id: 1
+                        img_url: 'http://localhost:..'
+          headers:
+            X-Total-Count:
+              schema:
+                type: string
+              description: Quantidade
+        '404':
+          description: O tema solicitado não está registrado no servidor.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+              examples:
+                Exemplo de erro:
+                  value:
+                    error: O tema solicitado não existe.
+        '500':
+          description: Erro interno na API.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+              examples:
+                Exemplo de erro:
+                  value:
+                    error: Ocorreu um erro. Tente novamente mais tarde.
+      operationId: get-article-forum-forum_id-like
+      description: Rota para buscar os artigos de um tema ordenados pelo número de like (do maior para o menor).
+      tags:
+        - Article
+      parameters:
+        - schema:
+            type: integer
+          in: query
+          name: page
+          description: Paginação dos artigos
+          required: true
+  '/forum/theme/{theme_id}/like':
+    parameters:
+      - schema:
+          type: integer
+        name: theme_id
+        in: path
+        required: true
+        description: Chave primária do tema dos fóruns
+    get:
+      summary: Buscar fóruns de um tema ordenados pelo like
+      responses:
+        '200':
+          description: Os fóruns de um tema ordenados pelo like serão retornados.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    forum_id:
+                      type: integer
+                      format: int64
+                    title:
+                      type: string
+                    img_url:
+                      type: string
+                      format: uri
+                    no_like:
+                      type: integer
+                      format: int64
+              examples:
+                Exemplo de fóruns:
+                  value:
+                    - forum_id: 1
+                      title: Relacionamento abusivo
+                      forum_img:
+                        forum_img_id: 1
+                        img_url: 'http://localhost/...'
+                      no_like: 3600
+          headers:
+            X-Total-Count:
+              schema:
+                type: string
+              description: Quantidade
+              required: true
+        '404':
+          description: O tema solicitado não está registrado no servidor.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+              examples:
+                Exemplo de erro:
+                  value:
+                    error: O tema solicitado não existe.
+        '500':
+          description: Erro interno na API.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+              examples:
+                Exemplo de erro:
+                  value:
+                    error: Ocorreu um erro. Tente novamente mais tarde.
+      operationId: get-forum-theme-theme_id-like
+      description: Rota para buscar os fóruns de um tema ordenados pelo número de like (do maior para o menor).
+      tags:
+        - Forum
+      parameters:
+        - schema:
+            type: integer
+          in: query
+          name: page
+          required: true
+          description: Paginação dos fóruns
+  '/article/{article_id}':
+    parameters:
+      - schema:
+          type: integer
+        name: article_id
+        in: path
+        required: true
+        description: Chave primária do artigo
+    get:
+      summary: Buscar um artigo
+      responses:
+        '200':
+          description: O artigo foi encontrado e será retornado.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  article_id:
+                    type: integer
+                  article_img_id:
+                    type: object
+                    properties:
+                      article_img_id:
+                        type: integer
+                      img_url:
+                        type: string
+                  title:
+                    type: string
+                  article_content:
+                    type: string
+                  article_author:
+                    type: string
+                  no_like:
+                    type: integer
+                  publi_date:
+                    type: string
+                  themes:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        theme_id:
+                          type: integer
+                        theme_name:
+                          type: string
+                  recommendations:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        recommendation_id:
+                          type: integer
+                        recommendation_url:
+                          type: string
+                        recommendation_type:
+                          type: string
+                        recommendation_title:
+                          type: string
+              examples:
+                Exemplo de artigo:
+                  value:
+                    article_id:
+                      article_id: 1
+                      title: Como lidar com a primeira vez
+                      article_content: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.'
+                      no_like: 3600
+                      publi_date: '2020-05-24'
+                      article_img:
+                        article_img_id: 1
+                        img_url: 'http://localhost:..'
+                    theme_id:
+                      - theme_id: 1
+                        theme_name: Sexo
+                    recommendations:
+                      - recommendation_id: 1
+                        recommendation_title: Conversa
+                        recommendation_url: 'http://localhost'
+                        recommendation_type: Podcast
+        '404':
+          description: O artigo solicitado não existe.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+              examples:
+                Exemplo de erro:
+                  value:
+                    error: O artigo solicitado não existe.
+        '500':
+          description: Erro interno na API.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+              examples:
+                Exemplo de erro:
+                  value:
+                    error: Ocorreu um erro. Tente novamente mais tarde.
+      operationId: get-article-article_id
+      description: Buscar um artigo com base na chave primária dele.
+      tags:
+        - Article
+  '/forum/{forum_id}/comment':
+    get:
+      summary: Buscar um fórum e seus comentários
+      responses:
+        '200':
+          description: O fórum e seus comentários será retornados.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  forum_id:
+                    type: integer
+                    format: int64
+                  title:
+                    type: string
+                  themes:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        theme_id:
+                          type: integer
+                          format: int64
+                        theme_name:
+                          type: string
+                  forum_img_id:
+                    type: object
+                    properties:
+                      forum_img_id:
+                        type: integer
+                        format: int64
+                      img_url:
+                        type: string
+                        format: uri
+                  no_like:
+                    type: integer
+                    format: int64
+                  forum_description:
+                    type: string
+                  publi_date:
+                    type: string
+                  comments:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        comment_id:
+                          type: integer
+                          format: int64
+                        user_id:
+                          type: object
+                          format: int64
+                          properties:
+                            user_id:
+                              type: integer
+                            username:
+                              type: string
+                            user_img_id:
+                              type: object
+                              properties:
+                                user_img_id:
+                                  type: integer
+                                img_url:
+                                  type: string
+                        comment_content:
+                          type: string
+                        publi_date:
+                          type: string
+                          format: date
+                        no_like:
+                          type: integer
+                          format: int64
+              examples:
+                Exemplo de fórum:
+                  value:
+                    forum_id: 1
+                    title: Relacionamento abusivo
+                    theme:
+                      theme_id: 1
+                      theme_name: Relacionamento
+                    comments:
+                      - comment_id: 1
+                        user_id: 1
+                        comment_content: Lorem ipsum dolor sit amet.
+                        publi_date: '2020-06-13'
+                        no_like: 3600
+                    forum_img:
+                      forum_img_id: 1
+                      img_url: 'http://localhost/...'
+                    no_like: 3600
+          headers:
+            X-Total-Count:
+              schema:
+                type: string
+              description: Quantidade
+              required: true
+        '404':
+          description: O forum solicitado não existe.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+              examples:
+                Exemplo de erro:
+                  value:
+                    error: O forum solicitado não existe.
+        '500':
+          description: Erro interno na API.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+              examples:
+                Exemplo de erro:
+                  value:
+                    error: Ocorreu um erro. Tente novamente mais tarde.
+      operationId: get-forum
+      description: Rota para buscar um fórum e seus comentários.
+      tags:
+        - Forum
+      parameters:
+        - schema:
+            type: integer
+          in: query
+          name: page
+          required: true
+          description: Paginação dos fóruns
+    parameters:
+      - schema:
+          type: integer
+        name: forum_id
+        in: path
+        required: true
+        description: Chave primária do forum
+    post:
+      summary: O usuário comentar em um fórum
+      operationId: post-forum-forum_id-comment
+      responses:
+        '204':
+          description: O comentário do usuário foi registrado.
+        '401':
+          description: O token JWT é inválido.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+              examples:
+                Exemplo de erro:
+                  value:
+                    error: O token JWT é inválido.
+        '404':
+          description: O fórum não foi encontrado no servidor.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+              examples:
+                Exemplo de erro:
+                  value:
+                    error: O forum não foi encontrado no servidor.
+        '500':
+          description: Erro interno na API.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+              examples:
+                Exemplo de erro:
+                  value:
+                    error: Ocorreu um erro. Tente novamente mais tarde.
+      parameters:
+        - schema:
+            type: string
+          in: header
+          name: Authorization
+          required: true
+          description: Token JWT do usuário
+      description: Rota para registrar o comentário de um usuário num fórum.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                comment_content:
+                  type: string
+            examples:
+              Exemplo de comentário:
+                value:
+                  comment_content: Lorem ipsum dolor sit amet.
+        description: Corpo do comentário do usuário.
+      tags:
+        - Forum
+  '/article/{article_id}/like':
+    post:
+      summary: O usuário dar like em um artigo
+      operationId: post-article-user-like
+      responses:
+        '204':
+          description: O like do usuário foi registrado.
+        '401':
+          description: O token JWT é inválido.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+              examples:
+                Exemplo de erro:
+                  value:
+                    error: O token JWT é inválido.
+        '404':
+          description: O artigo não existe no servidor.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+              examples:
+                Exemplo de erro:
+                  value:
+                    error: O artigo não existe no servidor.
+        '500':
+          description: Erro interno na API.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+              examples:
+                Exemplo de erro:
+                  value:
+                    error: Ocorreu um erro. Tente novamente mais tarde.
+      description: Rota para registrar o like de um usuário num artigo.
+      parameters:
+        - schema:
+            type: string
+          in: header
+          name: Authorization
+          description: Token JWT do usuário
+          required: true
+      tags:
+        - Article
+    delete:
+      summary: O usuário remover o like de um artigo
+      operationId: delete-article-user-like
+      responses:
+        '204':
+          description: O like do usuário foi removido.
+        '401':
+          description: O token JWT é inválido.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+              examples:
+                Exemplo de erro:
+                  value:
+                    error: O token JWT é inválido.
+        '404':
+          description: O artigo não existe no servidor.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+              examples:
+                Exemplo de erro:
+                  value:
+                    error: O artigo não existe no servidor.
+        '500':
+          description: Erro interno na API.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+              examples:
+                Exemplo de erro:
+                  value:
+                    error: Ocorreu um erro. Tente novamente mais tarde.
+      description: Rota para desfazer o like do usuário num artigo.
+      parameters:
+        - schema:
+            type: string
+          in: header
+          name: Authorization
+          required: true
+          description: Token JWT do usuário
+      tags:
+        - Article
+    parameters:
+      - schema:
+          type: integer
+        name: article_id
+        in: path
+        required: true
+  '/article/{article_id}/later':
+    post:
+      summary: O usuário marcar um artigo com "ler mais tarde"
+      operationId: post-article-user-later
+      responses:
+        '204':
+          description: O artigo foi marcado com o "ler mais tarde".
+        '401':
+          description: O token JWT é inválido.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+              examples:
+                Exemplo de erro:
+                  value:
+                    error: O token JWT é inválido.
+        '404':
+          description: O artigo não existe no servidor.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+              examples:
+                Exemplo de erro:
+                  value:
+                    error: O artigo não existe no servidor.
+        '500':
+          description: Erro interno na API.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+              examples:
+                Exemplo de erro:
+                  value:
+                    error: Ocorreu um erro. Tente novamente mais tarde.
+      description: Rota para o usuário marcar um artigo com "ler mais tarde".
+      parameters:
+        - schema:
+            type: string
+          in: header
+          name: Authorization
+          description: Token JWT do usuário
+          required: true
+      tags:
+        - Article
+    delete:
+      summary: O usuário remover o "ler mais tarde" de um artigo
+      operationId: delete-article-user-later
+      responses:
+        '204':
+          description: O artigo foi removido do "ler mais tarde".
+        '401':
+          description: O token JWT é inválido.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+              examples:
+                Exemplo de erro:
+                  value:
+                    error: O token JWT é inválido.
+        '404':
+          description: O artigo não existe no servidor.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+              examples:
+                Exemplo de erro:
+                  value:
+                    error: O artigo não existe no servidor.
+        '500':
+          description: Erro interno na API.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+              examples:
+                Exemplo de erro:
+                  value:
+                    error: Ocorreu um erro. Tente novamente mais tarde.
+      description: Rota para remover o "ler mais tarde" de um artigo.
+      parameters:
+        - schema:
+            type: string
+          in: header
+          name: Authorization
+          required: true
+          description: Token JWT do usuário
+      tags:
+        - Article
+    parameters:
+      - schema:
+          type: integer
+        name: article_id
+        in: path
+        required: true
+  /article/user/like:
+    get:
+      summary: Buscar os artigos com like do usuário
+      responses:
+        '200':
+          description: Os artigos que o usuário deu like serão retornados.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    article_id:
+                      type: integer
+                    article_img_id:
+                      type: object
+                      properties:
+                        article_img_id:
+                          type: integer
+                        img_url:
+                          type: string
+                    title:
+                      type: string
+                    no_like:
+                      type: integer
+                    publi_date:
+                      type: string
+              examples:
+                Exemplo de artigos:
+                  value:
+                    - article_id: 1
+                      title: Como lidar com a primeira vez
+                      no_like: 3600
+                      publi_date: '2020-05-24'
+                      article_img:
+                        article_img_id: 1
+                        img_url: 'http://localhost:..'
+          headers:
+            X-Total-Count:
+              schema:
+                type: string
+              description: Quantidade
+        '401':
+          description: O token JWT é inválido.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+              examples:
+                Exemplo de erro:
+                  value:
+                    error: O token JWT é inválido
+        '500':
+          description: Erro interno na API.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+              examples:
+                Exemplo de erro:
+                  value:
+                    error: Ocorreu um erro. Tente novamente mais tarde.
+      operationId: get-article-user-like
+      description: Rota para buscar os artigos que o usuário deu like.
+      parameters:
+        - schema:
+            type: string
+          in: header
+          name: Authorization
+          required: true
+          description: Token JWT do usuário
+        - schema:
+            type: integer
+          in: query
+          name: page
+          description: Paginação dos artigos
+          required: true
+      tags:
+        - Article
+  /article/user/later:
+    get:
+      summary: Buscar os artigos que o usuário marcou "ler mais tarde"
+      responses:
+        '200':
+          description: Os artigos que o usuário marcou com "ler mais tarde".
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    article_id:
+                      type: integer
+                    article_img_id:
+                      type: object
+                      properties:
+                        article_img_id:
+                          type: integer
+                        img_url:
+                          type: string
+                    title:
+                      type: string
+                    no_like:
+                      type: integer
+                    publi_date:
+                      type: string
+              examples:
+                Exemplo de artigos:
+                  value:
+                    article_id: 1
+                    title: Como lidar com a primeira vez
+                    no_like: 3600
+                    publi_date: '2020-05-24'
+                    article_img:
+                      article_img_id: 1
+                      img_url: 'http://localhost:..'
+                  theme_id:
+                    - theme_id: 1
+                      theme_name: Sexo
+          headers:
+            X-Total-Count:
+              schema:
+                type: string
+              description: Quantidade
+        '401':
+          description: O token JWT é inválido.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+              examples:
+                Exemplo de erro:
+                  value:
+                    error: O token JWT é inválido
+        '500':
+          description: Erro interno na API.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+              examples:
+                Exemplo de erro:
+                  value:
+                    error: Ocorreu um erro. Tente novamente mais tarde.
+      operationId: get-article-user-later
+      description: Rota para buscar os artigos que o usuário marcou com "ler mais tarde".
+      parameters:
+        - schema:
+            type: string
+          in: header
+          name: Authorization
+          description: Token JWT do usuário
+          required: true
+        - schema:
+            type: string
+          in: query
+          name: page
+          description: Paginação
+      tags:
+        - Article
+  '/forum/{forum_id}/like':
+    parameters:
+      - schema:
+          type: integer
+        name: forum_id
+        in: path
+        required: true
+    post:
+      summary: O usuário dar like em um fórum
+      operationId: post-forum-forum_id-user-like
+      responses:
+        '204':
+          description: O like do usuário foi registrado.
+        '401':
+          description: O token JWT é inválido.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+              examples:
+                Exemplo de erro:
+                  value:
+                    error: O token JWT é inválido.
+        '404':
+          description: O forum não foi encontrado no servidor.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+              examples:
+                Exemplo de erro:
+                  value:
+                    error: O forum não foi encontrado no servidor.
+        '500':
+          description: Erro interno na API.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+              examples:
+                Exemplo de erro:
+                  value:
+                    error: Ocorreu um erro. Tente novamente mais tarde.
+      description: Rota para o usuário dar like em um fórum.
+      parameters:
+        - schema:
+            type: string
+          in: header
+          name: Authorization
+          required: true
+          description: Token JWT do usuário
+      tags:
+        - Forum
+    delete:
+      summary: Remover o like de um fórum
+      operationId: delete-forum-forum_id-user-like
+      responses:
+        '204':
+          description: O like do usuário foi removido.
+        '401':
+          description: O token JWT é inválido.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+              examples:
+                Exemplo de erro:
+                  value:
+                    error: O token JWT é inválido.
+        '404':
+          description: O forum não foi encontrado no servidor.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+              examples:
+                Exemplo de erro:
+                  value:
+                    error: O forum não foi encontrado no servidor.
+        '500':
+          description: Erro interno na API.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+              examples:
+                Exemplo de erro:
+                  value:
+                    error: Ocorreu um erro. Tente novamente mais tarde.
+      description: Rota para remover o like de um usuário no artigo.
+      parameters:
+        - schema:
+            type: string
+          in: header
+          name: Authorization
+          required: true
+          description: Token JWT do usuário
+      tags:
+        - Forum
+  '/comment/{comment_id}/like':
+    parameters:
+      - schema:
+          type: string
+        name: comment_id
+        in: path
+        required: true
+    post:
+      summary: O usuário dar like em um comentário
+      operationId: post-comment-comment_id-user-like
+      responses:
+        '204':
+          description: O like do usuário foi registrado.
+        '401':
+          description: O token JWT é inválido.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+              examples:
+                Exemplo de erro:
+                  value:
+                    error: O token JWT é inválido.
+        '404':
+          description: O comentário não existe no servidor.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+              examples:
+                Exemplo de erro:
+                  value:
+                    error: O comentário não existe no servidor.
+        '500':
+          description: Erro interno na API.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+              examples:
+                Exemplo de erro:
+                  value:
+                    error: Ocorreu um erro. Tente novamente mais tarde.
+      description: Rota para registrar o like do usuário em um comentário.
+      parameters:
+        - schema:
+            type: string
+          in: header
+          name: Authorization
+          description: Token JWT do usuário
+          required: true
+      tags:
+        - Comment
+    delete:
+      summary: O usuário remover o like de um comentário
+      operationId: delete-comment-comment_id-user-like
+      responses:
+        '204':
+          description: O like do usuário foi removido.
+        '401':
+          description: O token JWT é inválido.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+              examples:
+                Exemplo de erro:
+                  value:
+                    error: O token JWT é inválido.
+        '404':
+          description: O comentário não existe no servidor.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+              examples:
+                Exemplo de erro:
+                  value:
+                    error: O comentário não existe no servidor.
+        '500':
+          description: Erro interno na API.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+              examples:
+                Exemplo de erro:
+                  value:
+                    error: Ocorreu um erro. Tente novamente mais tarde.
+      description: Rota para remover o like que o usuário deu no comentário.
+      parameters:
+        - schema:
+            type: string
+          in: header
+          name: Authorization
+          required: true
+          description: Token JWT do usuário
+      tags:
+        - Comment
+  /forum/user/like:
+    get:
+      summary: Buscar os fóruns que o usuário deu like
+      responses:
+        '200':
+          description: Os artigos que o usuário deu like serão retornados.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    forum_id:
+                      type: integer
+                      format: int64
+                    title:
+                      type: string
+                    forum_img:
+                      type: object
+                      properties:
+                        forum_img_id:
+                          type: integer
+                          format: int64
+                        img_url:
+                          type: string
+                          format: uri
+                    no_like:
+                      type: integer
+                      format: int64
+              examples:
+                Exemplo de fóruns:
+                  value:
+                    - forum_id: 1
+                      title: Relacionamento abusivo
+                      forum_img:
+                        forum_img_id: 1
+                        img_url: 'http://localhost/...'
+                      no_like: 3600
+          headers:
+            X-Total-Count:
+              schema:
+                type: string
+              description: Quantidade
+              required: true
+        '401':
+          description: O token JWT é inválido.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+              examples:
+                Exemplo de erro:
+                  value:
+                    error: O token JWT é inválido
+        '500':
+          description: Erro interno na API.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+              examples:
+                Exemplo de erro:
+                  value:
+                    error: Ocorreu um erro. Tente novamente mais tarde.
+      operationId: get-forum-user-like
+      description: Rota para buscar os fóruns que o usuário deu like.
+      parameters:
+        - schema:
+            type: string
+          in: header
+          name: Authorization
+          required: true
+          description: Token JWT do usuário
+        - schema:
+            type: integer
+          in: query
+          name: page
+          description: Paginação dos fóruns
+          required: true
+      tags:
+        - Forum
+  '/comment/{comment_id}/reply':
+    get:
+      summary: Buscar as respostas do comentário
+      responses:
+        '200':
+          description: As respostas do comentário serão retornadas.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    reply_id:
+                      type: integer
+                      format: int64
+                    reply_content:
+                      type: string
+                    user_id:
+                      type: object
+                      properties:
+                        user_id:
+                          type: integer
+                        username:
+                          type: string
+                        user_img_id:
+                          type: object
+                          format: int64
+                          properties:
+                            user_img_id:
+                              type: integer
+                            img_url:
+                              type: string
+                    publi_date:
+                      type: string
+                      format: date
+              examples:
+                Exemplo de respostas:
+                  value:
+                    - reply_id: 1
+                      user:
+                        user_id: 1
+                        username: Carlos boa vida
+                        user_img_id: 1
+                      reply_content: Lorem ipsum dolor sit amet.
+                      publi_date: '2020-06-13'
+          headers:
+            X-Total-Count:
+              schema:
+                type: string
+              description: Quantidade
+              required: true
+        '404':
+          description: O comentário não existe.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+              examples:
+                Exemplo de erro:
+                  value:
+                    error: O comentário não existe.
+        '500':
+          description: Erro interno na API.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+              examples:
+                Exemplo de erro:
+                  value:
+                    error: Ocorreu um erro. Tente novamente mais tarde.
+      operationId: get-comment-reply
+      description: Rota para buscar as respostas do comentário.
+      tags:
+        - Comment
+      parameters:
+        - schema:
+            type: integer
+          in: query
+          name: page
+          description: Paginação das respostas
+          required: true
+        - schema:
+            type: string
+          in: query
+          name: lastMessage
+          description: Última mensagem recebida no primeira busca
+          required: true
+    parameters:
+      - schema:
+          type: string
+        name: comment_id
+        in: path
+        required: true
+    post:
+      summary: O usuário responder um comentário
+      operationId: post-comment-comment_id-reply
+      responses:
+        '204':
+          description: A resposta do usuário foi registrada.
+        '401':
+          description: O token JWT é inválido.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+              examples:
+                Exemplo de erro:
+                  value:
+                    error: O token JWT é inválido.
+        '404':
+          description: O comentário não existe no servidor.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+              examples:
+                Exemplo de erro:
+                  value:
+                    error: O comentário não existe no servidor.
+        '500':
+          description: Erro interno na API.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+              examples:
+                Exemplo de erro:
+                  value:
+                    error: Ocorreu um erro. Tente novamente mais tarde.
+      description: Rota para registrar a resposta de usuário no comentário.
+      parameters:
+        - schema:
+            type: string
+          in: header
+          name: Authorization
+          required: true
+          description: Token JWT do usuário
+        - schema:
+            type: string
+          in: query
+          name: forum
+          description: ID do fórum em que o comentário está
+          required: true
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                reply_content:
+                  type: string
+            examples:
+              Exemplo de resposta:
+                value:
+                  reply_content: Lorem ipsum dolor sit amet.
+        description: Corpo da resposta do usuário.
+      tags:
+        - Comment
+  '/report/comment/{comment_id}':
+    parameters:
+      - schema:
+          type: integer
+        name: comment_id
+        in: path
+        required: true
+    post:
+      summary: O usuário reportar um comentário
+      responses:
+        '204':
+          description: A denúncia do usuário foi registrada.
+        '401':
+          description: O token JWT é inválido.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+              examples:
+                Exemplo de erro:
+                  value:
+                    error: O token JWT é inválido.
+        '404':
+          description: O comentário não foi encontrado no servidor.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+              examples:
+                Exemplo de erro:
+                  value:
+                    error: O comentário não foi encontrado no servidor.
+        '500':
+          description: Erro interno na API.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+              examples:
+                Exemplo de erro:
+                  value:
+                    error: Ocorreu um erro. Tente novamente mais tarde.
+      operationId: get-report-comment-comment_id
+      description: Rota para registrar uma denúncia que um usuário fez num comentário.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                report_content:
+                  type: string
+                report_type:
+                  type: integer
+            examples:
+              Exemplo de corpo da denúncia:
+                value:
+                  report_content: Comentário preconceituoso
+                  report_type: 1
+        description: Corpo da denúncia.
+      parameters:
+        - schema:
+            type: string
+          in: header
+          name: Authorization
+          description: Token JWT do usuário
+          required: true
+      tags:
+        - Report
+  '/report/reply/{reply_id}':
+    parameters:
+      - schema:
+          type: integer
+        name: reply_id
+        in: path
+        required: true
+    post:
+      summary: O usuário reportar uma resposta
+      responses:
+        '204':
+          description: A denúncia do usuário foi registrada.
+        '401':
+          description: O token JWT é inválido.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+              examples:
+                Exemplo de erro:
+                  value:
+                    error: O token JWT é inválido.
+        '404':
+          description: A resposta não foi encontrada no servidor.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+              examples:
+                Exemplo de erro:
+                  value:
+                    error: A resposta não foi encontrada no servidor.
+        '500':
+          description: Erro interno na API.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+              examples:
+                Exemplo de erro:
+                  value:
+                    error: Ocorreu um erro. Tente novamente mais tarde.
+      operationId: get-report-reply-reply_id
+      description: Rota para registrar uma denúncia que um usuário fez numa resposta.
+      parameters:
+        - schema:
+            type: string
+          in: header
+          name: Authorization
+          required: true
+          description: Token JWT do usuário
+      tags:
+        - Report
+  '/forum/comment/{comment_id}':
+    parameters:
+      - schema:
+          type: string
+        name: comment_id
+        in: path
+        required: true
+    delete:
+      summary: O usuário remover o comentário do fórum
+      operationId: delete-forum-forum_id-comment
+      responses:
+        '204':
+          description: O comentário do usuário foi removido.
+        '401':
+          description: O token JWT é inválido.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+              examples:
+                Exemplo de erro:
+                  value:
+                    error: O token JWT é inválido.
+        '404':
+          description: O fórum não foi encontrado no servidor.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+              examples:
+                Exemplo de erro:
+                  value:
+                    error: O forum não foi encontrado no servidor.
+        '500':
+          description: Erro interno na API.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+              examples:
+                Exemplo de erro:
+                  value:
+                    error: Ocorreu um erro. Tente novamente mais tarde.
+      description: Rota para remover o comentário de um usuário num fórum.
+      parameters:
+        - schema:
+            type: string
+          in: header
+          name: Authorization
+          description: Token JWT do usuário
+          required: true
+      tags:
+        - Forum
+  '/comment/reply/{reply_id}':
+    parameters:
+      - schema:
+          type: string
+        name: reply_id
+        in: path
+        required: true
+    delete:
+      summary: O usuário apagar uma resposta
+      operationId: delete-comment-comment_id-reply
+      responses:
+        '204':
+          description: A resposta do usuário foi apagada.
+        '401':
+          description: O token JWT é inválido.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+              examples:
+                Exemplo de erro:
+                  value:
+                    error: O token JWT é inválido.
+        '404':
+          description: O comentário não existe no servidor.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+              examples:
+                Exemplo de erro:
+                  value:
+                    error: O comentário não existe no servidor.
+        '500':
+          description: Erro interno na API.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+              examples:
+                Exemplo de erro:
+                  value:
+                    error: Ocorreu um erro. Tente novamente mais tarde.
+        '':
+          description: A resposta foi apagada.
+      description: Rota para apagar a resposta de um usuário.
+      parameters:
+        - schema:
+            type: string
+          in: header
+          name: Authorization
+          description: Token JWT do usuário
+          required: true
+      tags:
+        - Comment
+  '/comment/forum/{forum_id}':
+    parameters:
+      - schema:
+          type: integer
+        name: forum_id
+        in: path
+        required: true
+        description: Identificador do forum
+    get:
+      summary: Buscar os comentários de um fórum
+      tags:
+        - Comment
+      responses:
+        '200':
+          description: Os comentários do fórum foram retornados.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  comments:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        comment_id:
+                          type: integer
+                        user_id:
+                          type: object
+                          format: int64
+                          properties:
+                            user_id:
+                              type: integer
+                            username:
+                              type: string
+                            user_img_id:
+                              type: object
+                              properties:
+                                user_img_id:
+                                  type: integer
+                                img_url:
+                                  type: string
+                        comment_content:
+                          type: string
+                        publi_date:
+                          type: string
+                        no_like:
+                          type: integer
+              examples:
+                Exemplo de comentários:
+                  value:
+                    comments:
+                      - comment_id: 1
+                        user_id: 1
+                        comment_content: Lorem ipsum dolor sit amet.
+                        publi_date: '2020-06-13'
+                        no_like: 3600
+          headers:
+            X-Total-Count:
+              schema:
+                type: string
+              description: Quantidade
+              required: true
+        '404':
+          description: Forum não encontrado.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+              examples:
+                Exemplo de erro:
+                  value:
+                    error: O forum não foi encontrado no servidor.
+        '500':
+          description: Erro interno na API.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+              examples:
+                Exemplo de erro:
+                  value:
+                    error: Ocorreu um erro. Tente novamente mais tarde.
+      operationId: get-comment-forum-forum_id
+      description: Rota para buscar os comentários de um fórum com paginação
+      parameters:
+        - schema:
+            type: integer
+          in: query
+          name: page
+          description: Paginação dos comentários
+          required: true
+        - schema:
+            type: string
+          in: query
+          name: lastMessage
+          description: Última mensagem recebida na primeira busca
+          required: true
+  /user/email:
+    get:
+      summary: Buscar e-mail
+      tags:
+        - User
+      responses:
+        '200':
+          description: 'O servidor retornar TRUE caso o e-mail exista, e FALSE caso não exista.'
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  email:
+                    type: boolean
+                  username:
+                    type: string
+              examples:
+                Exemplo de resposta:
+                  value:
+                    email: true
+        '500':
+          description: Erro interno no servidor.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+              examples:
+                Exemplo de erro:
+                  value:
+                    error: Ocorreu um erro. Tente novamente mais tarde.
+      operationId: get-user-email
+      description: Rota para verificar se um e-mail já está presente no servidor.
+      parameters:
+        - schema:
+            type: string
+          in: query
+          name: email
+          description: E-mail para consulta no banco de dados
+  /user/img:
+    get:
+      summary: Buscar as imagens de perfil do usuário
+      tags:
+        - User
+      responses:
+        '200':
+          description: As imagens de perfil foram encontradas e serão enviadas
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    user_img_id:
+                      type: integer
+                    img_url:
+                      type: string
+              examples:
+                Exemplo de imagens de perfil:
+                  value:
+                    - user_img_id: 1
+                      img_url: 'localhost:3333/'
+        '500':
+          description: Erro interno na API.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+              examples:
+                Exemplo de erro:
+                  value:
+                    error: Ocorreu um erro. Tente novamente mais tarde
+      operationId: get-user-img
+      description: Rota responsável por enviar as imagens de perfil disponíveis para os usuário.
+  /report/type:
+    get:
+      summary: Buscar os tipos de denúncias
+      tags:
+        - Report
+      responses:
+        '200':
+          description: Os tipos de denúncia foram enviados.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    report_type_id:
+                      type: integer
+                    report_type_name:
+                      type: string
+                    report_type_especification:
+                      type: string
+              examples:
+                Exemplo de denúncias:
+                  value:
+                    - report_type_id: 1
+                      report_type_name: Agressão
+                      report_type_especification: Lorem ipsum dolor sit amet.
+        '500':
+          description: Erro interno na API.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+              examples:
+                Exemplo de erro:
+                  value:
+                    error: Ocorreu um erro. Tente novamente mais tarde
+      operationId: get-report-type
+      description: Rota para enviar os tipos de denúncias presentes na aplicação
+components:
+  schemas:
+    User:
+      title: User
+      type: object
+      x-examples:
+        Exemplo de usuário:
+          user_id: 1
+          username: carlosboavida
+          user_pass: J_alme_45
+          email: carlos.vida789@gmail.com
+          user_img_id: 1
+          born_in: '2003-06-13'
+      description: Usuário da aplicação.
+      x-tags:
+        - Models
+      properties:
+        user_id:
+          type: integer
+          format: int64
+          example: 0
+          minimum: 1
+          exclusiveMinimum: false
+        username:
+          type: string
+        user_pass:
+          type: string
+          format: password
+        email:
+          type: string
+          format: email
+        user_img_id:
+          type: integer
+          format: int64
+          minimum: 1
+          exclusiveMinimum: false
+        born_in:
+          type: string
+          format: date
+      required:
+        - username
+        - user_pass
+        - email
+        - user_img_id
+    Article:
+      title: Article
+      type: object
+      x-examples:
+        Exemplo de artigo:
+          article_id: 1
+          title: Como lidar com a primeira vez
+          article_content: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.'
+          theme_id: 1
+          article_img_id: 1
+          no_like: 3600
+          publi_date: '2020-05-24'
+      description: Artigos que podem ser lidos por um usuário.
+      x-tags:
+        - Models
+      properties:
+        article_id:
+          type: integer
+          format: int64
+          minimum: 1
+        title:
+          type: string
+        article_content:
+          type: string
+        article_img_id:
+          type: integer
+          format: int64
+          minimum: 1
+        no_like:
+          type: integer
+          format: int64
+          minimum: 1
+        publi_date:
+          type: string
+          format: date
+      required:
+        - title
+        - article_content
+        - article_img_id
+        - no_like
+        - publi_date
+    Interest:
+      title: Interest
+      type: object
+      description: Os interesses que os usuários têm pelos temas.
+      properties:
+        interest_id:
+          type: integer
+          format: int64
+        user_id:
+          type: integer
+          format: int64
+        theme_id:
+          type: integer
+          format: int64
+      x-examples:
+        Exemplo de interrese:
+          interest_id: 1
+          user_id: 1
+          theme_id: 1
+      x-tags:
+        - Models
+    Theme:
+      title: Theme
+      type: object
+      description: Temas de artigos e fóruns.
+      x-examples:
+        Exemplo de  tema:
+          theme_id: 1
+          theme_name: Gravidez
+          theme_img_id: 1
+      x-tags:
+        - Models
+      properties:
+        theme_id:
+          type: integer
+          format: int64
+        theme_name:
+          type: string
+        theme_img_id:
+          type: string
+      required:
+        - theme_name
+        - theme_img_id
+    Forum:
+      title: Forum
+      type: object
+      description: Salas de conversa para que os usuário interajam entre si.
+      x-examples:
+        Exemplo de forum:
+          forum_id: 1
+          title: Relacionamento abusivo
+          theme_id: 1
+          forum_img_id: 1
+          no_like: 3600
+      x-tags:
+        - Models
+      properties:
+        forum_id:
+          type: integer
+          format: int64
+        title:
+          type: string
+        forum_img_id:
+          type: integer
+          format: int64
+        no_like:
+          type: integer
+          format: int64
+    Comments:
+      title: Comments
+      type: object
+      description: Comentários que um usuário pode fazer num fórum.
+      x-examples:
+        Exemplo de comentário:
+          comment_id: 1
+          forum_id: 1
+          user_id: 1
+          comment_content: Lorem ipsum dolor sit amet.
+          publi_date: '2020-06-13'
+          no_like: 3600
+      x-tags:
+        - Models
+      properties:
+        comment_id:
+          type: integer
+        forum_id:
+          type: integer
+          format: int64
+        user_id:
+          type: integer
+          format: int64
+        comment_content:
+          type: string
+        publi_date:
+          type: string
+          format: uri
+        no_like:
+          type: integer
+          format: int64
+      required:
+        - forum_id
+        - comment_content
+    Like_Article:
+      title: Like_Article
+      type: object
+      description: Likes que os usuário dão em artigos.
+      properties:
+        like_article_id:
+          type: integer
+          format: int64
+        user_id:
+          type: integer
+          format: int64
+        article_id:
+          type: integer
+          format: int64
+      x-examples:
+        Exemplo de like num artigo:
+          like_article_id: 1
+          user_id: 1
+          article_id: 1
+      x-tags:
+        - Models
+    Later_Article:
+      title: Later_Article
+      type: object
+      description: O usuário marcar um artigo com o "ler mais tarde".
+      properties:
+        later_article_id:
+          type: integer
+          format: int64
+        user_id:
+          type: integer
+          format: int64
+        article_id:
+          type: integer
+          format: int64
+      x-examples:
+        Exemplo de ler mais tarde:
+          later_article_id: 1
+          user_id: 1
+          article_id: 1
+      x-tags:
+        - Models
+    Like_Forum:
+      title: Like_Forum
+      type: object
+      description: Likes que os usuários dão nos fóruns.
+      properties:
+        liuf_id:
+          type: integer
+          format: int64
+        user_id:
+          type: integer
+          format: int64
+        forum_id:
+          type: integer
+          format: int64
+      x-examples:
+        Exemplo de like num fórum:
+          liuf_id: 1
+          user_id: 1
+          forum_id: 1
+      x-tags:
+        - Models
+    Reply:
+      title: Reply
+      type: object
+      description: Respostas que usuário faz a um comentário.
+      properties:
+        reply_id:
+          type: integer
+          format: int64
+        comment_id:
+          type: integer
+          format: int64
+        user_id:
+          type: integer
+          format: int64
+        reply_content:
+          type: string
+        publi_date:
+          type: string
+          format: date
+      x-examples:
+        Exemplo de resposta:
+          reply_id: 1
+          comment_id: 1
+          user_id: 1
+          reply_content: Lorem ipsum dolor sit amet.
+          publi_date: '2020-06-13'
+      x-tags:
+        - Models
+    Theme_Imgs:
+      title: Theme_Img
+      type: object
+      properties:
+        theme_img_id:
+          type: integer
+          format: int64
+        img_url:
+          type: string
+          format: uri
+      description: Capa de fundo de um tema.
+      x-examples:
+        Exemplo de capa de fundo:
+          theme_img_id: 1
+          img_url: 'http://localhost:3333/...'
+      x-tags:
+        - Models
+    Report_Comments:
+      title: Report_Comments
+      type: object
+      description: Denúncias de uma resposta num comentário
+      x-tags:
+        - Models
+      x-examples:
+        Exemplo de denúncia no comentário:
+          report_comment_id: 1
+          reply_id: 1
+          reporter_user_id: 1
+          report_content: Comentário extremamente racista
+          report_type: 1
+      properties:
+        report_comment_id:
+          type: integer
+        reply_id:
+          type: integer
+        reporter_user_id:
+          type: integer
+        report_content:
+          type: string
+        report_type:
+          type: integer
+    Report_Reply:
+      title: Report_Reply
+      type: object
+      description: Denúncias de um comentário
+      x-tags:
+        - Models
+      properties:
+        report_comment_id:
+          type: integer
+        comment_id:
+          type: integer
+        reporter_user_id:
+          type: integer
+        report_content:
+          type: string
+        report_type:
+          type: integer
+      x-examples:
+        Exemplo de denúncia no comentário:
+          report_comment_id: 1
+          comment_id: 1
+          reporter_user_id: 1
+          report_content: Comentário extremamente racista
+          report_type: 1
+    Report_Type:
+      title: Report_Type
+      type: object
+      description: Tipos de denúncia que podem ser feitas a um comentário ou resposta.
+      x-examples:
+        Exemplo de tipo de denúncia:
+          report_type_id: 1
+          report_type_name: Preconceito
+          report_type_especifications: 'Preconceito é uma opinião desfavorável que não é baseada em dados objetivos, mas que é baseada unicamente em um sentimento hostil motivado por hábitos de julgamento ou generalizações apressadas.'
+      properties:
+        report_type_id:
+          type: integer
+          format: int64
+        report_type_name:
+          type: string
+        report_type_especifications:
+          type: string
+      x-tags:
+        - Models
+    Theme_Article:
+      title: Theme_Article
+      type: object
+      description: Guarda os temas de um artigo
+      properties:
+        theme_article_id:
+          type: integer
+          format: int64
+        theme_id:
+          type: integer
+          format: int64
+        article_id:
+          type: integer
+          format: int64
+      x-examples:
+        Exemplo de Theme_Article:
+          theme_article_id: 1
+          theme_id: 1
+          article_id: 1
+      x-tags:
+        - Models
+    Theme_Forum:
+      title: Theme_Forum
+      type: object
+      description: Guarda os temas de um fórum
+      properties:
+        theme_forum_id:
+          type: integer
+          format: int64
+        theme_id:
+          type: integer
+          format: int64
+        forum_id:
+          type: integer
+          format: int64
+      x-examples:
+        Exemplo de Theme_Forum:
+          theme_forum_id: 1
+          theme_id: 1
+          forum_id: 1
+      x-tags:
+        - Models
+    Forum_Img:
+      title: Forum_Img
+      type: object
+      description: Imagem de um fórum
+      x-examples:
+        Exemplo de Forum_Img:
+          forum_img_id: 1
+          img_url: 'http://localhost:3333/'
+      properties:
+        forum_img_id:
+          type: integer
+          format: int64
+        img_url:
+          type: string
+          format: uri
+      x-tags:
+        - Models
+    Article_Img:
+      title: Article_Img
+      type: object
+      properties:
+        article_img_id:
+          type: integer
+          format: int64
+        img_url:
+          type: string
+          format: uri
+      x-examples:
+        Exemplo de Article_Img:
+          article_img_id: 1
+          img_url: 'http://localhost:3333/'
+      description: Imagem de um artigo
+      x-tags:
+        - Models
+    User_Img:
+      title: User_Img
+      type: object
+      description: Imagem de perfil do usuário
+      properties:
+        user_img_id:
+          type: integer
+          format: int64
+        img_url:
+          type: string
+      x-examples:
+        Exemplo de User_Img:
+          user_img_id: 1
+          img_url: 'http://localhost:3333/'
+      x-tags:
+        - Models
+  securitySchemes: {}
+tags:
+  - name: Comment
+  - name: User
+  - name: Report
