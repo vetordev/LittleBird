@@ -97,7 +97,7 @@
   "husky": {
     "hooks": {
       "pre-commit": "",
-      "pre-push": "yarn test:e2e"
+      "pre-push": ""
     }
   }
 }
