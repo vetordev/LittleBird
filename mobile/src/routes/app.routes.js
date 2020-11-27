@@ -17,6 +17,7 @@ import Interests from '../pages/app/Interests';
 import SavedItems from '../pages/app/SavedItems';
 import EditProfile from '../pages/app/EditProfile';
 import Forums from '../pages/app/Forums';
+import Reply from '../pages/app/Reply';
 import Report from '../pages/app/Report';
 
 import BottomTabBar from '../components/BottomTabBar';
@@ -42,6 +43,7 @@ const AppRoutes = () => (
       <AppBottom.Screen name="SavedItems" component={SavedItems} />
       <AppBottom.Screen name="EditProfile" component={EditProfile} />
       <AppBottom.Screen name="Forums" component={Forums} />
+      <AppBottom.Screen name="Reply" component={Reply} />
       <AppBottom.Screen name="Report" component={Report} />
    </AppStack.Navigator>
 );

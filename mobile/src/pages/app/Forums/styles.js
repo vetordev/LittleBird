@@ -84,6 +84,11 @@ export const Footer = styled.View`
    padding: 0 15px 19px;
 `;
 
+export const InputContainer = styled.View`
+   flex: 1;
+   background-color: #121212;
+`;
+
 export const InputBlock = styled.View`
    background: #212121;
    flex-direction: row;
@@ -91,7 +96,7 @@ export const InputBlock = styled.View`
    align-items: center;
    padding: 7px;
    border-radius: 19px;
-   margin: 0 10px 10px;
+   margin: 0px 10px 50px;
 `;
 
 export const Input = styled.TextInput`
