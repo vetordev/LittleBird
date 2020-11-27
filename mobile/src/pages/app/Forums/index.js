@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { View, Keyboard, ActivityIndicator } from 'react-native';
 import { MaterialIcons } from '@expo/vector-icons';
-import { useRoute, useNavigation } from '@react-navigation/native';
+import { useRoute, useNavigation, useIsFocused } from '@react-navigation/native';
 import io from 'socket.io-client';
 import { GiftedChat } from "react-native-gifted-chat";
 
@@ -54,6 +54,7 @@ const Forums = () => {
    const [newMessage, setNewMessage] = useState({});
    const [lastMessage, setLastMessage] = useState({});
 
+   const isFocused = useIsFocused();
    const navigation = useNavigation();
 
    const route = useRoute();
@@ -66,7 +67,7 @@ const Forums = () => {
    useEffect(() => {
       socket.emit('join forum', { idRoom: forum_id });
       socket.on('new message', message => setNewMessage(message))
-   }, [socket])
+   }, [isFocused])
 
    useEffect(() => {
 
@@ -115,6 +116,11 @@ const Forums = () => {
          getContent();
       }
    }, []);
+
+
+   useEffect(() => {
+      socket.emit('leave forum', { idRoom: forum_id });
+   }, [!isFocused])
 
 
    // Primeiro loading
