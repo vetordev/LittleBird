@@ -76,3 +76,25 @@ export const Textarea = styled.TextInput`
    border: 2px solid #444444;
    color: #F6F6F6;
 `;
+
+export const ModalMessageContent = styled.View`
+   align-items: center;
+   margin: -10px 0;
+`;
+
+export const ModalTitle = styled.Text`
+   font-family: Ubuntu_700Bold;
+   color: #E9E9E9;
+   font-size: 20px;
+   max-width: 70%;
+   text-align: center;
+   margin-top: 8px;
+`;
+
+export const ModalSubtitle = styled.Text`
+   font-family: Ubuntu_400Regular;
+   color: #E9E9E9;
+   font-size: 18px;
+   text-align: center;
+   margin-top: 8px;
+`;

@@ -3,12 +3,14 @@ import { ScrollView } from 'react-native';
 import { useRoute, useNavigation } from '@react-navigation/native';
 import { CheckBox } from 'react-native-elements';
 import { Feather } from '@expo/vector-icons';
+import { SvgUri } from 'react-native-svg';
 import { Form } from '@unform/mobile';
 
 import api from '../../../services/api';
 import { useAuth } from '../../../contexts/auth';
 
 import Header from '../../../components/Header';
+import ModalContainer from '../../../components/ModalContainer';
 
 import { 
    Container,
@@ -20,10 +22,15 @@ import {
    BtnSaveProfile,
    BtnSaveProfileText,
    TextareaLegend,
-   Textarea
+   Textarea,
+   ModalMessage,
+   ModalTitle,
+   ModalSubtitle,
+   ModalMessageContent
 } from './styles';
 
 const Report = () => {
+   const [displayModal, setModalDisplay] = useState(false);
    const [selectedReportType, setselectedReportType] = useState(0);
    const [reports, setReports] = useState([]);
    const [details, setDetails] = useState('');
@@ -53,8 +60,15 @@ const Report = () => {
       );
 
       if (response.status === 204) {
-         goBack();
+         setModalDisplay(true);
+      } else {
+         console.log(response.status);
       }
+   }
+
+   function handleCloseModal() {
+      setModalDisplay(false);
+      goBack();
    }
    
    useEffect(() => {
@@ -69,6 +83,19 @@ const Report = () => {
 
    return (
       <ScrollView>
+         { displayModal &&
+            <ModalContainer
+               onPress={handleCloseModal}
+               color_theme="#01C24E"
+               font_color="#121212"
+               btn_title="ok"
+            >
+               <ModalMessageContent>
+                  <ModalTitle>Denúncia realizada</ModalTitle>
+                  <ModalSubtitle>Analisaremos a situação e as devidas providências serão tomadas.</ModalSubtitle>
+               </ModalMessageContent>
+            </ModalContainer>
+         }
          <Header />
          <Container>
             <Title>O que houve?</Title>
