@@ -121,10 +121,10 @@ const Favorites = () => {
                   :
                      <InterestCard 
                         img_url={item.forum_img_id.img_url} 
-                        ne="forum"
+                        type="forum"
                         idContent={item.forum_id}
-                        isConame={item.title} 
-                        typtent={true}
+                        name={item.title} 
+                        isContent={true}
                      />
                )
             )}

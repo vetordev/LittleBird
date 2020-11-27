@@ -43,7 +43,6 @@ const Home = () => {
   const { navigate } = useNavigation();
   const isFocused = useIsFocused();
 
-
   function navigateToArticles(article_id) {
     navigate('Articles', { article_id });
   }
@@ -78,6 +77,8 @@ const Home = () => {
   }
 
   useEffect(() => {
+    console.log('tokne', token);
+    
     async function getContent() {
       loadRecentContent();
 
