@@ -40,7 +40,13 @@ describe('Comment', () => {
     comment_id: 1,
     publi_date: '2020-07-22'
   };
-
+  const reply_2 = {
+    reply_id: 2,
+    reply_content: '...',
+    user_id: 1,
+    comment_id: 1,
+    publi_date: '2020-07-22'
+  };
 
   beforeAll(async () => {
 
@@ -77,6 +83,22 @@ describe('Comment', () => {
     };
 
     beforeAll(async () => {
+
+      const reply = {
+        reply_id: 1,
+        reply_content: '...',
+        user_id: 1,
+        comment_id: 3,
+        publi_date: '2020-07-22'
+      };
+      const reply_2 = {
+        reply_id: 2,
+        reply_content: '...',
+        user_id: 1,
+        comment_id: 3,
+        publi_date: '2020-07-22'
+      };
+
       await getConnection().dropDatabase();
       await getConnection().synchronize();
 
@@ -90,6 +112,9 @@ describe('Comment', () => {
       await getConnection().createQueryBuilder().insert().into('tb_comment').values(comment2).execute();
       await getConnection().createQueryBuilder().insert().into('tb_comment').values(comment3).execute();
 
+      await getConnection().createQueryBuilder().insert().into('reply').values(reply).execute();
+      await getConnection().createQueryBuilder().insert().into('reply').values(reply_2).execute();
+
     });
 
     it('> GET /comment/forum/:forum_id Deve retornar os comentários do forum', async () => {
@@ -98,6 +123,7 @@ describe('Comment', () => {
         .get(`/comment/forum/${forum_id}?page=1&lastMessage=3`)
 
       expect(response.status).toBe(200);
+      // console.log(response.body)
       expect(response.header['x-total-count']).toBe("3");
       expect(response.body[0]).toEqual(expect.objectContaining({
         comment_id: expect.any(Number),
@@ -111,7 +137,20 @@ describe('Comment', () => {
         },
         comment_content: expect.any(String),
         publi_date: expect.any(String),
-        no_like: expect.any(Number)
+        no_like: expect.any(Number),
+        reply: {
+          reply_id: expect.any(Number),
+          reply_content: expect.any(String),
+          user_id: {
+            user_id: expect.any(Number),
+            username: expect.any(String),
+            user_img_id: {
+              user_img_id: expect.any(Number),
+              img_url: expect.any(String)
+            },
+          },
+          publi_date: expect.any(String)
+        }
       }));
     });
     it('> GET /comment/forum/:forum_id Não deve retornar os comentários do forum (Forum não encontrado)', async () => {
@@ -130,14 +169,6 @@ describe('Comment', () => {
     beforeAll(async () => {
       await getConnection().dropDatabase();
       await getConnection().synchronize();
-
-      const reply_2 = {
-        reply_id: 2,
-        reply_content: '...',
-        user_id: 1,
-        comment_id: 1,
-        publi_date: '2020-07-22'
-      };
 
       await getConnection().createQueryBuilder().insert().into("user_img").values({ user_img_id: 1, img_url: "http://localhost:4456" }).execute();
       await getConnection().createQueryBuilder().insert().into("tb_user").values(user).execute();

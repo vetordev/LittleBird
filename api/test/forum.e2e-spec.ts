@@ -60,6 +60,14 @@ describe('Forum', () => {
   describe('Buscar um fórum', () => {
 
     beforeAll(async () => {
+
+      const reply_2 = {
+        reply_id: 2,
+        reply_content: '...',
+        user_id: 1,
+        comment_id: 1,
+        publi_date: '2020-07-22'
+      };
       await getConnection().dropDatabase();
       await getConnection().synchronize();
 
@@ -79,6 +87,7 @@ describe('Forum', () => {
 
       await getConnection().createQueryBuilder().insert().into('tb_comment').values(comment).execute();
       await getConnection().createQueryBuilder().insert().into('reply').values(reply).execute();
+      await getConnection().createQueryBuilder().insert().into('reply').values(reply_2).execute();
       // await getConnection().createQueryBuilder().insert().into('tb_comment').values(comment2).execute();
     });
 
