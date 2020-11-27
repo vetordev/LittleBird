@@ -24,6 +24,13 @@ describe('Forum', () => {
     publi_date: '2020-03-08',
     no_like: 10
   };
+  const reply = {
+    reply_id: 1,
+    reply_content: '...',
+    user_id: 1,
+    comment_id: 1,
+    publi_date: '2020-07-22'
+  };
   const user = {
     user_id: 1,
     email: 'carlosboavida@gm.com',
@@ -71,6 +78,7 @@ describe('Forum', () => {
       await getConnection().createQueryBuilder().insert().into("theme_forum").values({ theme_forum_id: 2, theme_id: 2, forum_id: 1 }).execute();
 
       await getConnection().createQueryBuilder().insert().into('tb_comment').values(comment).execute();
+      await getConnection().createQueryBuilder().insert().into('reply').values(reply).execute();
       // await getConnection().createQueryBuilder().insert().into('tb_comment').values(comment2).execute();
     });
 
@@ -114,7 +122,20 @@ describe('Forum', () => {
             },
             comment_content: expect.any(String),
             publi_date: expect.any(String),
-            no_like: expect.any(Number)
+            no_like: expect.any(Number),
+            reply: {
+              reply_id: expect.any(Number),
+              reply_content: expect.any(String),
+              user_id: {
+                user_id: expect.any(Number),
+                username: expect.any(String),
+                user_img_id: {
+                  user_img_id: expect.any(Number),
+                  img_url: expect.any(String)
+                },
+              },
+              publi_date: expect.any(String)
+            }
           }
         ]
       }));

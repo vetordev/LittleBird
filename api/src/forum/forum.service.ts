@@ -8,6 +8,7 @@ import { ThemeForum } from './entity/theme-forum.entity';
 import { LikeForum } from './entity/like-forum.entity';
 import { ForumGateway } from "./forum.gateway";
 import { Theme } from '../theme/entity/theme.entity';
+import { Reply } from '../comment/entity/reply.entity';
 
 @Injectable()
 export class ForumService {
@@ -18,6 +19,7 @@ export class ForumService {
     @InjectRepository(ThemeForum) private readonly themeForumRepository: Repository<ThemeForum>,
     @InjectRepository(Theme) private readonly themeRepository: Repository<Theme>,
     @InjectRepository(LikeForum) private readonly likeForumRepository: Repository<LikeForum>,
+    @InjectRepository(Reply) private readonly replyRepository: Repository<Reply>,
     private readonly forumGateway: ForumGateway
   ) {}
 
@@ -123,6 +125,21 @@ export class ForumService {
       return comment;
     });
 
+    comments.map(async (comment) => {
+      const reply = await this.replyRepository.createQueryBuilder('reply')
+        .select(['reply', 'user.user_id', 'user.username', 'user_img'])
+        .innerJoin('reply.user_id', 'user')
+        .innerJoin('user.user_img_id', 'user_img')
+        .where('reply.comment_id = :comment_id', { comment_id: comment.comment_id })
+        .orderBy('reply.reply_id', 'DESC')
+        .getOne();
+
+      delete reply.comment_id;
+
+      comment.reply = reply;
+      return comment;
+    });
+
     let themes: any = await this.themeForumRepository.createQueryBuilder('theme_forum')
       .select(['theme_forum', 'theme'])
       .innerJoin('theme_forum.theme_id', 'theme')
@@ -144,9 +161,8 @@ export class ForumService {
   };
 
   async createComment(forum_id: number, comment_content : string, user_id: number): Promise<Response | void> {
-    const publi_date = new Date().toLocaleString("pt-BR", {timeZone: "America/Sao_Paulo"})
+    const publi_date = new Date().toLocaleDateString();
 
-    console.log(publi_date)
     const comment = await this.commentRepository.createQueryBuilder('tb_comment')
       .insert()
       .into('tb_comment')
