@@ -351,10 +351,9 @@ describe('User', () => {
 
       expect(response.status).toBe(200);
       expect(response.body).toEqual(expect.objectContaining({
-        email: expect.any(Boolean),
+        email: expect.any(String),
         username: expect.any(String)
       }));
-      expect(response.body.email).toBe(true);
     });
 
     it('> GET /user/email Não deve encontrar o e-mail do usuário (e-mail não encontrado)', async () => {

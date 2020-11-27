@@ -91,6 +91,6 @@ export class UserService {
     if(!user) {
       return { email: false }
     }
-    return { email: true, username: user.username }
+    return { email: user.email, username: user.username }
   };
 }
