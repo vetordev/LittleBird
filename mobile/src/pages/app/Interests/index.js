@@ -83,6 +83,14 @@ const Interests = () => {
 
          await api.delete('interest', { headers, data });
       }
+      
+      setLoadingInterests(true);
+
+      const responseInterests = await api.get(`interest?page=1`, { headers: { Authorization: token } });
+      setInterests(responseInterests.data); 
+
+      setTotalInterests(responseInterests.headers['x-total-count']);
+      setLoadingInterests(false);
    }
 
    async function loadInterests() {
