@@ -20,7 +20,6 @@ import Forums from '../pages/app/Forums';
 import Report from '../pages/app/Report';
 
 import BottomTabBar from '../components/BottomTabBar';
-import HeaderBtnBack from '../components/HeaderBtnBack';
 
 const AppStack = createStackNavigator();
 const AppBottom = createBottomTabNavigator();
@@ -30,7 +29,6 @@ const AppRoutes = () => (
       screenOptions={{ 
          cardStyle: { backgroundColor: '#121212' },
          headerShown: false
-         // header: props => <HeaderBtnBack {... props} />
       }}>
       <AppStack.Screen name="Home" component={BottomRoutes} />
       <AppBottom.Screen name="Webview" component={Webview} options={{ headerShown: true, headerTitle: '' }} />

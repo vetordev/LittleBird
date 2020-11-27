@@ -24,7 +24,7 @@ import { BtnLogin, TextBtnLogin, BtnIcon } from '../../../components/BtnNext/sty
 
 const SignUp1 = () => {
   const [toggleCheckBox, setToggleCheckBox] = useState(false);
-  const [date, setDate] = useState('');
+  // const [date, setDate] = useState('');
   const [userBirth, setUserBirth] = useState('');
   const [dateError, setDateError] = useState(null);
 
@@ -34,9 +34,15 @@ const SignUp1 = () => {
   const formRef = useRef(null);
 
   function validateDate() {
-    if (moment(userBirth).isValid()) {
+    if (!userBirth) {
+      setDateError('Insira uma data de nascimento correta.');
+      return false;
+    }
+    if (moment(userBirth, 'DD/MM/YYYY').isValid()) {
       setDateError(null);
-      return true;
+      const finalDate = moment(userBirth, 'DD/MM/YYYY').format('DD-MM-YYYY');
+      return finalDate;
+
     } else {
       setDateError('Insira uma data de nascimento correta.');
       return false;
@@ -44,9 +50,7 @@ const SignUp1 = () => {
   }
 
   async function handleSignUp1 (data) {
-    validateDate();
-    
-    console.log(userBirth);
+    const finalDate = validateDate();
 
     try {
       const schema = Yup.object().shape({
@@ -61,14 +65,14 @@ const SignUp1 = () => {
 
       formRef.current.setErrors({});
 
-      if (!dateError) {
+      if (finalDate !== false) {
         const user = {
           email,
           fullname: data.fullname,
           username: data.username,
           user_pass: data.password,
           user_img_id: 1,
-          born_in: userBirth
+          born_in: finalDate
         }
 
         if (toggleCheckBox) {
@@ -117,8 +121,8 @@ const SignUp1 = () => {
             color="light"
             placeholder="DD / MM / AAAA"
             legend="Sua data de nascimento"
-            value={date}
-            setDate={setDate}
+            // value={date}
+            // setDate={setDate}
             setUserBirth={setUserBirth}
             error={dateError}
           />
