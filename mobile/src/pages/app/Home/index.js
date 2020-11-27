@@ -76,9 +76,7 @@ const Home = () => {
     setLoadingRecentContent(false);
   }
 
-  useEffect(() => {
-    console.log('tokne', token);
-    
+  useEffect(() => {    
     async function getContent() {
       loadRecentContent();
 
