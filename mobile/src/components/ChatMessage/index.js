@@ -37,8 +37,9 @@ const ChatMessage = ({ data, goToReplies }) => {
       setLikesQnt(liked ? likeQnt - 1 : likeQnt + 1);
    }
 
-   function navigateToComplaint() {
-      navigate('Report');
+
+   function navigateToReport() {
+      navigate('Report', { comment_id: data._id });
    }
 
    useEffect(() => {
@@ -56,7 +57,7 @@ const ChatMessage = ({ data, goToReplies }) => {
                <MessageHeader userAmI={userAmI}>
                   <MessageUserAvatar resizeMode="cover" source={{ uri: data.user.avatar/*avatares[user_img - 1].url }}*/}} />
                   <MessageUsername>{data.user.name}</MessageUsername>
-                  <BtnMessageDetails onPress={navigateToComplaint}>
+                  <BtnMessageDetails onPress={navigateToReport}>
                      <Feather name="flag" color="#787878" />
                      {/* <TextBtnMessageDetails>...</TextBtnMessageDetails> */}
                   </BtnMessageDetails>

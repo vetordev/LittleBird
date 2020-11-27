@@ -67,3 +67,12 @@ export const TextareaLegend = styled.Text`
    font-size: 14px;
    margin: 10px 0 15px;
 `;
+
+export const Textarea = styled.TextInput`
+   width: 100%;
+   border-radius: 8px;
+   padding: 15px;
+   font-size: 16px;
+   border: 2px solid #444444;
+   color: #F6F6F6;
+`;

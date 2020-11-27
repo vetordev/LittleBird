@@ -345,7 +345,6 @@ const Forums = () => {
                }}
                renderBubble={(props) => (
                   <ChatMessage data={props.currentMessage} goToReplies={() => goToReplies(props.currentMessage)}/>
-
                )}
                renderAvatar={null}
                infiniteScroll
