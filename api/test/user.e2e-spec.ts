@@ -52,7 +52,9 @@ describe('User', () => {
 
       expect(response.status).toBe(201);
       expect(response.body).toEqual(expect.objectContaining({
-        token: expect.any(String)
+        token: expect.any(String),
+        user_id: expect.any(Number)
+
       }));
 
     });
