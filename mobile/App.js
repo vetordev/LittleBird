@@ -21,6 +21,8 @@ export default function App() {
     Nunito_800ExtraBold,
   });
 
+  // console.disableYellowBox = true;
+
   if (!fontsLoaded) {
     return <AppLoading />
   }

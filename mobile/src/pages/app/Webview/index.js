@@ -7,7 +7,13 @@ const Webview = () => {
    const { link } = route.params;
 
    return (
-     <WebView style={{ flex: 1 }} source={{ uri: link }} />
+      <WebView 
+        style={{ flex: 1 }} 
+        source={{ uri: link }} 
+        allowFileAccess={true}
+        scalesPageToFit={true}
+        originWhitelist={['*']} 
+      />
    );
 }
 

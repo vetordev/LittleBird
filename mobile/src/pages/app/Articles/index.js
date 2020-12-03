@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Feather, MaterialIcons } from '@expo/vector-icons';
+import AsyncStorage from '@react-native-community/async-storage';
 import { View } from 'react-native';
 import { useNavigation, useRoute } from '@react-navigation/native';
 import HTMLView from 'react-native-htmlview';
@@ -44,6 +45,26 @@ const Articles = () => {
 
    function openWebView(url) {
       navigation.navigate('Webview', { link: url });
+   }
+
+   async function handleSetSaved() {
+
+      if (!saved) {
+         const savedArticles = await AsyncStorage.getItem('@LittleBird:articles');
+
+         if (savedArticles) {
+            await AsyncStorage.setItem('@LittleBird:articles', JSON.stringify([... JSON.parse(savedArticles), article]));
+         } else {
+            await AsyncStorage.setItem('@LittleBird:articles', JSON.stringify([article]));
+         }
+
+         setSaved(true);
+      } else {
+         AsyncStorage.removeItem('@LittleBird:articles');
+
+         setSaved(false);
+      }
+
    }
 
    async function handleSetLiked() {
@@ -107,7 +128,7 @@ const Articles = () => {
                   <Option onPress={handleSetLiked}>
                      <MaterialIcons name={liked ? 'favorite' : 'favorite-border'} size={20} color={liked ? '#DA2243' : '#F6F6F6'} />
                   </Option>
-                  <Option onPress={() => setSaved(saved ? false : true)}>
+                  <Option onPress={handleSetSaved}>
                      <MaterialIcons name={saved ? 'bookmark' : 'bookmark-border'} size={20} color="#F6F6F6" />
                   </Option>
                </Options>

@@ -88,16 +88,16 @@ const EditProfile = () => {
             user_img_id: avatar,
             born_in: !finalDate ? user.born_in : finalDate,
          }
-         setModalDisplay(true);
          console.log('newUser', newUser);
          
          setUser(newUser);
          setLoading(true);
 
-         // await api.put('user', newUser, { headers: { Authorization: token } });
+         await api.put('user', newUser, { headers: { Authorization: token } });
          await AsyncStorage.setItem('@LittleBird:user', JSON.stringify(newUser));
 
          setLoading(false);
+         setModalDisplay(true);
 
       } catch (err) {
          if (err instanceof Yup.ValidationError) {

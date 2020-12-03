@@ -65,6 +65,7 @@ const Forums = () => {
    const [socket, setSocket] = useState(io(`http://26.57.205.136:3333/forum`));
 
    useEffect(() => {
+      socket.emit('join forum', { idRoom: forum_id });
       socket.on('new message', message => setNewMessage(message))
    }, [socket]);
 
@@ -114,14 +115,12 @@ const Forums = () => {
          console.log('----------- Iniciando Fórum -------------')
          getContent();
       }
-
-      socket.emit('join forum', { idRoom: forum_id });
    }, []);
 
 
-   useEffect(() => {
-      socket.emit('leave forum', { idRoom: forum_id });
-   }, [!isFocused])
+   // useEffect(() => {
+   //    socket.emit('leave forum', { idRoom: forum_id });
+   // }, [!isFocused])
 
 
    // Primeiro loading
@@ -195,17 +194,10 @@ const Forums = () => {
       await api.post(
          `/forum/${forum_id}/comment`,
          { comment_content: input },
-         {
-            headers: {
-               Authorization: token,
-            },
-            onUploadProgress: () => {
-
-            }
-         },
+         { headers: { Authorization: token } },
       );
+      
       setInput('');
-
    }
 
    async function handleSetLiked() {
