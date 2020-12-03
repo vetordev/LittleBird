@@ -27,15 +27,15 @@ export class CommentGateway implements OnGatewayInit, OnGatewayConnection, OnGat
   ) {};
 
   afterInit(server: Socket) {
-    this.logger.log('Namespace "/comment" pronto')
+    this.logger.log('WebSocket Namespace {/comment} initialized')
   };
 
   handleConnection(client: Socket) {
-    console.log('Nova conexão: ' + client.id);
+    console.log('Connection: ' + client.id);
   };
 
   handleDisconnect(client: Socket) {
-    console.log('Desconexão: ' + client.id)
+    console.log('Disconnect: ' + client.id)
   };
 
   @SubscribeMessage('join comment')

@@ -13,5 +13,8 @@ export const connection: TypeOrmModuleOptions = {
   password: String(process.env.PASSWORD),
   database: String(process.env.DATABASE),
   autoLoadEntities: Boolean(process.env.AUTO_LOAD_ENTITIES),
-  synchronize: Boolean(process.env.SYNCHRONIZE)
+  synchronize: Boolean(process.env.SYNCHRONIZE),
+  ssl: {
+    rejectUnauthorized: false
+  }
 }

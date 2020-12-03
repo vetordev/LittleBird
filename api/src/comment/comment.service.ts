@@ -99,7 +99,7 @@ export class CommentService {
     });
 
     for (let i = 0; i < comments.length; i++) {
-      console.log(comments[i].comment_id)
+
       const reply = await this.replyRepository.createQueryBuilder('reply')
         .select(['reply', 'user.user_id', 'user.username', 'user_img'])
         .innerJoin('reply.user_id', 'user')
@@ -114,25 +114,7 @@ export class CommentService {
       } else {
         comments[i].reply = null;
       }
-
-
-
     }
-    // comments.map(async (comment) => {
-    //   const reply = await this.replyRepository.createQueryBuilder('reply')
-    //     .select(['reply', 'user.user_id', 'user.username', 'user_img'])
-    //     .innerJoin('reply.user_id', 'user')
-    //     .innerJoin('user.user_img_id', 'user_img')
-    //     .where('reply.comment_id = :comment_id', { comment_id: comment.comment_id })
-    //     .orderBy('reply.reply_id', 'DESC')
-    //     .getOne();
-
-    //   delete reply.comment_id;
-    //   console.log(reply)
-    //   comment.reply = reply;
-    //   return comment;
-    // });
-    console.log(comments)
 
     return response.status(200).header('x-total-count', count).json(comments);
   };

@@ -123,7 +123,6 @@ describe('Comment', () => {
         .get(`/comment/forum/${forum_id}?page=1&lastMessage=3`)
 
       expect(response.status).toBe(200);
-      // console.log(response.body)
       expect(response.header['x-total-count']).toBe("3");
       expect(response.body[0]).toEqual(expect.objectContaining({
         comment_id: expect.any(Number),
