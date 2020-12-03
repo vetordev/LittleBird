@@ -30,15 +30,15 @@ export class ForumGateway implements OnGatewayInit, OnGatewayConnection, OnGatew
   ) {};
 
   afterInit(server: Socket) {
-    this.logger.log('Namespace "/forum" pronto')
+    this.logger.log('WebSocket Namespace {/forum} initialized')
   };
 
   handleConnection(client: Socket) {
-    console.log('Nova conexão: ' + client.id);
+    console.log('Connection: ' + client.id);
   };
 
   handleDisconnect(client: Socket) {
-    console.log('Desconexão: ' + client.id)
+    console.log('Disconnect: ' + client.id)
   };
 
   @SubscribeMessage('join forum')

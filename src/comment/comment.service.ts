@@ -98,6 +98,24 @@ export class CommentService {
       return comment;
     });
 
+    for (let i = 0; i < comments.length; i++) {
+
+      const reply = await this.replyRepository.createQueryBuilder('reply')
+        .select(['reply', 'user.user_id', 'user.username', 'user_img'])
+        .innerJoin('reply.user_id', 'user')
+        .innerJoin('user.user_img_id', 'user_img')
+        .where('reply.comment_id = :comment_id', { comment_id: comments[i].comment_id })
+        .orderBy('reply.reply_id', 'DESC')
+        .getOne();
+
+      if (reply) {
+        delete reply.comment_id;
+        comments[i].reply = reply;
+      } else {
+        comments[i].reply = null;
+      }
+    }
+
     return response.status(200).header('x-total-count', count).json(comments);
   };
 
