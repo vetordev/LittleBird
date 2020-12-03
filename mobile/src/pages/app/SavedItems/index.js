@@ -26,13 +26,14 @@ const SavedItems = () => {
       <View>
          <FlatList 
             data={articles}
-            keyExtractor={article => String(article.article.article_id)}
+            keyExtractor={article => articles && String(article.article.article_id)}
             numColumns={2}
             columnWrapperStyle={{ marginHorizontal: 15 }}
             ListHeaderComponent={
                <Header title="Itens salvos" />
             }
             renderItem={({ item }) => (
+               articles &&
                <InterestCard 
                   img_url={item.article.article_img_id.img_url} 
                   name={item.article.title} 

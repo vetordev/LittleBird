@@ -114,7 +114,7 @@ const Articles = () => {
             : ''
          });
 
-         // setCompletedArticle(responseArticle.data);
+         setCompletedArticle(articleParam);
          setArticle(articleParam.article);
          setRecommendations(articleParam.recommendations);
          setThemes(articleParam.themes);

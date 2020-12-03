@@ -87,6 +87,7 @@ export const AuthProvider = ({ children }) => {
    function signUp(user, userInterests) {
       user.id = 2;
       console.log(user);
+      console.log(userInterests);
 
       api.post('user', user, {
          onUploadProgress: () => {
@@ -106,7 +107,7 @@ export const AuthProvider = ({ children }) => {
          }) 
          .then(async () => {
             user.user_id = responseUser.data.user_id;
-            
+
             setUser(user);   
             setLoadingAuth(false);
 
@@ -115,7 +116,7 @@ export const AuthProvider = ({ children }) => {
          })
       })
       .catch ((error) => { 
-         console.log('Ocorreu um erro no cadastro de usuário: ', error);
+         console.log('Ocorreu um erro no cadastro: ', error);
          // setLoadingAuth(false);
       }) 
    }
