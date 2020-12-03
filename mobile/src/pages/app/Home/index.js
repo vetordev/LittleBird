@@ -43,8 +43,11 @@ const Home = () => {
   const { navigate } = useNavigation();
   const isFocused = useIsFocused();
 
-  function navigateToArticles(article_id) {
-    navigate('Articles', { article_id });
+  async function navigateToArticles(article_id) {
+    const responseArticle = await api.get(`article/${article_id}`);
+
+    articleParam = responseArticle.data;
+    navigate('Articles', { articleParam });
   }
 
   function navigateToForums(forum_id, forum_title) {

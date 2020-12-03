@@ -26,7 +26,7 @@ const SavedItems = () => {
       <View>
          <FlatList 
             data={articles}
-            keyExtractor={article => String(article.article_id)}
+            keyExtractor={article => String(article.article.article_id)}
             numColumns={2}
             columnWrapperStyle={{ marginHorizontal: 15 }}
             ListHeaderComponent={
@@ -34,11 +34,11 @@ const SavedItems = () => {
             }
             renderItem={({ item }) => (
                <InterestCard 
-                  img_url={item.article_img_id.img_url} 
-                  name={item.title} 
+                  img_url={item.article.article_img_id.img_url} 
+                  name={item.article.title} 
                   isContent={true}
                   type="article"
-                  idContent={item.article_id}
+                  content={item}
                />
             )}
          />

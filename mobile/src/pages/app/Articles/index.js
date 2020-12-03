@@ -31,6 +31,7 @@ import {
 
 const Articles = () => {
    const [article, setArticle] = useState({});
+   const [completedArticle, setCompletedArticle] = useState({});
    const [recommendations, setRecommendations] = useState([]);
    const [themes, setThemes] = useState([]);
    const [liked, setLiked] = useState(false);
@@ -41,7 +42,7 @@ const Articles = () => {
 
    const route = useRoute();
    const { articleParam } = route.params;
-   const article_id = articleParam.article_id;
+   const { article_id } = articleParam.article;
 
    // const articleTxt = '<t>Lorem ipsum dolor sit amet, <marker1>consectetur adipiscing elit</marker1>, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.<br>Ut enim ad minim veniam, quis nostrud <marker2>exercitation</marker2> ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in <marker3>reprehenderit in voluptate</marker3> velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</t>'
 
@@ -55,9 +56,9 @@ const Articles = () => {
          const savedArticles = await AsyncStorage.getItem('@LittleBird:articles');
 
          if (savedArticles) {
-            await AsyncStorage.setItem('@LittleBird:articles', JSON.stringify([... JSON.parse(savedArticles), article]));
+            await AsyncStorage.setItem('@LittleBird:articles', JSON.stringify([... JSON.parse(savedArticles), completedArticle]));
          } else {
-            await AsyncStorage.setItem('@LittleBird:articles', JSON.stringify([article]));
+            await AsyncStorage.setItem('@LittleBird:articles', JSON.stringify([completedArticle]));
          }
 
          setSaved(true);
@@ -95,13 +96,12 @@ const Articles = () => {
          })
       }
    }
-   console.log(articleParam)
 
    useEffect(() => {
       // setArticle_Id(articleParam.article_id);
 
       async function getContent() {
-         const responseArticle = await api.get(`article/${article_id}`);
+         // const responseArticle = await api.get(`article/${article_id}`);
          const responseArticlesLiked = await api.get(`/article/user/like?page=1`, {
             headers: {
                Authorization: token
@@ -114,9 +114,10 @@ const Articles = () => {
             : ''
          });
 
-         setArticle(articleParam);
-         setRecommendations(responseArticle.data.recommendations);
-         setThemes(responseArticle.data.themes);
+         // setCompletedArticle(responseArticle.data);
+         setArticle(articleParam.article);
+         setRecommendations(articleParam.recommendations);
+         setThemes(articleParam.themes);
       }
 
       getContent();

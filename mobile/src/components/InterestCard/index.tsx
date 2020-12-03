@@ -44,7 +44,7 @@ const InterestCard: React.FC<InterestCardProps> = ({ img_url, name, content, not
             } else {
                const responseArticle = await api.get(`article/${article_id}`);
 
-               articleParam = responseArticle.data.article;
+               articleParam = responseArticle.data;
                navigate('Articles', { articleParam });
             }
             
