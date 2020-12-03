@@ -4,6 +4,8 @@ import { useNavigation } from '@react-navigation/native';
 
 import { useAuth } from '../../contexts/auth';
 
+import api from '../../services/api';
+
 import { 
    Container,
    InterestImageFilter,
@@ -22,17 +24,30 @@ interface InterestCardProps {
    idContent?: number;
    isContent?: boolean;
    idTheme: number;
+   content?: {}
 }
 
-const InterestCard: React.FC<InterestCardProps> = ({ img_url, name, notDelete, type, idContent, isContent, idTheme }) => {
+const InterestCard: React.FC<InterestCardProps> = ({ img_url, name, content, notDelete, type, idContent, isContent, idTheme }) => {
    const { token } = useAuth();
    const { navigate } = useNavigation();
 
-   function navigateToContent() {
+   async function navigateToContent() {
       if (token) {
          if (type == 'article') {
             const article_id = idContent;
-            navigate('Articles', { article_id });
+
+            let articleParam;
+
+            if (content) {
+               articleParam = content;
+               navigate('Articles', { articleParam });
+            } else {
+               const responseArticle = await api.get(`article/${article_id}`);
+
+               articleParam = responseArticle.data.article;
+               navigate('Articles', { articleParam });
+            }
+            
          } else {
             const forum_id = idContent;
             navigate('Forums', { forum_id });

@@ -33,7 +33,13 @@ const SavedItems = () => {
                <Header title="Itens salvos" />
             }
             renderItem={({ item }) => (
-               <InterestCard img_url={item.article_img_id.img_url} name={item.title} />
+               <InterestCard 
+                  img_url={item.article_img_id.img_url} 
+                  name={item.title} 
+                  isContent={true}
+                  type="article"
+                  idContent={item.article_id}
+               />
             )}
          />
       </View>
