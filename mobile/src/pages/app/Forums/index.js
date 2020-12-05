@@ -3,12 +3,12 @@ import { View, Keyboard, ActivityIndicator } from 'react-native';
 import { MaterialIcons } from '@expo/vector-icons';
 import { useRoute, useNavigation, useIsFocused } from '@react-navigation/native';
 import io from 'socket.io-client';
-import { GiftedChat } from "react-native-gifted-chat";
+import { GiftedChat } from 'react-native-gifted-chat';
 
 import HeaderBtnBack from '../../../components/HeaderBtnBack';
 import ChatMessage from '../../../components/ChatMessage';
 import ModalContainer from '../../../components/ModalContainer';
-import TagsThemes from '../../../components/Tags';
+import ContentModalForumRules from '../../../components/ContentModalForumRules';
 import Reply from '../Reply/index';
 
 
@@ -28,17 +28,7 @@ import {
    Header,
    HeaderBtnInfo,
    InfoIcon,
-   ModalTitle,
-   ModalDescription,
-   ModalContent,
-   ModalSubtitle,
-   ModalSubtitleText,
-   ModalRuleTitle,
-   ModalRule,
-   ModalRuleImg,
-   ModalRuleDescription,
    Desc,
-
 } from './styles';
 
 const Forums = () => {
@@ -62,7 +52,7 @@ const Forums = () => {
 
    const { forum_id } = route.params;
 
-   const [socket, setSocket] = useState(io(`http://26.57.205.136:3333/forum`));
+   const [socket, setSocket] = useState(io(`https://little-bird-api.herokuapp.com/forum`));
 
    useEffect(() => {
       socket.emit('join forum', { idRoom: forum_id });
@@ -130,6 +120,7 @@ const Forums = () => {
 
       const responseForum = await api.get(`forum/${forum_id}/comment?page=${1}`);
 
+      console.log(responseForum.data);
       setForum(responseForum.data);
 
       setTotal(responseForum.headers['x-total-count']);
@@ -143,7 +134,8 @@ const Forums = () => {
                _id: comment.user_id.user_id,
                name: comment.user_id.username,
                avatar: comment.user_id.user_img_id.img_url
-            }
+            },
+            reply: comment.reply
          }
       ))
 
@@ -180,7 +172,8 @@ const Forums = () => {
                _id: comment.user_id.user_id,
                name: comment.user_id.username,
                avatar: comment.user_id.user_img_id.img_url
-            }
+            },
+            reply: comment.reply
          }
       ))
       setComments([...comments, ...earlierComments])
@@ -232,6 +225,7 @@ const Forums = () => {
    function openModal() {
       setModalDisplay(true);
    }
+   
    function goToReplies(comment) {
       navigation.navigate('Reply', { comment, forum_id: forum.forum_id })
    };
@@ -247,43 +241,7 @@ const Forums = () => {
                font_color="#E9E9E9"
                btn_title="Entendi!"
             >
-               <ModalTitle>Informações importantes</ModalTitle>
-               <ModalDescription>
-                  {forum.forum_description}
-               </ModalDescription>
-
-               <TagsThemes data={forum.themes} />
-
-               <ModalContent>
-                  <ModalSubtitle>
-                     <ModalSubtitleText>Regras do chat</ModalSubtitleText>
-                  </ModalSubtitle>
-
-                  <ModalRuleTitle>1. Lorem Ipsum</ModalRuleTitle>
-                  <ModalRule>
-                     <ModalRuleImg />
-                     <ModalRuleDescription>
-                        Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt.
-                     </ModalRuleDescription>
-                  </ModalRule>
-
-                  <ModalRuleTitle>2. Lorem Ipsum</ModalRuleTitle>
-                  <ModalRule>
-                     <ModalRuleImg />
-                     <ModalRuleDescription>
-                        Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt.
-                     </ModalRuleDescription>
-                  </ModalRule>
-
-                  <ModalRuleTitle>3. Lorem Ipsum</ModalRuleTitle>
-                  <ModalRule>
-                     <ModalRuleImg />
-                     <ModalRuleDescription>
-                        Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt.
-                     </ModalRuleDescription>
-                  </ModalRule>
-
-               </ModalContent>
+               <ContentModalForumRules forum={forum} />
             </ModalContainer>
          }
 

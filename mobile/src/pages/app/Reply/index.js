@@ -1,9 +1,24 @@
 import { useRoute } from '@react-navigation/native';
 import React, { useEffect, useState } from 'react';
+import { MaterialIcons } from '@expo/vector-icons';
 import io from 'socket.io-client';
 import api from '../../../services/api';
 import { useAuth } from '../../../contexts/auth';
-import { GiftedChat } from "react-native-gifted-chat";
+import { GiftedChat } from 'react-native-gifted-chat';
+
+import {
+  Container,
+  Cover,
+  MainComment,
+  CoverFilter
+} from './styles';
+
+import {
+  InputContainer,
+   InputBlock,
+   Input,
+   BtnInput,
+} from '../Forums/styles';
 
 const Reply = () => {
 
@@ -11,7 +26,11 @@ const Reply = () => {
   const { comment } = params;
   const { forum_id } = params;
 
+  console.log('comment', comment);
+
   const { token } = useAuth();
+
+  const [input, setInput] = useState('');
   const [page, setPage] = useState(1);
   const [total, setTotal] = useState(0);
   const [replies, setReplies] = useState([]);
@@ -19,7 +38,7 @@ const Reply = () => {
   const [loading, setLoading] = useState(false);
   const [lastMessage, setLastMessage] = useState(0);
 
-  const [socket, setSocket] = useState(io(`http://26.57.205.136:3333/comment`));
+  const [socket, setSocket] = useState(io(`https://little-bird-api.herokuapp.com/comment`));
 
   useEffect(() => {
     socket.emit('join comment', { idRoom: `${forum_id}-${comment._id}` })
@@ -112,17 +131,54 @@ const Reply = () => {
   async function handleSetLiked() {
     //lógica para registrar o like
   }
+
+  async function sendComment() {
+    // Keyboard.dismiss();
+
+    // await api.post(
+    //    `/forum/${forum_id}/comment`,
+    //    { comment_content: input },
+    //    { headers: { Authorization: token } },
+    // );
+    
+    // setInput('');
+ }
+
   return (
-    <GiftedChat
-      messages={replies}
-      user={{
-        _id: 35
-      }}
-      onSend={(props) => sendReply(props[0])}
-      infiniteScroll
-      loadEarlier
-      onLoadEarlier={loadReplies}
-    />
+    <Container>
+      <CoverFilter>
+        <Cover colors={['#E64A00', '#690589']}>
+          <MainComment>{comment.text}</MainComment>
+        </Cover>
+      </CoverFilter>
+
+      <GiftedChat
+        messages={replies}
+        user={{
+          _id: 35
+        }}
+        onSend={(props) => sendReply(props[0])}
+        infiniteScroll
+        loadEarlier
+        onLoadEarlier={loadReplies}
+        renderInputToolbar={() => (
+          <InputContainer>
+          <InputBlock>
+                <Input
+                   placeholder="Participe da conversa"
+                   placeholderTextColor="#4B4B4B"
+                   value={input}
+                   onChangeText={text => setInput(text)}
+                />
+                <BtnInput onPress={sendComment}>
+                   <MaterialIcons name="send" size={20} color="#E9E9E9" />
+                </BtnInput>
+             </InputBlock>
+          </InputContainer>
+       )}
+      />
+
+    </Container>
   )
 }
 
