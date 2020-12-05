@@ -1344,6 +1344,12 @@ paths:
           name: page
           required: true
           description: Paginação dos fóruns
+        - schema:
+            type: string
+          in: header
+          name: Authorization
+          description: Token JWT do usuário
+          required: true
     parameters:
       - schema:
           type: integer
@@ -2693,6 +2699,12 @@ paths:
           in: query
           name: lastMessage
           description: Última mensagem recebida na primeira busca
+          required: true
+        - schema:
+            type: string
+          in: header
+          name: Authorization
+          description: Token JWT do usuário
           required: true
   /user/email:
     get:
