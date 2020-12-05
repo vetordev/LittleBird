@@ -1,7 +1,7 @@
 openapi: 3.0.0
 info:
   title: Little Bird API
-  version: '1.0.0-alpha'
+  version: 1.0.0-alpha
   description: API Restful do aplicativo Little Bird
   contact:
     name: Vitor da SIlva Pires Bezerra
@@ -1283,6 +1283,29 @@ paths:
                         no_like:
                           type: integer
                           format: int64
+                        liked:
+                          type: boolean
+                        reply:
+                          type: object
+                          properties:
+                            reply_id:
+                              type: string
+                            reply_content:
+                              type: string
+                            user_id:
+                              type: object
+                              properties:
+                                username:
+                                  type: string
+                                user_img_id:
+                                  type: object
+                                  properties:
+                                    user_img_id:
+                                      type: string
+                                    img_url:
+                                      type: string
+                                publi_date:
+                                  type: string
               examples:
                 Exemplo de fórum:
                   value:
@@ -2644,6 +2667,29 @@ paths:
                           type: string
                         no_like:
                           type: integer
+                        liked:
+                          type: boolean
+                        reply:
+                          type: object
+                          properties:
+                            reply_id:
+                              type: string
+                            reply_content:
+                              type: string
+                            user_id:
+                              type: object
+                              properties:
+                                username:
+                                  type: string
+                                user_img_id:
+                                  type: object
+                                  properties:
+                                    user_img_id:
+                                      type: string
+                                    img_url:
+                                      type: string
+                                publi_date:
+                                  type: string
               examples:
                 Exemplo de comentários:
                   value:
