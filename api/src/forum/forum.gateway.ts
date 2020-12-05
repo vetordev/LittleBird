@@ -12,10 +12,11 @@ class Message {
   user_id: number;
   comment_id: number;
   comment_content: string;
+  publi_date: string;
 };
 
 @Injectable()
-@WebSocketGateway(3001, { namespace: '/forum' })
+@WebSocketGateway({ namespace: '/forum' })
 export class ForumGateway implements OnGatewayInit, OnGatewayConnection, OnGatewayDisconnect {
 
   @WebSocketServer()
@@ -42,30 +43,26 @@ export class ForumGateway implements OnGatewayInit, OnGatewayConnection, OnGatew
 
   @SubscribeMessage('join forum')
   handleJoinForum(@ConnectedSocket() client: Socket, @MessageBody() data: HandleJoinForumDto): void {
-    client.join(data.nameRoom);
-
+    client.join(data.idRoom);
   };
 
   @SubscribeMessage('leave forum')
   handleLeaveForum(@ConnectedSocket() client: Socket, @MessageBody() data: HandleLeaveForumDto): void {
-    client.leave(data.nameRoom);
+    client.leave(data.idRoom);
   };
 
   async handleNewMessage(message: Message): Promise<void> {
-    const forum = await this.forumRepository.createQueryBuilder('forum')
-      .select(['forum.title'])
-      .where('forum.forum_id = :forum_id', { forum_id: message.forum_id })
+
+    const user = await this.userRepository.createQueryBuilder('tb_user')
+      .select(['tb_user.user_id', 'tb_user.username', 'user_img'])
+      .innerJoin('tb_user.user_img_id', 'user_img')
+      .where('tb_user.user_id = :user_id', { user_id: message.user_id })
       .getOne();
 
-    const user = await this.userRepository.createQueryBuilder('user')
-      .select(['user.user_id', 'user.username', 'user_img'])
-      .innerJoin('user.user_img_id', 'user_img')
-      .where('user.user_id = :user_id', { user_id: message.user_id })
-      .getOne();
-
-    this.wss.to(forum.title).emit('new message', {
+    this.wss.to(String(message.forum_id)).emit('new message', {
       comment_id: message.comment_id,
       comment_content: message.comment_content,
+      publi_date: message.publi_date,
       user_id: user,
       no_like: 0
     });

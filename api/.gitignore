@@ -35,4 +35,5 @@ lerna-debug.log*
 
 #
 *.html
-
+.env
+.env.testing

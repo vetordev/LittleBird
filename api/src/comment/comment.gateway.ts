@@ -14,7 +14,7 @@ class Message {
   forum: string;
 }
 
-@WebSocketGateway(3001, { namespace: '/comment' })
+@WebSocketGateway({ namespace: '/comment' })
 export class CommentGateway implements OnGatewayInit, OnGatewayConnection, OnGatewayDisconnect {
 
   @WebSocketServer()
@@ -40,20 +40,21 @@ export class CommentGateway implements OnGatewayInit, OnGatewayConnection, OnGat
 
   @SubscribeMessage('join comment')
   handleJoinComment(@ConnectedSocket() client: Socket, @MessageBody() data: HandleJoinCommentDto): void {
-    //comment room = nameForum - comment_id
-    client.join(data.nameRoom);
+    //comment room = forum_id-comment_id
+    client.join(data.idRoom);
   };
 
   @SubscribeMessage('leave comment')
   handleLeaveComment(@ConnectedSocket() client: Socket, @MessageBody() data: HandleLeaveCommentDto): void {
-    client.leave(data.nameRoom);
+    client.leave(data.idRoom);
   };
 
   async handleNewMessage(message: Message): Promise<void> {
 
-    const user = await this.userRepository.createQueryBuilder('user')
-    .select(['user.user_id', 'user.username', 'user_img'])
-    .innerJoin('user.user_img_id', 'user_img')
+    const user = await this.userRepository.createQueryBuilder('tb_user')
+    .select(['tb_user.user_id', 'tb_user.username', 'user_img'])
+    .innerJoin('tb_user.user_img_id', 'user_img')
+    .where('tb_user.user_id = :user_id', { user_id: message.user_id })
     .getOne();
 
     this.wss.to(`${message.forum}-${message.comment_id}`).emit('new message', {

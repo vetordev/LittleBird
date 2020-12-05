@@ -38,6 +38,9 @@ export class GetCommentsByForumDto {
 export class QueryPageDto {
   @IsString() @IsNotEmpty()
   page: number;
+
+  @IsString() @IsNotEmpty()
+  lastMessage: number;
 };
 
 export class CreateReplyQueryDto {
@@ -46,9 +49,9 @@ export class CreateReplyQueryDto {
 }
 
 export class HandleJoinCommentDto {
-  nameRoom: string;
+  idRoom: string;
 };
 
 export class HandleLeaveCommentDto {
-  nameRoom: string;
+  idRoom: string;
 };
