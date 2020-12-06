@@ -115,12 +115,17 @@ describe('Comment', () => {
       await getConnection().createQueryBuilder().insert().into('reply').values(reply).execute();
       await getConnection().createQueryBuilder().insert().into('reply').values(reply_2).execute();
 
+      await getConnection().createQueryBuilder().insert().into('like_comment').values({ like_comment_id: 1, comment_id: 3, user_id: 1}).execute();
+
+      const response = await request(app.getHttpServer()).post('/auth/login').send({ email: 'carlosboavida@gm.com', user_pass: '123vidaboa' });
+      token = response.body.token;
     });
 
     it('> GET /comment/forum/:forum_id Deve retornar os comentários do forum', async () => {
       const forum_id = 1;
       const response = await request(app.getHttpServer())
         .get(`/comment/forum/${forum_id}?page=1&lastMessage=3`)
+        .set('Authorization', `Bearer ${token}`);
 
       expect(response.status).toBe(200);
       expect(response.header['x-total-count']).toBe("3");
@@ -134,6 +139,7 @@ describe('Comment', () => {
             img_url: expect.any(String)
           },
         },
+        liked: expect.any(Boolean),
         comment_content: expect.any(String),
         publi_date: expect.any(String),
         no_like: expect.any(Number),
@@ -148,7 +154,7 @@ describe('Comment', () => {
               img_url: expect.any(String)
             },
           },
-          publi_date: expect.any(String)
+          publi_date: expect.any(String),
         }
       }));
     });
@@ -156,6 +162,7 @@ describe('Comment', () => {
       const forum_id = 2;
       const response = await request(app.getHttpServer())
         .get(`/comment/forum/${forum_id}?page=1&lastMessage=0`)
+        .set('Authorization', `Bearer ${token}`);
 
       expect(response.status).toBe(404);
       expect(response.body).toEqual(expect.objectContaining({

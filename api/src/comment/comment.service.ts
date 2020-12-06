@@ -58,7 +58,7 @@ export class CommentService {
 
   };
 
-  async getCommentsByForum(response: Response, forum_id: number, page: number, lastMessage: number) {
+  async getCommentsByForum(response: Response, user_id: number, forum_id: number, page: number, lastMessage: number) {
 
     let diffTotalLast;
 
@@ -113,6 +113,18 @@ export class CommentService {
         comments[i].reply = reply;
       } else {
         comments[i].reply = null;
+      }
+
+      const comment_like = await this.likeCommentRepository.createQueryBuilder('like_comment')
+      .select(['like_comment.like_comment_id'])
+      .where('like_comment.comment_id = :comment_id', { comment_id: comments[i].comment_id })
+      .andWhere('like_comment.user_id = :user_id', { user_id })
+      .getOne();
+
+      comments[i].liked = null;
+
+      if (comment_like) {
+        comments[i].liked = true;
       }
     }
 
