@@ -1,10 +1,14 @@
 import styled from 'styled-components/native';
 
+export const Container = styled.View`
+   padding: 0 25px;
+   width: 100%;
+`;
+
 export const MessageContainer = styled.View`
-   margin-bottom: ${props => props.userAmI ? 7 : 0 }px;
+   margin-bottom: ${props => props.userAmI ? 7 : 7 }px;
    width: 100%;
    flex-direction: ${props => props.userAmI ? 'row-reverse' : 'row'};
-   padding: 0 25px;
 `;
 
 export const MessageHeader = styled.View`
@@ -72,4 +76,20 @@ export const TextBtnMessageDetails = styled.Text`
    font-size: 18px;
    color: #787878;
    letter-spacing: 1.5px;
+`;
+
+export const ReplyContainer = styled.View`
+   border-left-color: #BE5320;
+   border-left-width: 3px;
+   padding-left: 10px;
+   margin-left: 30px;
+   max-width: 60%;
+`;
+
+export const ReplyNotice = styled.Text`
+   align-self: flex-end;
+   font-family: Ubuntu_400Regular;
+   color: #B8B8B8;
+   font-size: 13px;
+   margin-top: 7px;
 `;

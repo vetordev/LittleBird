@@ -83,7 +83,7 @@ const Settings = () => {
   function sendEmail() {
     MailComposer.composeAsync({
       subject: '',
-      recipients: ['heyvitoria.lopes@gmail.com'],
+      recipients: ['littlebirdapp@gmail.com'],
       body: ''
     })
   }

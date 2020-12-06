@@ -3,7 +3,6 @@ import Constants from 'expo-constants';
 
 export const Container = styled.View`
    flex: 1;
-   background: #f00;
 `;
 
 export const Header = styled.View`
@@ -84,6 +83,11 @@ export const Footer = styled.View`
    padding: 0 15px 19px;
 `;
 
+export const InputContainer = styled.View`
+   flex: 1;
+   background-color: #121212;
+`;
+
 export const InputBlock = styled.View`
    background: #212121;
    flex-direction: row;
@@ -91,7 +95,7 @@ export const InputBlock = styled.View`
    align-items: center;
    padding: 7px;
    border-radius: 19px;
-   margin: 0 10px 10px;
+   margin: 0px 10px 50px;
 `;
 
 export const Input = styled.TextInput`
@@ -112,65 +116,16 @@ export const BtnInput = styled.TouchableOpacity`
    align-items: center;
 `;
 
-export const ModalTitle = styled.Text`
-   font-family: Ubuntu_700Bold;
-   color: #E9E9E9;
-   font-size: 21px;
-   margin-bottom: 22px;
-`;
-
-export const ModalDescription = styled.Text`
-   font-family: Nunito_400Regular;
-   font-size: 15px;
-   color: #B8B8B8;
-   margin-bottom: 22px;
-`;
-
-export const ModalContent = styled.View`
-   width: 100%;
-`;
-
-export const ModalSubtitle = styled.View`
-   border-bottom-width: 3px;
-   border-color: #01C24E;
-   align-self: flex-start;
-   margin-bottom: 7px;
-`;
-
-export const ModalSubtitleText = styled.Text`
-   font-family: Ubuntu_400Regular;
-   color: #E9E9E9;
-   font-size: 18px;
-`;
-
-export const ModalRuleTitle = styled.Text`
-
-   margin-top: 11px;
-   font-family: Nunito_700Bold;
-   font-size: 17px;
-   color: #F6F6F6;
-   margin-bottom: 8px;
-`;
-
-export const ModalRule = styled.View`
-   flex-direction: row;
+export const LoadEarlierBtnContainer = styled.View`
    align-items: center;
-   justify-content: space-around;
+   margin-bottom: 30px;
 `;
 
-export const ModalRuleImg = styled.Image`
-   width: 70px;
-   height: 70px;
-   background: #f0f;
-   border-radius: 40px;
-   margin-right: 3.5px;
-`;
-
-export const ModalRuleDescription = styled.Text`
-   font-family: Ubuntu_400Regular;
-   color: #B8B8B8;
-   font-size: 13px;
-   flex: 1;
-   margin-left: 3.5px;
-   line-height: 17px;
+export const LoadEarlierBtn = styled.TouchableOpacity`
+   width: 40px;
+   height: 40px;
+   background-color: #444343;
+   border-radius: 20px;
+   justify-content: center;
+   align-items: center;
 `;

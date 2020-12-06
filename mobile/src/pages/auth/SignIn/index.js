@@ -18,7 +18,7 @@ const SignIn = () => {
   const [displayModal, setModalDisplay] = useState(false);
 
   const route = useRoute();
-  const email = route.params.data.email;
+  const routeParams = route.params.resData;
   const formRef = useRef(null);
   const { signIn, loadingAuth } = useAuth();
 
@@ -39,7 +39,7 @@ const SignIn = () => {
       formRef.current.setErrors({});
 
       const user = {
-        email,
+        email: routeParams.email,
         password: data.password,
       }
 
@@ -76,7 +76,7 @@ const SignIn = () => {
       }
       <Container>
         <StatusBar style="light" backgroundColor="#690589" />
-        <Title>Bem-vinde de volta, bolinhorosa!</Title>
+        <Title>Bem-vinde de volta, { routeParams.username }!</Title>
         <Form 
           style={{ width: '100%', alignItems: 'center' }} 
           ref={formRef} 

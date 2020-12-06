@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Feather, MaterialIcons } from '@expo/vector-icons';
+import AsyncStorage from '@react-native-community/async-storage';
 import { View } from 'react-native';
 import { useNavigation, useRoute } from '@react-navigation/native';
 import HTMLView from 'react-native-htmlview';
@@ -30,20 +31,43 @@ import {
 
 const Articles = () => {
    const [article, setArticle] = useState({});
+   const [completedArticle, setCompletedArticle] = useState({});
    const [recommendations, setRecommendations] = useState([]);
    const [themes, setThemes] = useState([]);
    const [liked, setLiked] = useState(false);
    const [saved, setSaved] = useState(false);
 
    const navigation = useNavigation();
-   const route = useRoute();
-   const { article_id } = route.params;
    const { token } = useAuth();
+
+   const route = useRoute();
+   const { articleParam } = route.params;
+   const { article_id } = articleParam.article;
 
    // const articleTxt = '<t>Lorem ipsum dolor sit amet, <marker1>consectetur adipiscing elit</marker1>, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.<br>Ut enim ad minim veniam, quis nostrud <marker2>exercitation</marker2> ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in <marker3>reprehenderit in voluptate</marker3> velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</t>'
 
    function openWebView(url) {
       navigation.navigate('Webview', { link: url });
+   }
+
+   async function handleSetSaved() {
+
+      if (!saved) {
+         const savedArticles = await AsyncStorage.getItem('@LittleBird:articles');
+
+         if (savedArticles) {
+            await AsyncStorage.setItem('@LittleBird:articles', JSON.stringify([... JSON.parse(savedArticles), completedArticle]));
+         } else {
+            await AsyncStorage.setItem('@LittleBird:articles', JSON.stringify([completedArticle]));
+         }
+
+         setSaved(true);
+      } else {
+         AsyncStorage.removeItem('@LittleBird:articles');
+
+         setSaved(false);
+      }
+
    }
 
    async function handleSetLiked() {
@@ -74,8 +98,10 @@ const Articles = () => {
    }
 
    useEffect(() => {
+      // setArticle_Id(articleParam.article_id);
+
       async function getContent() {
-         const responseArticle = await api.get(`article/${article_id}`);
+         // const responseArticle = await api.get(`article/${article_id}`);
          const responseArticlesLiked = await api.get(`/article/user/like?page=1`, {
             headers: {
                Authorization: token
@@ -88,9 +114,10 @@ const Articles = () => {
             : ''
          });
 
-         setArticle(responseArticle.data.article);
-         setRecommendations(responseArticle.data.recommendations);
-         setThemes(responseArticle.data.themes);
+         setCompletedArticle(articleParam);
+         setArticle(articleParam.article);
+         setRecommendations(articleParam.recommendations);
+         setThemes(articleParam.themes);
       }
 
       getContent();
@@ -107,7 +134,7 @@ const Articles = () => {
                   <Option onPress={handleSetLiked}>
                      <MaterialIcons name={liked ? 'favorite' : 'favorite-border'} size={20} color={liked ? '#DA2243' : '#F6F6F6'} />
                   </Option>
-                  <Option onPress={() => setSaved(saved ? false : true)}>
+                  <Option onPress={handleSetSaved}>
                      <MaterialIcons name={saved ? 'bookmark' : 'bookmark-border'} size={20} color="#F6F6F6" />
                   </Option>
                </Options>

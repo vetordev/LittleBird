@@ -85,35 +85,42 @@ export const AuthProvider = ({ children }) => {
    }
 
    function signUp(user, userInterests) {
+      user.id = 2;
+      console.log(user);
+      console.log(userInterests);
 
-         api.post('user', user, {
-            onUploadProgress: () => {
-               setLoadingAuth(true);
+      api.post('user', user, {
+         onUploadProgress: () => {
+            setLoadingAuth(true);
+         }
+      })
+      .then((responseUser) => {
+         console.log('Tudo pronto!');
+         console.log(responseUser.data.token);
+
+         setToken('Bearer ' + responseUser.data.token);
+
+         api.post('interest', { themes: String(userInterests) }, {
+            headers: { 
+               Authorization: 'Bearer ' + responseUser.data.token 
             }
-         })
-         .then((responseUser) => {
-            console.log('Tudo pronto!');
-            console.log(responseUser.data.token);
-
-            setToken('Bearer ' + responseUser.data.token);
-
-            api.post('interest', { themes: String(userInterests) }, {
-               headers: { 
-                  Authorization: 'Bearer ' + responseUser.data.token 
-               }
-            }) 
-            .then(async () => {
-               setUser(user);   
-               setLoadingAuth(false);
-   
-               await AsyncStorage.setItem('@LittleBird:user', JSON.stringify(user));
-               await AsyncStorage.setItem('@LittleBird:token', 'Bearer ' + responseUser.data.token);
-            })
-         })
-         .catch ((error) => { 
-            console.log('Ocorreu um erro no cadastro de usuário: ', error);
-            // setLoadingAuth(false);
          }) 
+         .then(async () => {
+            user.user_id = responseUser.data.user_id;
+
+            setUser(user);   
+            setLoadingAuth(false);
+
+            await AsyncStorage.setItem('@LittleBird:user', JSON.stringify(user));
+            await AsyncStorage.setItem('@LittleBird:token', 'Bearer ' + responseUser.data.token);
+         }).catch((error) => {
+            console.log('Ocorreu um erro no cadastro de interesses: ', error);   
+         })
+      })
+      .catch ((error) => { 
+         console.log('Ocorreu um erro no cadastro: ', error);
+         setLoadingAuth(false);
+      }) 
    }
 
    function signOut() {

@@ -17,10 +17,10 @@ import Interests from '../pages/app/Interests';
 import SavedItems from '../pages/app/SavedItems';
 import EditProfile from '../pages/app/EditProfile';
 import Forums from '../pages/app/Forums';
+import Reply from '../pages/app/Reply';
 import Report from '../pages/app/Report';
 
 import BottomTabBar from '../components/BottomTabBar';
-import HeaderBtnBack from '../components/HeaderBtnBack';
 
 const AppStack = createStackNavigator();
 const AppBottom = createBottomTabNavigator();
@@ -30,7 +30,6 @@ const AppRoutes = () => (
       screenOptions={{ 
          cardStyle: { backgroundColor: '#121212' },
          headerShown: false
-         // header: props => <HeaderBtnBack {... props} />
       }}>
       <AppStack.Screen name="Home" component={BottomRoutes} />
       <AppBottom.Screen name="Webview" component={Webview} options={{ headerShown: true, headerTitle: '' }} />
@@ -44,6 +43,7 @@ const AppRoutes = () => (
       <AppBottom.Screen name="SavedItems" component={SavedItems} />
       <AppBottom.Screen name="EditProfile" component={EditProfile} />
       <AppBottom.Screen name="Forums" component={Forums} />
+      <AppBottom.Screen name="Reply" component={Reply} />
       <AppBottom.Screen name="Report" component={Report} />
    </AppStack.Navigator>
 );

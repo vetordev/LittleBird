@@ -37,9 +37,11 @@ const HomeAuth = () => {
       });
 
       formRef.current.setErrors({});
+      
+      const resData = response.data;
 
-      if (response.data.email) {
-        navigation.navigate('SignIn', { data });
+      if (resData.email) {
+        navigation.navigate('SignIn', { resData });
         return;
       }
   

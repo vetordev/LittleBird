@@ -43,9 +43,11 @@ const Home = () => {
   const { navigate } = useNavigation();
   const isFocused = useIsFocused();
 
+  async function navigateToArticles(article_id) {
+    const responseArticle = await api.get(`article/${article_id}`);
 
-  function navigateToArticles(article_id) {
-    navigate('Articles', { article_id });
+    articleParam = responseArticle.data;
+    navigate('Articles', { articleParam });
   }
 
   function navigateToForums(forum_id, forum_title) {
@@ -77,7 +79,7 @@ const Home = () => {
     setLoadingRecentContent(false);
   }
 
-  useEffect(() => {
+  useEffect(() => {    
     async function getContent() {
       loadRecentContent();
 
