@@ -88,13 +88,21 @@ describe('Forum', () => {
       await getConnection().createQueryBuilder().insert().into('tb_comment').values(comment).execute();
       await getConnection().createQueryBuilder().insert().into('reply').values(reply).execute();
       await getConnection().createQueryBuilder().insert().into('reply').values(reply_2).execute();
+
+      await getConnection().createQueryBuilder().insert().into('like_comment').values({ like_comment_id: 1, comment_id: 1, user_id: 1}).execute();
       // await getConnection().createQueryBuilder().insert().into('tb_comment').values(comment2).execute();
+
+      const response = await request(app.getHttpServer()).post('/auth/login').send({ email: 'carlosboavida@gm.com', user_pass: '123vidaboa' });
+      token = response.body.token;
     });
 
-    it('> GET /forum/:forum_id/comment Deve retonar um fórum se seus comentários', async () => {
+    it('> GET /forum/:forum_id/comment Deve retonar um fórum e seus comentários', async () => {
+
       const forum_id = 1;
+
       const response = await request(app.getHttpServer())
-        .get(`/forum/${forum_id}/comment?page=1`);
+        .get(`/forum/${forum_id}/comment?page=1`)
+        .set('Authorization', `Bearer ${token}`);
 
       expect(response.status).toBe(200);
       expect(response.header['x-total-count']).toBe("1");
@@ -132,6 +140,7 @@ describe('Forum', () => {
             comment_content: expect.any(String),
             publi_date: expect.any(String),
             no_like: expect.any(Number),
+            liked: expect.any(Boolean),
             reply: {
               reply_id: expect.any(Number),
               reply_content: expect.any(String),
@@ -155,6 +164,7 @@ describe('Forum', () => {
 
       const response = await request(app.getHttpServer())
         .get(`/forum/${forum_id}/comment?page=1`)
+        .set('Authorization', `Bearer ${token}`);
 
       expect(response.status).toBe(404);
       expect(response.body).toEqual(expect.objectContaining({

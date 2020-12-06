@@ -3,7 +3,6 @@ import { ForumService } from './forum.service';
 import { GetForumByThemeDto, GetForumAndCommentDto, CreateLikeDto, CreateCommentParamDto, CreateCommentBodyDto, RemoveCommentDto, RemoveLikeDto, QueryPageDto } from './forum.dto';
 import { JwtAuthGuard } from '../auth/jwt/jwt-auth.guard';
 import { QueryFailedExceptionFilter } from './http-exception.filter';
-import { response } from 'express';
 
 @Controller('forum')
 export class ForumController {
@@ -26,8 +25,9 @@ export class ForumController {
   };
 
   @Get(':forum_id/comment')
-  getForumAndComments(@Res() response, @Param() params: GetForumAndCommentDto, @Query() query: QueryPageDto) {
-    return this.forumService.getForumAndComments(response, params.forum_id, query.page);
+  @UseGuards(JwtAuthGuard)
+  getForumAndComments(@Res() response, @Req() request,  @Param() params: GetForumAndCommentDto, @Query() query: QueryPageDto) {
+    return this.forumService.getForumAndComments(response, request.user.user_id, params.forum_id, query.page);
   };
 
   @Post(':forum_id/comment')

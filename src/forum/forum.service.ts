@@ -9,6 +9,7 @@ import { LikeForum } from './entity/like-forum.entity';
 import { ForumGateway } from "./forum.gateway";
 import { Theme } from '../theme/entity/theme.entity';
 import { Reply } from '../comment/entity/reply.entity';
+import { LikeComment } from "../comment/entity/like-comment.entity";
 
 @Injectable()
 export class ForumService {
@@ -20,6 +21,7 @@ export class ForumService {
     @InjectRepository(Theme) private readonly themeRepository: Repository<Theme>,
     @InjectRepository(LikeForum) private readonly likeForumRepository: Repository<LikeForum>,
     @InjectRepository(Reply) private readonly replyRepository: Repository<Reply>,
+    @InjectRepository(LikeComment) private readonly likeCommentRepository: Repository<LikeComment>,
     private readonly forumGateway: ForumGateway
   ) {}
 
@@ -95,8 +97,8 @@ export class ForumService {
     return response.status(200).header('X-Total-Count', count).json(foruns);
 
   };
-
-  async getForumAndComments(response: Response, forum_id: number, page: number): Promise<Response | void> {
+  //TODO: Ajustar loading de Replies
+  async getForumAndComments(response: Response, user_id: number, forum_id: number, page: number): Promise<Response | void> {
 
     const forum = await this.forumRepository.createQueryBuilder('forum')
       .select(['forum', 'forum_img'])
@@ -125,20 +127,37 @@ export class ForumService {
       return comment;
     });
 
-    comments.map(async (comment) => {
+    for (let i = 0; i < comments.length; i++) {
+
       const reply = await this.replyRepository.createQueryBuilder('reply')
         .select(['reply', 'user.user_id', 'user.username', 'user_img'])
         .innerJoin('reply.user_id', 'user')
         .innerJoin('user.user_img_id', 'user_img')
-        .where('reply.comment_id = :comment_id', { comment_id: comment.comment_id })
+        .where('reply.comment_id = :comment_id', { comment_id: comments[i].comment_id })
         .orderBy('reply.reply_id', 'DESC')
         .getOne();
 
-      delete reply.comment_id;
+      if (reply) {
+        delete reply.comment_id;
+        comments[i].reply = reply;
+      } else {
+        comments[i].reply = null;
+      }
 
-      comment.reply = reply;
-      return comment;
-    });
+      const comment_like = await this.likeCommentRepository.createQueryBuilder('like_comment')
+        .select(['like_comment.like_comment_id'])
+        .where('like_comment.comment_id = :comment_id', { comment_id: comments[i].comment_id })
+        .andWhere('like_comment.user_id = :user_id', { user_id })
+        .getOne();
+
+      comments[i].liked = null;
+
+      if (comment_like) {
+        comments[i].liked = true;
+      }
+      // console.log(comments[i])
+
+    }
 
     let themes: any = await this.themeForumRepository.createQueryBuilder('theme_forum')
       .select(['theme_forum', 'theme'])
