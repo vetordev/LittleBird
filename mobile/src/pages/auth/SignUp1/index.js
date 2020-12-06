@@ -40,7 +40,7 @@ const SignUp1 = () => {
     }
     if (moment(userBirth, 'DD/MM/YYYY').isValid()) {
       setDateError(null);
-      const finalDate = moment(userBirth, 'DD/MM/YYYY').format('DD-MM-YYYY');
+      const finalDate = moment(userBirth, 'DD/MM/YYYY').format('YYYY-MM-DD');
       return finalDate;
 
     } else {

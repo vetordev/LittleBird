@@ -3,7 +3,6 @@ import Constants from 'expo-constants';
 
 export const Container = styled.View`
    flex: 1;
-   background: #f00;
 `;
 
 export const Header = styled.View`
@@ -113,6 +112,20 @@ export const BtnInput = styled.TouchableOpacity`
    background: #BE5320;
    border-radius: 18px;
    padding: 10px;
+   justify-content: center;
+   align-items: center;
+`;
+
+export const LoadEarlierBtnContainer = styled.View`
+   align-items: center;
+   margin-bottom: 30px;
+`;
+
+export const LoadEarlierBtn = styled.TouchableOpacity`
+   width: 40px;
+   height: 40px;
+   background-color: #444343;
+   border-radius: 20px;
    justify-content: center;
    align-items: center;
 `;

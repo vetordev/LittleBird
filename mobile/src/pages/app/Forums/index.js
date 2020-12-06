@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { View, Keyboard, ActivityIndicator } from 'react-native';
-import { MaterialIcons } from '@expo/vector-icons';
+import { MaterialIcons, Feather } from '@expo/vector-icons';
 import { useRoute, useNavigation, useIsFocused } from '@react-navigation/native';
 import io from 'socket.io-client';
 import { GiftedChat } from 'react-native-gifted-chat';
@@ -10,7 +10,6 @@ import ChatMessage from '../../../components/ChatMessage';
 import ModalContainer from '../../../components/ModalContainer';
 import ContentModalForumRules from '../../../components/ContentModalForumRules';
 import Reply from '../Reply/index';
-
 
 import api from '../../../services/api';
 import { useAuth } from '../../../contexts/auth';
@@ -29,6 +28,8 @@ import {
    HeaderBtnInfo,
    InfoIcon,
    Desc,
+   LoadEarlierBtnContainer,
+   LoadEarlierBtn,
 } from './styles';
 
 const Forums = () => {
@@ -118,7 +119,11 @@ const Forums = () => {
 
       setLoading(true);
 
-      const responseForum = await api.get(`forum/${forum_id}/comment?page=${1}`);
+      const responseForum = await api.get(`forum/${forum_id}/comment?page=1`, {
+         headers: {
+            Authorization: token
+         }
+      });
 
       console.log(responseForum.data);
       setForum(responseForum.data);
@@ -158,7 +163,12 @@ const Forums = () => {
 
       setLoading(true);
 
-      const responseForum = await api.get(`/comment/forum/${forum_id}?page=${page}&lastMessage=${lastMessage._id}`);
+      const responseForum = await api.get(`/comment/forum/${forum_id}?page=${page}&lastMessage=${lastMessage._id}`, {
+         headers: {
+            Authorization: token
+         }
+      });
+      
       setTotal(responseForum.headers['x-total-count']);
       setPage(page + 1);
 
@@ -233,7 +243,7 @@ const Forums = () => {
    if (forum.forum_img_id === undefined) return false;
 
    return (
-      <View style={{ flex: 1 }}>
+      <>
          { displayModal &&
             <ModalContainer
                onPress={() => setModalDisplay(false)}
@@ -288,7 +298,7 @@ const Forums = () => {
                      </InputBlock>
                   </InputContainer>
                )}
-               textInputStyle={{   marginBottom: 10   }}
+               textInputStyle={{ marginBottom: 10 }}
                renderChatFooter={() => {
                   loading &&
                   <ActivityIndicator size="small" color="#E9E9E9" />
@@ -300,11 +310,18 @@ const Forums = () => {
                infiniteScroll
                loadEarlier
                onLoadEarlier={loadComments}
+               renderLoadEarlier={() => (
+                  <LoadEarlierBtnContainer>
+                     <LoadEarlierBtn>
+                        <MaterialIcons name="refresh" color="#BE5320" size={28} />
+                     </LoadEarlierBtn>
+                  </LoadEarlierBtnContainer>
+               )}
             />
          </Container>
 
          <View style={{ marginTop: 20 }} />
-      </View>
+      </>
    );
 }
 

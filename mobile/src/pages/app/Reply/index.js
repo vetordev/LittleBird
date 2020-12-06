@@ -1,23 +1,35 @@
-import { useRoute } from '@react-navigation/native';
 import React, { useEffect, useState } from 'react';
+import { useRoute } from '@react-navigation/native';
+import { View, Keyboard, ActivityIndicator } from 'react-native';
 import { MaterialIcons } from '@expo/vector-icons';
 import io from 'socket.io-client';
+import { GiftedChat } from 'react-native-gifted-chat';
+
 import api from '../../../services/api';
 import { useAuth } from '../../../contexts/auth';
-import { GiftedChat } from 'react-native-gifted-chat';
+
+import ChatMessage from '../../../components/ChatMessage';
+import HeaderBtnBack from '../../../components/HeaderBtnBack';
 
 import {
   Container,
   Cover,
   MainComment,
+  CommentAuthor,
   CoverFilter
 } from './styles';
 
 import {
   InputContainer,
-   InputBlock,
-   Input,
-   BtnInput,
+  InputBlock,
+  Input,
+  BtnInput,
+  Desc,
+  Options,
+  Option,
+  Header,
+  LoadEarlierBtnContainer,
+  LoadEarlierBtn,
 } from '../Forums/styles';
 
 const Reply = () => {
@@ -30,6 +42,7 @@ const Reply = () => {
 
   const { token } = useAuth();
 
+  const [liked, setLiked] = useState(false);
   const [input, setInput] = useState('');
   const [page, setPage] = useState(1);
   const [total, setTotal] = useState(0);
@@ -133,24 +146,41 @@ const Reply = () => {
   }
 
   async function sendComment() {
-    // Keyboard.dismiss();
+    Keyboard.dismiss();
 
-    // await api.post(
-    //    `/forum/${forum_id}/comment`,
-    //    { comment_content: input },
-    //    { headers: { Authorization: token } },
-    // );
+    console.log(comment._id, input);
+
+    await api.post(
+      `/comment/${comment._id}/reply?forum=${forum_id}`,
+      { reply_content: input },
+      { headers: { Authorization: token } },
+    );
     
-    // setInput('');
+    setInput('');
  }
 
   return (
-    <Container>
+    <Container showsVerticalScrollIndicator={false}>
+
+      <Header>
+        <HeaderBtnBack />
+      </Header>
+
       <CoverFilter>
-        <Cover colors={['#E64A00', '#690589']}>
+        <Cover colors={['#E64A0060', '#69058970']}>
           <MainComment>{comment.text}</MainComment>
+          <CommentAuthor>- {comment.user.name}</CommentAuthor>
         </Cover>
       </CoverFilter>
+
+      <Desc>
+        <Options>
+          <Option onPress={handleSetLiked}>
+            <MaterialIcons name={liked ? 'favorite' : 'favorite-border'} size={20} color={liked ? '#DA2243' : '#F6F6F6'} />
+          </Option>
+        </Options>
+
+      </Desc>
 
       <GiftedChat
         messages={replies}
@@ -164,20 +194,37 @@ const Reply = () => {
         renderInputToolbar={() => (
           <InputContainer>
           <InputBlock>
-                <Input
-                   placeholder="Participe da conversa"
-                   placeholderTextColor="#4B4B4B"
-                   value={input}
-                   onChangeText={text => setInput(text)}
-                />
-                <BtnInput onPress={sendComment}>
-                   <MaterialIcons name="send" size={20} color="#E9E9E9" />
-                </BtnInput>
-             </InputBlock>
+            <Input
+                placeholder="Participe da conversa"
+                placeholderTextColor="#4B4B4B"
+                value={input}
+                onChangeText={text => setInput(text)}
+            />
+            <BtnInput onPress={sendComment}>
+                <MaterialIcons name="send" size={20} color="#E9E9E9" />
+            </BtnInput>
+            </InputBlock>
           </InputContainer>
+       )}
+        textInputStyle={{ marginBottom: 10 }}
+        renderChatFooter={() => {
+          loading &&
+          <ActivityIndicator size="small" color="#E9E9E9" />
+        }}
+        renderBubble={(props) => (
+          <ChatMessage data={props.currentMessage}/>
+        )}
+        renderAvatar={null}
+        renderLoadEarlier={() => (
+          <LoadEarlierBtnContainer>
+             <LoadEarlierBtn>
+                <MaterialIcons name="refresh" color="#BE5320" size={28} />
+             </LoadEarlierBtn>
+          </LoadEarlierBtnContainer>
        )}
       />
 
+      <View style={{ marginTop: 20 }} />
     </Container>
   )
 }

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { TouchableOpacity, View } from 'react-native';
+import { Text, TouchableOpacity, View } from 'react-native';
 import { MaterialIcons } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
 import { Feather } from '@expo/vector-icons';
@@ -8,6 +8,7 @@ import { useAuth } from '../../contexts/auth';
 import { useAvatar } from '../../contexts/useAvatar';
 
 import {
+   Container,
    MessageContainer,
    MessageContent,
    MessageUsername,
@@ -19,6 +20,8 @@ import {
    NumLikes,
    BtnMessageDetails,
    TextBtnMessageDetails,
+   ReplyContainer,
+   ReplyNotice,
 } from './styles';
 
 const ChatMessage = ({ data, goToReplies }) => {
@@ -51,6 +54,7 @@ const ChatMessage = ({ data, goToReplies }) => {
    }, [])
 
    return (
+      <Container>
       <MessageContainer userAmI={userAmI}>
          <TouchableOpacity onPress={goToReplies}>
             <View>
@@ -66,7 +70,7 @@ const ChatMessage = ({ data, goToReplies }) => {
                   <MessageText userAmI={userAmI}>{data.text}</MessageText>
                </MessageContent>
 
-               { !userAmI &&
+               { data.reply && !userAmI &&
                   <LikeContainer>
                      <Like onPress={() => handleLike(data._id)}>
                         <MaterialIcons name={liked ? 'favorite' : 'favorite-border'} size={14} color="#DA2243"/>
@@ -76,7 +80,28 @@ const ChatMessage = ({ data, goToReplies }) => {
                }
             </View>
          </TouchableOpacity>
+         
       </MessageContainer>
+      
+      { data.reply && !userAmI &&
+         <>
+         <ReplyContainer>
+            <MessageHeader userAmI={false}>
+                  <MessageUserAvatar resizeMode="cover" source={{ uri: data.user.avatar/*avatares[user_img - 1].url }}*/}} />
+                  <MessageUsername>{data.user.name}</MessageUsername>
+                  <BtnMessageDetails onPress={navigateToReport}>
+                     <Feather name="flag" color="#787878" />
+                     {/* <TextBtnMessageDetails>...</TextBtnMessageDetails> */}
+                  </BtnMessageDetails>
+               </MessageHeader>
+               <MessageContent userAmI={true}>
+                  <MessageText userAmI={true}>{data.reply.reply_content}</MessageText>
+               </MessageContent>
+         </ReplyContainer>
+         {/* <ReplyNotice>E outras respostas...</ReplyNotice> */}
+         </>
+      }
+      </Container>
    );
 }
 

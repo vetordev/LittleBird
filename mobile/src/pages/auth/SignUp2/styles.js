@@ -72,6 +72,7 @@ export const InterestTitle = styled.Text`
    color: #B8B8B8;
    font-size: 14px;
    font-family: Nunito_700Bold;
+   text-align: center;
 `;
 
 export const LoadInterests = styled.TouchableOpacity`

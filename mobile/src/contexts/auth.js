@@ -113,11 +113,13 @@ export const AuthProvider = ({ children }) => {
 
             await AsyncStorage.setItem('@LittleBird:user', JSON.stringify(user));
             await AsyncStorage.setItem('@LittleBird:token', 'Bearer ' + responseUser.data.token);
+         }).catch((error) => {
+            console.log('Ocorreu um erro no cadastro de interesses: ', error);   
          })
       })
       .catch ((error) => { 
          console.log('Ocorreu um erro no cadastro: ', error);
-         // setLoadingAuth(false);
+         setLoadingAuth(false);
       }) 
    }
 
