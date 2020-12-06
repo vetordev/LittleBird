@@ -15,7 +15,7 @@ export class Article {
 
   @Column({
     type: 'varchar',
-    length: 700
+    length: 1600
   })
   article_content: string;
 
@@ -28,6 +28,12 @@ export class Article {
     type: 'date'
   })
   publi_date: string;
+
+  @Column({
+    type: 'varchar',
+    length: 50
+  })
+  article_author: string;
 
   @OneToOne(type => ArticleImg, {
     onDelete: 'CASCADE',

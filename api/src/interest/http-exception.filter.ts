@@ -9,13 +9,14 @@ export class QueryFailedExceptionFilter implements ExceptionFilter {
     const response = context.getResponse<Response>();
 
     let errorResponse;
-
     if (exception.code == 23503) {
       errorResponse = {
         error: "O theme_id não existe no servidor.",
       };
       response.status(404).json(errorResponse);
-    } else
+    } else {
+      console.log(exception)
       response.status(500).json({ error: "Erro interno no servidor." });
+    }
   }
 }

@@ -3,6 +3,7 @@ import { ArticleService } from './article.service';
 import { GetArticleDto, GetArticlesByThemeDto, CreateArticleLikeDto, DeleteArticleLikeDto, CreateArticleLaterDto, DeleteArticleLaterDto, GetArticlesAndForunsDto, QueryPageDto } from './article.dto';
 import { JwtAuthGuard } from '../auth/jwt/jwt-auth.guard';
 import { QueryFailedExceptionFilter } from './http-exception.filter';
+import { response } from 'express';
 
 @Controller('article')
 export class ArticleController {
@@ -10,20 +11,26 @@ export class ArticleController {
   constructor(private readonly articleService: ArticleService) {}
 
   @Get(':article_id')
+  // @UseFilters(QueryFailedExceptionFilter)
   getArticle(@Res() response, @Param() params: GetArticleDto) {
     return this.articleService.getArticle(response, params.article_id);
   }
 
   @Get()
-  @HttpCode(200)
-  getArticleByLike(@Query() query: QueryPageDto) {
-    return this.articleService.getArticlesByLike(query.page);
+  getArticleByLike(@Res() response, @Query() query: QueryPageDto) {
+    return this.articleService.getArticlesByLike(response, query.page);
   }
 
   @Get('user/like')
   @UseGuards(JwtAuthGuard)
-  getArticlesByUserLike(@Req() request, @Query() query: QueryPageDto) {
-    return this.articleService.getArticlesByUserLike(request.user.user_id, query.page);
+  getArticlesByUserLike(@Res() response, @Req() request, @Query() query: QueryPageDto) {
+    return this.articleService.getArticlesByUserLike(response, request.user.user_id, query.page);
+  }
+
+  @Get('user/later')
+  @UseGuards(JwtAuthGuard)
+  getArticleByUserLater(@Res() response, @Req() request, @Query() query: QueryPageDto) {
+    return this.articleService.getArticlesByUserLater(response, request.user.user_id, query.page);
   }
 
   @Get('theme/:theme_id/like')
@@ -32,19 +39,17 @@ export class ArticleController {
   }
 
   @Post(':article_id/later')
-  @HttpCode(204)
   @UseGuards(JwtAuthGuard)
   @UseFilters(QueryFailedExceptionFilter)
-  createArticleLater(@Req() request, @Param() params: CreateArticleLaterDto) {
-    return this.articleService.createArticleLater(request.user.user_id, params.article_id);
+  createArticleLater(@Res() response, @Req() request, @Param() params: CreateArticleLaterDto) {
+    return this.articleService.createArticleLater(response, request.user.user_id, params.article_id);
   }
 
   @Post(':article_id/like')
-  @HttpCode(204)
   @UseGuards(JwtAuthGuard)
   @UseFilters(QueryFailedExceptionFilter)
-  createArticleLike(@Req() request, @Param() params: CreateArticleLikeDto) {
-    return this.articleService.createArticleLike(request.user.user_id, params.article_id);
+  createArticleLike(@Res() response, @Req() request, @Param() params: CreateArticleLikeDto) {
+    return this.articleService.createArticleLike(response, request.user.user_id, params.article_id);
   }
 
   @Delete(':article_id/like')
@@ -61,7 +66,7 @@ export class ArticleController {
 
   @Get('forum/date')
   @HttpCode(200)
-  getArticlesAndForuns(@Query() query: QueryPageDto) {
-    return this.articleService.getArticlesAndForuns(query.page);
+  getArticlesAndForuns(@Res() response, @Query() query: QueryPageDto) {
+    return this.articleService.getArticlesAndForuns(response, query.page);
   }
 }

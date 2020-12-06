@@ -3,10 +3,21 @@ import { TestingModule, Test } from "@nestjs/testing";
 import { AppModule } from "../src/app.module";
 import request from 'supertest';
 import { CreateUserDto } from "src/user/user.dto";
-import { getConnection } from "typeorm";
+import { getConnection, Repository } from "typeorm";
 
 describe('User', () => {
   let app: INestApplication;
+  let token;
+
+  const user = {
+    email: 'carlosboavida@gm.com',
+    user_img_id: 1,
+    user_pass: '123vidaboa',
+    username: 'carlosboaviida',
+    born_in: '2020-06-15',
+    fullname: 'vitoria da silva'
+  };
+
 
   beforeAll(async () => {
 
@@ -34,13 +45,6 @@ describe('User', () => {
     });
 
     it('> POST /user - Deve criar um usuário', async () => {
-      const user: CreateUserDto = {
-        email: 'carlosboavida@gm.com',
-        user_img_id: 1,
-        user_pass: '123vidaboa',
-        username: 'carlosboaviida',
-        born_in: '2020-06-15'
-      };
 
       const response = await request(app.getHttpServer())
         .post('/user')
@@ -59,7 +63,8 @@ describe('User', () => {
         user_img_id: 1,
         user_pass: '123vidaboa',
         username: 'carlosboavida',
-        born_in: '2020-06-15'
+        born_in: '2020-06-15',
+        fullname: 'vitoria da silva'
       };
 
       const response = await request(app.getHttpServer())
@@ -74,13 +79,13 @@ describe('User', () => {
 
     it('> POST /user Não deve criar um usuário (Foreign Key Error)', async () => {
       const user: CreateUserDto = {
-        email: 'carlosboavidala@gm.com',
+        email: 'carlosboavidaa@gm.com',
         user_img_id: 2,
         user_pass: '123vidaboa',
-        username: 'carlosboavida',
-        born_in: '2020-06-15'
+        username: 'carlosaboavida',
+        born_in: '2020-06-15',
+        fullname: 'vitoria da silva'
       };
-
       const response = await request(app.getHttpServer())
         .post('/user')
         .send(user);
@@ -102,9 +107,10 @@ describe('User', () => {
       await getConnection().createQueryBuilder().insert().into("user_img").values({ user_img_id: 1, img_url: "http://localhost:4456" }).execute();
       await getConnection().createQueryBuilder().insert().into("tb_user").values({ email: 'carlosboavida@gm.com',
                                                                                    user_img_id: 1,
-                                                                                   user_pass: '123vidaboa',
+                                                                                   user_pass: '7f69c888bd3d61f20070fae8781a6b355c549b92e76e2955818eb75563a61b15',
                                                                                    username: 'carlosboaviida',
-                                                                                   born_in: '2020-06-15'
+                                                                                   born_in: '2020-06-15',
+                                                                                   fullname: 'vitoria da silva'
                                                                                    }).execute();
     });
 
@@ -121,6 +127,12 @@ describe('User', () => {
       expect(response.status).toBe(201);
       expect(response.body).toEqual(expect.objectContaining({
         token: expect.any(String),
+        user_id: expect.any(Number),
+        username: expect.any(String),
+        email: expect.any(String),
+        user_img_id: expect.any(Number),
+        fullname: expect.any(String),
+        born_in: expect.any(String)
       }));
 
     });
@@ -143,7 +155,6 @@ describe('User', () => {
 
   describe('Buscar um usuário', () => {
 
-    let token = null;
     beforeAll(async () => {
       await getConnection().dropDatabase()
       await getConnection().synchronize();
@@ -151,9 +162,10 @@ describe('User', () => {
       await getConnection().createQueryBuilder().insert().into("user_img").values({ user_img_id: 1, img_url: "http://localhost:4456" }).execute();
       await getConnection().createQueryBuilder().insert().into("tb_user").values({ email: 'carlosboavida@gm.com',
                                                                                    user_img_id: 1,
-                                                                                   user_pass: '123vidaboa',
+                                                                                   user_pass: '7f69c888bd3d61f20070fae8781a6b355c549b92e76e2955818eb75563a61b15',
                                                                                    username: 'carlosboaviida',
-                                                                                   born_in: '2020-06-15'
+                                                                                   born_in: '2020-06-15',
+                                                                                   fullname: 'vitoria da silva'
                                                                                    }).execute();
 
       const response = await request(app.getHttpServer()).post('/auth/login').send({ email: 'carlosboavida@gm.com', user_pass: '123vidaboa' });
@@ -168,12 +180,14 @@ describe('User', () => {
 
       expect(response.status).toBe(200);
       expect(response.body).toEqual(expect.objectContaining({
+        user_id: expect.any(Number),
         username: expect.any(String),
         email: expect.any(String),
         user_img_id: {
           user_img_id: expect.any(Number),
           img_url: expect.any(String)
-        }
+        },
+        fullname: expect.any(String)
       }));
 
     });
@@ -188,9 +202,36 @@ describe('User', () => {
     });
   });
 
+  describe('Buscar Imagem de Usuário', () => {
+
+    beforeAll(async () => {
+      await getConnection().dropDatabase()
+      await getConnection().synchronize();
+
+      await getConnection().createQueryBuilder().insert().into("user_img").values({ user_img_id: 1, img_url: "http://localhost:4456" }).execute();
+      await getConnection().createQueryBuilder().insert().into("user_img").values({ user_img_id: 2, img_url: "http://localhost:4456" }).execute();
+      await getConnection().createQueryBuilder().insert().into("user_img").values({ user_img_id: 3, img_url: "http://localhost:4456" }).execute();
+      await getConnection().createQueryBuilder().insert().into("user_img").values({ user_img_id: 4, img_url: "http://localhost:4456" }).execute();
+      await getConnection().createQueryBuilder().insert().into("user_img").values({ user_img_id: 5, img_url: "http://localhost:4456" }).execute();
+
+    });
+
+    it('> GET /user/img Deve buscar as imagens de perfil dos usuários', async () => {
+
+      const response = await request(app.getHttpServer())
+        .get('/user/img');
+
+      expect(response.status).toBe(200)
+      expect(response.body[0]).toEqual(expect.objectContaining({
+        user_img_id: expect.any(Number),
+        img_url: expect.any(String)
+      }));
+    });
+
+  });
+
   describe('Alterar um usuário', () => {
 
-    let token = null;
     beforeAll(async () => {
       await getConnection().dropDatabase()
       await getConnection().synchronize();
@@ -198,15 +239,17 @@ describe('User', () => {
       await getConnection().createQueryBuilder().insert().into("user_img").values({ user_img_id: 1, img_url: "http://localhost:4456" }).execute();
       await getConnection().createQueryBuilder().insert().into("tb_user").values({ email: 'carlosboavida@gm.com',
                                                                                    user_img_id: 1,
-                                                                                   user_pass: '123vidaboa',
+                                                                                   user_pass: '7f69c888bd3d61f20070fae8781a6b355c549b92e76e2955818eb75563a61b15',
                                                                                    username: 'carlosboaviida',
-                                                                                   born_in: '2020-06-15'
+                                                                                   born_in: '2020-06-15',
+                                                                                   fullname: 'vitoria da silva'
                                                                                    }).execute();
       await getConnection().createQueryBuilder().insert().into("tb_user").values({ email: 'carlosboalife@gm.com',
                                                                                    user_img_id: 1,
-                                                                                   user_pass: '123vidaboa',
+                                                                                   user_pass: '7f69c888bd3d61f20070fae8781a6b355c549b92e76e2955818eb75563a61b15',
                                                                                    username: 'carlosboavida',
-                                                                                   born_in: '2020-06-15'
+                                                                                   born_in: '2020-06-15',
+                                                                                   fullname: 'vitoria da silva'
                                                                                    }).execute();
 
       const response = await request(app.getHttpServer()).post('/auth/login').send({ email: 'carlosboavida@gm.com', user_pass: '123vidaboa' });
@@ -219,7 +262,8 @@ describe('User', () => {
         email: 'carlosboaalt@gm.com',
         user_img_id: 1,
         username: 'carlosboaal',
-        born_in: '2020-06-17'
+        born_in: '2020-06-17',
+        fullname: 'vitoria lopes'
       };
       const response = await request(app.getHttpServer())
         .put('/user')
@@ -235,7 +279,8 @@ describe('User', () => {
         email: 'carlosboa-alt@gm.com',
         user_img_id: 1,
         username: 'carlosboaaltalt',
-        born_in: '2020-06-17'
+        born_in: '2020-06-17',
+        fullname: 'vitoria da silva'
       };
       const response = await request(app.getHttpServer())
         .put('/user')
@@ -250,7 +295,8 @@ describe('User', () => {
         email: 'carlosboalife@gm.com',
         user_img_id: 1,
         username: 'carlosboavida',
-        born_in: '2020-06-15'
+        born_in: '2020-06-15',
+        fullname: 'vitoria da silva'
       };
 
       const response = await request(app.getHttpServer())
@@ -266,7 +312,8 @@ describe('User', () => {
         email: 'carlosboalifee@gm.com',
         user_img_id: 2,
         username: 'carlosboaviida',
-        born_in: '2020-06-15'
+        born_in: '2020-06-15',
+        fullname: 'vitoria da silva'
       };
 
       const response = await request(app.getHttpServer())
@@ -275,6 +322,60 @@ describe('User', () => {
         .send(user);
 
       expect(response.status).toBe(404);
+    });
+  });
+
+  describe('Buscar e-mail do usuário', () => {
+
+    beforeAll( async () => {
+      await getConnection().dropDatabase()
+      await getConnection().synchronize();
+
+      await getConnection().createQueryBuilder().insert().into("user_img").values({ user_img_id: 1, img_url: "http://localhost:4456" }).execute();
+      await getConnection().createQueryBuilder().insert().into("tb_user").values({ email: 'carlosboavida@gm.com',
+                                                                                 user_img_id: 1,
+                                                                                 user_pass: '7f69c888bd3d61f20070fae8781a6b355c549b92e76e2955818eb75563a61b15',
+                                                                                 username: 'carlosboaviida',
+                                                                                 born_in: '2020-06-15',
+                                                                                 fullname: 'vitoria da silva'
+                                                                                 }).execute();
+    });
+
+    it('> GET /user/email Deve encontrar o e-mail do usuário', async () => {
+      const email = 'carlosboavida@gm.com';
+
+      const response = await request(app.getHttpServer())
+        .get(`/user/email?email=${email}`)
+
+      expect(response.status).toBe(200);
+      expect(response.body).toEqual(expect.objectContaining({
+        email: expect.any(Boolean),
+        username: expect.any(String)
+      }));
+      expect(response.body.email).toBe(true);
+    });
+
+    it('> GET /user/email Não deve encontrar o e-mail do usuário (e-mail não encontrado)', async () => {
+      const email = 'carlosboaida@gm.com';
+
+      const response = await request(app.getHttpServer())
+        .get(`/user/email?email=${email}`)
+
+      expect(response.status).toBe(200);
+      expect(response.body).toEqual(expect.objectContaining({
+        email: expect.any(Boolean)
+      }));
+      expect(response.body.email).toBe(false);
+    });
+
+    it('> GET /user/email Não deve encontrar o e-mail do usuário (e-mail não enviado ou inválido)', async () => {
+      const email = 'carlosboaida';
+      const response = await request(app.getHttpServer())
+        .get('/user/email')
+        .send({ email });
+
+      expect(response.status).toBe(400);
+
     });
   });
 

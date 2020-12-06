@@ -11,24 +11,23 @@ export class InterestController {
   constructor(private readonly interestService: InterestService) {}
 
   @Post()
-  @HttpCode(204)
+  @HttpCode(201)
   @UseGuards(JwtAuthGuard)
   @UseFilters(QueryFailedExceptionFilter)
   createInterest(@Req() request, @Body() body: CreateInterestDto) {
-    return this.interestService.createInterest(request.user.user_id, body.theme_id);
+    return this.interestService.createInterest(request.user.user_id, body.themes);
   }
 
   @Get()
   @UseGuards(JwtAuthGuard)
-  @HttpCode(200)
-  getInterestByUser(@Req() request, @Query() query: QueryPageDto) {
-    return this.interestService.getInterestByUser(request.user.user_id, query.page);
+  getInterestByUser(@Res() response, @Req() request, @Query() query: QueryPageDto) {
+    return this.interestService.getInterestByUser(response, request.user.user_id, query.page);
   }
 
-  @Delete(':interest_id')
+  @Delete()
   @UseGuards(JwtAuthGuard)
-  deleteInterest(@Res() response: Response, @Param() params: DeleteInterestDto) {
-    return this.interestService.deleteInterest(params.interest_id, response)
+  deleteInterest(@Res() response: Response, @Body() body: DeleteInterestDto) {
+    return this.interestService.deleteInterest(body.interests, response)
   }
 
 }

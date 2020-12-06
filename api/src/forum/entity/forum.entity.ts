@@ -18,6 +18,17 @@ export class Forum {
   })
   no_like: number;
 
+  @Column({
+    type: 'varchar',
+    length: 200
+  })
+  forum_description: string;
+
+  @Column({
+    type: 'date'
+  })
+  publi_date: string;
+
   @OneToOne(type => ForumImg, {
     onDelete: 'CASCADE',
     onUpdate: 'CASCADE',

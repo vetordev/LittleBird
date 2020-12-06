@@ -8,7 +8,7 @@ dotenv.config({
 export const connection: TypeOrmModuleOptions = {
   type: process.env.TYPE as any,
   host: String(process.env.HOST),
-  port: Number(process.env.PORT),
+  port: Number(process.env.PORTDB),
   username: String(process.env.USERDB),
   password: String(process.env.PASSWORD),
   database: String(process.env.DATABASE),

@@ -7,6 +7,7 @@ import { Response } from 'express';
 import { ThemeForum } from './entity/theme-forum.entity';
 import { LikeForum } from './entity/like-forum.entity';
 import { ForumGateway } from "./forum.gateway";
+import { Theme } from '../theme/entity/theme.entity';
 
 @Injectable()
 export class ForumService {
@@ -15,71 +16,84 @@ export class ForumService {
     @InjectRepository(Forum) private readonly forumRepository: Repository<Forum>,
     @InjectRepository(Comment) private readonly commentRepository: Repository<Comment>,
     @InjectRepository(ThemeForum) private readonly themeForumRepository: Repository<ThemeForum>,
+    @InjectRepository(Theme) private readonly themeRepository: Repository<Theme>,
     @InjectRepository(LikeForum) private readonly likeForumRepository: Repository<LikeForum>,
     private readonly forumGateway: ForumGateway
   ) {}
 
   async getForumByTheme(response: Response, theme_id: number, page: number): Promise<Response | void> {
-    const theme = await this.themeForumRepository.createQueryBuilder('theme_forum')
-      .select(['theme_forum.theme_forum_id'])
-      .where('theme_forum.theme_id = :theme_id', { theme_id })
+    const theme = await this.themeRepository.createQueryBuilder('theme')
+      .select(['theme.theme_id'])
+      .where('theme.theme_id = :theme_id', { theme_id })
       .getOne();
 
     if(!theme) {
-      return response.status(404).json({ error: 'O Tema não existe no servidor ou não possui fóruns.' })
+      return response.status(404).json({ error: 'O Tema não existe no servidor.' })
     }
 
     let foruns: any = await this.themeForumRepository.createQueryBuilder('theme_forum')
-      .select(['theme_forum', 'forum', 'forum_img'])
+      .select(['theme_forum', 'forum.forum_id', 'forum.title', 'forum.no_like', 'forum_img'])
       .innerJoin('theme_forum.forum_id', 'forum')
       .innerJoin('forum.forum_img_id', 'forum_img')
       .where('theme_forum.theme_id = :theme_id', { theme_id })
       .orderBy('forum.no_like', 'ASC')
       .offset((page - 1) * 6)
       .limit(6)
-      .getMany();
+      .getManyAndCount();
 
-    foruns = foruns.map( (forum) => {
+    const count = foruns[1];
+
+    foruns = foruns[0].map( (forum) => {
       delete forum.theme_forum_id;
       delete forum.theme_id;
+
+      forum.forum_id.img_url = forum.forum_id.forum_img_id.img_url
+
+      delete forum.forum_id.forum_img_id
       return forum.forum_id;
     });
-    return response.status(200).json(foruns);
+
+
+    return response.status(200).header('X-Total-Count', count).json(foruns);
   };
 
-  async getForumByLike(page: number): Promise<Forum[]> {
-    const foruns = await this.forumRepository.createQueryBuilder('forum')
-      .select(['forum', 'forum_img'])
-      .innerJoin('forum.forum_img_id', 'forum_img')
-      .orderBy('forum.no_like', 'ASC')
-      .offset((page - 1) * 6)
-      .limit(6)
-      .getMany();
+  async getForumByLike(response: Response, page: number): Promise<Response> {
 
-    return foruns;
+    let query = "SELECT f.forum_id, f.title, i.img_url, f.no_like, (SELECT COUNT(comment_id) FROM tb_comment WHERE forum_id = f.forum_id) AS no_comment";
+    query += " FROM forum AS f JOIN forum_img AS i ON (i.forum_img_id = f.forum_img_id)";
+    query += " GROUP BY f.forum_id, i.img_url ORDER BY f.no_like ASC";
+    query += ` LIMIT 6 OFFSET(${(page - 1) * 6})`;
+
+    const foruns: Forum[] = await this.forumRepository.query(query);
+
+    const count: any = await this.forumRepository.count();
+
+    return response.status(200).header('X-Total-Count', count).json(foruns);
   };
 
-  async getForumByUserLike(user_id: number, page: number): Promise<LikeForum[]> {
+  async getForumByUserLike(response: Response, user_id: number, page: number): Promise<Response> {
     let foruns: any = await this.likeForumRepository.createQueryBuilder('like_forum')
-      .select(['like_forum', 'forum', 'forum_img'])
+      .select(['like_forum', 'forum.forum_id', 'forum.title', 'forum.no_like', 'forum_img'])
       .innerJoin('like_forum.forum_id', 'forum')
       .innerJoin('forum.forum_img_id', 'forum_img')
       .where('like_forum.user_id = :user_id', { user_id })
       .orderBy('forum.no_like', 'ASC')
       .offset((page - 1) * 6)
       .limit(6)
-      .getMany();
+      .getManyAndCount();
 
-    foruns = foruns.map( (forum) => {
+    const count = foruns[1];
+
+    foruns = foruns[0].map( (forum) => {
       delete forum.theme_forum_id;
       delete forum.theme_id;
       return forum.forum_id;
     });
-    return foruns;
+
+    return response.status(200).header('X-Total-Count', count).json(foruns);
 
   };
 
-  // TODO Paginar e adicionar username e avatar
   async getForumAndComments(response: Response, forum_id: number, page: number): Promise<Response | void> {
 
     const forum = await this.forumRepository.createQueryBuilder('forum')
@@ -92,7 +106,7 @@ export class ForumService {
       return response.status(404).json({ error: "Forum não encontrado no servidor." })
     };
 
-    let comments = await this.commentRepository.createQueryBuilder('tb_comment')
+    let comments: any = await this.commentRepository.createQueryBuilder('tb_comment')
       .select(['tb_comment', 'user.user_id', 'user.username', 'user_img'])
       .innerJoin('tb_comment.user_id', 'user')
       .innerJoin('user.user_img_id', 'user_img')
@@ -100,9 +114,11 @@ export class ForumService {
       .orderBy('tb_comment.comment_id', 'DESC')
       .offset((page - 1) * 6)
       .limit(6)
-      .getMany();
+      .getManyAndCount();
 
-    comments = comments.map( (comment) => {
+    const count = comments[1];
+
+    comments = comments[0].map( (comment) => {
       delete comment.forum_id;
       return comment;
     });
@@ -124,11 +140,13 @@ export class ForumService {
       themes
     };
 
-    return response.status(200).json(forum_comments_themes);
+    return response.status(200).header('X-Total-Count', count).json(forum_comments_themes);
   };
 
   async createComment(forum_id: number, comment_content : string, user_id: number): Promise<Response | void> {
-    const publi_date = new Date().toLocaleDateString();
+    const publi_date = new Date().toLocaleString("pt-BR", {timeZone: "America/Sao_Paulo"})
+
+    console.log(publi_date)
     const comment = await this.commentRepository.createQueryBuilder('tb_comment')
       .insert()
       .into('tb_comment')
@@ -145,12 +163,31 @@ export class ForumService {
       forum_id,
       comment_id: comment.identifiers[0].comment_id,
       comment_content,
+      publi_date,
       user_id
     });
   };
 
-  async createLike(forum_id: number, user_id: number): Promise<void> {
-    await this.likeForumRepository.createQueryBuilder('like_forum')
+  // TODO Adicionar verificação antes de inserir o like
+  async createLike(response: Response, forum_id: number, user_id: number): Promise<Response | void> {
+    const forum = await this.forumRepository.createQueryBuilder('forum')
+      .select(['forum.forum_id'])
+      .where('forum.forum_id = :forum_id', { forum_id })
+      .getOne();
+
+    if (!forum) {
+      return response.status(404).json({ error: "A chave estrangeira não existe no servidor." });
+    };
+
+    const like_forum = await this.likeForumRepository.createQueryBuilder('like_forum')
+      .select(['like_forum.like_forum_id'])
+      .where('like_forum.forum_id = :forum_id', { forum_id })
+      .andWhere('like_forum.user_id = :user_id', { user_id })
+      .getOne();
+
+    if(!like_forum) {
+
+      await this.likeForumRepository.createQueryBuilder('like_forum')
       .insert()
       .into('like_forum')
       .values({
@@ -159,19 +196,22 @@ export class ForumService {
       })
       .execute();
 
+      const forum: any = await this.forumRepository.createQueryBuilder('forum')
+      .select(['forum.no_like'])
+      .where('forum.forum_id = :forum_id', { forum_id })
+      .getOne();
 
-    const forum: any = await this.forumRepository.createQueryBuilder('forum')
-    .select(['forum.no_like'])
-    .where('forum.forum_id = :forum_id', { forum_id })
-    .getOne();
+      await this.forumRepository.createQueryBuilder('forum')
+      .update('forum')
+      .set({
+        no_like: forum.no_like + 1,
+      })
+      .where('forum.forum_id = :forum_id', { forum_id })
+      .execute();
 
-    await this.forumRepository.createQueryBuilder('forum')
-    .update('forum')
-    .set({
-      no_like: forum.no_like + 1,
-    })
-    .where('forum.forum_id = :forum_id', { forum_id })
-    .execute();
+    }
+
+    return response.status(204).end();
   };
 
   async removeComment(response: Response, comment_id: number): Promise<Response | void> {

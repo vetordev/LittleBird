@@ -1,4 +1,4 @@
-import { Controller, Post, Param, Body, Req, HttpCode, UseGuards, UseFilters } from '@nestjs/common';
+import { Controller, Post, Param, Body, Req, HttpCode, UseGuards, UseFilters, Get } from '@nestjs/common';
 import { ReportService } from './report.service';
 import { CreateReportReplyParamDto, CreateReportReplyBodyDto, CreateReportCommentParamDto, CreateReportCommentBodyDto } from './report.dto';
 import { JwtAuthGuard } from '../auth/jwt/jwt-auth.guard';
@@ -9,16 +9,21 @@ export class ReportController {
 
   constructor( private readonly reportService: ReportService ) {  };
 
+  @Get('type')
+  @HttpCode(200)
+  getReportType() {
+    return this.reportService.getReportType();
+  };
+
   @Post('reply/:reply_id')
   @HttpCode(204)
   @UseGuards(JwtAuthGuard)
   @UseFilters(QueryFailedExceptionFilter)
   createReportReply(@Param() params: CreateReportReplyParamDto, @Body() body: CreateReportReplyBodyDto, @Req() request) {
     return this.reportService.createReportReply(params.reply_id, body, request.user.user_id);
-    // return 'ok'
   };
 
-  @Post('comment/:comment_id') 
+  @Post('comment/:comment_id')
   @HttpCode(204)
   @UseGuards(JwtAuthGuard)
   @UseFilters(QueryFailedExceptionFilter)
